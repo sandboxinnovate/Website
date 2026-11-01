@@ -1,0 +1,56 @@
+---
+/**
+ * Lab page for the service-page hero visuals and unit islands (noindex, excluded from the sitemap).
+ * All six hero visuals in English and Spanish, plus the three unit islands at phone width.
+ */
+import Base from '@/layouts/Base.astro';
+import BrainsVisual from '@/components/unit/visuals/BrainsVisual.astro';
+import ConsultingVisual from '@/components/unit/visuals/ConsultingVisual.astro';
+import GrowthVisual from '@/components/unit/visuals/GrowthVisual.astro';
+import AcademyVisual from '@/components/unit/visuals/AcademyVisual.astro';
+import ProductsVisual from '@/components/unit/visuals/ProductsVisual.astro';
+import PartnersVisual from '@/components/unit/visuals/PartnersVisual.astro';
+import AcademyExplorer from '@/components/unit/AcademyExplorer/AcademyExplorer';
+import ProductsSelector from '@/components/unit/ProductsSelector/ProductsSelector';
+import PartnersFlow from '@/components/unit/PartnersFlow/PartnersFlow';
+import type { Lang } from '@/i18n';
+
+const langs: Lang[] = ['en', 'es'];
+---
+<Base lang="en" title="Lab · Unit visuals" description="Internal test page for the service-page hero visuals and unit widgets." noindex>
+  <section class="lab container-x">
+    <header class="lab__head">
+      <span class="mono-label">[lab] components/unit</span>
+      <h1 class="display-md">Unit hero visuals</h1>
+      <p class="lede">The six hand-built hero visuals in English and Spanish, and the Academy, Products and Partners widgets at phone width.</p>
+    </header>
+
+    {langs.map((lang) => (
+      <div class="lab__grid">
+        <figure><figcaption class="mono-label">01 · brains · {lang}</figcaption><BrainsVisual lang={lang} /></figure>
+        <figure><figcaption class="mono-label">02 · consulting · {lang}</figcaption><ConsultingVisual lang={lang} /></figure>
+        <figure><figcaption class="mono-label">03 · growth · {lang}</figcaption><GrowthVisual lang={lang} /></figure>
+        <figure><figcaption class="mono-label">04 · academy · {lang}</figcaption><AcademyVisual lang={lang} /></figure>
+        <figure><figcaption class="mono-label">05 · products · {lang}</figcaption><ProductsVisual lang={lang} /></figure>
+        <figure><figcaption class="mono-label">06 · partners · {lang}</figcaption><PartnersVisual lang={lang} /></figure>
+      </div>
+    ))}
+
+    <div class="lab__phones">
+      <figure class="lab__phone"><figcaption class="mono-label">390px · AcademyExplorer · es</figcaption><AcademyExplorer client:visible lang="es" /></figure>
+      <figure class="lab__phone"><figcaption class="mono-label">390px · ProductsSelector · en</figcaption><ProductsSelector client:visible lang="en" /></figure>
+      <figure class="lab__phone"><figcaption class="mono-label">390px · PartnersFlow · es</figcaption><PartnersFlow client:visible lang="es" /></figure>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lab { padding-block: calc(var(--nav-h) + 48px) 120px; display: flex; flex-direction: column; gap: 72px; }
+  .lab__head { display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+  .lab__grid { display: grid; gap: 32px; }
+  @media (min-width: 1000px) { .lab__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  figure { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .lab__phones { display: grid; gap: 40px; }
+  @media (min-width: 1240px) { .lab__phones { grid-template-columns: repeat(3, 390px); align-items: start; } }
+  .lab__phone { width: 100%; max-width: 390px; }
+</style>

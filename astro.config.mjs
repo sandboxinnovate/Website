@@ -16,7 +16,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes('/lab/'),
+      filter: (page) => !page.includes('/lab/') && !/\/404\/?$/.test(page),
       i18n: { defaultLocale: 'en', locales: { en: 'en-US', es: 'es' } },
     }),
   ],

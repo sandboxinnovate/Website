@@ -1,0 +1,49 @@
+---
+/**
+ * Lab: ReadinessDiagnostic in isolation (noindex, excluded from the sitemap).
+ * - Teaser at its intended 560 px width (EN) and at phone width (ES).
+ * - The full diagnostic (EN, persisted like on /diagnostic).
+ * - The results screen for a fixed set of answers (ES, not persisted).
+ */
+import Base from '@/layouts/Base.astro';
+import ReadinessDiagnostic from '@/components/widgets/ReadinessDiagnostic/ReadinessDiagnostic';
+---
+<Base lang="en" title="Lab · ReadinessDiagnostic" description="Internal preview of the AI Readiness Diagnostic widget." noindex bare>
+  <div class="lab">
+    <header class="container-x lab__head">
+      <span class="mono-label">Lab / widgets / ReadinessDiagnostic</span>
+      <span class="mono-label lab__hint">Keys 1–4 select · Enter continue · ← back</span>
+    </header>
+
+    <section class="container-x lab__row" aria-label="Teaser previews">
+      <figure class="lab__fig">
+        <div class="lab__teaser"><ReadinessDiagnostic client:visible lang="en" variant="teaser" /></div>
+        <figcaption class="mono-label">[teaser] 560 wide · en</figcaption>
+      </figure>
+      <figure class="lab__fig lab__fig--phone">
+        <div class="lab__teaser"><ReadinessDiagnostic client:visible lang="es" variant="teaser" /></div>
+        <figcaption class="mono-label">[teaser] 358 wide · es</figcaption>
+      </figure>
+    </section>
+
+    <section class="container-x lab__block" aria-label="Full diagnostic">
+      <span class="mono-label">[full] en · persisted in sessionStorage</span>
+      <ReadinessDiagnostic client:idle lang="en" variant="full" />
+    </section>
+
+    <section class="container-x lab__block" aria-label="Results preview">
+      <span class="mono-label">[results] es · fixed answers · not persisted</span>
+      <ReadinessDiagnostic client:visible lang="es" variant="full" demoAnswers={[2, 1, 1, 2, 1, 0, 2, 1, 0, 1]} persist={false} />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .lab { padding-top: calc(var(--nav-h) + 24px); padding-bottom: 120px; display: flex; flex-direction: column; gap: 56px; }
+  .lab__head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+  .lab__hint { color: var(--color-mist); }
+  .lab__row { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+  .lab__fig { display: flex; flex-direction: column; gap: 12px; width: min(560px, 100%); }
+  .lab__fig--phone { width: min(358px, 100%); }
+  .lab__block { display: flex; flex-direction: column; gap: 14px; }
+</style>

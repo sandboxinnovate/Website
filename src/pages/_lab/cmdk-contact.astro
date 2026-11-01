@@ -1,0 +1,56 @@
+---
+/**
+ * Lab page for the CommandPalette and ContactFlow widgets (noindex, excluded from the sitemap).
+ * The palette is mounted globally by Base; the buttons below open it with and without a query.
+ */
+import Base from '@/layouts/Base.astro';
+import ContactFlow from '@/components/widgets/ContactFlow/ContactFlow';
+---
+<Base lang="en" title="Lab · Command palette and contact flow" description="Internal test page for the command palette and the multi-step contact form." noindex>
+  <section class="lab container-x">
+    <header class="lab__head">
+      <span class="mono-label">[lab] widgets/CommandPalette · widgets/ContactFlow</span>
+      <h1 class="display-md">Palette and request flow</h1>
+      <p class="lede">Open the palette with ⌘K / Ctrl+K or the buttons. The form is shown in English, in Spanish and at phone width.</p>
+      <div class="lab__actions">
+        <button type="button" class="btn btn-ghost btn-sm btn-plain" data-open="">Open palette</button>
+        <button type="button" class="btn btn-ghost btn-sm btn-plain" data-open="pricing">Open with “pricing”</button>
+        <button type="button" class="btn btn-ghost btn-sm btn-plain" data-open="zzqx">Open with no matches</button>
+      </div>
+    </header>
+
+    <div class="lab__block" id="flow-en">
+      <p class="mono-label">01 · ContactFlow · lang=en</p>
+      <div class="lab__frame"><ContactFlow client:visible lang="en" /></div>
+    </div>
+
+    <div class="lab__block lab__pair" id="flow-es">
+      <div>
+        <p class="mono-label">02 · ContactFlow · lang=es · initialService=growth</p>
+        <div class="lab__frame"><ContactFlow client:visible lang="es" initialService="growth" /></div>
+      </div>
+      <div class="lab__phone">
+        <p class="mono-label">03 · 390px frame · lang=en</p>
+        <ContactFlow client:visible lang="en" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-open]').forEach((b) =>
+    b.addEventListener('click', () => window.dispatchEvent(new CustomEvent('sbx:cmdk', { detail: { open: true, query: b.dataset.open } }))),
+  );
+</script>
+
+<style>
+  .lab { padding-block: calc(var(--nav-h) + 48px) 120px; display: flex; flex-direction: column; gap: 72px; }
+  .lab__head { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
+  .lab__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .lab__block { display: flex; flex-direction: column; gap: 16px; }
+  .lab__frame { max-width: 720px; }
+  .lab__pair { display: grid; gap: 48px; }
+  .lab__pair > div { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .lab__phone { width: 100%; max-width: 358px; }
+  @media (min-width: 1100px) { .lab__pair { grid-template-columns: minmax(0, 1fr) 358px; align-items: start; } }
+</style>

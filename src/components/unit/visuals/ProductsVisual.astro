@@ -1,0 +1,115 @@
+---
+/**
+ * Products hero: five isometric modules stacked like a rack, one per industry.
+ * Each module slides out in turn (the one "being set up"), its label lights up.
+ */
+import VisualFrame from './VisualFrame.astro';
+import { VISUAL_COPY } from './copy';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = VISUAL_COPY[lang];
+const t = c.products;
+
+const CX = 178, HW = 128, HH = 50, T = 18, TOP = 112, STEP = 54;
+const slabs = t.industries.map((ind, i) => {
+  const cy = TOP + i * STEP;
+  return {
+    ...ind,
+    i,
+    cy,
+    top: `M${CX} ${cy - HH} L${CX + HW} ${cy} L${CX} ${cy + HH} L${CX - HW} ${cy} Z`,
+    left: `M${CX - HW} ${cy} L${CX} ${cy + HH} L${CX} ${cy + HH + T} L${CX - HW} ${cy + T} Z`,
+    right: `M${CX} ${cy + HH} L${CX + HW} ${cy} L${CX + HW} ${cy + T} L${CX} ${cy + HH + T} Z`,
+    // slot lines on the front-right face (ports)
+    ports: [0.3, 0.45, 0.6].map((k) => {
+      const x = CX + HW * k, y = cy + HH - HH * k;
+      return `M${x} ${y + 6} L${x} ${y + T - 5}`;
+    }),
+    ly: cy + HH * 0.5 + T * 0.5 + 4,
+  };
+});
+---
+<VisualFrame file={t.file} label={c.illustrative} class="pv">
+  <div class="pv__wrap">
+    <span class="pv__early"><span class="pv__early-dot"></span>{t.early}</span>
+    <svg viewBox="0 0 560 420" class="pv__svg">
+      <defs>
+        <linearGradient id={`pv-top-${lang}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#2f2a2a" />
+          <stop offset="1" stop-color="#1c1919" />
+        </linearGradient>
+        <linearGradient id={`pv-top-on-${lang}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffb831" />
+          <stop offset=".55" stop-color="#f58327" />
+          <stop offset="1" stop-color="#d65805" />
+        </linearGradient>
+      </defs>
+
+      {/* shadow */}
+      <ellipse cx={CX} cy={TOP + 4 * STEP + HH + T + 20} rx={HW * 1.05} ry="20" class="pv__shadow" />
+
+      {[...slabs].reverse().map((s) => (
+        <g class:list={['pv__slab', s.i === 0 && 'is-first']} style={`--k:${s.i}`}>
+          <path d={s.left} class="pv__face pv__face--l" />
+          <path d={s.right} class="pv__face pv__face--r" />
+          {s.ports.map((d) => <path d={d} class="pv__port" />)}
+          <path d={s.top} class="pv__face pv__face--t" fill={`url(#pv-top-${lang})`} />
+          <path d={s.top} class="pv__face pv__face--on" fill={`url(#pv-top-on-${lang})`} />
+        </g>
+      ))}
+
+      {slabs.map((s) => (
+        <g class:list={['pv__label', s.i === 0 && 'is-first']} style={`--k:${s.i}`}>
+          <path d={`M${CX + HW + 8} ${s.cy + T / 2} L${CX + HW + 30} ${s.cy + T / 2}`} class="pv__leader" />
+          <circle cx={CX + HW + 30} cy={s.cy + T / 2} r="2.5" class="pv__ldot" />
+          <text x={CX + HW + 42} y={s.cy + T / 2 - 4} class="pv__code">{s.code}</text>
+          <text x={CX + HW + 42} y={s.cy + T / 2 + 13} class="pv__name">{s.name}</text>
+          <text x={CX + HW + 42} y={s.cy + T / 2 + 29} class="pv__agents">{s.pilot}</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+</VisualFrame>
+
+<style>
+  .pv__wrap { position: relative; padding: 10px 12px 6px; }
+  .pv__early { position: absolute; top: 18px; left: 18px; display: inline-flex; align-items: center; gap: 8px; padding: 5px 11px; border-radius: 99px; border: 1px dashed rgb(245 131 39 / .6); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-flame-400); background: rgb(10 10 10 / .6); }
+  .pv__early-dot { width: 6px; height: 6px; border-radius: 9px; background: var(--color-flame-500); }
+  .pv__svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .pv__shadow { fill: rgb(217 76 0 / .22); filter: blur(14px); }
+  .pv__face { stroke: rgb(255 255 255 / .14); stroke-width: 1; stroke-linejoin: round; }
+  .pv__face--l { fill: #151313; }
+  .pv__face--r { fill: #1d1a1a; }
+  .pv__face--on { opacity: 0; stroke: rgb(255 210 31 / .8); }
+  .pv__port { stroke: rgb(245 131 39 / .55); stroke-width: 2; stroke-linecap: round; }
+  .pv__slab:first-of-type .pv__port { stroke: rgb(255 255 255 / .2); }
+
+  .pv__leader { stroke: rgb(255 255 255 / .2); stroke-width: 1; stroke-dasharray: 2 3; }
+  .pv__ldot { fill: var(--color-smoke); }
+  .pv__code { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; fill: var(--color-flame-400); }
+  .pv__name { font-family: var(--font-sans); font-size: 15px; font-weight: 500; fill: var(--color-mist); }
+  .pv__agents { font-family: var(--font-mono); font-size: 10.5px; fill: var(--color-smoke); opacity: 0; }
+
+  /* Static state (reduced motion): highlight the first module */
+  .pv__slab.is-first .pv__face--on { opacity: .9; }
+  .pv__label.is-first .pv__name { fill: var(--color-bone); }
+  .pv__label.is-first .pv__agents { opacity: 1; }
+  .pv__label.is-first .pv__ldot { fill: var(--color-flame-400); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pv__slab { animation: pv-pull 12.5s var(--ease-out-expo) infinite; animation-delay: calc(var(--k) * 2.5s); }
+    .pv__slab .pv__face--on { animation: pv-on 12.5s ease infinite; animation-delay: calc(var(--k) * 2.5s); }
+    .pv__label .pv__name { animation: pv-name 12.5s ease infinite; animation-delay: calc(var(--k) * 2.5s); }
+    .pv__label .pv__agents { animation: pv-agents 12.5s ease infinite; animation-delay: calc(var(--k) * 2.5s); }
+    .pv__label .pv__ldot { animation: pv-dot 12.5s ease infinite; animation-delay: calc(var(--k) * 2.5s); }
+    .pv__early-dot { animation: var(--animate-pulse-dot); }
+  }
+  @keyframes pv-pull { 0% { transform: none; } 5%, 16% { transform: translate(26px, 12px); } 22%, 100% { transform: none; } }
+  @keyframes pv-on { 0% { opacity: 0; } 5%, 16% { opacity: .92; } 22%, 100% { opacity: 0; } }
+  @keyframes pv-name { 0% { fill: var(--color-mist); } 5%, 16% { fill: var(--color-bone); } 22%, 100% { fill: var(--color-mist); } }
+  @keyframes pv-agents { 0% { opacity: 0; } 5%, 16% { opacity: 1; } 22%, 100% { opacity: 0; } }
+  @keyframes pv-dot { 0% { fill: var(--color-smoke); } 5%, 16% { fill: var(--color-flame-400); } 22%, 100% { fill: var(--color-smoke); } }
+</style>

@@ -1,10 +1,40 @@
 ---
-// STUB — to be replaced.
 import Base from '@/layouts/Base.astro';
-import type { Lang } from '@/i18n';
+import AboutHero from '@/components/about/AboutHero.astro';
+import StoryTimeline from '@/components/about/StoryTimeline.astro';
+import Principles from '@/components/about/Principles.astro';
+import Markets from '@/components/about/Markets.astro';
+import Numbers from '@/components/about/Numbers.astro';
+import PageCta from '@/components/about/PageCta.astro';
+import { ABOUT } from '@/i18n/about';
+import { localize, type Lang } from '@/i18n';
+import { SITE } from '@/data/site';
+
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const a = ABOUT;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: a.seo.title[lang],
+  description: a.seo.description[lang],
+  url: new URL(localize(lang, '/about'), SITE.url).href,
+  inLanguage: lang,
+  about: { '@type': 'Organization', name: 'Sandbox', url: SITE.url, founder: { '@type': 'Person', name: 'Axel Parra' } },
+};
 ---
-<Base lang={lang} title="About" description="About">
-  <section class="container-x section-y" style="padding-top:160px"><h1 class="display-lg">About ({lang})</h1></section>
+<Base lang={lang} title={a.seo.title[lang]} description={a.seo.description[lang]} jsonLd={[jsonLd]}>
+  <AboutHero lang={lang} />
+  <StoryTimeline lang={lang} />
+  <Principles lang={lang} />
+  <Markets lang={lang} />
+  <Numbers lang={lang} />
+  <PageCta
+    id="about-cta"
+    title={a.cta.title[lang]}
+    body={a.cta.body[lang]}
+    primary={{ href: localize(lang, '/contact'), label: a.cta.primary[lang] }}
+    secondary={{ href: localize(lang, '/work'), label: a.cta.secondary[lang] }}
+  />
 </Base>

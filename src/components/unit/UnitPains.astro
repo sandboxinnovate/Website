@@ -1,0 +1,69 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { UNIT_COMMON } from '@/i18n/units';
+import type { UnitCopy } from '@/i18n/units';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang; copy: UnitCopy; index: string }
+const { lang, copy, index } = Astro.props;
+const p = copy.pains;
+const C = UNIT_COMMON.pains;
+---
+<section class="up">
+  <div class="container-x">
+    <div class="up__head">
+      <SectionHeading index={index} eyebrow={C.eyebrow[lang]} title={p.title} lede={p.lede} />
+    </div>
+
+    <div class="up__table">
+      <div class="up__cols" aria-hidden="true">
+        <span class="mono-label">{C.today[lang]}</span>
+        <span></span>
+        <span class="mono-label up__cols-after">{C.after[lang]}</span>
+      </div>
+      <ol class="up__list">
+      {p.items.map((it, i) => (
+        <li class="up__row" data-reveal style={`--reveal-delay:${i * 90}`}>
+          <span class="up__n">{String(i + 1).padStart(2, '0')}</span>
+          <p class="up__pain"><span class="up__k mono-label">{C.today[lang]}</span>{it.pain}</p>
+          <span class="up__arrow" aria-hidden="true"><Icon name="arrow-right" size={18} /></span>
+          <p class="up__out"><span class="up__k mono-label up__k--after">{C.after[lang]}</span>{it.outcome}</p>
+        </li>
+      ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .up { padding-block: clamp(64px, 8vw, 112px); }
+  .up__head { margin-bottom: clamp(40px, 6vw, 72px); }
+  .up__table { border-top: 1px solid var(--line); }
+  .up__cols { display: none; }
+  @media (min-width: 900px) {
+    .up__cols { display: grid; grid-template-columns: 56px minmax(0, 1fr) 64px minmax(0, 1fr); padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .up__cols > :first-child { grid-column: 2; }
+    .up__cols-after { color: var(--color-flame-400); }
+  }
+
+  .up__row { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px 12px; padding: 26px 0; border-bottom: 1px solid var(--line); transition: background-color .4s; }
+  @media (min-width: 900px) {
+    .up__row { grid-template-columns: 56px minmax(0, 1fr) 64px minmax(0, 1fr); align-items: start; gap: 0; padding: 34px 0; }
+    .up__row:hover { background: linear-gradient(90deg, transparent, rgb(245 131 39 / .04) 60%, transparent); }
+  }
+  .up__n { font-family: var(--font-mono); font-size: 12px; color: var(--color-smoke); padding-top: 6px; }
+  @media (max-width: 899px) { .up__n { grid-row: span 2; } }
+
+  .up__pain { font-size: clamp(1.02rem, 1.35vw, 1.2rem); line-height: 1.5; color: var(--color-smoke); max-width: 30em; }
+  .up__out { font-family: var(--font-display); font-size: clamp(1.02rem, 1.5vw, 1.3rem); line-height: 1.38; letter-spacing: -.02em; color: var(--color-bone); max-width: 26em; }
+  .up__k { display: block; margin-bottom: 8px; }
+  .up__k--after { color: var(--color-flame-400); }
+  @media (min-width: 900px) { .up__k { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } }
+
+  .up__arrow { display: none; }
+  @media (min-width: 900px) {
+    .up__arrow { display: grid; place-items: center; width: 36px; height: 36px; margin-top: 2px; border-radius: 99px; color: var(--color-flame-400); border: 1px solid rgb(245 131 39 / .3); background: rgb(245 131 39 / .06); transition: transform .6s var(--ease-out-expo), background-color .3s; }
+    .up__row:hover .up__arrow { transform: translateX(6px); background: rgb(245 131 39 / .14); }
+  }
+</style>

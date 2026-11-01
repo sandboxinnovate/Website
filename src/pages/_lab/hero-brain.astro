@@ -1,0 +1,92 @@
+---
+/**
+ * Lab: HeroBrain in isolation (noindex).
+ * - A 1440×820 hero-like stage with a placeholder headline (EN).
+ * - A phone-size stage (ES) and the reduced-motion still frame (ES).
+ */
+import Base from '@/layouts/Base.astro';
+import HeroBrain from '@/components/widgets/HeroBrain/HeroBrain';
+---
+<Base lang="en" title="Lab · HeroBrain" description="Internal preview of the HeroBrain hero visual." noindex bare>
+  <div class="lab">
+    <header class="container-x lab__head">
+      <span class="mono-label">Lab / widgets / HeroBrain</span>
+      <span class="mono-label lab__hint">Move the pointer over the cube · click to fire a burst</span>
+    </header>
+
+    <section class="lab__stage" aria-label="Desktop hero preview">
+      <div class="lab__bg" aria-hidden="true">
+        <div class="bg-grid lab__grid"></div>
+        <div class="glow-ember lab__glow"></div>
+      </div>
+      <div class="lab__visual">
+        <HeroBrain client:load lang="en" />
+      </div>
+      <div class="container-x lab__copy">
+        <span class="eyebrow">AI systems · Consulting · Growth</span>
+        <h1 class="lab__title">We design, build<br />and run AI <em>for your business.</em></h1>
+        <p class="lede lab__lede">Placeholder headline for the lab. The real hero copy lives in the home page.</p>
+      </div>
+      <span class="mono-label lab__tag">[stage] 1440 × 820</span>
+    </section>
+
+    <section class="container-x lab__row" aria-label="Mobile previews">
+      <figure class="lab__fig">
+        <div class="lab__phone">
+          <div class="lab__phone-bg" aria-hidden="true"><div class="glow-ember lab__phone-glow"></div></div>
+          <div class="lab__phone-visual"><HeroBrain client:visible lang="es" /></div>
+          <div class="lab__phone-copy">
+            <span class="eyebrow">Sistemas de IA</span>
+            <p class="lab__phone-title">Diseñamos, construimos y operamos <em>IA para tu empresa.</em></p>
+          </div>
+        </div>
+        <figcaption class="mono-label">[mobile] 390 × 640 · es · live</figcaption>
+      </figure>
+      <figure class="lab__fig">
+        <div class="lab__phone">
+          <div class="lab__phone-bg" aria-hidden="true"><div class="glow-ember lab__phone-glow"></div></div>
+          <div class="lab__phone-visual"><HeroBrain client:visible lang="es" still /></div>
+        </div>
+        <figcaption class="mono-label">[mobile] 390 × 640 · prefers-reduced-motion still frame</figcaption>
+      </figure>
+      <figure class="lab__fig lab__fig--square">
+        <div class="lab__square">
+          <HeroBrain client:visible lang="en" />
+        </div>
+        <figcaption class="mono-label">[card] 560 × 560 · en · live</figcaption>
+      </figure>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .lab { padding-top: calc(var(--nav-h) + 24px); padding-bottom: 120px; }
+  .lab__head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-bottom: 20px; }
+  .lab__hint { color: var(--color-mist); }
+
+  .lab__stage { position: relative; height: 820px; max-height: 120vh; overflow: hidden; isolation: isolate; border-block: 1px solid var(--line); }
+  .lab__bg { position: absolute; inset: 0; z-index: -2; }
+  .lab__grid { position: absolute; inset: 0; opacity: .7; }
+  .lab__glow { width: 900px; height: 700px; right: -160px; top: 4%; opacity: .5; }
+  .lab__visual { position: absolute; z-index: -1; inset: 0 0 0 auto; width: min(64vw, 980px); }
+  .lab__copy { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 24px; }
+  .lab__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.3rem, 5.2vw, 5rem); line-height: .98; letter-spacing: -.055em; max-width: 12ch; }
+  .lab__title em, .lab__phone-title em { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lab__lede { max-width: 440px; }
+  .lab__tag { position: absolute; right: var(--gutter); bottom: 16px; }
+  @media (max-width: 899px) {
+    .lab__stage { height: 760px; }
+    .lab__visual { inset: 0 -20% auto -20%; width: auto; height: 62%; opacity: .55; }
+    .lab__copy { justify-content: flex-end; padding-bottom: 64px; }
+  }
+
+  .lab__row { display: flex; flex-wrap: wrap; gap: 40px; margin-top: 64px; }
+  .lab__fig { display: flex; flex-direction: column; gap: 12px; margin: 0; max-width: 100%; }
+  .lab__phone { position: relative; width: 390px; max-width: 100%; height: 640px; border-radius: 28px; overflow: hidden; border: 1px solid var(--line-strong); background: var(--color-ink-950); isolation: isolate; }
+  .lab__phone-bg { position: absolute; inset: 0; z-index: -2; }
+  .lab__phone-glow { width: 420px; height: 420px; left: -20px; top: 40px; opacity: .45; }
+  .lab__phone-visual { position: absolute; inset: 24px -20% auto -20%; height: 62%; }
+  .lab__phone-copy { position: absolute; inset: auto 20px 28px 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .lab__phone-title { font-family: var(--font-display); font-weight: 500; font-size: 2rem; line-height: 1.02; letter-spacing: -.05em; }
+  .lab__square { position: relative; width: 560px; max-width: calc(100vw - 2 * var(--gutter)); aspect-ratio: 1; border-radius: 20px; border: 1px solid var(--line); background: radial-gradient(60% 55% at 50% 50%, rgb(217 76 0 / .22), transparent 70%), var(--color-ink-900); overflow: hidden; }
+</style>

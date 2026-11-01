@@ -1,0 +1,69 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { UNITS, type UnitSlug } from '@/data/site';
+import { UNIT_COMMON } from '@/i18n/units';
+import { localize, type Lang } from '@/i18n';
+
+interface Props { lang: Lang; slug: UnitSlug }
+const { lang, slug } = Astro.props;
+const C = UNIT_COMMON.related;
+// Start after the current unit and wrap around, so each page suggests the next unit first.
+const at = UNITS.findIndex((u) => u.slug === slug);
+const others = [...UNITS.slice(at + 1), ...UNITS.slice(0, at)];
+---
+<section class="ur" aria-labelledby="ur-title">
+  <div class="container-x">
+    <div class="ur__head">
+      <div class="ur__titles">
+        <span class="eyebrow">{C.eyebrow[lang]}</span>
+        <h2 id="ur-title" class="ur__title" set:html={C.title[lang]} />
+      </div>
+      <a href={localize(lang, '/#services')} class="ur__all">{C.all[lang]}<Icon name="arrow-up-right" size={15} /></a>
+    </div>
+    <ul class="ur__grid">
+      {others.map((u, i) => (
+        <li data-reveal style={`--reveal-delay:${i * 70}`}>
+          <a href={localize(lang, `/services/${u.slug}`)} class="ur__card">
+            <span class="ur__icon"><Icon name={u.icon} size={18} /></span>
+            <span class="ur__code">{u.code} / 06</span>
+            <span class="ur__name">{u.name[lang]}</span>
+            <span class="ur__tag">{u.tagline[lang]}</span>
+            <span class="ur__go" aria-hidden="true"><Icon name="arrow-up-right" size={16} /></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ur { padding-block: clamp(64px, 9vw, 120px) 0; }
+  .ur__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 32px; }
+  .ur__titles { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .ur__title { font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -.04em; }
+  .ur__title :global(em) { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ur__all { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-family: var(--font-display); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--color-mist); }
+  .ur__all:hover { color: var(--color-flame-400); }
+
+  .ur__grid { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  @media (min-width: 640px) { .ur__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .ur__grid { grid-template-columns: repeat(5, 1fr); } }
+  .ur__grid li { display: flex; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .ur__card { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr) 20px; grid-template-areas: 'icon name go' 'icon tag go'; column-gap: 14px; row-gap: 2px; align-items: center; width: 100%; padding: 16px 18px; transition: background-color .4s; }
+  .ur__card:hover { background: rgb(245 131 39 / .05); }
+  .ur__icon { grid-area: icon; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; color: var(--color-flame-400); background: rgb(245 131 39 / .08); border: 1px solid rgb(245 131 39 / .25); }
+  .ur__code { display: none; grid-area: code; font-family: var(--font-mono); font-size: 11px; color: var(--color-smoke); justify-self: end; }
+  .ur__name { grid-area: name; font-family: var(--font-display); font-size: 1.15rem; letter-spacing: -.035em; transition: color .3s; }
+  .ur__tag { grid-area: tag; font-size: 14px; color: var(--color-mist); }
+  .ur__go { grid-area: go; color: var(--color-smoke); transition: transform .5s var(--ease-out-expo), color .3s; }
+  .ur__card:hover .ur__go { transform: rotate(45deg); color: var(--color-flame-400); }
+  @media (min-width: 1000px) {
+    .ur__card { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'icon code' 'name name' 'tag tag' 'go go'; row-gap: 8px; align-items: start; padding: 22px 22px 24px; }
+    .ur__icon { margin-bottom: 14px; }
+    .ur__code { display: block; }
+    .ur__name { font-size: 1.3rem; }
+    .ur__tag { padding-right: 8px; }
+    .ur__go { justify-self: end; margin-top: 4px; }
+  }
+  .ur__card:hover .ur__name { color: var(--color-flame-400); }
+</style>

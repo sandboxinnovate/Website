@@ -1,0 +1,138 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import BrainsVisual from './visuals/BrainsVisual.astro';
+import ConsultingVisual from './visuals/ConsultingVisual.astro';
+import GrowthVisual from './visuals/GrowthVisual.astro';
+import AcademyVisual from './visuals/AcademyVisual.astro';
+import ProductsVisual from './visuals/ProductsVisual.astro';
+import PartnersVisual from './visuals/PartnersVisual.astro';
+import { UNIT_COMMON } from '@/i18n/units';
+import type { UnitCopy } from '@/i18n/units';
+import type { UnitMeta } from '@/data/site';
+import { localize, type Lang } from '@/i18n';
+
+interface Props { lang: Lang; unit: UnitMeta; copy: UnitCopy }
+const { lang, unit, copy } = Astro.props;
+const h = copy.hero;
+const C = UNIT_COMMON;
+const contactHref = localize(lang, `/contact?service=${unit.slug}`);
+const secondaryHref = h.secondary.href.startsWith('#') ? h.secondary.href : localize(lang, h.secondary.href);
+const secondaryIcon = h.secondary.href.startsWith('#') ? 'arrow-right' : 'arrow-up-right';
+---
+<section class:list={['uh', `uh--${unit.slug}`]} aria-labelledby="uh-title">
+  <div class="uh__bg" aria-hidden="true">
+    <div class="bg-grid uh__grid"></div>
+    <div class="glow-ember uh__glow uh__glow--a"></div>
+    <div class="glow-ember uh__glow uh__glow--b"></div>
+  </div>
+
+  <div class="container-x uh__inner">
+    <div class="uh__copy">
+      <nav class="uh__crumbs uh__in" style="--i:0" aria-label={C.breadcrumbLabel[lang]}>
+        <ol>
+          <li><a href={localize(lang, '/#services')}>{C.breadcrumb[lang]}</a></li>
+          <li aria-hidden="true" class="uh__sep">/</li>
+          <li><span aria-current="page">{unit.code} · {unit.name[lang]}</span></li>
+        </ol>
+      </nav>
+
+      <div class="uh__meta uh__in" style="--i:1">
+        <span class="uh__icon"><Icon name={unit.icon} size={20} /></span>
+        <span class="uh__unit">{unit.name[lang]}</span>
+        <span class="eyebrow">{unit.tagline[lang]}</span>
+      </div>
+
+      <h1 id="uh-title" class="uh__title uh__in" style="--i:2" set:html={h.title} />
+      <p class="lede uh__lede uh__in" style="--i:3">{h.lede}</p>
+
+      <div class="uh__ctas uh__in" style="--i:4">
+        <a href={contactHref} class="btn btn-primary">
+          <span>{h.primary}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
+        </a>
+        <a href={secondaryHref} class="btn btn-ghost">
+          <span>{h.secondary.label}</span><span class="btn-chip"><Icon name={secondaryIcon} size={16} stroke={1.8} /></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="uh__visual uh__in" style="--i:3">
+      {unit.slug === 'brains' && <BrainsVisual lang={lang} />}
+      {unit.slug === 'consulting' && <ConsultingVisual lang={lang} />}
+      {unit.slug === 'growth' && <GrowthVisual lang={lang} />}
+      {unit.slug === 'academy' && <AcademyVisual lang={lang} />}
+      {unit.slug === 'products' && <ProductsVisual lang={lang} />}
+      {unit.slug === 'partners' && <PartnersVisual lang={lang} />}
+    </div>
+  </div>
+
+  <div class="container-x">
+    <dl class="uh__facts" aria-label={C.glance[lang]}>
+      {h.facts.map((f, i) => (
+        <div class="uh__fact uh__in" style={`--i:${5 + i}`}>
+          <dt class="mono-label">{f.k}</dt>
+          <dd>{f.v}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<script>
+  // Pause the hero visual animations while offscreen or when the tab is hidden.
+  const frames = document.querySelectorAll<HTMLElement>('[data-uv]');
+  const state = new Map<HTMLElement, boolean>();
+  const apply = (el: HTMLElement) => el.toggleAttribute('data-paused', document.hidden || !state.get(el));
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { state.set(e.target as HTMLElement, e.isIntersecting); apply(e.target as HTMLElement); });
+    });
+    frames.forEach((el) => { state.set(el, true); io.observe(el); });
+    document.addEventListener('visibilitychange', () => frames.forEach(apply));
+  }
+</script>
+
+<style>
+  .uh { position: relative; padding-top: calc(var(--nav-h) + clamp(40px, 6vw, 72px)); overflow: hidden; isolation: isolate; }
+  .uh__bg { position: absolute; inset: 0; z-index: -1; }
+  .uh__grid { position: absolute; inset: 0; opacity: .6; }
+  .uh__glow--a { width: 820px; height: 640px; right: -200px; top: 2%; opacity: .42; }
+  .uh__glow--b { width: 600px; height: 420px; left: -320px; top: 40%; opacity: .2; }
+
+  .uh__inner { display: grid; gap: clamp(40px, 6vw, 64px); align-items: center; }
+  @media (min-width: 1080px) { .uh__inner { grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: 56px; } }
+
+  .uh__copy { display: flex; flex-direction: column; align-items: flex-start; gap: 26px; min-width: 0; }
+  .uh__crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-smoke); }
+  .uh__crumbs a { color: var(--color-mist); text-decoration: underline; text-decoration-color: rgb(255 255 255 / .2); text-underline-offset: 4px; transition: color .2s; }
+  .uh__crumbs a:hover { color: var(--color-flame-400); }
+  .uh__crumbs [aria-current] { color: var(--color-bone); }
+  .uh__sep { color: var(--color-ink-500); }
+
+  .uh__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .uh__icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; color: var(--color-flame-400); background: rgb(245 131 39 / .08); border: 1px solid rgb(245 131 39 / .3); }
+  .uh__unit { font-family: var(--font-display); font-size: 18px; letter-spacing: -.02em; }
+
+  .uh__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.3rem, 4.5vw, 4.25rem); line-height: 1.0; letter-spacing: -.05em; max-width: 15ch; }
+  .uh--growth .uh__title { max-width: 16ch; }
+  :global(:lang(es)) .uh__title { font-size: clamp(2.15rem, 4.1vw, 3.9rem); max-width: 17ch; }
+  .uh__title :global(em) { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .uh__lede { max-width: 580px; }
+  .uh__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  @media (max-width: 480px) {
+    .uh__ctas { width: 100%; }
+    .uh__ctas .btn { width: 100%; justify-content: space-between; }
+  }
+
+  .uh__visual { position: relative; min-width: 0; }
+
+  .uh__facts { display: grid; grid-template-columns: 1fr; margin-top: clamp(48px, 7vw, 88px); border-top: 1px solid var(--line); }
+  @media (min-width: 760px) { .uh__facts { grid-template-columns: repeat(3, 1fr); } }
+  .uh__fact { display: flex; flex-direction: column; gap: 8px; padding: 22px 20px 26px 0; }
+  @media (max-width: 759px) { .uh__fact + .uh__fact { border-top: 1px solid var(--line); } .uh__fact { padding: 18px 0 20px; } }
+  @media (min-width: 760px) { .uh__fact + .uh__fact { border-left: 1px solid var(--line); padding-left: 24px; } }
+  .uh__fact dd { font-family: var(--font-display); font-size: clamp(1.02rem, 1.4vw, 1.2rem); letter-spacing: -.02em; line-height: 1.3; color: var(--color-bone); }
+
+  .uh__in { animation: uh-in 1.1s var(--ease-out-expo) both; animation-delay: calc(var(--i) * 80ms + 80ms); }
+  @keyframes uh-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .uh__in { animation: none; } }
+</style>

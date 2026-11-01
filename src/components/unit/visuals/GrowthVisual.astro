@@ -1,0 +1,133 @@
+---
+/**
+ * Growth hero: a generic AI-answer panel that cites "your brand", a rising
+ * share-of-answers line (no values — illustrative) and two floating engine chips.
+ */
+import VisualFrame from './VisualFrame.astro';
+import { VISUAL_COPY } from './copy';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = VISUAL_COPY[lang];
+const t = c.growth;
+
+const LINE = 'M0 120 C 40 118, 70 112, 100 108 S 160 96, 190 84 S 250 70, 280 50 S 340 22, 380 14';
+---
+<VisualFrame file={t.file} label={c.illustrative} class="gv">
+  <div class="gv__wrap">
+    <div class="gv__q">
+      <span class="gv__k">{t.asked}</span>
+      <p>{t.question}</p>
+    </div>
+
+    <div class="gv__a">
+      <div class="gv__a-head">
+        <span class="gv__k"><span class="gv__spark"></span>{t.answer}</span>
+        <span class="gv__cited"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>{t.cited}</span>
+      </div>
+      <div class="gv__lines">
+        <span class="gv__ln" style="--w:92%; --k:0"></span>
+        <span class="gv__row" style="--k:1">
+          <span class="gv__ln gv__ln--in" style="--w:46%"></span>
+          <span class="gv__chip gv__chip--you"><b>[1]</b>{t.brand}</span>
+        </span>
+        <span class="gv__ln" style="--w:78%; --k:2"></span>
+        <span class="gv__row" style="--k:3">
+          <span class="gv__ln gv__ln--in" style="--w:30%"></span>
+          <span class="gv__chip"><b>[2]</b>{t.others[0]}</span>
+          <span class="gv__chip gv__chip--hide-sm"><b>[3]</b>{t.others[1]}</span>
+        </span>
+        <span class="gv__ln" style="--w:58%; --k:4"></span>
+      </div>
+    </div>
+
+    <div class="gv__chart">
+      <div class="gv__chart-head">
+        <span class="gv__k">{t.chart}</span>
+      </div>
+      <svg viewBox="0 0 380 130" preserveAspectRatio="none" class="gv__svg">
+        <defs>
+          <linearGradient id={`gv-area-${lang}`} x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#f58327" stop-opacity=".32" />
+            <stop offset="1" stop-color="#f58327" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id={`gv-stroke-${lang}`} x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#d65805" />
+            <stop offset="1" stop-color="#ffd21f" />
+          </linearGradient>
+        </defs>
+        {[30, 65, 100].map((y) => <line x1="0" x2="380" y1={y} y2={y} class="gv__gl" />)}
+        <path d={`${LINE} L380 130 L0 130 Z`} fill={`url(#gv-area-${lang})`} class="gv__area" />
+        <path d={LINE} class="gv__line" stroke={`url(#gv-stroke-${lang})`} vector-effect="non-scaling-stroke" />
+      </svg>
+      <span class="gv__end"><span class="gv__end-dot"></span><span class="gv__end-tag">{t.you}</span></span>
+      <div class="gv__x">{t.weeks.map((w) => <span>{w}</span>)}</div>
+    </div>
+
+    <div class="gv__engines">
+      <span class="gv__float"><span class="gv__fk">{t.chips[0].k}</span><span class="gv__bars"><i></i><i></i><i></i><i></i></span><span class="gv__fv">{t.chips[0].v}</span></span>
+      <span class="gv__float gv__float--b"><span class="gv__fk">{t.chips[1].k}</span><span class="gv__fv">{t.chips[1].v}</span></span>
+    </div>
+  </div>
+</VisualFrame>
+
+<style>
+  .gv__wrap { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 18px; }
+  .gv__k { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-smoke); }
+
+  .gv__q { align-self: flex-end; max-width: 82%; display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; border-radius: 16px 16px 4px 16px; background: rgb(255 255 255 / .05); border: 1px solid var(--line); }
+  .gv__q p { font-size: 15px; line-height: 1.4; color: var(--color-bone); }
+
+  .gv__a { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px 16px; border-radius: 16px; border: 1px solid var(--line); background: rgb(10 10 10 / .55); }
+  .gv__a-head { display: flex; align-items: center; justify-content: space-between; }
+  .gv__spark { width: 8px; height: 8px; border-radius: 2px; transform: rotate(45deg); background: var(--color-flame-400); }
+  .gv__cited { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 99px; font-family: var(--font-mono); font-size: 10.5px; color: var(--color-ok); background: rgb(122 209 155 / .1); border: 1px solid rgb(122 209 155 / .3); }
+  .gv__lines { display: flex; flex-direction: column; gap: 9px; }
+  .gv__row { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; min-width: 0; }
+  .gv__ln { display: block; height: 8px; width: var(--w); border-radius: 9px; background: rgb(255 255 255 / .1); transform-origin: left; }
+  .gv__ln--in { flex: 0 0 var(--w); }
+  .gv__chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 99px; font-family: var(--font-mono); font-size: 11px; color: var(--color-mist); border: 1px solid var(--line-strong); background: rgb(255 255 255 / .03); white-space: nowrap; }
+  .gv__chip b { font-weight: 500; color: var(--color-smoke); }
+  .gv__chip--you { color: var(--color-bone); border-color: rgb(245 131 39 / .7); background: rgb(245 131 39 / .12); box-shadow: 0 0 22px -4px rgb(245 131 39 / .6); }
+  .gv__chip--you b { color: var(--color-flame-400); }
+  @media (max-width: 480px) { .gv__chip--hide-sm { display: none; } }
+
+  .gv__chart { position: relative; padding: 14px 16px 10px; border-radius: 16px; border: 1px solid var(--line); background: rgb(255 255 255 / .02); }
+  .gv__chart-head { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .gv__svg { display: block; width: 100%; height: 110px; overflow: visible; }
+  .gv__gl { stroke: rgb(255 255 255 / .06); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 3 4; }
+  .gv__line { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+  .gv__end { position: absolute; right: 12px; top: 40px; display: flex; align-items: center; gap: 6px; }
+  .gv__end-dot { width: 10px; height: 10px; border-radius: 9px; background: var(--color-sun); box-shadow: 0 0 0 4px rgb(255 210 31 / .18), 0 0 14px rgb(255 210 31 / .8); }
+  .gv__end-tag { position: absolute; right: 16px; top: -22px; padding: 1px 7px; border-radius: 99px; font-family: var(--font-mono); font-size: 10px; color: #1a0d03; background: var(--color-sun); }
+  .gv__x { display: flex; justify-content: space-between; margin-top: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--color-smoke); }
+
+  .gv__engines { display: flex; flex-wrap: wrap; gap: 8px; }
+  .gv__float { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 12px; border: 1px solid var(--line-strong); background: rgb(22 20 20 / .92); box-shadow: 0 18px 40px -18px rgb(0 0 0 / .9); font-family: var(--font-mono); font-size: 11px; white-space: nowrap; }
+  .gv__fk { color: var(--color-bone); }
+  .gv__fv { color: var(--color-flame-400); }
+  .gv__bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+  .gv__bars i { width: 3px; border-radius: 2px; background: var(--color-flame-500); }
+  .gv__bars i:nth-child(1) { height: 5px; } .gv__bars i:nth-child(2) { height: 9px; } .gv__bars i:nth-child(3) { height: 7px; } .gv__bars i:nth-child(4) { height: 12px; }
+  @media (max-width: 520px) { .gv__float--b { display: none; } }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .gv__lines > .gv__ln, .gv__row { animation: gv-type 9s var(--ease-out-expo) infinite; animation-delay: calc(var(--k) * 260ms); transform-origin: left; }
+    .gv__chip--you { animation: gv-you 9s var(--ease-out-expo) infinite; animation-delay: 260ms; }
+    .gv__cited { animation: gv-cited 9s ease infinite; }
+    .gv__line { stroke-dasharray: 1400; animation: gv-draw 2.4s var(--ease-out-expo) both .4s; }
+    .gv__area { animation: gv-fade 2s ease both 1s; }
+    .gv__end { animation: gv-fade .8s ease both 2.2s; }
+    .gv__end-dot { animation: gv-dot 2.4s ease-in-out infinite 2.8s; }
+    .gv__bars i { animation: gv-bar 1.6s ease-in-out infinite; transform-origin: bottom; }
+    .gv__bars i:nth-child(2) { animation-delay: .2s; } .gv__bars i:nth-child(3) { animation-delay: .4s; } .gv__bars i:nth-child(4) { animation-delay: .6s; }
+  }
+  @keyframes gv-type { 0% { opacity: 0; transform: scaleX(.2); } 8%, 88% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+  @keyframes gv-you { 0%, 14% { box-shadow: 0 0 0 0 rgb(245 131 39 / 0); } 22% { box-shadow: 0 0 0 6px rgb(245 131 39 / .25), 0 0 28px rgb(245 131 39 / .7); } 34%, 100% { box-shadow: 0 0 22px -4px rgb(245 131 39 / .6); } }
+  @keyframes gv-cited { 0%, 16% { opacity: 0; transform: translateY(4px); } 22%, 90% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+  @keyframes gv-draw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+  @keyframes gv-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes gv-dot { 0%, 100% { box-shadow: 0 0 0 4px rgb(255 210 31 / .18), 0 0 14px rgb(255 210 31 / .8); } 50% { box-shadow: 0 0 0 9px rgb(255 210 31 / 0), 0 0 22px rgb(255 210 31 / 1); } }
+  @keyframes gv-bar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.45); } }
+</style>

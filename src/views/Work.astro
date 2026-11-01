@@ -1,10 +1,42 @@
 ---
-// STUB — to be replaced.
 import Base from '@/layouts/Base.astro';
-import type { Lang } from '@/i18n';
+import WorkHero from '@/components/work/WorkHero.astro';
+import BrainDiagram from '@/components/work/BrainDiagram.astro';
+import CaseGrid from '@/components/work/CaseGrid.astro';
+import PageCta from '@/components/about/PageCta.astro';
+import { WORK, CASES } from '@/i18n/work';
+import { localize, type Lang } from '@/i18n';
+import { SITE } from '@/data/site';
+
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const pageUrl = new URL(localize(lang, '/work'), SITE.url).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: WORK.seo.title[lang],
+  description: WORK.seo.description[lang],
+  url: pageUrl,
+  inLanguage: lang,
+  hasPart: CASES.map((c) => ({
+    '@type': 'CreativeWork',
+    name: c.title[lang],
+    abstract: c.dek[lang],
+    url: `${pageUrl}#case-${c.id}`,
+    image: new URL(c.card, SITE.url).href,
+  })),
+};
 ---
-<Base lang={lang} title="Work" description="Work">
-  <section class="container-x section-y" style="padding-top:160px"><h1 class="display-lg">Work ({lang})</h1></section>
+<Base lang={lang} title={WORK.seo.title[lang]} description={WORK.seo.description[lang]} jsonLd={[jsonLd]}>
+  <WorkHero lang={lang} />
+  <BrainDiagram lang={lang} />
+  <CaseGrid lang={lang} />
+  <PageCta
+    id="work-cta"
+    title={WORK.cta.title[lang]}
+    body={WORK.cta.body[lang]}
+    primary={{ href: localize(lang, '/contact'), label: WORK.cta.primary[lang] }}
+    secondary={{ href: localize(lang, '/diagnostic'), label: WORK.cta.secondary[lang] }}
+  />
 </Base>

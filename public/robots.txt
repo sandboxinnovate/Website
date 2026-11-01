@@ -1,0 +1,5 @@
+# Sandbox — sandboxinnovate.com
+User-agent: *
+Allow: /
+
+Sitemap: https://sandboxinnovate.com/sitemap-index.xml

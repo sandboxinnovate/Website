@@ -1,10 +1,379 @@
 ---
-// STUB — to be replaced.
+/**
+ * /contact and /es/contact — the booking page.
+ * Desktop: sticky left column (promise, what happens next, direct email) + the ContactFlow card.
+ * Mobile: headline → form → the rest, so the form is the first thing after the promise.
+ */
 import Base from '@/layouts/Base.astro';
-import type { Lang } from '@/i18n';
+import Icon from '@/components/ui/Icon.astro';
+import ContactFlow from '@/components/widgets/ContactFlow/ContactFlow';
+import { NEXT_STEPS } from '@/components/widgets/ContactFlow/copy';
+import { SITE, unitBySlug, type IconName } from '@/data/site';
+import { localize, type Lang, type L10n } from '@/i18n';
+
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const t = <T,>(o: L10n<T>): T => o[lang];
+
+const C = {
+  seo: {
+    title: { en: 'Contact: book a discovery call', es: 'Contacto: agenda una llamada inicial' },
+    description: {
+      en: 'Tell us what you want AI to do for your business. A person replies within one business day, then a 30-minute discovery call and a scoped proposal. United States, Europe and Latin America, in English or Spanish.',
+      es: 'Cuéntanos qué quieres que la IA haga por tu negocio. Una persona te responde en un día hábil; después, una llamada inicial de 30 minutos y una propuesta a medida. Estados Unidos, Europa y Latinoamérica, en español o en inglés.',
+    },
+  },
+  eyebrow: { en: 'Start a project', es: 'Empieza un proyecto' },
+  title: {
+    en: 'Tell us what you want <em>AI to do</em> for you.',
+    es: 'Cuéntanos qué quieres que <em>la IA haga</em> por ti.',
+  },
+  lede: {
+    en: 'Four short steps, about two minutes. A person reads every request and replies within one business day, in English or Spanish.',
+    es: 'Cuatro pasos cortos, unos dos minutos. Una persona lee cada solicitud y responde en un día hábil, en español o en inglés.',
+  },
+  meta: [
+    { icon: 'calendar', text: { en: '~2 minutes', es: '~2 minutos' } },
+    { icon: 'chat', text: { en: 'Reply in 1 business day', es: 'Respuesta en 1 día hábil' } },
+    { icon: 'globe', text: { en: 'EN · ES', es: 'ES · EN' } },
+  ] as { icon: IconName; text: L10n<string> }[],
+  next: { en: 'What happens next', es: 'Qué pasa después' },
+  direct: { en: 'Prefer email?', es: '¿Prefieres escribir?' },
+  directBody: {
+    en: 'Write to us directly. Same people, same reply time.',
+    es: 'Escríbenos directamente. Las mismas personas, el mismo tiempo de respuesta.',
+  },
+  markets: { en: 'Markets', es: 'Mercados' },
+  base: { en: 'Based in', es: 'Con base en' },
+  calls: { en: 'Calls in', es: 'Llamadas en' },
+  callsValue: { en: 'English or Spanish', es: 'Español o inglés' },
+  reply: { en: 'Reply time', es: 'Respuesta' },
+  replyValue: { en: 'Within 1 business day', es: 'En 1 día hábil' },
+  quick: { en: 'Quick answers on pricing, timelines and security', es: 'Respuestas rápidas sobre precios, plazos y seguridad' },
+  formLabel: { en: 'Request form', es: 'Formulario de solicitud' },
+  noscript: {
+    en: 'This form needs JavaScript. Write to us at',
+    es: 'Este formulario necesita JavaScript. Escríbenos a',
+  },
+  other: {
+    eyebrow: { en: 'Other ways in', es: 'Otras formas de empezar' },
+    title: { en: 'Not ready for a call?', es: '¿Todavía no quieres una llamada?' },
+    items: [
+      {
+        href: '/diagnostic',
+        code: '3 min',
+        k: { en: 'Measure first', es: 'Mide primero' },
+        title: { en: 'Take the AI diagnostic', es: 'Haz el diagnóstico de IA' },
+        body: {
+          en: 'Ten questions, an instant readiness score and the three moves to make first. No sign-up to see your result.',
+          es: 'Diez preguntas, un puntaje de preparación al instante y los tres pasos para empezar. Sin registro para ver tu resultado.',
+        },
+      },
+      {
+        href: '/services/partners',
+        code: unitBySlug('partners')?.code ?? '06',
+        k: { en: 'Agencies & consultancies', es: 'Agencias y consultoras' },
+        title: { en: 'Resell AI under your brand', es: 'Revende IA con tu marca' },
+        body: {
+          en: 'We build and maintain white-label systems. You deliver them to your clients.',
+          es: 'Construimos y mantenemos sistemas marca blanca. Tú los entregas a tus clientes.',
+        },
+      },
+      {
+        href: '/services/academy',
+        code: unitBySlug('academy')?.code ?? '04',
+        k: { en: 'Teams', es: 'Equipos' },
+        title: { en: 'Train your people', es: 'Forma a tu equipo' },
+        body: {
+          en: 'Hands-on workshops for teams and multi-week programs for leaders.',
+          es: 'Talleres prácticos para equipos y programas de varias semanas para líderes.',
+        },
+      },
+    ],
+  },
+};
+
+const steps = NEXT_STEPS[lang];
+const title = t(C.seo.title);
+const description = t(C.seo.description);
+const url = new URL(localize(lang, '/contact'), SITE.url).href;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: title,
+    description,
+    url,
+    inLanguage: lang,
+    isPartOf: { '@type': 'WebSite', name: 'Sandbox', url: SITE.url },
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'Sandbox',
+      url: SITE.url,
+      email: SITE.email,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'sales',
+        email: SITE.email,
+        availableLanguage: ['English', 'Spanish'],
+        areaServed: ['US', 'Europe', 'Latin America'],
+      },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Sandbox', item: new URL(localize(lang, '/'), SITE.url).href },
+      { '@type': 'ListItem', position: 2, name: lang === 'en' ? 'Contact' : 'Contacto', item: url },
+    ],
+  },
+];
 ---
-<Base lang={lang} title="Contact" description="Contact">
-  <section class="container-x section-y" style="padding-top:160px"><h1 class="display-lg">Contact ({lang})</h1></section>
+<Base lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <section class="ct" aria-labelledby="ct-title">
+    <div class="ct__bg" aria-hidden="true">
+      <div class="bg-grid ct__grid"></div>
+      <div class="glow-ember ct__glow"></div>
+    </div>
+
+    <div class="container-x ct__layout">
+      <header class="ct__head">
+        <span class="eyebrow" data-reveal>{t(C.eyebrow)}</span>
+        <h1 id="ct-title" class="ct__title" data-reveal style="--reveal-delay:80" set:html={t(C.title)} />
+        <p class="lede ct__lede" data-reveal style="--reveal-delay:160">{t(C.lede)}</p>
+        <ul class="ct__meta" data-reveal style="--reveal-delay:220">
+          {C.meta.map((m) => (
+            <li><Icon name={m.icon} size={15} stroke={1.6} /><span>{t(m.text)}</span></li>
+          ))}
+        </ul>
+      </header>
+
+      <div class="ct__form" id="request" role="region" aria-label={t(C.formLabel)}>
+        <ContactFlow client:load lang={lang} />
+        <noscript>
+          <p class="ct__noscript">{t(C.noscript)} <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        </noscript>
+      </div>
+
+      <section class="ct-next" aria-labelledby="ct-next-title" data-reveal style="--reveal-delay:260">
+        <h2 id="ct-next-title" class="ct-next__title">{t(C.next)}</h2>
+        <ol class="ct-next__list">
+          {steps.map((s, i) => (
+            <li class="ct-next__item">
+              <span class="ct-next__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div class="ct-next__body">
+                <span class="ct-next__when">{s.when}</span>
+                <h3 class="ct-next__h">{s.title}</h3>
+                <p class="ct-next__p">{s.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+  </section>
+
+  <section class="ct-band" aria-label={t(C.direct)}>
+    <div class="container-x">
+      <div class="ct-band__inner" data-reveal>
+        <div class="ct-direct">
+          <span class="ct-direct__label">{t(C.direct)}</span>
+          <a href={`mailto:${SITE.email}`} class="ct-direct__link">
+            <Icon name="mail" size={18} />
+            <span>{SITE.email}</span>
+          </a>
+          <p class="ct-direct__body">{t(C.directBody)}</p>
+          <p class="ct-direct__base"><Icon name="pin" size={14} /><span>{t(C.base)} {SITE.location}</span></p>
+        </div>
+        <dl class="ct-facts">
+          <div><dt>{t(C.reply)}</dt><dd>{t(C.replyValue)}</dd></div>
+          <div><dt>{t(C.calls)}</dt><dd>{t(C.callsValue)}</dd></div>
+          <div class="ct-facts__wide"><dt>{t(C.markets)}</dt><dd>{t(SITE.markets)}</dd></div>
+        </dl>
+        <button type="button" class="ct-quick" data-ct-cmdk>
+          <span class="ct-quick__icon" aria-hidden="true"><Icon name="search" size={16} /></span>
+          <span class="ct-quick__text">{t(C.quick)}</span>
+          <span class="kbd ct-quick__kbd" data-ct-kbd>⌘K</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="ct-other" aria-labelledby="ct-other-title">
+    <div class="container-x">
+      <div class="ct-other__head" data-reveal>
+        <span class="mono-label">[{t(C.other.eyebrow)}]</span>
+        <h2 id="ct-other-title" class="ct-other__title">{t(C.other.title)}</h2>
+      </div>
+      <ul class="ct-other__grid">
+        {C.other.items.map((it, i) => (
+          <li data-reveal style={`--reveal-delay:${i * 90}`}>
+            <a href={localize(lang, it.href)} class="ct-card">
+              <span class="ct-card__top">
+                <span class="ct-card__k">{t(it.k)}</span>
+                <span class="ct-card__code">{it.code}</span>
+              </span>
+              <span class="ct-card__title">{t(it.title)}</span>
+              <span class="ct-card__body">{t(it.body)}</span>
+              <span class="ct-card__arrow" aria-hidden="true"><Icon name="arrow-up-right" size={18} /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 </Base>
+
+<script>
+  // "Quick answers" opens the global command palette.
+  document.querySelectorAll<HTMLButtonElement>('[data-ct-cmdk]').forEach((b) =>
+    b.addEventListener('click', () => window.dispatchEvent(new CustomEvent('sbx:cmdk', { detail: { open: true } }))),
+  );
+  if (!/Mac|iPhone|iPad/.test(navigator.platform)) document.querySelectorAll('[data-ct-kbd]').forEach((k) => (k.textContent = 'Ctrl K'));
+</script>
+
+<style>
+  /* ---------- layout ---------- */
+  .ct { position: relative; isolation: isolate; padding-top: calc(var(--nav-h) + clamp(36px, 6vw, 88px)); padding-bottom: clamp(48px, 6vw, 80px); }
+  .ct__bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .ct__grid { position: absolute; inset: 0 0 30% 0; opacity: .7; }
+  .ct__glow { width: 900px; height: 700px; right: -280px; top: -160px; opacity: .38; }
+
+  /* mobile: headline → form → what happens next (DOM order) */
+  .ct__layout { display: flex; flex-direction: column; gap: 40px; }
+  .ct__form { min-width: 0; scroll-margin-top: calc(var(--nav-h) + 16px); }
+
+  @media (min-width: 1040px) {
+    .ct__layout {
+      display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      grid-template-areas: "head form" "next form"; grid-template-rows: auto 1fr;
+      column-gap: clamp(48px, 6vw, 96px); row-gap: 56px; align-items: start;
+    }
+    .ct__head { grid-area: head; }
+    .ct__form { grid-area: form; }
+    .ct-next { grid-area: next; }
+  }
+
+  /* ---------- head ---------- */
+  .ct__head { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+  .ct__title {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(2.2rem, 4.4vw, 3.9rem); line-height: 1; letter-spacing: -.05em;
+    max-width: 12em;
+  }
+  .ct__title :global(em) { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ct__lede { max-width: 30em; }
+  .ct__meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ct__meta li {
+    display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 11px;
+    border-radius: 999px; border: 1px solid var(--line-strong); background: rgb(255 255 255 / .025);
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-bone);
+  }
+  .ct__meta li :global(svg) { color: var(--color-flame-400); }
+
+  /* ---------- what happens next ---------- */
+  .ct-next__title { font-family: var(--font-mono); font-weight: 500; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-flame-400); line-height: 1.3; margin-bottom: 18px; }
+  .ct-next__list { display: flex; flex-direction: column; }
+  .ct-next__item { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 16px; padding-bottom: 22px; }
+  .ct-next__item:last-child { padding-bottom: 0; }
+  .ct-next__item:not(:last-child)::before {
+    content: ''; position: absolute; left: 19.5px; top: 42px; bottom: 4px; width: 1px;
+    background: linear-gradient(180deg, rgb(245 131 39 / .55), var(--line));
+  }
+  .ct-next__n {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 99px;
+    border: 1px solid rgb(245 131 39 / .45); background: rgb(245 131 39 / .07);
+    font-family: var(--font-mono); font-size: 12px; color: var(--color-flame-400);
+    box-shadow: 0 0 24px -6px rgb(217 76 0 / .6);
+  }
+  .ct-next__body { display: flex; flex-direction: column; gap: 3px; padding-top: 2px; }
+  .ct-next__when { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-mist); }
+  .ct-next__h { font-size: 18px; letter-spacing: -.03em; line-height: 1.25; }
+  .ct-next__p { color: var(--color-mist); font-size: 15px; line-height: 1.55; max-width: 40ch; }
+
+  /* ---------- direct contact band ---------- */
+  .ct-band { padding-bottom: clamp(56px, 7vw, 96px); }
+  .ct-band__inner {
+    display: grid; gap: 28px; padding: clamp(22px, 3vw, 36px);
+    border-radius: var(--radius-card, 20px); border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgb(255 255 255 / .025), rgb(255 255 255 / 0)), var(--color-ink-900);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .04);
+  }
+  @media (min-width: 1040px) {
+    .ct-band__inner { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.2fr) minmax(0, .85fr); gap: 40px; align-items: center; }
+    .ct-facts { padding-inline: 40px; border-inline: 1px solid var(--line); }
+  }
+  .ct-direct { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; }
+  .ct-direct__label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-flame-400); }
+  .ct-direct__link {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 40px; max-width: 100%;
+    font-family: var(--font-display); font-size: clamp(.95rem, 1.25vw, 1.12rem); letter-spacing: -.02em; color: var(--color-bone); white-space: nowrap;
+    text-decoration: underline; text-decoration-color: rgb(245 131 39 / .45); text-decoration-thickness: 1px; text-underline-offset: 6px;
+    transition: color .25s, text-decoration-color .25s;
+  }
+  .ct-direct__link :global(svg) { flex: none; color: var(--color-flame-400); }
+  .ct-direct__link:hover { color: var(--color-flame-400); text-decoration-color: currentColor; }
+  .ct-direct__body { font-size: 14.5px; color: var(--color-mist); }
+  .ct-direct__base { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-mist); }
+  .ct-direct__base :global(svg) { color: var(--color-flame-400); }
+
+  .ct-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; }
+  .ct-facts div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .ct-facts .ct-facts__wide { grid-column: 1 / -1; }
+  .ct-facts dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-mist); }
+  .ct-facts dd { font-size: 15px; color: var(--color-bone); line-height: 1.4; }
+
+  .ct-quick {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; width: 100%; min-height: 56px; padding: 12px 12px 12px 14px;
+    border-radius: 16px; border: 1px solid var(--line-strong); background: rgb(255 255 255 / .02); color: var(--color-mist);
+    font-size: 14.5px; line-height: 1.4; text-align: left; cursor: pointer; transition: border-color .25s, color .25s, background-color .25s;
+  }
+  .ct-quick:hover { border-color: rgb(245 131 39 / .45); color: var(--color-bone); background: rgb(245 131 39 / .05); }
+  .ct-quick:focus-visible { border-radius: 16px; }
+  .ct-quick__icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; border: 1px solid var(--line-strong); color: var(--color-flame-400); }
+  .ct-quick__kbd { flex: none; height: 26px; padding: 0 8px; }
+
+  .ct__noscript { margin-top: 16px; color: var(--color-mist); }
+  .ct__noscript a { color: var(--color-bone); text-decoration: underline; }
+
+  /* ---------- other ways in ---------- */
+  .ct-other { padding-bottom: clamp(80px, 10vw, 140px); }
+  .ct-other__head { display: flex; flex-direction: column; gap: 14px; padding-top: 40px; border-top: 1px solid var(--line); margin-bottom: 28px; }
+  .ct-other__title { font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -.04em; }
+  .ct-other__grid { display: grid; gap: 12px; }
+  @media (min-width: 820px) { .ct-other__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
+  .ct-card {
+    position: relative; display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 24px 24px 26px;
+    border-radius: var(--radius-card, 20px); border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgb(255 255 255 / .03), rgb(255 255 255 / .01)), var(--color-ink-850);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .05);
+    transition: border-color .4s, transform .6s var(--ease-out-expo);
+  }
+  .ct-card:hover { border-color: rgb(245 131 39 / .4); }
+  .ct-card:focus-visible { border-radius: var(--radius-card, 20px); }
+  .ct-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .ct-card__k { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-flame-400); }
+  .ct-card__code { font-family: var(--font-mono); font-size: 11px; color: var(--color-mist); }
+  .ct-card__title { margin-top: 8px; font-family: var(--font-display); font-size: 19px; font-weight: 500; letter-spacing: -.03em; line-height: 1.2; }
+  .ct-card__body { color: var(--color-mist); font-size: 15px; line-height: 1.55; margin-bottom: 6px; }
+  .ct-card__arrow {
+    margin-top: auto; align-self: flex-end; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 99px;
+    border: 1px solid var(--line-strong); color: var(--color-flame-400); transition: transform .5s var(--ease-out-expo), background-color .3s, color .3s, border-color .3s;
+  }
+  .ct-card:hover .ct-card__arrow { transform: rotate(45deg); background: var(--grad-cta); color: #1a0d03; border-color: transparent; }
+
+  @media (max-width: 1039px) {
+    .ct-next { padding-top: 8px; }
+  }
+  @media (max-width: 520px) {
+    .ct__layout { gap: 32px; }
+    .ct-facts { grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+    .ct-direct__link { font-family: var(--font-sans); font-size: 17px; font-weight: 500; letter-spacing: 0; }
+    .ct-card { padding: 22px 20px 20px; }
+  }
+  @media (hover: none), (max-width: 720px) {
+    .ct-quick__kbd { display: none; }
+  }
+</style>

@@ -1,0 +1,133 @@
+---
+/**
+ * Academy hero: a program card for one team — role tabs, four modules with status,
+ * and the current lab whose steps tick off in a loop.
+ */
+import VisualFrame from './VisualFrame.astro';
+import { VISUAL_COPY } from './copy';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = VISUAL_COPY[lang];
+const t = c.academy;
+const status = (i: number) => (i < 2 ? 'done' : i === 2 ? 'now' : 'next');
+const statusLabel = { done: t.done, now: t.now, next: t.next };
+const people = ['AM', 'JR', 'LC', 'DP'];
+---
+<VisualFrame file={t.file} label={c.illustrative} class="av">
+  <div class="av__wrap">
+    <div class="av__tabs">
+      {t.roles.map((r, i) => <span class:list={['av__tab', i === t.activeRole && 'is-on']}>{r}</span>)}
+    </div>
+
+    <ol class="av__mods">
+      {t.modules.map((m, i) => {
+        const s = status(i);
+        return (
+          <li class:list={['av__mod', `is-${s}`]} style={`--k:${i}`}>
+            <span class="av__n">{String(i + 1).padStart(2, '0')}</span>
+            <span class="av__t">
+              <span class="av__title">{m.t}</span>
+              <span class="av__meta">{m.m}</span>
+              {s === 'now' && <span class="av__prog"><span></span></span>}
+            </span>
+            <span class="av__s">
+              {s === 'done' && <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>}
+              {s === 'now' && <span class="av__pulse"></span>}
+              {statusLabel[s]}
+            </span>
+          </li>
+        );
+      })}
+    </ol>
+
+    <div class="av__lab">
+      <div class="av__lab-head">
+        <span class="av__lab-k">{t.lab}</span>
+        <span class="av__lab-t">{t.labTask}</span>
+      </div>
+      <ul class="av__steps">
+        {t.labSteps.map((s, i) => (
+          <li class="av__step" style={`--k:${i}`}>
+            <span class="av__box"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg></span>
+            <span>{s}</span>
+            {i === t.labSteps.length - 1 && <span class="av__caret"></span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="av__cohort">
+      <span class="av__faces">
+        {people.map((p, i) => <span class="av__face" style={`--k:${i}`}>{p}</span>)}
+        <span class="av__face av__face--more">+9</span>
+      </span>
+      <span class="av__week">{t.cohort}</span>
+      <span class="av__wbar">{[0, 1, 2, 3].map((i) => <i class:list={[i < 2 && 'is-done', i === 2 && 'is-now']}></i>)}</span>
+    </div>
+  </div>
+</VisualFrame>
+
+<style>
+  .av__wrap { display: flex; flex-direction: column; gap: 14px; padding: 18px; }
+  .av__tabs { display: flex; gap: 6px; padding: 4px; border-radius: 99px; background: rgb(255 255 255 / .03); border: 1px solid var(--line); align-self: flex-start; max-width: 100%; overflow: hidden; }
+  .av__tab { padding: 6px 12px; border-radius: 99px; font-family: var(--font-mono); font-size: 11px; color: var(--color-smoke); white-space: nowrap; }
+  .av__tab.is-on { background: var(--color-flame-500); color: #1a0d03; font-weight: 600; }
+
+  .av__mods { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+  .av__mod { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 12px 2px; border-bottom: 1px solid var(--line); }
+  .av__n { font-family: var(--font-mono); font-size: 11px; color: var(--color-smoke); }
+  .av__t { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .av__title { font-family: var(--font-display); font-size: 14.5px; letter-spacing: -.02em; line-height: 1.25; color: var(--color-bone); }
+  .av__meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-smoke); }
+  .av__s { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 99px; font-family: var(--font-mono); font-size: 10.5px; white-space: nowrap; border: 1px solid var(--line); color: var(--color-smoke); }
+  .is-done .av__s { color: var(--color-ok); border-color: rgb(122 209 155 / .3); background: rgb(122 209 155 / .08); }
+  .is-done .av__title { color: var(--color-mist); }
+  .is-now .av__s { color: var(--color-flame-400); border-color: rgb(245 131 39 / .45); background: rgb(245 131 39 / .1); }
+  .is-now .av__n { color: var(--color-flame-400); }
+  .is-next .av__title { color: var(--color-smoke); }
+  .av__pulse { width: 6px; height: 6px; border-radius: 9px; background: var(--color-flame-500); }
+  .av__prog { display: block; height: 3px; margin-top: 6px; border-radius: 9px; background: rgb(255 255 255 / .08); overflow: hidden; max-width: 220px; }
+  .av__prog span { display: block; height: 100%; width: 62%; border-radius: inherit; background: var(--grad-cta); }
+
+  .av__lab { padding: 14px; border-radius: 14px; border: 1px solid rgb(245 131 39 / .3); background: linear-gradient(180deg, rgb(245 131 39 / .08), rgb(245 131 39 / .02)); }
+  .av__lab-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .av__lab-k { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-flame-400); }
+  .av__lab-t { font-size: 14.5px; line-height: 1.35; color: var(--color-bone); }
+  .av__steps { display: flex; flex-direction: column; gap: 7px; }
+  .av__step { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--color-mist); }
+  .av__box { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 5px; border: 1px solid var(--line-strong); color: transparent; }
+  .av__step:not(:last-child) .av__box { background: var(--color-flame-500); border-color: var(--color-flame-500); color: #1a0d03; }
+  .av__caret { width: 7px; height: 14px; margin-left: -4px; background: var(--color-flame-400); }
+
+  .av__cohort { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .av__faces { display: inline-flex; }
+  .av__face { display: grid; place-items: center; width: 28px; height: 28px; margin-left: -7px; border-radius: 99px; font-family: var(--font-mono); font-size: 9.5px; color: var(--color-bone); background: var(--color-ink-700); border: 2px solid var(--color-ink-900); }
+  .av__face:first-child { margin-left: 0; }
+  .av__face:nth-child(2) { background: #3a2a1f; } .av__face:nth-child(3) { background: #2b2b26; } .av__face:nth-child(4) { background: #352320; }
+  .av__face--more { color: var(--color-flame-400); background: rgb(245 131 39 / .14); }
+  .av__week { font-family: var(--font-mono); font-size: 11px; color: var(--color-mist); }
+  .av__wbar { display: inline-flex; gap: 4px; margin-left: auto; }
+  .av__wbar i { width: 22px; height: 4px; border-radius: 9px; background: rgb(255 255 255 / .1); }
+  .av__wbar i.is-done { background: var(--color-flame-600); }
+  .av__wbar i.is-now { background: linear-gradient(90deg, var(--color-flame-400) 50%, rgb(255 255 255 / .1) 50%); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .av__mod { animation: av-in .9s var(--ease-out-expo) both; animation-delay: calc(var(--k) * 110ms + 200ms); }
+    .av__pulse { animation: var(--animate-pulse-dot); }
+    .av__prog span { animation: av-prog 8s var(--ease-out-expo) infinite; }
+    .av__step:not(:last-child) .av__box { animation: av-check 8s infinite; animation-delay: calc(var(--k) * 1.2s); }
+    .av__caret { animation: av-blink 1s steps(1) infinite; }
+    .av__step:last-child { animation: av-last 8s infinite; }
+  }
+  @keyframes av-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes av-prog { 0% { width: 18%; } 70%, 100% { width: 74%; } }
+  @keyframes av-check {
+    0%, 6% { background: transparent; border-color: var(--line-strong); color: transparent; transform: scale(1); }
+    10% { background: var(--color-flame-500); border-color: var(--color-flame-500); color: #1a0d03; transform: scale(1.18); }
+    14%, 100% { background: var(--color-flame-500); border-color: var(--color-flame-500); color: #1a0d03; transform: scale(1); }
+  }
+  @keyframes av-blink { 50% { opacity: 0; } }
+  @keyframes av-last { 0%, 30% { opacity: .35; } 36%, 100% { opacity: 1; } }
+</style>

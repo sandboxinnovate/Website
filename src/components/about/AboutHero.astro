@@ -1,0 +1,147 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { ABOUT } from '@/i18n/about';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const h = ABOUT.hero;
+---
+<section class="ah" aria-labelledby="ah-title">
+  <div class="ah__grid bg-grid" aria-hidden="true"></div>
+  <div class="ah__glow glow-ember" aria-hidden="true"></div>
+
+  <div class="container-x ah__inner">
+    <div class="ah__top">
+      <span class="eyebrow" data-reveal>{h.eyebrow[lang]}</span>
+      <h1 id="ah-title" class="ah__title display-xl" data-reveal style="--reveal-delay:80" set:html={h.title[lang]} />
+    </div>
+
+    <div class="ah__row">
+      <div class="ah__left">
+        <p class="lede ah__lede" data-reveal style="--reveal-delay:160">{h.lede[lang]}</p>
+
+        <!-- A config "diff": the old answer to "what we do" is replaced by the new one. -->
+        <figure class="ah__diff" data-diff data-reveal style="--reveal-delay:240">
+          <figcaption class="ah__diff-head">
+            <span class="ah__diff-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="ah__diff-file">{h.diffFile}</span>
+            <span class="ah__diff-state"><span class="ah__diff-led" aria-hidden="true"></span>{lang === 'en' ? 'edited' : 'editado'}</span>
+          </figcaption>
+          <div class="ah__code" role="presentation">
+            <div class="ah__ln"><span class="ah__no" aria-hidden="true">12</span><span class="ah__sign" aria-hidden="true"> </span><span><span class="ah__key">{h.diffKey}</span>:</span></div>
+            <div class="ah__ln ah__ln--del"><span class="ah__no" aria-hidden="true">13</span><span class="ah__sign" aria-hidden="true">−</span><del class="ah__val">{h.diffOld[lang]}</del></div>
+            <div class="ah__ln ah__ln--add"><span class="ah__no" aria-hidden="true">13</span><span class="ah__sign" aria-hidden="true">+</span><ins class="ah__val"><span class="ah__sr">{h.diffNew[lang]}</span><span class="ah__type" data-type aria-hidden="true"><span data-typed>{h.diffNew[lang]}</span><span class="ah__caret"></span><span class="ah__rest" data-rest></span></span></ins></div>
+          </div>
+        </figure>
+      </div>
+
+      <dl class="ah__meta" data-reveal style="--reveal-delay:320">
+        {h.meta.map((m) => (
+          <div class="ah__meta-row">
+            <dt class="mono-label">{m.k[lang]}</dt>
+            <dd>{m.v[lang]}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <a href="#story" class="ah__cue">
+      <span class="mono-label">{h.scroll[lang]}</span>
+      <span class="ah__cue-icon"><Icon name="chevron-down" size={16} stroke={1.8} /></span>
+    </a>
+  </div>
+</section>
+
+<script>
+  // Plays the diff once it is on screen: strike the old value, then "type" the new one.
+  document.querySelectorAll<HTMLElement>('[data-diff]').forEach((fig) => {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) { fig.classList.add('is-done'); return; }
+    const typed = fig.querySelector<HTMLElement>('[data-typed]')!;
+    const rest = fig.querySelector<HTMLElement>('[data-rest]')!;
+    const full = typed.textContent ?? '';
+    // The untyped remainder stays in the layout (transparent), so the line never reflows.
+    fig.classList.add('is-armed');
+    typed.textContent = '';
+    rest.textContent = full;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      window.setTimeout(() => fig.classList.add('is-struck'), 700);
+      let i = 0;
+      const tick = () => {
+        if (document.hidden) { window.setTimeout(tick, 200); return; }
+        i += 1;
+        typed.textContent = full.slice(0, i);
+        rest.textContent = full.slice(i);
+        if (i < full.length) window.setTimeout(tick, 26 + Math.random() * 40);
+        else fig.classList.add('is-done');
+      };
+      window.setTimeout(() => { fig.classList.add('is-typing'); tick(); }, 1300);
+    }, { threshold: 0.6 });
+    io.observe(fig);
+  });
+</script>
+
+<style>
+  .ah { position: relative; isolation: isolate; overflow: hidden; padding-top: calc(var(--nav-h) + clamp(56px, 9vw, 120px)); padding-bottom: clamp(56px, 7vw, 96px); }
+  .ah__grid { position: absolute; inset: 0; z-index: -2; opacity: .8; }
+  .ah__glow { z-index: -1; width: min(900px, 90vw); height: 520px; right: -18%; top: -12%; opacity: .5; }
+
+  .ah__inner { display: flex; flex-direction: column; gap: clamp(36px, 5vw, 64px); }
+  .ah__top { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
+  .ah__title { max-width: 14ch; }
+  .ah__title :global(em) { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .04em; }
+
+  .ah__row { display: grid; gap: 40px; align-items: end; }
+  @media (min-width: 1024px) { .ah__row { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 80px; } }
+  .ah__left { display: flex; flex-direction: column; gap: 32px; }
+  .ah__lede { max-width: 600px; }
+
+  /* Config diff */
+  .ah__diff { max-width: 600px; border-radius: 16px; border: 1px solid var(--line); background: rgb(13 12 12 / .85); box-shadow: inset 0 1px 0 rgb(255 255 255 / .05), 0 30px 60px -30px rgb(0 0 0 / .8); overflow: hidden; }
+  .ah__diff-head { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 11.5px; color: var(--color-smoke); }
+  .ah__diff-dots { display: inline-flex; gap: 5px; }
+  .ah__diff-dots i { width: 7px; height: 7px; border-radius: 9px; background: var(--color-ink-600); }
+  .ah__diff-file { color: var(--color-mist); }
+  .ah__diff-state { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; }
+  .ah__diff-led { width: 6px; height: 6px; border-radius: 9px; background: var(--color-flame-500); box-shadow: 0 0 8px var(--color-flame-500); }
+  .ah__code { padding: 12px 0 14px; font-family: var(--font-mono); font-size: clamp(12px, 1.05vw, 14px); line-height: 1.75; }
+  .ah__ln { display: grid; grid-template-columns: 40px 20px 1fr; padding-right: 16px; align-items: baseline; }
+  .ah__no { text-align: right; padding-right: 12px; color: var(--color-ink-500); font-size: .85em; user-select: none; }
+  .ah__sign { color: var(--color-smoke); }
+  .ah__key { color: var(--color-flame-300); }
+  .ah__val { text-decoration: none; padding-left: 16px; }
+  .ah__ln--del { background: rgb(255 107 90 / .06); }
+  .ah__ln--del .ah__sign { color: var(--color-err); }
+  .ah__ln--del .ah__val { color: var(--color-mist); text-decoration: line-through; text-decoration-color: rgb(255 107 90 / .7); }
+  .ah__ln--add { background: linear-gradient(90deg, rgb(245 131 39 / .12), rgb(245 131 39 / .02)); }
+  .ah__ln--add .ah__sign { color: var(--color-flame-400); }
+  .ah__ln--add .ah__val { color: var(--color-bone); }
+  .ah__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .ah__caret { display: inline-block; width: .55em; height: 1.1em; margin: 0 -.55em 0 0; vertical-align: -.18em; background: var(--color-flame-400); opacity: 0; }
+  .ah__rest { color: transparent; }
+  .ah__diff.is-done .ah__caret { margin-left: 3px; }
+
+  /* Animated states (only when JS armed it) */
+  .ah__diff.is-armed .ah__ln--del .ah__val { text-decoration-color: transparent; transition: text-decoration-color .5s; }
+  .ah__diff.is-armed .ah__ln--del { background: transparent; transition: background-color .6s; }
+  .ah__diff.is-armed .ah__ln--add { opacity: 0; transition: opacity .4s; }
+  .ah__diff.is-struck .ah__ln--del .ah__val { text-decoration-color: rgb(255 107 90 / .7); }
+  .ah__diff.is-struck .ah__ln--del { background: rgb(255 107 90 / .06); }
+  .ah__diff.is-typing .ah__ln--add, .ah__diff.is-done .ah__ln--add { opacity: 1; }
+  .ah__diff.is-typing .ah__caret, .ah__diff.is-done .ah__caret { opacity: 1; animation: ah-blink 1.05s steps(1) infinite; }
+  @keyframes ah-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .ah__caret { animation: none !important; } }
+
+  /* Meta */
+  .ah__meta { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+  .ah__meta-row { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .ah__meta dd { color: var(--color-bone); font-size: 15.5px; text-align: right; }
+
+  .ah__cue { align-self: flex-start; display: inline-flex; align-items: center; gap: 12px; min-height: 44px; }
+  .ah__cue-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 99px; border: 1px solid var(--line-strong); color: var(--color-flame-400); transition: transform .5s var(--ease-out-expo), border-color .3s; }
+  .ah__cue:hover .ah__cue-icon { transform: translateY(3px); border-color: rgb(245 131 39 / .5); }
+  .ah__cue:hover .mono-label { color: var(--color-mist); }
+</style>

@@ -20,7 +20,7 @@ const { id, index, eyebrow, title, lede, link, glow = 'center' } = Astro.props;
 <section class="ws section-y" id={id} aria-labelledby={`${id}-h`}>
   <div class="container-x">
     <div class="ws__head">
-      <SectionHeading index={index} eyebrow={eyebrow} title={title} lede={lede} />
+      <SectionHeading id={`${id}-h`} index={index} eyebrow={eyebrow} title={title} lede={lede} />
       {link && (
         <a class="ws__link" href={link.href} data-reveal>
           {link.label}<Icon name="arrow-up-right" size={16} />

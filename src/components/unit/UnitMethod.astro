@@ -1,0 +1,123 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { UNIT_COMMON } from '@/i18n/units';
+import type { UnitCopy } from '@/i18n/units';
+import type { UnitSlug } from '@/data/site';
+import { localize, type Lang } from '@/i18n';
+
+interface Props { lang: Lang; slug: UnitSlug; copy: UnitCopy; index: string }
+const { lang, slug, copy, index } = Astro.props;
+const m = copy.method;
+const pr = copy.pricing;
+const C = UNIT_COMMON;
+---
+<section class="um" id="method">
+  <div class="container-x">
+    <div class="um__head">
+      <SectionHeading index={index} eyebrow={C.method.eyebrow[lang]} title={m.title} lede={m.lede} />
+    </div>
+
+    <div class="um__track" data-reveal>
+      <div class="um__line" aria-hidden="true"><span class="um__line-fill"></span></div>
+      <ol class="um__steps">
+        {m.steps.map((s, i) => (
+          <li class="um__step" style={`--k:${i}`}>
+            <div class="um__node" aria-hidden="true"><span>{String(i + 1).padStart(2, '0')}</span></div>
+            <div class="um__body">
+              <span class="um__time"><Icon name="calendar" size={14} />{s.time}</span>
+              <h3 class="um__name">{s.name}</h3>
+              <p class="um__text">{s.body}</p>
+              <div class="um__out">
+                <span class="mono-label">{C.method.outputs[lang]}</span>
+                <ul>{s.out.map((o) => <li>{o}</li>)}</ul>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="um__price card" data-reveal>
+      <div class="um__price-glow glow-ember" aria-hidden="true"></div>
+      <div class="um__price-head">
+        <span class="eyebrow">{C.pricing.eyebrow[lang]}</span>
+        <h3 class="um__price-title" set:html={C.pricing.title[lang]} />
+        <div class="um__shape" aria-hidden="true">
+          <div class="um__shape-a"></div>
+          <div class="um__shape-b"><span class="um__ticks">{Array.from({ length: 9 }, () => <i></i>)}</span></div>
+          <span class="um__shape-label">{pr.shape[0]}</span>
+          <span class="um__shape-label">{pr.shape[1]}</span>
+        </div>
+      </div>
+      <div class="um__price-body">
+        <p class="um__price-text">{pr.body}</p>
+        <ul class="um__points">
+          {pr.points.map((p, i) => (
+            <li><span class="um__pn">{String(i + 1).padStart(2, '0')}</span>{p}</li>
+          ))}
+        </ul>
+        <a href={localize(lang, `/contact?service=${slug}`)} class="btn btn-ghost btn-sm um__price-cta">
+          <span>{C.pricing.cta[lang]}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .um { padding-block: clamp(64px, 8vw, 112px); }
+  .um__head { margin-bottom: clamp(44px, 6vw, 80px); }
+
+  .um__track { position: relative; }
+  .um__line { display: none; }
+  .um__step { position: relative; }
+  .um__step:not(:last-child)::before { content: ''; position: absolute; left: 19.5px; top: 40px; bottom: -34px; width: 1px; background: linear-gradient(rgb(245 131 39 / .7), rgb(245 131 39 / .25)); }
+  .um__line-fill { position: absolute; inset: 0; background: linear-gradient(var(--color-sun), var(--color-flame-500) 50%, var(--color-flame-700)); transform-origin: top; transform: scaleY(0); transition: transform 1.8s var(--ease-out-expo) .3s; }
+  :global(html:not(.js)) .um__line-fill, .um__track.is-in .um__line-fill { transform: none; }
+  @media (prefers-reduced-motion: reduce) { .um__line-fill { transform: none; transition: none; } }
+
+  .um__steps { display: grid; gap: 34px; }
+  .um__step { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-content: start; gap: 20px; }
+  .um__node { position: relative; z-index: 1; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 99px; background: var(--color-ink-900); border: 1px solid rgb(245 131 39 / .5); font-family: var(--font-mono); font-size: 12px; color: var(--color-flame-400); box-shadow: 0 0 0 6px var(--color-ink-950); }
+  .um__step:last-child .um__node { background: var(--color-flame-500); color: #1a0d03; border-color: var(--color-flame-500); }
+  .um__body { display: flex; flex-direction: column; gap: 10px; padding-top: 6px; }
+  .um__time { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-flame-400); }
+  .um__name { font-size: clamp(1.45rem, 2vw, 1.8rem); letter-spacing: -.04em; }
+  .um__text { color: var(--color-mist); font-size: 16px; line-height: 1.55; max-width: 34em; }
+  .um__out { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+  .um__out ul { display: flex; flex-wrap: wrap; gap: 6px; }
+  .um__out li { padding: 5px 11px; border-radius: 99px; font-size: 13.5px; color: var(--color-bone); background: rgb(255 255 255 / .04); border: 1px solid var(--line); }
+
+  @media (min-width: 1000px) {
+    .um__line { display: block; position: absolute; left: 20px; right: 20px; top: 20px; height: 1px; background: var(--line-strong); }
+    .um__step:not(:last-child)::before { display: none; }
+    .um__line-fill { background: linear-gradient(90deg, var(--color-sun), var(--color-flame-500) 50%, var(--color-flame-700)); transform-origin: left; transform: scaleX(0); }
+    :global(html:not(.js)) .um__line-fill, .um__track.is-in .um__line-fill { transform: none; }
+    .um__steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+    .um__step { grid-template-columns: 1fr; gap: 26px; }
+    .um__body { padding-top: 0; padding-right: 8px; }
+  }
+
+  /* Pricing */
+  .um__price { position: relative; display: grid; gap: 32px; margin-top: clamp(56px, 8vw, 104px); padding: clamp(26px, 4vw, 52px); overflow: hidden; isolation: isolate; }
+  .um__price-glow { z-index: -1; width: 520px; height: 360px; left: -160px; top: -120px; opacity: .22; }
+  @media (min-width: 1000px) { .um__price { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; } }
+  .um__price-head { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+  .um__price-title { font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.08; letter-spacing: -.04em; }
+  .um__price-title :global(em) { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  .um__shape { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 10px 6px; width: 100%; max-width: 440px; margin-top: 10px; }
+  .um__shape-a { height: 44px; border-radius: 12px 4px 4px 12px; background: var(--grad-cta); }
+  .um__shape-label { font-family: var(--font-mono); font-size: 11px; line-height: 1.4; letter-spacing: .04em; color: var(--color-mist); padding-right: 8px; }
+  .um__shape-b { position: relative; height: 44px; border-radius: 4px 12px 12px 4px; border: 1px dashed rgb(245 131 39 / .45); display: flex; align-items: center; padding: 0 10px; }
+  .um__ticks { display: flex; gap: 6px; width: 100%; justify-content: space-between; }
+  .um__ticks i { width: 6px; height: 18px; border-radius: 3px; background: rgb(245 131 39 / .5); }
+
+  .um__price-body { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+  .um__price-text { font-size: clamp(1.02rem, 1.3vw, 1.15rem); line-height: 1.6; color: var(--color-mist); }
+  .um__points { display: grid; gap: 0; width: 100%; border-top: 1px solid var(--line); }
+  @media (min-width: 640px) { .um__points { grid-template-columns: 1fr 1fr; column-gap: 24px; } }
+  .um__points li { display: grid; grid-template-columns: 30px 1fr; gap: 6px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 15px; line-height: 1.45; color: var(--color-bone); }
+  .um__pn { font-family: var(--font-mono); font-size: 11px; color: var(--color-flame-400); padding-top: 3px; }
+</style>

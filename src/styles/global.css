@@ -15,7 +15,7 @@
    Design tokens (brand kit + measured from the current site)
    Use as Tailwind utilities: bg-ink-950, text-flame-500, font-display…
 ------------------------------------------------------------------- */
-@theme {
+@theme static {
   /* Surfaces — near-black with a warm undertone (brand #0A0A0A / #242020) */
   --color-ink-950: #0a0a0a;   /* page background */
   --color-ink-925: #0d0c0c;
@@ -30,7 +30,7 @@
   /* Text */
   --color-bone: #f4efe9;      /* primary text, warm white */
   --color-mist: #b8b0aa;      /* secondary text */
-  --color-smoke: #7d7570;     /* tertiary / captions */
+  --color-smoke: #968d87;     /* tertiary / captions */
 
   /* Flame — the brand orange family */
   --color-flame-100: #ffe3cc;
@@ -101,7 +101,7 @@ body {
 
 ::selection { background: var(--color-flame-500); color: var(--color-ink-950); }
 
-:focus-visible { outline: 2px solid var(--color-flame-400); outline-offset: 3px; border-radius: 6px; }
+:focus-visible { outline: 2px solid var(--color-flame-400); outline-offset: 3px; }
 
 h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text-wrap: balance; }
 p { text-wrap: pretty; }

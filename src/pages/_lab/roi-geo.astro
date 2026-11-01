@@ -1,0 +1,60 @@
+---
+/**
+ * Lab page for the RoiCalculator and GeoAnswer widgets (noindex, excluded from the sitemap).
+ * Each widget is shown in English, in Spanish and inside a phone-width frame for QA.
+ */
+import Base from '@/layouts/Base.astro';
+import RoiCalculator from '@/components/widgets/RoiCalculator/RoiCalculator';
+import GeoAnswer from '@/components/widgets/GeoAnswer/GeoAnswer';
+---
+<Base lang="en" title="Lab · ROI and AI answers" description="Internal test page for the ROI estimator and the AI-answer visibility widgets." noindex>
+  <section class="lab container-x">
+    <header class="lab__head">
+      <span class="mono-label">[lab] widgets/RoiCalculator · widgets/GeoAnswer</span>
+      <h1 class="display-md">Estimator and AI answers</h1>
+      <p class="lede">The time-and-value estimator and the "be the answer" preview, in English, in Spanish and at phone width.</p>
+    </header>
+
+    <div class="lab__block" id="roi">
+      <p class="mono-label">01 · RoiCalculator · lang=en</p>
+      <RoiCalculator client:visible lang="en" />
+    </div>
+
+    <div class="lab__block" id="geo">
+      <p class="mono-label">02 · GeoAnswer · lang=en</p>
+      <GeoAnswer client:visible lang="en" />
+    </div>
+
+    <div class="lab__block" id="roi-es">
+      <p class="mono-label">03 · RoiCalculator · lang=es</p>
+      <RoiCalculator client:visible lang="es" />
+    </div>
+
+    <div class="lab__block" id="geo-es">
+      <p class="mono-label">04 · GeoAnswer · lang=es</p>
+      <GeoAnswer client:visible lang="es" />
+    </div>
+
+    <div class="lab__block lab__pair" id="narrow">
+      <div class="lab__phone">
+        <p class="mono-label">05 · 390px frame · RoiCalculator · es</p>
+        <RoiCalculator client:visible lang="es" />
+      </div>
+      <div class="lab__phone">
+        <p class="mono-label">06 · 390px frame · GeoAnswer · en</p>
+        <GeoAnswer client:visible lang="en" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lab { padding-block: calc(var(--nav-h) + 48px) 120px; display: flex; flex-direction: column; gap: 72px; }
+  .lab__head { display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+  .lab__block { display: flex; flex-direction: column; gap: 16px; }
+  .lab__pair { display: grid; gap: 48px; }
+  .lab__phone { width: 100%; max-width: 390px; display: flex; flex-direction: column; gap: 16px; }
+  @media (min-width: 1024px) {
+    .lab__pair { grid-template-columns: repeat(2, 390px); align-items: start; }
+  }
+</style>

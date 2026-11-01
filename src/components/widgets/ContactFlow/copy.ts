@@ -1,0 +1,292 @@
+import type { Lang } from '@/i18n';
+
+/**
+ * ContactFlow copy (EN/ES). The "what happens next" steps are also used by the /contact page,
+ * so the promise on the page and the promise after sending are always the same.
+ */
+export const NEXT_STEPS = {
+  en: [
+    { when: 'Within 1 business day', title: 'A reply from a person', body: 'Not an autoresponder. We read your answers and come back with questions or times to talk.' },
+    { when: '30 minutes', title: 'A discovery call', body: 'We map the process, the tools and the outcome you described. You leave with a clear first step either way.' },
+    { when: 'After the call', title: 'A scoped proposal', body: 'Fixed scope, timeline and deliverables, written for your market. No hourly billing.' },
+  ],
+  es: [
+    { when: 'En 1 día hábil', title: 'Te responde una persona', body: 'No es una respuesta automática. Leemos lo que nos contaste y volvemos con preguntas u horarios para hablar.' },
+    { when: '30 minutos', title: 'Una llamada inicial', body: 'Mapeamos el proceso, las herramientas y el resultado que buscas. Sales con un primer paso claro, trabajemos juntos o no.' },
+    { when: 'Después de la llamada', title: 'Una propuesta a medida', body: 'Alcance, plazos y entregables cerrados, pensados para tu mercado. Sin cobro por hora.' },
+  ],
+} satisfies Record<Lang, { when: string; title: string; body: string }[]>;
+
+export const COPY = {
+  en: {
+    head: 'New request',
+    stepOf: (n: number, total: number) => `Step ${n} of ${total}`,
+    steps: ['What you need', 'About you', 'Your project', 'Review'],
+    progress: 'Progress',
+    optional: 'optional',
+    back: 'Back',
+    next: 'Continue',
+    saveReview: 'Save and review',
+    enterHint: 'to continue',
+    restored: 'Draft restored from this session',
+    startOver: 'Start over',
+    fixErrors: (n: number) => (n === 1 ? 'One field needs a look.' : `${n} fields need a look.`),
+
+    context: {
+      attached: 'Attached',
+      remove: 'Remove this note',
+      roi: (p: { people: string; hours: string; automation?: string }) =>
+        `From the ROI calculator: ${p.people} ${p.people === '1' ? 'person' : 'people'} · ${p.hours} h/week each on repetitive work${p.automation ? ` · ${p.automation}% automatable` : ''}`,
+      diagnostic: (score: string) => `From the AI diagnostic: readiness score ${score}/100`,
+    },
+
+    s1: {
+      title: 'What do you need?',
+      lede: 'Pick one or more. Not sure? That’s what the first call is for.',
+      unsure: { name: 'Not sure yet', tagline: 'Help me decide. I know the problem, not the answer.' },
+      error: 'Pick at least one option, or choose “Not sure yet”.',
+      selected: (n: number) => (n === 1 ? '1 selected' : `${n} selected`),
+    },
+
+    s2: {
+      title: 'About you',
+      lede: 'So we can do our homework before we talk.',
+      name: 'Full name',
+      email: 'Work email',
+      company: 'Company',
+      role: 'Role',
+      website: 'Website',
+      size: 'Company size',
+      region: 'Where is your company based?',
+      language: 'Language for the call',
+      ph: { name: 'Jordan Rivera', email: 'you@company.com', company: 'Company name', role: 'e.g. COO, Head of Sales', website: 'company.com' },
+      choose: 'Choose…',
+      sizes: [
+        ['1-10', '1–10 people'],
+        ['11-50', '11–50 people'],
+        ['51-200', '51–200 people'],
+        ['201-1000', '201–1,000 people'],
+        ['1000+', 'More than 1,000'],
+      ] as [string, string][],
+      regions: [
+        ['us', 'United States'],
+        ['eu', 'Europe'],
+        ['latam', 'Latin America'],
+        ['other', 'Somewhere else'],
+      ] as [string, string][],
+      languages: [
+        ['en', 'English'],
+        ['es', 'Español'],
+      ] as [string, string][],
+      err: {
+        name: 'We need a name to address you.',
+        email: 'Add your work email so we can reply.',
+        emailBad: 'That email doesn’t look right. Check for typos.',
+        company: 'Which company is this for?',
+        website: 'Use a domain like company.com, or leave it empty.',
+        size: 'Pick the closest range.',
+        region: 'Pick where your company is based.',
+      },
+      freeMail: 'A personal address works. A work email just helps us research your company before the call.',
+    },
+
+    s3: {
+      title: 'Your project',
+      lede: 'Two questions. Plain words are perfect.',
+      goal: 'What would success look like in 90 days?',
+      goalHelp: 'Describe the outcome, not the tool. One or two sentences is enough.',
+      goalPh: 'e.g. Support stops answering the same 40 questions by hand, and new hires find answers without asking around.',
+      timeline: 'When do you want to start?',
+      timelines: [
+        ['asap', 'As soon as possible', 'Weeks, not months'],
+        ['quarter', 'This quarter', 'Within ~90 days'],
+        ['next', 'Next quarter', 'Planning ahead'],
+        ['exploring', 'Just exploring', 'No date yet'],
+      ] as [string, string, string][],
+      source: 'How did you hear about us?',
+      sources: [
+        ['search', 'Search engine'],
+        ['ai', 'An AI assistant’s answer'],
+        ['social', 'Social media'],
+        ['referral', 'Referral or word of mouth'],
+        ['event', 'Event or webinar'],
+        ['newsletter', 'Newsletter'],
+        ['other', 'Other'],
+      ] as [string, string][],
+      err: {
+        goal: 'Tell us in a sentence. It shapes the whole first call.',
+        goalShort: 'A little more detail helps: at least 20 characters.',
+        timeline: 'Pick a timeline. “Just exploring” is a fine answer.',
+      },
+      chars: (n: number, max: number) => `${n} / ${max}`,
+    },
+
+    s4: {
+      title: 'Review and send',
+      lede: 'Check the details. You can edit any part before sending.',
+      edit: 'Edit',
+      need: 'What you need',
+      you: 'About you',
+      project: 'Your project',
+      goal: 'Success in 90 days',
+      timeline: 'Start',
+      source: 'Heard about us',
+      size: 'Company size',
+      region: 'Based in',
+      language: 'Call in',
+      consent: 'We use these details only to reply and prepare the call. No newsletter unless you ask for it.',
+      submit: 'Send request',
+      sending: 'Sending',
+      error: 'Something went wrong on our side. Try again, or write to',
+    },
+
+    done: {
+      title: (first: string) => (first ? `Thanks, ${first}. We’re on it.` : 'Thanks. We’re on it.'),
+      body: (email: string) => `We’ll reply to ${email} within one business day.`,
+      ref: 'Request ID',
+      next: 'What happens next',
+      meanwhile: 'While you wait',
+      diagnostic: 'Take the 3-minute AI diagnostic',
+      diagnosticBody: 'Bring your readiness score to the call. It makes the first 30 minutes sharper.',
+      explore: 'Explore what we build',
+      another: 'Send another request',
+    },
+  },
+
+  es: {
+    head: 'Nueva solicitud',
+    stepOf: (n: number, total: number) => `Paso ${n} de ${total}`,
+    steps: ['Qué necesitas', 'Sobre ti', 'Tu proyecto', 'Revisión'],
+    progress: 'Progreso',
+    optional: 'opcional',
+    back: 'Atrás',
+    next: 'Continuar',
+    saveReview: 'Guardar y revisar',
+    enterHint: 'para continuar',
+    restored: 'Recuperamos tu borrador de esta sesión',
+    startOver: 'Empezar de nuevo',
+    fixErrors: (n: number) => (n === 1 ? 'Hay un campo por revisar.' : `Hay ${n} campos por revisar.`),
+
+    context: {
+      attached: 'Adjunto',
+      remove: 'Quitar esta nota',
+      roi: (p: { people: string; hours: string; automation?: string }) =>
+        `Desde la calculadora de ROI: ${p.people} ${p.people === '1' ? 'persona' : 'personas'} · ${p.hours} h/semana cada una en tareas repetitivas${p.automation ? ` · ${p.automation}% automatizable` : ''}`,
+      diagnostic: (score: string) => `Desde el diagnóstico de IA: puntaje de preparación ${score}/100`,
+    },
+
+    s1: {
+      title: '¿Qué necesitas?',
+      lede: 'Elige una o más opciones. ¿No lo tienes claro? Para eso es la primera llamada.',
+      unsure: { name: 'Todavía no lo sé', tagline: 'Ayúdenme a decidir. Conozco el problema, no la solución.' },
+      error: 'Elige al menos una opción, o marca “Todavía no lo sé”.',
+      selected: (n: number) => (n === 1 ? '1 elegida' : `${n} elegidas`),
+    },
+
+    s2: {
+      title: 'Sobre ti',
+      lede: 'Para hacer la tarea antes de hablar.',
+      name: 'Nombre y apellido',
+      email: 'Email de trabajo',
+      company: 'Empresa',
+      role: 'Cargo',
+      website: 'Sitio web',
+      size: 'Tamaño de la empresa',
+      region: '¿Dónde está tu empresa?',
+      language: 'Idioma de la llamada',
+      ph: { name: 'Camila Rojas', email: 'tu@empresa.com', company: 'Nombre de la empresa', role: 'Ej.: gerente de operaciones', website: 'empresa.com' },
+      choose: 'Elige…',
+      sizes: [
+        ['1-10', '1–10 personas'],
+        ['11-50', '11–50 personas'],
+        ['51-200', '51–200 personas'],
+        ['201-1000', '201–1000 personas'],
+        ['1000+', 'Más de 1000'],
+      ] as [string, string][],
+      regions: [
+        ['us', 'Estados Unidos'],
+        ['eu', 'Europa'],
+        ['latam', 'Latinoamérica'],
+        ['other', 'Otra región'],
+      ] as [string, string][],
+      languages: [
+        ['es', 'Español'],
+        ['en', 'English'],
+      ] as [string, string][],
+      err: {
+        name: 'Necesitamos un nombre para dirigirnos a ti.',
+        email: 'Agrega tu email de trabajo para poder responderte.',
+        emailBad: 'Ese email no parece correcto. Revisa si hay algún error.',
+        company: '¿Para qué empresa es?',
+        website: 'Usa un dominio como empresa.com, o déjalo vacío.',
+        size: 'Elige el rango más cercano.',
+        region: 'Elige dónde está tu empresa.',
+      },
+      freeMail: 'Un email personal también sirve. Con uno de trabajo podemos investigar tu empresa antes de la llamada.',
+    },
+
+    s3: {
+      title: 'Tu proyecto',
+      lede: 'Dos preguntas. Con palabras simples es perfecto.',
+      goal: '¿Cómo se vería el éxito en 90 días?',
+      goalHelp: 'Describe el resultado, no la herramienta. Con una o dos frases alcanza.',
+      goalPh: 'Ej.: Que soporte deje de responder a mano las mismas 40 preguntas y que los nuevos encuentren respuestas sin andar preguntando.',
+      timeline: '¿Cuándo quieres empezar?',
+      timelines: [
+        ['asap', 'Lo antes posible', 'Semanas, no meses'],
+        ['quarter', 'Este trimestre', 'En unos 90 días'],
+        ['next', 'El próximo trimestre', 'Planificando'],
+        ['exploring', 'Solo explorando', 'Sin fecha aún'],
+      ] as [string, string, string][],
+      source: '¿Cómo nos conociste?',
+      sources: [
+        ['search', 'Buscador'],
+        ['ai', 'Respuesta de un asistente de IA'],
+        ['social', 'Redes sociales'],
+        ['referral', 'Recomendación'],
+        ['event', 'Evento o webinar'],
+        ['newsletter', 'Newsletter'],
+        ['other', 'Otro'],
+      ] as [string, string][],
+      err: {
+        goal: 'Cuéntanos en una frase. Define toda la primera llamada.',
+        goalShort: 'Un poco más de detalle ayuda: al menos 20 caracteres.',
+        timeline: 'Elige un plazo. “Solo explorando” también vale.',
+      },
+      chars: (n: number, max: number) => `${n} / ${max}`,
+    },
+
+    s4: {
+      title: 'Revisa y envía',
+      lede: 'Revisa los datos. Puedes editar cualquier parte antes de enviar.',
+      edit: 'Editar',
+      need: 'Qué necesitas',
+      you: 'Sobre ti',
+      project: 'Tu proyecto',
+      goal: 'Éxito en 90 días',
+      timeline: 'Inicio',
+      source: 'Nos conociste por',
+      size: 'Tamaño',
+      region: 'Ubicación',
+      language: 'Llamada en',
+      consent: 'Usamos estos datos solo para responderte y preparar la llamada. Nada de newsletter si no lo pides.',
+      submit: 'Enviar solicitud',
+      sending: 'Enviando',
+      error: 'Algo falló de nuestro lado. Intenta de nuevo o escríbenos a',
+    },
+
+    done: {
+      title: (first: string) => (first ? `Gracias, ${first}. Ya estamos en eso.` : 'Gracias. Ya estamos en eso.'),
+      body: (email: string) => `Te responderemos a ${email} en un día hábil.`,
+      ref: 'ID de solicitud',
+      next: 'Qué sigue',
+      meanwhile: 'Mientras tanto',
+      diagnostic: 'Haz el diagnóstico de IA de 3 minutos',
+      diagnosticBody: 'Llega a la llamada con tu puntaje de preparación. Los primeros 30 minutos rinden más.',
+      explore: 'Mira lo que construimos',
+      another: 'Enviar otra solicitud',
+    },
+  },
+};
+
+export type FlowCopy = (typeof COPY)['en'];

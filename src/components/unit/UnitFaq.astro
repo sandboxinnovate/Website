@@ -1,0 +1,70 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { UNIT_COMMON } from '@/i18n/units';
+import type { UnitCopy } from '@/i18n/units';
+import type { UnitSlug } from '@/data/site';
+import { SITE } from '@/data/site';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang; slug: UnitSlug; copy: UnitCopy; index: string }
+const { lang, slug, copy, index } = Astro.props;
+const C = UNIT_COMMON.faq;
+---
+<section class="uq" id="faq">
+  <div class="container-x uq__grid">
+    <div class="uq__head">
+      <SectionHeading index={index} eyebrow={C.eyebrow[lang]} title={C.title[lang]} />
+      <div class="uq__more" data-reveal>
+        <span class="uq__more-t">{C.more[lang]}</span>
+        <p>{C.moreBody[lang]}</p>
+        <a href={`mailto:${SITE.email}`} class="uq__mail"><Icon name="mail" size={16} />{SITE.email}</a>
+      </div>
+    </div>
+    <div class="uq__list">
+      {copy.faq.map((it, i) => (
+        <details class="uq__item" data-reveal style={`--reveal-delay:${i * 50}`} name={`faq-${slug}`}>
+          <summary>
+            <span class="uq__n mono-label">{String(i + 1).padStart(2, '0')}</span>
+            <span class="uq__q">{it.q}</span>
+            <span class="uq__icon" aria-hidden="true"><Icon name="plus" size={16} stroke={2} /></span>
+          </summary>
+          <div class="uq__a"><p>{it.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .uq { padding-block: clamp(64px, 8vw, 112px); }
+  .uq__grid { display: grid; gap: 40px; }
+  @media (min-width: 1000px) {
+    .uq__grid { grid-template-columns: 5fr 7fr; gap: 64px; }
+    .uq__head { position: sticky; top: calc(var(--nav-h) + 40px); align-self: start; }
+  }
+  .uq__head { display: flex; flex-direction: column; gap: 36px; }
+  .uq__more { display: flex; flex-direction: column; gap: 8px; max-width: 380px; padding: 20px 22px; border-radius: 16px; border: 1px solid var(--line); background: rgb(255 255 255 / .02); }
+  .uq__more-t { font-family: var(--font-display); font-size: 16px; letter-spacing: -.02em; }
+  .uq__more p { font-size: 15px; color: var(--color-mist); }
+  .uq__mail { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-family: var(--font-mono); font-size: 13px; color: var(--color-flame-400); word-break: break-all; }
+  .uq__mail:hover { color: var(--color-bone); }
+
+  .uq__list { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+  .uq__item { border-bottom: 1px solid var(--line); }
+  .uq__item summary { list-style: none; display: grid; grid-template-columns: 36px 1fr 36px; align-items: center; gap: 12px; padding: 22px 0; cursor: pointer; border-radius: 8px; }
+  .uq__item summary::-webkit-details-marker { display: none; }
+  .uq__q { font-family: var(--font-display); font-size: clamp(1.02rem, 1.4vw, 1.18rem); letter-spacing: -.02em; line-height: 1.3; transition: color .2s; }
+  .uq__item summary:hover .uq__q { color: var(--color-flame-400); }
+  .uq__icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: rgb(245 131 39 / .12); color: var(--color-flame-400); transition: transform .5s var(--ease-out-expo), background-color .3s, color .3s; }
+  .uq__item[open] .uq__icon { transform: rotate(45deg); background: var(--color-flame-500); color: #1a0d03; }
+  .uq__a { overflow: hidden; }
+  .uq__a p { padding: 0 48px 24px 48px; color: var(--color-mist); max-width: 680px; }
+  @media (max-width: 600px) { .uq__a p { padding: 0 0 22px 48px; } }
+  @supports (interpolate-size: allow-keywords) {
+    .uq__item { interpolate-size: allow-keywords; }
+    .uq__item::details-content { height: 0; overflow: clip; transition: height .5s var(--ease-out-expo), content-visibility .5s allow-discrete; }
+    .uq__item[open]::details-content { height: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) { .uq__item::details-content { transition: none; } }
+</style>

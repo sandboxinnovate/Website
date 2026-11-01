@@ -13,8 +13,10 @@ interface Props {
   as?: 'h1' | 'h2' | 'h3';
   size?: 'lg' | 'md';
   class?: string;
+  /** id for the heading element (for aria-labelledby on the parent section) */
+  id?: string;
 }
-const { index, eyebrow, title, lede, align = 'left', as: H = 'h2', size = 'lg', class: cls = '' } = Astro.props;
+const { index, eyebrow, title, lede, align = 'left', as: H = 'h2', size = 'lg', class: cls = '', id } = Astro.props;
 ---
 <header class:list={['sh', `sh--${align}`, cls]} data-reveal>
   {(index || eyebrow) && (
@@ -23,7 +25,7 @@ const { index, eyebrow, title, lede, align = 'left', as: H = 'h2', size = 'lg', 
       {eyebrow && <span class="eyebrow">{eyebrow}</span>}
     </div>
   )}
-  <H class:list={['sh__title', size === 'lg' ? 'display-lg' : 'display-md']} set:html={title} />
+  <H id={id} class:list={['sh__title', size === 'lg' ? 'display-lg' : 'display-md']} set:html={title} />
   {lede && <p class="sh__lede lede">{lede}</p>}
   <slot />
 </header>

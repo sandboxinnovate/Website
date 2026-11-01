@@ -1,0 +1,55 @@
+---
+/**
+ * Lab page for the AgentConsole widget (noindex, excluded from the sitemap).
+ * Shows the default, Spanish, compact and narrow variants side by side for QA.
+ */
+import Base from '@/layouts/Base.astro';
+import AgentConsole from '@/components/widgets/AgentConsole/AgentConsole';
+---
+<Base lang="en" title="Lab · Agent console" description="Internal test page for the agent console widget." noindex>
+  <section class="lab container-x">
+    <header class="lab__head">
+      <span class="mono-label">[lab] widgets/AgentConsole</span>
+      <h1 class="display-md">Agent console</h1>
+      <p class="lede">Simulated orchestration console. Default (EN), Spanish starting on the support scenario, compact in a narrow column, and a phone-width frame.</p>
+    </header>
+
+    <div class="lab__block" id="default">
+      <p class="mono-label">01 · default · lang=en</p>
+      <AgentConsole client:visible lang="en" />
+    </div>
+
+    <div class="lab__block" id="es">
+      <p class="mono-label">02 · lang=es · initialScenario=support</p>
+      <AgentConsole client:visible lang="es" initialScenario="support" />
+    </div>
+
+    <div class="lab__block lab__split" id="compact">
+      <div class="lab__copy">
+        <p class="mono-label">03 · compact · 2-column layout</p>
+        <h2 class="display-md">A brain that answers and acts</h2>
+        <p class="lede">The compact variant stacks the graph above a shorter log so it fits in a narrower column next to copy.</p>
+      </div>
+      <AgentConsole client:visible lang="en" compact initialScenario="report" />
+    </div>
+
+    <div class="lab__block" id="narrow">
+      <p class="mono-label">04 · 390px frame · lang=es · compact</p>
+      <div class="lab__phone">
+        <AgentConsole client:visible lang="es" compact initialScenario="content" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lab { padding-block: calc(var(--nav-h) + 48px) 120px; display: flex; flex-direction: column; gap: 72px; }
+  .lab__head { display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+  .lab__block { display: flex; flex-direction: column; gap: 16px; }
+  .lab__split { display: grid; gap: 32px; }
+  .lab__copy { display: flex; flex-direction: column; gap: 16px; }
+  .lab__phone { width: 100%; max-width: 390px; }
+  @media (min-width: 1024px) {
+    .lab__split { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr); align-items: start; }
+  }
+</style>

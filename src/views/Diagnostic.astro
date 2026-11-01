@@ -1,10 +1,378 @@
 ---
-// STUB — to be replaced.
+/**
+ * /diagnostic and /es/diagnostic — the AI Readiness Diagnostic (main lead magnet).
+ * Hero → the full widget → what you get → how we use your answers + closing CTA.
+ */
 import Base from '@/layouts/Base.astro';
-import type { Lang } from '@/i18n';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import ReadinessDiagnostic from '@/components/widgets/ReadinessDiagnostic/ReadinessDiagnostic';
+import { COPY as RD } from '@/components/widgets/ReadinessDiagnostic/copy';
+import { DIMS, QUESTIONS } from '@/components/widgets/ReadinessDiagnostic/model';
+import { SITE, type IconName } from '@/data/site';
+import { localize, type Lang, type L10n } from '@/i18n';
+
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const t = <T,>(o: L10n<T>): T => o[lang];
+const rd = RD[lang];
+
+const C = {
+  seo: {
+    title: {
+      en: 'AI Readiness Diagnostic: score your company in 3 minutes',
+      es: 'Diagnóstico de preparación en IA: mide tu empresa en 3 minutos',
+    },
+    description: {
+      en: 'Ten questions on strategy, data, processes, people and stack. Get a 0–100 AI readiness score, your profile by dimension and the three moves to make first. No sign-up to see your result.',
+      es: 'Diez preguntas sobre estrategia, datos, procesos, personas y tecnología. Obtén un puntaje de preparación en IA de 0 a 100, tu perfil por dimensión y los tres pasos para empezar. Sin registro para ver tu resultado.',
+    },
+  },
+  hero: {
+    eyebrow: { en: 'AI Readiness Diagnostic', es: 'Diagnóstico de preparación en IA' },
+    title: {
+      en: 'How ready is your company <em>for AI?</em>',
+      es: '¿Qué tan lista está tu empresa <em>para la IA?</em>',
+    },
+    lede: {
+      en: 'Ten questions across strategy, data, processes, people and stack. You get a readiness score, your profile by dimension and the three moves we’d make first in your place.',
+      es: 'Diez preguntas sobre estrategia, datos, procesos, personas y tecnología. Recibes un puntaje de preparación, tu perfil por dimensión y los tres pasos que daríamos primero en tu lugar.',
+    },
+    meta: [
+      { icon: 'calendar', text: { en: '3 minutes', es: '3 minutos' } },
+      { icon: 'layers', text: { en: '10 questions', es: '10 preguntas' } },
+      { icon: 'bolt', text: { en: 'Instant result', es: 'Resultado al instante' } },
+    ] as { icon: IconName; text: L10n<string> }[],
+    start: { en: 'Start the diagnostic', es: 'Empezar el diagnóstico' },
+    note: { en: 'No sign-up to see your score.', es: 'Sin registro para ver tu puntaje.' },
+    measures: { en: 'What it measures', es: 'Qué mide' },
+    perDim: { en: '2 questions', es: '2 preguntas' },
+  },
+  run: {
+    label: { en: 'The diagnostic', es: 'El diagnóstico' },
+  },
+  get: {
+    index: '01',
+    eyebrow: { en: 'What you get', es: 'Qué recibes' },
+    title: { en: 'A result you can <em>act on</em>', es: 'Un resultado para <em>pasar a la acción</em>' },
+    items: [
+      {
+        k: { en: 'Readiness score', es: 'Puntaje de preparación' },
+        v: {
+          en: 'One number from 0 to 100, weighted toward your weakest dimension — the one that usually stalls a rollout.',
+          es: 'Un número de 0 a 100, ponderado hacia tu dimensión más débil: la que suele frenar una implementación.',
+        },
+        tag: '0–100',
+      },
+      {
+        k: { en: 'Maturity level', es: 'Nivel de madurez' },
+        v: {
+          en: 'Explorer, Builder, Operator or AI-native, and what that level means for your next quarter.',
+          es: 'Explorador, Constructor, Operador o Nativo en IA, y qué significa ese nivel para tu próximo trimestre.',
+        },
+        tag: '4 levels',
+        tagEs: '4 niveles',
+      },
+      {
+        k: { en: 'Profile by dimension', es: 'Perfil por dimensión' },
+        v: {
+          en: 'A radar of strategy, data, processes, people and stack, so you see exactly where the gaps are.',
+          es: 'Un radar de estrategia, datos, procesos, personas y tecnología, para ver exactamente dónde están las brechas.',
+        },
+        tag: '5 dims',
+        tagEs: '5 dim.',
+      },
+      {
+        k: { en: 'Three moves, in order', es: 'Tres pasos, en orden' },
+        v: {
+          en: 'Concrete next steps, each mapped to the service that delivers it. Optional: the full report and a 30-minute review call.',
+          es: 'Próximos pasos concretos, cada uno vinculado al servicio que lo resuelve. Opcional: el reporte completo y una llamada de revisión de 30 minutos.',
+        },
+        tag: '3 moves',
+        tagEs: '3 pasos',
+      },
+    ],
+  },
+  privacy: {
+    title: { en: 'How we use your answers', es: 'Cómo usamos tus respuestas' },
+    foot: {
+      en: ['Stored: this tab only', 'Sent: only when you ask'],
+      es: ['Guardado: solo en esta pestaña', 'Enviado: solo si lo pides'],
+    } as L10n<string[]>,
+    points: [
+      {
+        en: 'Your score is calculated in your browser. Nothing is sent while you answer.',
+        es: 'Tu puntaje se calcula en tu navegador. No se envía nada mientras respondes.',
+      },
+      {
+        en: 'Answers stay in this tab and are cleared when you close it.',
+        es: 'Las respuestas se quedan en esta pestaña y se borran al cerrarla.',
+      },
+      {
+        en: 'If you ask for the report, we use them only to prepare it and your review call.',
+        es: 'Si pides el reporte, las usamos solo para prepararlo y para la llamada de revisión.',
+      },
+    ],
+  },
+  cta: {
+    eyebrow: { en: 'Prefer a conversation', es: 'Si prefieres conversar' },
+    title: { en: 'Rather talk it <em>through?</em>', es: '¿Prefieres <em>conversarlo?</em>' },
+    lede: {
+      en: 'Tell us where you are and what you want AI to take off your team’s plate. We’ll come back with a concrete first step.',
+      es: 'Cuéntanos dónde estás y qué trabajo quieres quitarle a tu equipo con IA. Te respondemos con un primer paso concreto.',
+    },
+    button: { en: 'Book a strategy call', es: 'Agendar una llamada' },
+    or: { en: 'or write to', es: 'o escribe a' },
+  },
+};
+
+const title = t(C.seo.title);
+const description = t(C.seo.description);
+const url = new URL(localize(lang, '/diagnostic'), SITE.url).href;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url,
+    inLanguage: lang === 'en' ? 'en' : 'es',
+    isPartOf: { '@type': 'WebSite', name: 'Sandbox', url: SITE.url },
+    mainEntity: {
+      '@type': 'WebApplication',
+      name: t(C.hero.eyebrow),
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Any',
+      browserRequirements: 'Requires JavaScript',
+      isAccessibleForFree: true,
+      inLanguage: lang === 'en' ? 'en' : 'es',
+      provider: { '@type': 'Organization', name: 'Sandbox', url: SITE.url },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Sandbox', item: new URL(localize(lang, '/'), SITE.url).href },
+      { '@type': 'ListItem', position: 2, name: t(C.hero.eyebrow), item: url },
+    ],
+  },
+];
+
+const perDim = (d: string) => QUESTIONS.filter((q) => q.dim === d).length;
 ---
-<Base lang={lang} title="Diagnostic" description="Diagnostic">
-  <section class="container-x section-y" style="padding-top:160px"><h1 class="display-lg">Diagnostic ({lang})</h1></section>
+<Base lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <!-- HERO -->
+  <section class="dg-hero" aria-labelledby="dg-title">
+    <div class="dg-hero__bg" aria-hidden="true">
+      <div class="bg-grid dg-hero__grid"></div>
+      <div class="glow-ember dg-hero__glow"></div>
+    </div>
+    <div class="container-x dg-hero__inner">
+      <div class="dg-hero__copy">
+        <span class="eyebrow" data-reveal>{t(C.hero.eyebrow)}</span>
+        <h1 id="dg-title" class="dg-hero__title" data-reveal style="--reveal-delay:80" set:html={t(C.hero.title)} />
+        <p class="lede dg-hero__lede" data-reveal style="--reveal-delay:160">{t(C.hero.lede)}</p>
+        <ul class="dg-meta" data-reveal style="--reveal-delay:220">
+          {C.hero.meta.map((m) => (
+            <li><Icon name={m.icon} size={16} stroke={1.6} /><span>{t(m.text)}</span></li>
+          ))}
+        </ul>
+        <div class="dg-hero__actions" data-reveal style="--reveal-delay:280">
+          <a href="#run" class="btn btn-primary">
+            <span>{t(C.hero.start)}</span>
+            <span class="btn-chip"><Icon name="arrow-right" size={16} stroke={1.8} /></span>
+          </a>
+          <span class="dg-hero__note">{t(C.hero.note)}</span>
+        </div>
+      </div>
+
+      <aside class="dg-dims card" aria-labelledby="dg-dims-title" data-reveal style="--reveal-delay:200">
+        <div class="dg-dims__head">
+          <h2 id="dg-dims-title" class="dg-dims__title">{t(C.hero.measures)}</h2>
+          <span class="dg-dims__count">5 × 2</span>
+        </div>
+        <ol class="dg-dims__list">
+          {DIMS.map((d, i) => (
+            <li>
+              <span class="dg-dims__code">[{String(i + 1).padStart(2, '0')}]</span>
+              <span class="dg-dims__body">
+                <span class="dg-dims__name">{rd.dims[d].name}</span>
+                <span class="dg-dims__blurb">{rd.dims[d].blurb}</span>
+              </span>
+              <span class="dg-dims__q">{perDim(d)}{lang === 'es' ? 'P' : 'Q'}</span>
+            </li>
+          ))}
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <!-- THE DIAGNOSTIC -->
+  <section id="run" class="dg-run" aria-label={t(C.run.label)}>
+    <div class="dg-run__glow glow-ember" aria-hidden="true"></div>
+    <div class="container-x">
+      <ReadinessDiagnostic client:idle lang={lang} variant="full" />
+    </div>
+  </section>
+
+  <!-- WHAT YOU GET -->
+  <section class="dg-get section-y" aria-label={t(C.get.eyebrow)}>
+    <div class="container-x">
+      <div class="dg-get__head">
+        <SectionHeading index={C.get.index} eyebrow={t(C.get.eyebrow)} title={t(C.get.title)} size="md" />
+      </div>
+      <ol class="dg-get__grid">
+        {C.get.items.map((it, i) => (
+          <li class="dg-get__item" data-reveal style={`--reveal-delay:${i * 90}`}>
+            <span class="dg-get__top">
+              <span class="dg-get__idx">{String(i + 1).padStart(2, '0')}</span>
+              <span class="dg-get__tag">{lang === 'es' && it.tagEs ? it.tagEs : it.tag}</span>
+            </span>
+            <h3 class="dg-get__k">{t(it.k)}</h3>
+            <p class="dg-get__v">{t(it.v)}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- PRIVACY + CLOSING CTA -->
+  <section class="dg-close" aria-label={t(C.privacy.title)}>
+    <div class="container-x dg-close__grid">
+      <div class="dg-privacy card" data-reveal>
+        <span class="dg-privacy__icon" aria-hidden="true"><Icon name="shield" size={22} stroke={1.6} /></span>
+        <h2 class="dg-privacy__title">{t(C.privacy.title)}</h2>
+        <ul class="dg-privacy__list">
+          {C.privacy.points.map((p) => (
+            <li><Icon name="check" size={15} stroke={2} /><span>{t(p)}</span></li>
+          ))}
+        </ul>
+        <p class="dg-privacy__foot">
+          {t(C.privacy.foot).map((f) => <span><i aria-hidden="true"></i>{f}</span>)}
+        </p>
+      </div>
+
+      <div class="dg-cta card" data-reveal style="--reveal-delay:120">
+        <div class="glow-ember dg-cta__glow" aria-hidden="true"></div>
+        <span class="eyebrow">{t(C.cta.eyebrow)}</span>
+        <h2 class="dg-cta__title" set:html={t(C.cta.title)} />
+        <p class="dg-cta__lede">{t(C.cta.lede)}</p>
+        <div class="dg-cta__actions">
+          <a href={localize(lang, '/contact')} class="btn btn-primary">
+            <span>{t(C.cta.button)}</span>
+            <span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
+          </a>
+          <span class="dg-cta__or">{t(C.cta.or)} <a href={`mailto:${SITE.email}`}>{SITE.email}</a></span>
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>
+
+<style>
+  /* ---------- hero ---------- */
+  .dg-hero { position: relative; isolation: isolate; padding-top: calc(var(--nav-h) + clamp(48px, 7vw, 104px)); padding-bottom: clamp(48px, 6vw, 80px); }
+  .dg-hero__bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .dg-hero__grid { position: absolute; inset: 0; opacity: .8; }
+  .dg-hero__glow { width: 900px; height: 640px; right: -260px; top: -120px; opacity: .42; }
+  .dg-hero__inner { display: grid; gap: 48px; align-items: end; }
+  @media (min-width: 1040px) { .dg-hero__inner { grid-template-columns: minmax(0, 1.18fr) minmax(0, .82fr); gap: 72px; } }
+  .dg-hero__copy { display: flex; flex-direction: column; align-items: flex-start; gap: 26px; }
+  .dg-hero__title {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(2.4rem, 5.6vw, 4.9rem); line-height: .98; letter-spacing: -.052em;
+    max-width: 12.5em;
+  }
+  .dg-hero__title :global(em), .dg-cta__title :global(em) {
+    font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .dg-hero__lede { max-width: 560px; }
+  .dg-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dg-meta li {
+    display: inline-flex; align-items: center; gap: 9px; height: 38px; padding: 0 15px 0 12px;
+    border-radius: 999px; border: 1px solid var(--line-strong); background: rgb(255 255 255 / .025);
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-bone);
+  }
+  .dg-meta li :global(svg) { color: var(--color-flame-400); }
+  .dg-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 4px; }
+  .dg-hero__note { font-family: var(--font-mono); font-size: 12px; letter-spacing: .05em; color: var(--color-mist); }
+
+  .dg-dims { padding: 24px 24px 10px; }
+  .dg-dims__head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .dg-dims__title { font-family: var(--font-mono); font-weight: 500; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-flame-400); line-height: 1.3; }
+  .dg-dims__count { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; color: var(--color-mist); }
+  .dg-dims__list li {
+    display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: baseline; gap: 12px;
+    padding: 15px 0; border-bottom: 1px solid var(--line);
+  }
+  .dg-dims__list li:last-child { border-bottom: 0; }
+  .dg-dims__code { font-family: var(--font-mono); font-size: 12px; color: var(--color-mist); }
+  .dg-dims__body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .dg-dims__name { font-family: var(--font-display); font-size: 17px; font-weight: 500; letter-spacing: -.03em; line-height: 1.2; }
+  .dg-dims__blurb { color: var(--color-mist); font-size: 14.5px; line-height: 1.45; }
+  .dg-dims__q { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--color-mist); padding: 2px 7px; border: 1px solid var(--line-strong); border-radius: 6px; }
+
+  /* ---------- the widget ---------- */
+  .dg-run { position: relative; isolation: isolate; padding-block: clamp(8px, 2vw, 24px) 0; }
+  .dg-run__glow { z-index: -1; width: min(1100px, 90vw); height: 520px; left: 50%; top: 18%; transform: translateX(-50%); opacity: .22; }
+
+  /* ---------- what you get ---------- */
+  .dg-get__head { margin-bottom: clamp(32px, 4vw, 56px); }
+  .dg-get__grid { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  @media (min-width: 720px) { .dg-get__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1100px) { .dg-get__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .dg-get__item { display: flex; flex-direction: column; gap: 12px; padding: 28px 0 32px; border-bottom: 1px solid var(--line); }
+  @media (min-width: 720px) {
+    .dg-get__item { padding: 30px 28px 34px; }
+    .dg-get__item:nth-child(odd) { padding-left: 0; }
+    .dg-get__item:nth-child(even) { border-left: 1px solid var(--line); }
+  }
+  @media (min-width: 1100px) {
+    .dg-get__item { padding: 32px 26px 8px; border-bottom: 0; }
+    .dg-get__item:nth-child(n) { border-left: 1px solid var(--line); padding-left: 26px; }
+    .dg-get__item:first-child { border-left: 0; padding-left: 0; }
+  }
+  .dg-get__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .dg-get__idx { font-family: var(--font-mono); font-size: 12px; color: var(--color-flame-400); }
+  .dg-get__tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-mist); padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line-strong); }
+  .dg-get__k { margin-top: 10px; font-size: 20px; letter-spacing: -.035em; line-height: 1.15; }
+  .dg-get__v { color: var(--color-mist); font-size: 15.5px; line-height: 1.6; }
+
+  /* ---------- privacy + CTA ---------- */
+  .dg-close { padding-bottom: clamp(80px, 10vw, 140px); }
+  .dg-close__grid { display: grid; gap: 16px; }
+  @media (min-width: 1000px) { .dg-close__grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 20px; } }
+  .dg-privacy { display: flex; flex-direction: column; gap: 16px; padding: clamp(24px, 3vw, 40px); }
+  .dg-privacy__icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--line-strong); color: var(--color-flame-400); background: rgb(245 131 39 / .06); }
+  .dg-privacy__title { font-size: clamp(1.3rem, 2vw, 1.6rem); letter-spacing: -.035em; }
+  .dg-privacy__list { display: grid; gap: 12px; }
+  .dg-privacy__list li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; color: var(--color-mist); font-size: 15.5px; line-height: 1.55; }
+  .dg-privacy__list li :global(svg) { margin-top: 4px; color: var(--color-flame-400); }
+  .dg-privacy__foot {
+    display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: auto; padding-top: 18px; border-top: 1px dashed var(--line-strong);
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--color-mist);
+  }
+  .dg-privacy__foot span { display: inline-flex; align-items: center; gap: 8px; }
+  .dg-privacy__foot i { width: 6px; height: 6px; border-radius: 99px; background: var(--color-ok, #7ad19b); box-shadow: 0 0 8px rgb(122 209 155 / .6); }
+
+  .dg-cta { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: clamp(28px, 4vw, 52px); border-color: rgb(245 131 39 / .22); }
+  .dg-cta__glow { z-index: -1; width: 620px; height: 480px; right: -220px; bottom: -300px; opacity: .6; }
+  .dg-cta__title { font-size: clamp(1.9rem, 3.6vw, 3rem); letter-spacing: -.045em; line-height: 1.02; max-width: 14ch; }
+  .dg-cta__lede { color: var(--color-mist); font-size: 16.5px; max-width: 46ch; }
+  .dg-cta__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 6px; }
+  .dg-cta__or { color: var(--color-mist); font-size: 14.5px; }
+  .dg-cta__or a { color: var(--color-bone); text-decoration: underline; text-decoration-color: rgb(245 131 39 / .6); text-underline-offset: 4px; }
+  .dg-cta__or a:hover { color: var(--color-flame-400); }
+
+  @media (max-width: 639px) {
+    .dg-dims { padding: 18px 18px 4px; }
+    .dg-dims__list li { padding: 11px 0; grid-template-columns: 38px minmax(0, 1fr) auto; }
+    .dg-dims__blurb { display: none; }
+    .dg-dims__name { font-size: 16px; }
+  }
+  @media (max-width: 480px) {
+    .dg-hero__actions .btn { width: 100%; justify-content: space-between; }
+  }
+</style>

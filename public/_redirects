@@ -1,0 +1,2 @@
+# Netlify: Spanish 404 for missing /es/ paths
+/es/*  /es/404/index.html  404

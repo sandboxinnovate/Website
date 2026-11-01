@@ -1,11 +1,83 @@
 ---
-// STUB — to be replaced.
+/**
+ * Service (unit) page template. Content per unit and language lives in src/i18n/units/.
+ * Sections: hero → pains → offers → proof widget → method + pricing → use cases → FAQ → related → CTA.
+ */
 import Base from '@/layouts/Base.astro';
-import type { Lang } from '@/i18n';
-import type { UnitSlug } from '@/data/site';
+import UnitHero from '@/components/unit/UnitHero.astro';
+import UnitPains from '@/components/unit/UnitPains.astro';
+import UnitOffers from '@/components/unit/UnitOffers.astro';
+import UnitDemo from '@/components/unit/UnitDemo.astro';
+import UnitMethod from '@/components/unit/UnitMethod.astro';
+import UnitCases from '@/components/unit/UnitCases.astro';
+import UnitFaq from '@/components/unit/UnitFaq.astro';
+import UnitRelated from '@/components/unit/UnitRelated.astro';
+import UnitCta from '@/components/unit/UnitCta.astro';
+import { UNIT_COPY, UNIT_COMMON } from '@/i18n/units';
+import { UNITS, SITE, type UnitSlug } from '@/data/site';
+import { localize, type Lang } from '@/i18n';
+
 interface Props { lang: Lang; slug: UnitSlug }
 const { lang, slug } = Astro.props;
+const unit = UNITS.find((u) => u.slug === slug)!;
+const copy = UNIT_COPY[slug][lang];
+
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, '');
+const pageUrl = new URL(localize(lang, `/services/${slug}`), SITE.url).href;
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${pageUrl}#service`,
+  name: `${unit.name[lang]} — ${unit.tagline[lang]}`,
+  serviceType: unit.tagline[lang],
+  description: copy.seo.description,
+  url: pageUrl,
+  inLanguage: lang,
+  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url, email: SITE.email },
+  areaServed: [
+    { '@type': 'Country', name: 'United States' },
+    { '@type': 'Place', name: 'Europe' },
+    { '@type': 'Place', name: 'Latin America' },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: stripTags(copy.offers.title),
+    itemListElement: copy.offers.items.map((o) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: o.name, description: o.what },
+    })),
+  },
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: copy.faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Sandbox', item: new URL(localize(lang, '/'), SITE.url).href },
+    { '@type': 'ListItem', position: 2, name: UNIT_COMMON.breadcrumb[lang], item: new URL(localize(lang, '/#services'), SITE.url).href },
+    { '@type': 'ListItem', position: 3, name: unit.name[lang], item: pageUrl },
+  ],
+};
 ---
-<Base lang={lang} title={slug} description={slug}>
-  <section class="container-x section-y" style="padding-top:160px"><h1 class="display-lg">Unit: {slug} ({lang})</h1></section>
+<Base lang={lang} title={copy.seo.title} description={copy.seo.description} jsonLd={[serviceLd, faqLd, breadcrumbLd]}>
+  <UnitHero lang={lang} unit={unit} copy={copy} />
+  <UnitPains lang={lang} copy={copy} index="01" />
+  <UnitOffers lang={lang} slug={slug} copy={copy} index="02" />
+  <UnitDemo lang={lang} slug={slug} copy={copy} index="03" />
+  <UnitMethod lang={lang} slug={slug} copy={copy} index="04" />
+  <UnitCases lang={lang} copy={copy} index="05" />
+  <UnitFaq lang={lang} slug={slug} copy={copy} index="06" />
+  <UnitRelated lang={lang} slug={slug} />
+  <UnitCta lang={lang} unit={unit} copy={copy} />
 </Base>

@@ -11,7 +11,7 @@ const f = HOME.faq;
 <section class="fq section-y" id="faq" aria-labelledby="fq-title">
   <div class="container-x fq__grid">
     <div class="fq__head">
-      <SectionHeading index={f.index} eyebrow={f.eyebrow[lang]} title={f.title[lang]} />
+      <SectionHeading id="fq-title" index={f.index} eyebrow={f.eyebrow[lang]} title={f.title[lang]} />
     </div>
     <div class="fq__list" data-faq>
       {f.items.map((it, i) => (

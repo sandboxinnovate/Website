@@ -1,0 +1,209 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { ABOUT } from '@/i18n/about';
+import type { IconName } from '@/data/site';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const m = ABOUT.markets;
+
+/* ---- Working-hours ruler (9:00–18:00 local, drawn on a 24 h UTC axis) ----
+   Computed at build time for the initial render; the script recomputes it in the browser
+   so daylight-saving changes and the "now" marker are always right. */
+function offsetHours(tz: string, at: Date): number {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+      .formatToParts(at).map((p) => [p.type, p.value]),
+  );
+  const asUtc = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour % 24, +parts.minute);
+  return Math.round((asUtc - at.getTime()) / 900000) / 4; // nearest 15 min
+}
+const segs = (start: number, end: number): [number, number][] => {
+  const s = ((start % 24) + 24) % 24; const e = s + (end - start);
+  return e <= 24 ? [[s, e]] : [[s, 24], [0, e - 24]];
+};
+const now = new Date();
+const zones = m.zones.map((z) => {
+  const off = offsetHours(z.tz, now);
+  return { ...z, off, segs: segs(9 - off, 18 - off) };
+});
+// Shared window = 15-minute slots covered by every zone.
+const covered = (h: number) => zones.every((z) => z.segs.some(([a, b]) => h >= a && h < b));
+const overlap: [number, number][] = [];
+for (let q = 0; q < 96; q++) {
+  const h = q / 4;
+  if (!covered(h + 0.01)) continue;
+  const last = overlap[overlap.length - 1];
+  if (last && last[1] === h) last[1] = h + 0.25; else overlap.push([h, h + 0.25]);
+}
+const pct = (h: number) => `${((h / 24) * 100).toFixed(3)}%`;
+const ticks = [0, 3, 6, 9, 12, 15, 18, 21, 24];
+const zoneData = JSON.stringify(zones.map((z) => ({ id: z.id, tz: z.tz })));
+---
+<section class="mk section-y" aria-label={m.eyebrow[lang]} data-markets data-zones={zoneData} data-lang={lang}>
+  <div class="container-x">
+    <SectionHeading index={m.index} eyebrow={m.eyebrow[lang]} title={m.title[lang]} lede={m.lede[lang]} />
+
+    <div class="mk__board card" data-reveal>
+      <div class="mk__board-head">
+        <span class="mono-label"><span class="mk__live" aria-hidden="true"></span>{m.clockLabel[lang]}</span>
+        <span class="mono-label mk__utc" data-utc>UTC --:--</span>
+      </div>
+
+      <ul class="mk__clocks">
+        {zones.map((z) => (
+          <li class="mk__clock" data-clock={z.id}>
+            <span class="mk__zone">{z.name[lang]}</span>
+            <span class="mk__time" data-time>--:--</span>
+            <span class="mk__note"><span class="mk__state" data-state aria-hidden="true"></span><span>{z.note[lang]}</span><span class="mk__off" data-off></span></span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mk__ruler" role="img" aria-label={`${m.overlapLabel[lang]}: ${m.hoursNote[lang]}`}>
+        <div class="mk__axis" aria-hidden="true">
+          {ticks.map((t) => <span class:list={['mk__tick', t % 6 !== 0 && 'mk__tick--minor']} style={`left:${pct(t)}`}>{String(t % 24).padStart(2, '0')}</span>)}
+        </div>
+        <div class="mk__lanes" aria-hidden="true">
+          <div class="mk__overlay">
+            {overlap.map(([a, b]) => <span class="mk__overlap" style={`left:${pct(a)};width:${pct(b - a)}`}></span>)}
+            <span class="mk__now" data-now style="left:0%" hidden><span class="mk__now-l">{m.nowLabel[lang]}</span></span>
+          </div>
+          {zones.map((z) => (
+            <div class="mk__lane" data-lane={z.id}>
+              <span class="mk__lane-l">{z.name[lang]}</span>
+              <div class="mk__track">
+                {z.segs.map(([a, b]) => <span class="mk__band" style={`left:${pct(a)};width:${pct(b - a)}`}></span>)}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="mk__legend" aria-hidden="true">
+          <span><i class="mk__sw mk__sw--band"></i>9:00–18:00</span>
+          <span><i class="mk__sw mk__sw--ov"></i>{m.overlapLabel[lang]}</span>
+          <span class="mk__legend-note">{m.hoursNote[lang]}</span>
+        </div>
+      </div>
+    </div>
+
+    <ul class="mk__facts">
+      {m.facts.map((f, i) => (
+        <li class="mk__fact" data-reveal style={`--reveal-delay:${i * 100}`}>
+          <span class="mk__fact-icon"><Icon name={f.icon as IconName} size={20} /></span>
+          <h3 class="mk__fact-title">{f.title[lang]}</h3>
+          <p class="mk__fact-body">{f.body[lang]}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-markets]').forEach((root) => {
+    const zones = JSON.parse(root.dataset.zones || '[]') as { id: string; tz: string }[];
+    const lang = root.dataset.lang === 'es' ? 'es' : 'en';
+    const utcEl = root.querySelector<HTMLElement>('[data-utc]')!;
+    const nowEl = root.querySelector<HTMLElement>('[data-now]')!;
+    const fmt = (tz: string) => new Intl.DateTimeFormat(lang === 'es' ? 'es-MX' : 'en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+    const hourIn = (tz: string, d: Date) => {
+      const p = new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(d);
+      const g = (t: string) => Number(p.find((x) => x.type === t)?.value ?? 0);
+      return (g('hour') % 24) + g('minute') / 60;
+    };
+    const offLabel: Record<string, string> = {};
+    zones.forEach((z) => {
+      const name = new Intl.DateTimeFormat('en-US', { timeZone: z.tz, timeZoneName: 'shortOffset' }).formatToParts(new Date()).find((p) => p.type === 'timeZoneName')?.value;
+      if (name) offLabel[z.id] = name.replace('GMT', 'UTC');
+    });
+
+    const tick = () => {
+      const d = new Date();
+      zones.forEach((z) => {
+        const li = root.querySelector<HTMLElement>(`[data-clock="${z.id}"]`);
+        if (!li) return;
+        li.querySelector<HTMLElement>('[data-time]')!.textContent = fmt(z.tz).format(d);
+        const h = hourIn(z.tz, d);
+        const open = h >= 9 && h < 18;
+        li.classList.toggle('is-open', open);
+        const st = li.querySelector<HTMLElement>('[data-state]')!;
+        st.title = open ? (lang === 'es' ? 'En horario laboral' : 'Within working hours') : (lang === 'es' ? 'Fuera de horario' : 'After hours');
+        const off = li.querySelector<HTMLElement>('[data-off]')!;
+        if (offLabel[z.id]) off.textContent = offLabel[z.id];
+      });
+      const u = d.getUTCHours() + d.getUTCMinutes() / 60;
+      utcEl.textContent = `UTC ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+      nowEl.hidden = false;
+      nowEl.style.left = `${(u / 24) * 100}%`;
+    };
+
+    // Tick every 20 s, only while visible and the tab is in the foreground.
+    let timer = 0; let onScreen = false;
+    const run = () => { window.clearInterval(timer); if (onScreen && !document.hidden) { tick(); timer = window.setInterval(tick, 20000); } };
+    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; run(); }).observe(root);
+    document.addEventListener('visibilitychange', run);
+    tick();
+  });
+</script>
+
+<style>
+  .mk { border-top: 1px solid var(--line); }
+  .mk__board { margin-top: clamp(40px, 6vw, 72px); padding: clamp(20px, 3vw, 32px); display: flex; flex-direction: column; gap: clamp(24px, 3vw, 36px); background: linear-gradient(180deg, rgb(255 255 255 / .03), rgb(255 255 255 / .005)), var(--color-ink-900); }
+  .mk__board-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .mk__board-head .mono-label { display: inline-flex; align-items: center; gap: 10px; }
+  .mk__live { width: 7px; height: 7px; border-radius: 9px; background: var(--color-flame-500); animation: var(--animate-pulse-dot); }
+  @media (prefers-reduced-motion: reduce) { .mk__live { animation: none; } }
+  .mk__utc { color: var(--color-mist); }
+
+  .mk__clocks { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  @media (min-width: 760px) { .mk__clocks { grid-template-columns: repeat(3, 1fr); } }
+  .mk__clock { display: grid; grid-template-columns: 1fr auto; grid-template-areas: 'zone time' 'note time'; gap: 4px 16px; align-items: center; padding: 18px 20px; background: var(--color-ink-900); }
+  @media (min-width: 760px) { .mk__clock { grid-template-columns: 1fr; grid-template-areas: 'zone' 'time' 'note'; gap: 8px; padding: 22px 24px; } }
+  .mk__zone { grid-area: zone; font-size: 15px; color: var(--color-bone); font-weight: 500; }
+  .mk__time { grid-area: time; font-family: var(--font-mono); font-size: clamp(1.9rem, 3.4vw, 2.9rem); line-height: 1; letter-spacing: -.04em; color: var(--color-bone); font-variant-numeric: tabular-nums; }
+  .mk__note { grid-area: note; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--color-smoke); }
+  .mk__off { white-space: nowrap; color: var(--color-mist); }
+  .mk__off:empty { display: none; }
+  .mk__state { width: 6px; height: 6px; border-radius: 9px; background: var(--color-ink-500); flex: none; }
+  .mk__clock.is-open .mk__state { background: var(--color-ok); box-shadow: 0 0 8px var(--color-ok); }
+
+  /* Ruler */
+  .mk__ruler { display: flex; flex-direction: column; gap: 10px; --label-w: 0px; }
+  @media (min-width: 760px) { .mk__ruler { --label-w: 140px; } }
+  .mk__axis { position: relative; height: 18px; margin-left: var(--label-w); }
+  .mk__tick { position: absolute; top: 0; transform: translateX(-50%); font-family: var(--font-mono); font-size: 10.5px; color: var(--color-smoke); }
+  .mk__tick:first-child { transform: none; }
+  .mk__tick:last-child { transform: translateX(-100%); }
+  @media (max-width: 759px) { .mk__tick--minor { display: none; } }
+  .mk__lanes { position: relative; display: flex; flex-direction: column; gap: 14px; padding-block: 6px; }
+  .mk__lanes::before { content: ""; position: absolute; top: 0; bottom: 0; left: var(--label-w); right: 0; pointer-events: none;
+    background-image: linear-gradient(to right, rgb(255 255 255 / .06) 1px, transparent 1px); background-size: calc(100% / 8) 100%; }
+  .mk__lane { position: relative; display: grid; grid-template-columns: 1fr; gap: 6px; }
+  @media (min-width: 760px) { .mk__lane { grid-template-columns: var(--label-w) 1fr; align-items: center; gap: 0; } }
+  .mk__lane-l { font-family: var(--font-mono); font-size: 11.5px; color: var(--color-mist); }
+  .mk__track { position: relative; height: 14px; border-radius: 99px; background: rgb(255 255 255 / .03); }
+  .mk__band { position: absolute; top: 0; bottom: 0; border-radius: 99px; background: linear-gradient(90deg, rgb(245 131 39 / .55), rgb(252 168 0 / .55)); box-shadow: 0 0 18px -4px rgb(245 131 39 / .6); }
+  /* Overlap column + "now" marker live in an overlay that spans only the track area */
+  .mk__overlay { position: absolute; top: -4px; bottom: -4px; left: var(--label-w); right: 0; pointer-events: none; }
+  .mk__overlap, .mk__now { position: absolute; top: 0; bottom: 0; }
+  .mk__overlap { background: rgb(255 210 31 / .08); border-inline: 1px dashed rgb(255 210 31 / .45); }
+  .mk__now { width: 0; border-left: 1px solid var(--color-bone); }
+  .mk__now[hidden] { display: none; }
+  .mk__now-l { position: absolute; bottom: -20px; left: 0; transform: translateX(-50%); font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink-950); background: var(--color-bone); padding: 1px 6px; border-radius: 4px; }
+  .mk__legend { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-left: var(--label-w); margin-top: 24px; font-family: var(--font-mono); font-size: 11px; color: var(--color-smoke); }
+  .mk__legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .mk__sw { width: 18px; height: 8px; border-radius: 9px; display: inline-block; }
+  .mk__sw--band { background: linear-gradient(90deg, rgb(245 131 39 / .7), rgb(252 168 0 / .7)); }
+  .mk__sw--ov { background: rgb(255 210 31 / .15); border: 1px dashed rgb(255 210 31 / .6); border-radius: 2px; }
+  .mk__legend-note { flex-basis: 100%; }
+  @media (min-width: 1024px) { .mk__legend-note { flex-basis: auto; margin-left: auto; } }
+
+  /* Facts — a quiet three-column list, not three boxed cards */
+  .mk__facts { display: grid; gap: 0; margin-top: clamp(40px, 5vw, 64px); }
+  @media (min-width: 860px) { .mk__facts { grid-template-columns: repeat(3, 1fr); gap: 40px; } }
+  .mk__fact { display: grid; grid-template-columns: 28px 1fr; gap: 10px 14px; align-items: center; padding: 22px 0 26px; border-top: 1px solid var(--line); }
+  .mk__fact-icon { color: var(--color-flame-400); display: grid; place-items: center; }
+  .mk__fact-title { font-size: 1.1rem; letter-spacing: -.02em; }
+  .mk__fact-body { grid-column: 2; color: var(--color-mist); font-size: 15.5px; }
+</style>
