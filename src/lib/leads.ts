@@ -39,7 +39,9 @@ export async function submitLead(payload: LeadPayload): Promise<{ ok: boolean; e
   };
 
   if (!ENDPOINT) {
-    if (import.meta.env.PROD && import.meta.env.PUBLIC_LEADS_PREVIEW !== '1') {
+    // Preview hosts (vercel.app / netlify.app deploy links, localhost) fake success so demos work end to end.
+    const previewHost = typeof location !== 'undefined' && /(\.vercel\.app|\.netlify\.app|^localhost|^127\.0\.0\.1)$/.test(location.hostname);
+    if (import.meta.env.PROD && import.meta.env.PUBLIC_LEADS_PREVIEW !== '1' && !previewHost) {
       console.error('[lead] PUBLIC_LEADS_ENDPOINT is not set; submission not sent');
       return { ok: false, error: 'not-configured' };
     }

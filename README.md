@@ -24,6 +24,8 @@ npm run preview    # serves dist/ locally
 
 `dist/` is a plain static site. Any static host works (Vercel, Netlify, Cloudflare Pages, S3 + CloudFront).
 On Vercel/Netlify: import the repository, framework preset **Astro**, build command `npm run build`, output directory `dist`.
+`vercel.json` adds trailing-slash URLs, long caching for `/_astro/*`, and `noindex` on `*.vercel.app` links (so preview links never compete with the real domain).
+On preview hosts (`*.vercel.app`, `*.netlify.app`, localhost) forms without an endpoint fake success so demos work; on the real domain they need `PUBLIC_LEADS_ENDPOINT`.
 
 ## Forms and leads
 
