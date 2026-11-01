@@ -1,0 +1,94 @@
+---
+import '@/styles/global.css';
+import Nav from '@/components/Nav.astro';
+import Footer from '@/components/Footer.astro';
+import CommandPalette from '@/components/widgets/CommandPalette/CommandPalette';
+import { LANG_META, LANGS, stripLang, localize, type Lang } from '@/i18n';
+import { SITE } from '@/data/site';
+import unboundedWoff2 from '@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2?url';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Path of the OG image under /public (default: /og/default.png) */
+  ogImage?: string;
+  noindex?: boolean;
+  /** Extra JSON-LD objects for this page */
+  jsonLd?: Record<string, unknown>[];
+  /** Hide the global footer (rare) */
+  bare?: boolean;
+}
+const { lang, title, description, ogImage = '/og/default.png', noindex = false, jsonLd = [], bare = false } = Astro.props;
+const neutralPath = stripLang(Astro.url.pathname);
+const canonical = new URL(localize(lang, neutralPath), SITE.url).href;
+const fullTitle = title.includes('Sandbox') ? title : `${title} — Sandbox`;
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Sandbox',
+  legalName: SITE.legalName,
+  url: SITE.url,
+  logo: `${SITE.url}/favicon.svg`,
+  email: SITE.email,
+  address: { '@type': 'PostalAddress', addressLocality: 'Albuquerque', addressRegion: 'NM', addressCountry: 'US' },
+  areaServed: ['US', 'Europe', 'Latin America'],
+  knowsAbout: ['Artificial intelligence', 'AI agents', 'AI consulting', 'AI marketing', 'Generative engine optimization', 'AI training'],
+};
+---
+<!doctype html>
+<html lang={LANG_META[lang].htmlLang} class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={new URL(localize(l, neutralPath), SITE.url).href} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(localize('en', neutralPath), SITE.url).href} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sandbox" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(ogImage, SITE.url).href} />
+    <meta property="og:locale" content={LANG_META[lang].ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preload" href={unboundedWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
+    <script type="application/ld+json" set:html={JSON.stringify(org)} />
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+  </head>
+  <body class="grain">
+    <Nav lang={lang} />
+    <main id="main">
+      <slot />
+    </main>
+    {!bare && <Footer lang={lang} />}
+    <CommandPalette client:idle lang={lang} />
+
+    <script>
+      // Scroll reveal: [data-reveal] elements fade/slide in once. Stagger with style="--reveal-delay: 120".
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-in'));
+      }
+    </script>
+  </body>
+</html>

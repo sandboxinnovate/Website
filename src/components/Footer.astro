@@ -1,0 +1,109 @@
+---
+import Logo from './ui/Logo.astro';
+import Icon from './ui/Icon.astro';
+import { UI } from '@/i18n/ui';
+import { localize, type Lang } from '@/i18n';
+import { UNITS, SITE } from '@/data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = <T,>(o: Record<Lang, T>) => o[lang];
+const year = new Date().getFullYear();
+const company = [
+  { href: localize(lang, '/about'), label: t(UI.nav.about) },
+  { href: localize(lang, '/work'), label: t(UI.nav.work) },
+  { href: localize(lang, '/#method'), label: t(UI.nav.method) },
+  { href: localize(lang, '/diagnostic'), label: t(UI.nav.diagnostic) },
+  { href: localize(lang, '/contact'), label: t(UI.nav.contact) },
+];
+---
+<footer class="ft">
+  <div class="container-x ft__grid">
+    <div class="ft__brand">
+      <Logo href={localize(lang, '/')} size="lg" />
+      <p class="ft__tagline">{t(UI.footer.tagline)}</p>
+      <span class="ft__status"><span class="ft__status-dot" aria-hidden="true"></span>{t(UI.footer.status)}</span>
+    </div>
+
+    <nav class="ft__col" aria-label={t(UI.footer.services)}>
+      <p class="mono-label">{t(UI.footer.services)}</p>
+      <ul>
+        {UNITS.map((u) => (
+          <li><a href={localize(lang, `/services/${u.slug}`)}><span class="ft__code">{u.code}</span>{t(u.name)}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <nav class="ft__col" aria-label={t(UI.footer.company)}>
+      <p class="mono-label">{t(UI.footer.company)}</p>
+      <ul>{company.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </nav>
+
+    <div class="ft__col ft__news">
+      <p class="mono-label">{t(UI.footer.newsletterTitle)}</p>
+      <p class="ft__news-body">{t(UI.footer.newsletterBody)}</p>
+      <form class="ft__form" data-newsletter data-lang={lang} novalidate>
+        <label class="sr-only" for="ft-email">Email</label>
+        <input id="ft-email" type="email" name="email" required autocomplete="email" placeholder={t(UI.footer.newsletterPlaceholder)} />
+        <button type="submit" aria-label={t(UI.footer.newsletterCta)}><Icon name="arrow-right" size={18} /></button>
+      </form>
+      <p class="ft__news-ok" data-newsletter-ok hidden>{t(UI.footer.newsletterOk)}</p>
+      <div class="ft__contact">
+        <a href={`mailto:${SITE.email}`}><Icon name="mail" size={16} />{SITE.email}</a>
+        <span><Icon name="globe" size={16} />{t(SITE.markets)}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft__giant" aria-hidden="true">SANDBOX</div>
+
+  <div class="container-x ft__base">
+    <span>© {year} {SITE.legalName}. {t(UI.footer.rights)}</span>
+    <span class="mono-label">{SITE.location}</span>
+  </div>
+</footer>
+
+<script>
+  import { submitLead, isValidEmail } from '@/lib/leads';
+  document.querySelectorAll<HTMLFormElement>('[data-newsletter]').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = form.querySelector('input')!;
+      if (!isValidEmail(input.value)) { input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
+      input.removeAttribute('aria-invalid');
+      const res = await submitLead({ kind: 'newsletter', email: input.value, lang: (form.dataset.lang as 'en' | 'es') ?? 'en' });
+      if (res.ok) { form.hidden = true; form.parentElement!.querySelector<HTMLElement>('[data-newsletter-ok]')!.hidden = false; }
+    });
+  });
+</script>
+
+<style>
+  .ft { position: relative; margin-top: 40px; border-top: 1px solid var(--line); overflow: hidden; background: linear-gradient(180deg, transparent, rgb(217 76 0 / .05)); }
+  .ft__grid { display: grid; gap: 48px; padding-top: 80px; padding-bottom: 40px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .ft__grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1080px) { .ft__grid { grid-template-columns: 1.4fr .8fr .8fr 1.3fr; } }
+  .ft__brand { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+  .ft__tagline { max-width: 340px; color: var(--color-mist); font-size: 16px; }
+  .ft__status { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--color-mist); padding: 7px 12px; border-radius: 99px; border: 1px solid var(--line); }
+  .ft__status-dot { width: 7px; height: 7px; border-radius: 9px; background: var(--color-ok); box-shadow: 0 0 10px var(--color-ok); }
+  .ft__col { display: flex; flex-direction: column; gap: 18px; }
+  .ft__col ul { display: flex; flex-direction: column; gap: 10px; }
+  .ft__col a { color: var(--color-mist); transition: color .2s; display: inline-flex; gap: 10px; align-items: baseline; }
+  .ft__col a:hover { color: var(--color-bone); }
+  .ft__code { font-family: var(--font-mono); font-size: 11px; color: var(--color-smoke); }
+  .ft__news-body { color: var(--color-mist); font-size: 15px; margin-top: -6px; }
+  .ft__form { display: flex; align-items: center; height: 52px; padding: 5px 5px 5px 18px; border-radius: 99px; border: 1px solid var(--line-strong); background: rgb(255 255 255 / .02); transition: border-color .2s; }
+  .ft__form:focus-within { border-color: rgb(245 131 39 / .6); }
+  .ft__form input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: var(--color-bone); font-size: 15px; }
+  .ft__form input[aria-invalid='true'] { color: var(--color-err); }
+  .ft__form input::placeholder { color: var(--color-smoke); }
+  .ft__form button { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 99px; background: var(--grad-cta); color: #1a0d03; cursor: pointer; }
+  .ft__news-ok { color: var(--color-ok); font-size: 15px; }
+  .ft__contact { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; font-size: 14.5px; }
+  .ft__contact a, .ft__contact span { display: inline-flex; align-items: center; gap: 10px; color: var(--color-mist); }
+  .ft__giant { font-family: var(--font-display); font-weight: 600; font-size: clamp(56px, 15.6vw, 236px); line-height: .8; letter-spacing: -.055em; text-align: center;
+    color: transparent; user-select: none; margin-top: 24px; white-space: nowrap;
+    background: linear-gradient(180deg, rgb(245 131 39 / .22), rgb(245 131 39 / .02) 78%); -webkit-background-clip: text; background-clip: text; }
+  .ft__base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 24px; padding-bottom: 28px; font-size: 13px; color: var(--color-smoke); border-top: 1px solid var(--line); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>

@@ -1,0 +1,43 @@
+---
+/**
+ * Standard section header: mono index + eyebrow + title + optional lede.
+ *   <SectionHeading index="02" eyebrow="Method" title="How we work" lede="…" align="left" />
+ * Title accepts HTML (use <em> for the flame-gradient accent words).
+ */
+interface Props {
+  index?: string;
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  align?: 'left' | 'center';
+  as?: 'h1' | 'h2' | 'h3';
+  size?: 'lg' | 'md';
+  class?: string;
+}
+const { index, eyebrow, title, lede, align = 'left', as: H = 'h2', size = 'lg', class: cls = '' } = Astro.props;
+---
+<header class:list={['sh', `sh--${align}`, cls]} data-reveal>
+  {(index || eyebrow) && (
+    <div class="sh__meta">
+      {index && <span class="mono-label">[{index}]</span>}
+      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    </div>
+  )}
+  <H class:list={['sh__title', size === 'lg' ? 'display-lg' : 'display-md']} set:html={title} />
+  {lede && <p class="sh__lede lede">{lede}</p>}
+  <slot />
+</header>
+
+<style>
+  .sh { display: flex; flex-direction: column; gap: 22px; max-width: 900px; }
+  .sh--center { align-items: center; text-align: center; margin-inline: auto; }
+  .sh__meta { display: flex; align-items: center; gap: 14px; }
+  .sh__lede { max-width: 640px; }
+  .sh :global(em) {
+    font-style: normal;
+    background: var(--grad-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+</style>

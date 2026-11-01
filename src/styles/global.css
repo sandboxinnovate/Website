@@ -1,0 +1,209 @@
+@import "tailwindcss";
+@import "@fontsource-variable/unbounded";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* ------------------------------------------------------------------
+   Satoshi (Fontshare, free for commercial use) — self-hosted
+------------------------------------------------------------------- */
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-300.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-900.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: swap; }
+
+/* ------------------------------------------------------------------
+   Design tokens (brand kit + measured from the current site)
+   Use as Tailwind utilities: bg-ink-950, text-flame-500, font-display…
+------------------------------------------------------------------- */
+@theme {
+  /* Surfaces — near-black with a warm undertone (brand #0A0A0A / #242020) */
+  --color-ink-950: #0a0a0a;   /* page background */
+  --color-ink-925: #0d0c0c;
+  --color-ink-900: #111010;
+  --color-ink-850: #161414;
+  --color-ink-800: #1c1919;   /* cards */
+  --color-ink-750: #211e1e;
+  --color-ink-700: #242020;   /* brand charcoal */
+  --color-ink-600: #2f2a2a;
+  --color-ink-500: #3d3737;
+
+  /* Text */
+  --color-bone: #f4efe9;      /* primary text, warm white */
+  --color-mist: #b8b0aa;      /* secondary text */
+  --color-smoke: #7d7570;     /* tertiary / captions */
+
+  /* Flame — the brand orange family */
+  --color-flame-100: #ffe3cc;
+  --color-flame-200: #ffc49a;
+  --color-flame-300: #ffa066;
+  --color-flame-400: #ff8442; /* brand light */
+  --color-flame-500: #f58327; /* UI orange (site) */
+  --color-flame-600: #d96a0f; /* brand primary */
+  --color-flame-700: #d65805; /* brand deep */
+  --color-flame-800: #b8460a;
+  --color-ember: #d94c00;     /* glow core */
+  --color-amber: #fca800;     /* gradient end */
+  --color-sun: #ffd21f;       /* logo top */
+
+  /* Signal colours for system UIs (use sparingly) */
+  --color-ok: #7ad19b;
+  --color-warn: #f2c14e;
+  --color-err: #ff6b5a;
+
+  --font-display: "Unbounded Variable", "Unbounded", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-card: 20px;
+  --radius-xl2: 28px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+  --animate-marquee-reverse: marquee-reverse var(--marquee-duration, 40s) linear infinite;
+  --animate-pulse-dot: pulse-dot 2s var(--ease-out-expo) infinite;
+}
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes marquee-reverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgb(245 131 39 / .55); } 70%, 100% { box-shadow: 0 0 0 8px rgb(245 131 39 / 0); } }
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+  --line: rgb(255 255 255 / .08);
+  --line-strong: rgb(255 255 255 / .14);
+  --grad-cta: linear-gradient(96deg, #f56f27 0%, #fca800 100%);
+  --grad-flame: linear-gradient(180deg, #ffd21f 0%, #f7921e 42%, #e2540c 100%);
+  --grad-text: linear-gradient(92deg, #ffb831 0%, #f58327 45%, #e2540c 100%);
+  --nav-h: 72px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --maxw: 1280px;
+}
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--nav-h) + 16px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection { background: var(--color-flame-500); color: var(--color-ink-950); }
+
+:focus-visible { outline: 2px solid var(--color-flame-400); outline-offset: 3px; border-radius: 6px; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* ------------------------------------------------------------------
+   Layout primitives
+------------------------------------------------------------------- */
+@utility container-x { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+@utility section-y { padding-block: clamp(80px, 12vw, 160px); }
+
+/* ------------------------------------------------------------------
+   Type helpers
+------------------------------------------------------------------- */
+@utility display-xl { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.6rem, 7.2vw, 6.4rem); line-height: .98; letter-spacing: -0.045em; }
+@utility display-lg { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.1rem, 4.6vw, 4rem); line-height: 1.02; letter-spacing: -0.04em; }
+@utility display-md { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.08; letter-spacing: -0.035em; }
+@utility lede { font-size: clamp(1.06rem, 1.4vw, 1.3rem); line-height: 1.55; color: var(--color-mist); }
+@utility mono-label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-smoke); }
+@utility text-flame-grad { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* ------------------------------------------------------------------
+   Components (shared across the site)
+------------------------------------------------------------------- */
+
+/* Eyebrow tag — the small pill above section titles */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .55em;
+  padding: .42em .9em .42em .75em; border-radius: 999px;
+  background: rgb(255 255 255 / .04); border: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--color-flame-400);
+}
+.eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: var(--color-flame-500); box-shadow: 0 0 10px var(--color-flame-500); }
+
+/* Buttons */
+.btn {
+  --btn-h: 52px;
+  position: relative; display: inline-flex; align-items: center; gap: 14px;
+  height: var(--btn-h); padding: 0 6px 0 24px; border-radius: 999px;
+  font-family: var(--font-display); font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  white-space: nowrap; cursor: pointer; isolation: isolate;
+  transition: transform .5s var(--ease-out-expo), box-shadow .5s var(--ease-out-expo), background-color .3s, color .3s, border-color .3s;
+}
+.btn .btn-chip {
+  display: grid; place-items: center; width: calc(var(--btn-h) - 12px); height: calc(var(--btn-h) - 12px); border-radius: 999px;
+  transition: transform .5s var(--ease-out-expo);
+}
+.btn .btn-chip svg { width: 16px; height: 16px; transition: transform .5s var(--ease-out-expo); }
+.btn:hover .btn-chip svg { transform: rotate(45deg); }
+.btn:active { transform: scale(.98); }
+
+.btn-primary { background: var(--grad-cta); color: #1a0d03; box-shadow: 0 10px 40px -12px rgb(245 111 39 / .65), inset 0 1px 0 rgb(255 255 255 / .35); }
+.btn-primary .btn-chip { background: rgb(26 13 3 / .92); color: var(--color-flame-400); }
+.btn-primary:hover { box-shadow: 0 18px 60px -12px rgb(245 111 39 / .85), inset 0 1px 0 rgb(255 255 255 / .35); }
+
+.btn-ghost { background: rgb(255 255 255 / .03); color: var(--color-bone); border: 1px solid var(--line-strong); backdrop-filter: blur(10px); }
+.btn-ghost .btn-chip { background: rgb(255 255 255 / .06); color: var(--color-flame-400); }
+.btn-ghost:hover { border-color: rgb(245 131 39 / .5); background: rgb(245 131 39 / .06); }
+
+.btn-sm { --btn-h: 42px; padding-left: 18px; font-size: 11.5px; gap: 10px; }
+.btn-plain { padding-right: 24px; }
+
+/* Cards */
+.card {
+  position: relative; border-radius: var(--radius-card);
+  background: linear-gradient(180deg, rgb(255 255 255 / .035), rgb(255 255 255 / .01)), var(--color-ink-850);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .05);
+}
+.card-hover { transition: border-color .4s, transform .6s var(--ease-out-expo), background-color .4s; }
+.card-hover:hover { border-color: rgb(245 131 39 / .35); }
+
+/* Hairline grid background (blueprint feel) */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / .045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / .045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+
+/* Signature ember glow */
+.glow-ember { position: absolute; pointer-events: none; border-radius: 50%; filter: blur(60px); opacity: .55;
+  background: radial-gradient(closest-side, rgb(217 76 0 / .9), rgb(217 76 0 / .35) 45%, transparent 75%); }
+
+/* Film grain overlay — breaks the "flat digital" look */
+.grain::after {
+  content: ""; position: fixed; inset: -50%; z-index: 100; pointer-events: none; opacity: .055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Scroll reveal — add data-reveal to any element; Base.astro wires the observer.
+   Elements are visible by default; JS opts them into the animation (no-JS safe). */
+.js [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease-out-expo), transform 1.1s var(--ease-out-expo); transition-delay: calc(var(--reveal-delay, 0) * 1ms); }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* Key-cap (used by the command palette hint) */
+.kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--color-mist);
+  background: rgb(255 255 255 / .05); border: 1px solid var(--line-strong); border-bottom-width: 2px; }
+
+.sr-only-focusable:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

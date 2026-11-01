@@ -1,0 +1,9 @@
+---
+import Unit from '@/views/Unit.astro';
+import { UNITS, type UnitSlug } from '@/data/site';
+export function getStaticPaths() {
+  return UNITS.map((u) => ({ params: { slug: u.slug } }));
+}
+const { slug } = Astro.params as { slug: UnitSlug };
+---
+<Unit lang="es" slug={slug} />

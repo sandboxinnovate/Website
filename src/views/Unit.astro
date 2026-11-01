@@ -1,0 +1,11 @@
+---
+// STUB — to be replaced.
+import Base from '@/layouts/Base.astro';
+import type { Lang } from '@/i18n';
+import type { UnitSlug } from '@/data/site';
+interface Props { lang: Lang; slug: UnitSlug }
+const { lang, slug } = Astro.props;
+---
+<Base lang={lang} title={slug} description={slug}>
+  <section class="container-x section-y" style="padding-top:160px"><h1 class="display-lg">Unit: {slug} ({lang})</h1></section>
+</Base>

@@ -1,0 +1,27 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from '@/data/site';
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'ghost';
+  size?: 'md' | 'sm';
+  icon?: IconName | false;
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: unknown;
+}
+const { href, variant = 'primary', size = 'md', icon = 'arrow-up-right', type = 'button', class: cls = '', ...rest } = Astro.props;
+const classes = ['btn', `btn-${variant}`, size === 'sm' && 'btn-sm', icon === false && 'btn-plain', cls];
+---
+{href ? (
+  <a href={href} class:list={classes} {...rest}>
+    <span><slot /></span>
+    {icon && <span class="btn-chip"><Icon name={icon} size={16} stroke={1.8} /></span>}
+  </a>
+) : (
+  <button type={type} class:list={classes} {...rest}>
+    <span><slot /></span>
+    {icon && <span class="btn-chip"><Icon name={icon} size={16} stroke={1.8} /></span>}
+  </button>
+)}
