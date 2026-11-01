@@ -20,8 +20,8 @@ export const HOME = {
     titleB: { en: 'your business', es: 'tu negocio' } as S,
     titleC: { en: 'and does the work.', es: 'y hace el trabajo.' } as S,
     lede: {
-      en: 'We design, build and run AI for companies across the US, Europe and Latin America — custom brains and agents, hands-on consulting and AI-native marketing. We run our own company on it first.',
-      es: 'Diseñamos, construimos y operamos IA para empresas de Estados Unidos, Europa y Latinoamérica: brains y agentes a medida, consultoría práctica y marketing nativo en IA. Primero lo usamos en nuestra propia empresa.',
+      en: 'We design, build and run AI for companies across the US, Europe and Latin America — custom brains and agents, hands-on consulting and AI-native marketing. We use it in our own work first.',
+      es: 'Diseñamos, construimos y operamos IA para empresas de Estados Unidos, Europa y Latinoamérica: brains y agentes a medida, consultoría práctica y marketing nativo en IA. Primero la usamos en nuestro propio trabajo.',
     } as S,
     ctaPrimary: { en: 'Book a strategy call', es: 'Agendar una llamada' } as S,
     ctaSecondary: { en: 'Take the 3-min AI diagnostic', es: 'Diagnóstico de IA en 3 min' } as S,
@@ -38,8 +38,8 @@ export const HOME = {
     index: '01',
     eyebrow: { en: 'Why Sandbox', es: 'Por qué Sandbox' } as S,
     text: {
-      en: 'Most companies don’t need another AI tool. They need AI that understands how they work, connects to the systems they already use and takes real work off their team’s plate. That’s what we build — and it’s what Sandbox runs on every day.',
-      es: 'La mayoría de las empresas no necesita otra herramienta de IA. Necesita IA que entienda cómo trabaja, se conecte con los sistemas que ya usa y le quite trabajo real a su equipo. Eso es lo que construimos — y es con lo que Sandbox funciona todos los días.',
+      en: 'Most companies don’t need another AI tool. They need AI that understands how they work, connects to the systems they already use and takes real work off their team’s plate. That’s what we build — and what we use in our own work every day.',
+      es: 'La mayoría de las empresas no necesita otra herramienta de IA. Necesita IA que entienda cómo trabaja, se conecte con los sistemas que ya usa y le quite trabajo real a su equipo. Eso es lo que construimos — y lo que usamos en nuestro propio trabajo todos los días.',
     } as S,
     /** Words (lowercase, no punctuation) rendered in flame orange once lit */
     accents: {
@@ -152,17 +152,18 @@ export const HOME = {
   proof: {
     index: '07',
     eyebrow: { en: 'Proof', es: 'Resultados' } as S,
-    title: { en: 'We run on what <em>we sell</em>', es: 'Funcionamos con lo que <em>vendemos</em>' } as S,
-    symphonyLabel: { en: 'Featured system', es: 'Sistema destacado' } as S,
-    symphonyTitle: { en: 'Symphony — the brain that runs Sandbox', es: 'Symphony — el brain con el que funciona Sandbox' } as S,
-    symphonyBody: {
-      en: 'Our own AI brain coordinates specialized agents for research, content, reporting and operations on top of everything our company knows. Every system we build for clients is battle-tested here first.',
-      es: 'Nuestro propio brain de IA coordina agentes especializados en investigación, contenido, reportes y operaciones sobre todo lo que sabe nuestra empresa. Cada sistema que construimos para clientes se prueba primero aquí.',
+    title: { en: 'Proof, not <em>promises</em>', es: 'Resultados, no <em>promesas</em>' } as S,
+    featureLabel: { en: 'What we build', es: 'Lo que construimos' } as S,
+    featureTitle: { en: 'A brain built around one company', es: 'Un brain construido para una sola empresa' } as S,
+    featureBody: {
+      en: 'We connect what a company knows — documents, CRM, conversations, history — to agents that research, draft, report and operate across its tools. People stay in the loop where it matters.',
+      es: 'Conectamos lo que sabe una empresa — documentos, CRM, conversaciones, historial — con agentes que investigan, redactan, reportan y operan en sus herramientas. Las personas siguen al mando donde importa.',
     } as S,
-    symphonyLayers: {
+    featureLayers: {
       en: ['Knowledge', 'Agents', 'Tools', 'Human approval'],
       es: ['Conocimiento', 'Agentes', 'Herramientas', 'Aprobación humana'],
     } as L10n<string[]>,
+    featureCta: { en: 'Explore Brains', es: 'Ver Brains' } as S,
     casesLabel: { en: 'Client results', es: 'Resultados de clientes' } as S,
     cases: [
       { metric: '+40%', label: { en: 'website traffic', es: 'tráfico web' } as S, client: { en: 'Videographer portfolio · content', es: 'Portfolio de videógrafo · contenido' } as S },

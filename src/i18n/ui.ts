@@ -29,8 +29,8 @@ export const UI = {
   },
   footer: {
     tagline: {
-      en: 'We design, build and run AI for businesses — and we run our own company on it first.',
-      es: 'Diseñamos, construimos y operamos IA para empresas — y primero la usamos en la nuestra.',
+      en: 'We design, build and run AI for businesses — and we use it in our own work first.',
+      es: 'Diseñamos, construimos y operamos IA para empresas — y primero la usamos en nuestro propio trabajo.',
     },
     services: { en: 'Services', es: 'Servicios' },
     company: { en: 'Company', es: 'Empresa' },

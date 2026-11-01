@@ -7,19 +7,19 @@ import { localize, type Lang } from '@/i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const p = HOME.proof;
-const layers = p.symphonyLayers[lang];
+const layers = p.featureLayers[lang];
 ---
 <section class="pf section-y" aria-labelledby="pf-title">
   <div class="container-x">
     <SectionHeading index={p.index} eyebrow={p.eyebrow[lang]} title={p.title[lang]} />
 
     <div class="pf__grid">
-      <a href={localize(lang, '/work')} class="pf__sym card card-hover" data-reveal>
+      <a href={localize(lang, '/services/brains')} class="pf__sym card card-hover" data-reveal>
         <div class="pf__sym-copy">
-          <span class="mono-label pf__label"><span class="pf__dot" aria-hidden="true"></span>{p.symphonyLabel[lang]}</span>
-          <h3 class="pf__sym-title">{p.symphonyTitle[lang]}</h3>
-          <p class="pf__sym-body">{p.symphonyBody[lang]}</p>
-          <span class="pf__more">{p.seeWork[lang]} <Icon name="arrow-up-right" size={16} /></span>
+          <span class="mono-label pf__label"><span class="pf__dot" aria-hidden="true"></span>{p.featureLabel[lang]}</span>
+          <h3 class="pf__sym-title">{p.featureTitle[lang]}</h3>
+          <p class="pf__sym-body">{p.featureBody[lang]}</p>
+          <span class="pf__more">{p.featureCta[lang]} <Icon name="arrow-up-right" size={16} /></span>
         </div>
         <!-- Architecture sketch: four stacked layers with signal lines -->
         <div class="pf__arch" aria-hidden="true">
