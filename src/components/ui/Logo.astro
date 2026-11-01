@@ -13,7 +13,8 @@ const { href, size = 'md', markOnly = false, class: cls = '' } = Astro.props;
 const Tag = href ? 'a' : 'span';
 const uid = `lg-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<Tag href={href} class:list={['sbx-logo', `sbx-logo--${size}`, cls]} aria-label="Sandbox">
+<Tag href={href} class:list={['sbx-logo', `sbx-logo--${size}`, cls]}>
+  <span class="sbx-logo__sr">Sandbox</span>
   {!markOnly && <span class="sbx-logo__txt" aria-hidden="true">SANDB</span>}
   <svg class="sbx-logo__mark" viewBox="11.89 6 76.21 88" aria-hidden="true">
     <defs>
@@ -45,6 +46,8 @@ const uid = `lg-${Math.random().toString(36).slice(2, 8)}`;
     letter-spacing: 0.02em;
     text-decoration: none;
   }
+  /* Accessible name comes from this text (not aria-label), so the visible "SANDB⬡X" never mismatches it. */
+  .sbx-logo__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
   .sbx-logo--sm { --h: 17px; }
   .sbx-logo--lg { --h: 34px; }
   .sbx-logo__txt {

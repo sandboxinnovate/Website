@@ -1,4 +1,4 @@
-import { useId, type CSSProperties, type Ref } from 'react';
+import { useEffect, useId, type CSSProperties, type Ref } from 'react';
 import { localize, type Lang } from '@/i18n';
 import { unitBySlug } from '@/data/site';
 import { COPY } from './copy';
@@ -26,6 +26,17 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
   const next = LEVELS[result.level + 1];
   const strongest = result.ranked[result.ranked.length - 1];
   const weakest = result.ranked[0];
+  const balanced = result.dims[strongest] === result.dims[weakest];
+  /** Contact with the result attached: the units behind the three moves, the score and the level. */
+  const talkHref = localize(
+    lang,
+    `/contact?service=${[...new Set(result.moves.map((m) => m.unit))].join(',')}&from=diagnostic&score=${result.score}&level=${result.levelId}`,
+  );
+
+  // Let the page (e.g. the closing CTA on /diagnostic) point at the same hand-off.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('sbx:diagnostic-result', { detail: { href: talkHref } }));
+  }, [talkHref]);
   const dimNames = DIMS.map((d) => t.dims[d].name);
   const radarAria = t.radarAria(DIMS.map((d) => `${t.dims[d].name} ${result.dims[d]}`).join(', '));
 
@@ -50,20 +61,24 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
             />
             <p className="rd-res__text">{levelCopy.text}</p>
           </div>
-          <dl className="rd-res__sw">
-            <div>
-              <dt>{t.strongest}</dt>
-              <dd>
-                {t.dims[strongest].name} <b>{result.dims[strongest]}</b>
-              </dd>
-            </div>
-            <div>
-              <dt>{t.weakest}</dt>
-              <dd>
-                {t.dims[weakest].name} <b>{result.dims[weakest]}</b>
-              </dd>
-            </div>
-          </dl>
+          {balanced ? (
+            <p className="rd-res__sw rd-res__sw--one">{t.balanced(result.dims[strongest])}</p>
+          ) : (
+            <dl className="rd-res__sw">
+              <div>
+                <dt>{t.strongest}</dt>
+                <dd>
+                  {t.dims[strongest].name} <b>{result.dims[strongest]}</b>
+                </dd>
+              </div>
+              <div>
+                <dt>{t.weakest}</dt>
+                <dd>
+                  {t.dims[weakest].name} <b>{result.dims[weakest]}</b>
+                </dd>
+              </div>
+            </dl>
+          )}
           <ol className="rd-ladder" aria-label={t.ladderLabel}>
             {LEVELS.map((l, i) => (
               <li
@@ -109,6 +124,12 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
             {t.movesTitle}
           </h3>
           <p className="rd-moves__lede">{t.movesLede}</p>
+          <a className="btn btn-primary btn-sm rd-moves__cta" href={talkHref}>
+            <span>{t.talkCta}</span>
+            <span className="btn-chip">
+              <Ico name="arrow-up-right" size={16} />
+            </span>
+          </a>
         </header>
         <ol className="rd-moves__list">
           {result.moves.map((m, i) => {
@@ -141,7 +162,7 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
         </ol>
       </section>
 
-      <LeadForm lang={lang} result={result} answers={answers} sentTo={sentTo} onSent={onSent} />
+      <LeadForm lang={lang} result={result} answers={answers} sentTo={sentTo} onSent={onSent} talkHref={talkHref} />
     </div>
   );
 }

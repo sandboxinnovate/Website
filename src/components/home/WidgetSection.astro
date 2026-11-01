@@ -1,7 +1,7 @@
 ---
 /**
  * Generic section that frames an interactive widget: heading on top, widget slot below,
- * with an optional side link and an ember glow behind the widget.
+ * with an optional side link. `accent` gives the title the flame-gradient <em> (one section per page).
  */
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import Icon from '@/components/ui/Icon.astro';
@@ -13,14 +13,14 @@ interface Props {
   title: string;
   lede: string;
   link?: { href: string; label: string };
-  glow?: 'left' | 'right' | 'center';
+  accent?: boolean;
 }
-const { id, index, eyebrow, title, lede, link, glow = 'center' } = Astro.props;
+const { id, index, eyebrow, title, lede, link, accent = false } = Astro.props;
 ---
 <section class="ws section-y" id={id} aria-labelledby={`${id}-h`}>
   <div class="container-x">
     <div class="ws__head">
-      <SectionHeading id={`${id}-h`} index={index} eyebrow={eyebrow} title={title} lede={lede} />
+      <SectionHeading id={`${id}-h`} index={index} eyebrow={eyebrow} title={title} lede={lede} accent={accent} />
       {link && (
         <a class="ws__link" href={link.href} data-reveal>
           {link.label}<Icon name="arrow-up-right" size={16} />
@@ -28,7 +28,6 @@ const { id, index, eyebrow, title, lede, link, glow = 'center' } = Astro.props;
       )}
     </div>
     <div class="ws__stage" data-reveal>
-      <div class:list={['glow-ember ws__glow', `ws__glow--${glow}`]} aria-hidden="true"></div>
       <slot />
     </div>
   </div>
@@ -40,8 +39,4 @@ const { id, index, eyebrow, title, lede, link, glow = 'center' } = Astro.props;
   .ws__link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 12.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--color-flame-400); padding-bottom: 6px; border-bottom: 1px solid rgb(245 131 39 / .4); }
   .ws__link:hover { color: var(--color-bone); border-color: var(--color-bone); }
   .ws__stage { position: relative; isolation: isolate; }
-  .ws__glow { z-index: -1; width: 70%; height: 80%; top: 10%; opacity: .28; }
-  .ws__glow--center { left: 15%; }
-  .ws__glow--left { left: -15%; }
-  .ws__glow--right { right: -15%; }
 </style>

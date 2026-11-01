@@ -48,6 +48,8 @@ export interface DiagnosticCopy {
   ladderLabel: string;
   strongest: string;
   weakest: string;
+  /** Shown instead of strongest / weakest when every dimension has the same score. */
+  balanced: (score: number) => string;
   byDimension: string;
   thresholdNote: (level: string, min: number) => string;
   topLevelNote: string;
@@ -58,6 +60,8 @@ export interface DiagnosticCopy {
   triggeredByOverall: (score: number) => string;
   earlyAccess: string;
   seeUnit: (unit: string) => string;
+  /** Primary action next to the three moves: opens /contact with the score attached. */
+  talkCta: string;
   editAnswers: string;
   gaugeAria: (score: number, level: string) => string;
   radarAria: (pairs: string) => string;
@@ -81,10 +85,13 @@ export interface DiagnosticCopy {
     badEmail: string;
     submit: string;
     sending: string;
+    wantsCall: string;
     consent: string;
+    privacy: string;
     error: string;
     okTitle: string;
-    okBody: (email: string) => string;
+    okBody: (email: string, wantsCall: boolean) => string;
+    okCall: string;
     okNext: string;
     fixErrors: (n: number) => string;
   };
@@ -235,7 +242,7 @@ const en: DiagnosticCopy = {
   moves: {
     diagnostic: {
       title: 'Map where AI pays off',
-      body: 'A 2–3 week AI Diagnostic: interviews, a process map and opportunities ranked by return, ending in a roadmap you can act on.',
+      body: 'A 2–3 week AI Opportunity Audit: interviews, a process map and opportunities ranked by return, ending in a roadmap you can act on.',
     },
     headOfAi: {
       title: 'Give AI a senior owner',
@@ -270,7 +277,7 @@ const en: DiagnosticCopy = {
       body: 'Link CRM, inbox, docs and calendar so AI can read and act across them — not just inside one tab.',
     },
     packaged: {
-      title: 'Start from a proven brain',
+      title: 'Start from an industry brain',
       body: 'Brains packaged by industry that plug into the tools you already run, so you skip most of the build.',
     },
     growth: {
@@ -305,6 +312,7 @@ const en: DiagnosticCopy = {
   ladderLabel: 'Maturity levels',
   strongest: 'Strongest',
   weakest: 'Holding you back',
+  balanced: (s) => `Balanced: every dimension at ${s}`,
   byDimension: 'By dimension',
   thresholdNote: (level, min) => `Dashed line: ${level} starts at ${min}`,
   topLevelNote: 'Dashed line: the AI-native threshold (80)',
@@ -315,6 +323,7 @@ const en: DiagnosticCopy = {
   triggeredByOverall: (s) => `Overall · ${s}`,
   earlyAccess: 'Early access',
   seeUnit: (u) => `See ${u}`,
+  talkCta: 'Review my result on a call',
   editAnswers: 'Change answers',
   gaugeAria: (s, l) => `Readiness score ${s} out of 100. Level: ${l}.`,
   radarAria: (pairs) => `Readiness by dimension: ${pairs}.`,
@@ -322,9 +331,9 @@ const en: DiagnosticCopy = {
 
   form: {
     eyebrow: 'Full report',
-    title: 'Get the full report and a 30-minute review call',
-    body: 'A written breakdown of every dimension, the reasoning behind your three moves and what each one involves. Then 30 minutes with our team to test it against your business.',
-    bullets: ['Breakdown by dimension', 'The reasoning behind each move', '30-minute review call'],
+    title: 'Get the full report by email',
+    body: 'A written breakdown of every dimension, the reasoning behind your three moves and what each one involves. If you want, add 30 minutes with our team to test it against your business.',
+    bullets: ['Breakdown by dimension', 'The reasoning behind each move', 'Optional 30-minute review call'],
     name: 'Name',
     email: 'Work email',
     company: 'Company',
@@ -337,10 +346,13 @@ const en: DiagnosticCopy = {
     badEmail: 'Enter a valid work email',
     submit: 'Send me the report',
     sending: 'Sending',
-    consent: 'We use your answers only to prepare the report and the call. No newsletter unless you ask for it.',
+    wantsCall: 'Also set up a 30-minute review call',
+    consent: 'We use your answers only to prepare the report and, if you ask, the call. No newsletter unless you ask for it.',
+    privacy: 'Privacy policy',
     error: 'We couldn’t send it. Try again, or write to us at',
     okTitle: 'Report requested',
-    okBody: (e) => `We’ll send your full report to ${e} and suggest times for the review call.`,
+    okBody: (e, call) => `We’ll send your full report to ${e}.${call ? ' We’ll also suggest times for the review call.' : ''}`,
+    okCall: 'Book the review call now',
     okNext: 'Meanwhile, explore',
     fixErrors: (n) => (n === 1 ? '1 field needs attention.' : `${n} fields need attention.`),
   },
@@ -490,11 +502,11 @@ const es: DiagnosticCopy = {
   moves: {
     diagnostic: {
       title: 'Mapea dónde rinde la IA',
-      body: 'Un Diagnóstico de IA de 2 a 3 semanas: entrevistas, mapa de procesos y oportunidades ordenadas por retorno, con una hoja de ruta lista para ejecutar.',
+      body: 'Una auditoría de oportunidades de IA de 2 a 3 semanas: entrevistas, mapa de procesos y oportunidades ordenadas por retorno, con una hoja de ruta lista para ejecutar.',
     },
     headOfAi: {
       title: 'Dale a la IA un responsable senior',
-      body: 'Un Head of AI fraccional mantiene la hoja de ruta en marcha mes a mes — prioridades, proveedores, implementaciones — sin contratar a tiempo completo.',
+      body: 'Un Head of AI fraccional mantiene la hoja de ruta en marcha mes a mes (prioridades, proveedores, implementaciones) sin contratar a tiempo completo.',
     },
     knowledge: {
       title: 'Reúne tu conocimiento en un solo lugar',
@@ -506,7 +518,7 @@ const es: DiagnosticCopy = {
     },
     sprint: {
       title: 'Automatiza tus primeros 2 o 3 procesos',
-      body: 'Un Sprint de Implementación de 4 a 8 semanas: documentamos los traspasos que más horas consumen, los automatizamos y capacitamos a quienes los operan.',
+      body: 'Un sprint de implementación de 4 a 8 semanas: documentamos los traspasos que más horas consumen, los automatizamos y capacitamos a quienes los operan.',
     },
     agents: {
       title: 'Pon agentes en tu proceso con más volumen',
@@ -525,7 +537,7 @@ const es: DiagnosticCopy = {
       body: 'Une CRM, correo, documentos y calendario para que la IA pueda leer y actuar entre ellos, no solo dentro de una pestaña.',
     },
     packaged: {
-      title: 'Parte de un brain probado',
+      title: 'Parte de un brain para tu industria',
       body: 'Brains empaquetados por industria que se conectan con las herramientas que ya usas, para saltarte buena parte de la construcción.',
     },
     growth: {
@@ -552,7 +564,7 @@ const es: DiagnosticCopy = {
   optionsLabel: 'Respuestas',
 
   result: 'Resultado',
-  run: (id) => `Corrida SBX-${id}`,
+  run: (id) => `Ejecución SBX-${id}`,
   scoredLocally: 'Calculado en tu navegador · aún no se envió nada',
   scoreLabel: 'Preparación',
   outOf: '/ 100',
@@ -560,16 +572,18 @@ const es: DiagnosticCopy = {
   ladderLabel: 'Niveles de madurez',
   strongest: 'Lo más fuerte',
   weakest: 'Lo que te frena',
+  balanced: (s) => `Parejo: todas las dimensiones en ${s}`,
   byDimension: 'Por dimensión',
   thresholdNote: (level, min) => `Línea punteada: ${level} empieza en ${min}`,
   topLevelNote: 'Línea punteada: el umbral de Nativo en IA (80)',
   movesTitle: 'Tus próximos tres pasos',
   movesLede: 'En el orden en que los daríamos, según tus dimensiones más débiles.',
-  horizons: ['Ahora', 'Después', 'Luego'],
+  horizons: ['Ahora', 'Después', 'Más adelante'],
   triggeredBy: (dim, s) => `${dim} · ${s}`,
   triggeredByOverall: (s) => `General · ${s}`,
   earlyAccess: 'Acceso anticipado',
   seeUnit: (u) => `Ver ${u}`,
+  talkCta: 'Revisar mi resultado en una llamada',
   editAnswers: 'Cambiar respuestas',
   gaugeAria: (s, l) => `Puntaje de preparación: ${s} de 100. Nivel: ${l}.`,
   radarAria: (pairs) => `Preparación por dimensión: ${pairs}.`,
@@ -577,25 +591,28 @@ const es: DiagnosticCopy = {
 
   form: {
     eyebrow: 'Reporte completo',
-    title: 'Recibe el reporte completo y una llamada de revisión de 30 minutos',
-    body: 'Un análisis por escrito de cada dimensión, el porqué de tus tres pasos y qué implica cada uno. Después, 30 minutos con nuestro equipo para contrastarlo con tu negocio.',
-    bullets: ['Análisis por dimensión', 'El porqué de cada paso', 'Llamada de revisión de 30 minutos'],
+    title: 'Recibe el reporte completo por correo',
+    body: 'Un análisis por escrito de cada dimensión, el porqué de tus tres pasos y qué implica cada uno. Si quieres, suma 30 minutos con nuestro equipo para contrastarlo con tu negocio.',
+    bullets: ['Análisis por dimensión', 'El porqué de cada paso', 'Llamada de revisión de 30 minutos, opcional'],
     name: 'Nombre',
-    email: 'Email de trabajo',
+    email: 'Correo de trabajo',
     company: 'Empresa',
     role: 'Cargo',
     region: 'Región',
     optional: 'opcional',
     regions: { us: 'Estados Unidos', eu: 'Europa', latam: 'Latinoamérica', other: 'Otra' },
-    ph: { name: 'Tu nombre', email: 'tu@empresa.com', company: 'Nombre de la empresa', role: 'Ej.: Gerente de Operaciones' },
+    ph: { name: 'Tu nombre', email: 'tu@empresa.com', company: 'Nombre de la empresa', role: 'Ej.: gerente de operaciones' },
     required: 'Obligatorio',
-    badEmail: 'Ingresa un email de trabajo válido',
+    badEmail: 'Ingresa un correo de trabajo válido',
     submit: 'Enviarme el reporte',
     sending: 'Enviando',
-    consent: 'Usamos tus respuestas solo para preparar el reporte y la llamada. Nada de newsletters, salvo que lo pidas.',
+    wantsCall: 'Quiero también una llamada de revisión de 30 minutos',
+    consent: 'Usamos tus respuestas solo para preparar el reporte y, si la pides, la llamada. Nada de newsletter si no lo pides.',
+    privacy: 'Política de privacidad',
     error: 'No pudimos enviarlo. Inténtalo de nuevo o escríbenos a',
     okTitle: 'Reporte solicitado',
-    okBody: (e) => `Enviaremos tu reporte completo a ${e} y te propondremos horarios para la llamada de revisión.`,
+    okBody: (e, call) => `Te enviaremos el reporte completo a ${e}.${call ? ' También te propondremos horarios para la llamada de revisión.' : ''}`,
+    okCall: 'Agendar ahora la llamada de revisión',
     okNext: 'Mientras tanto, explora',
     fixErrors: (n) => (n === 1 ? 'Revisa 1 campo.' : `Revisa ${n} campos.`),
   },

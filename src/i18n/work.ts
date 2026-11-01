@@ -22,7 +22,7 @@ export interface CaseStudy {
   /** One-line summary under the title */
   dek: S;
   client: S;
-  /** Square-ish card image + wide image for the detail view (both in /public/work) */
+  /** Card + wide image paths in /public/work. NOT rendered (see the note above CASES). */
   card: string;
   wide: { src: string; w: number; h: number };
   metrics: CaseMetric[];
@@ -33,10 +33,10 @@ export interface CaseStudy {
 
 export const WORK = {
   seo: {
-    title: { en: 'Work — client results and what we build with AI', es: 'Casos — resultados de clientes y lo que construimos con IA' } as S,
+    title: { en: 'Work: client results and the AI systems we build', es: 'Casos: resultados de clientes y lo que construimos' } as S,
     description: {
-      en: 'Client results from Sandbox: content, SEO, web and local growth case studies with real metrics — plus the reference architecture of a Sandbox AI brain.',
-      es: 'Resultados de clientes de Sandbox: casos de contenido, SEO, web y crecimiento local con métricas reales — y la arquitectura de referencia de un brain de IA de Sandbox.',
+      en: 'Client results from Sandbox in content, SEO, web and local growth, with real metrics, plus the reference architecture of a Sandbox AI brain.',
+      es: 'Resultados de clientes en contenido, SEO, web y crecimiento local, con métricas reales, y la arquitectura de referencia de un brain de IA de Sandbox.',
     } as S,
   },
 
@@ -99,12 +99,11 @@ export const WORK = {
     eyebrow: { en: 'Case studies', es: 'Casos de estudio' } as S,
     title: { en: 'Client <em>results</em>', es: 'Resultados de <em>clientes</em>' } as S,
     lede: {
-      en: 'Six projects from our marketing work — content, SEO, web and local growth — with the numbers each one moved.',
-      es: 'Seis proyectos de nuestro trabajo en marketing — contenido, SEO, web y crecimiento local — con los números que movió cada uno.',
+      en: 'Six projects from our marketing work in content, SEO, web and local growth, with the numbers each one moved.',
+      es: 'Seis proyectos de nuestro trabajo en marketing (contenido, SEO, web y crecimiento local) con los números que movió cada uno.',
     } as S,
-    filterLabel: { en: 'Filter case studies by unit', es: 'Filtrar casos por unidad' } as S,
+    filterLabel: { en: 'Filter case studies by service', es: 'Filtrar casos por servicio' } as S,
     all: { en: 'All', es: 'Todos' } as S,
-    noneYet: { en: 'No published cases yet', es: 'Aún sin casos publicados' } as S,
     showing: { en: 'Showing', es: 'Mostrando' } as S,
     of: { en: 'of', es: 'de' } as S,
     open: { en: 'Read the case', es: 'Ver el caso' } as S,
@@ -116,29 +115,40 @@ export const WORK = {
     did: { en: 'What we did', es: 'Qué hicimos' } as S,
     results: { en: 'Results', es: 'Resultados' } as S,
     caseWord: { en: 'Case', es: 'Caso' } as S,
-    mockup: { en: 'Website mockups', es: 'Mockups del sitio' } as S,
     slot: {
       label: { en: 'Next in this list', es: 'Lo próximo en esta lista' } as S,
-      title: { en: 'Brains and Consulting case studies', es: 'Casos de Brains y Consultoría' } as S,
+      title: { en: 'Brains and Consulting case studies', es: 'Casos de Brains y Consulting' } as S,
       body: {
         en: 'We publish a case only when the client signs off on it. Until then, we are happy to walk you through how we build on a call.',
         es: 'Publicamos un caso solo cuando el cliente lo aprueba. Mientras tanto, con gusto te mostramos cómo construimos en una llamada.',
       } as S,
-      cta: { en: 'Book a walkthrough', es: 'Agendar un recorrido' } as S,
+      cta: { en: 'Book a call', es: 'Agendar una llamada' } as S,
     },
   },
 
   cta: {
     title: { en: 'Your numbers could be <em>next</em>.', es: 'Tus números pueden ser los <em>siguientes</em>.' } as S,
     body: {
-      en: 'Tell us what you want to move — hours, response time, pipeline — and we will tell you how we would get there.',
-      es: 'Cuéntanos qué quieres mover — horas, tiempo de respuesta, pipeline — y te decimos cómo llegaríamos ahí.',
+      en: 'Tell us what you want to move (hours, response time, pipeline) and we will tell you how we would get there.',
+      es: 'Cuéntanos qué quieres mover (horas, tiempo de respuesta, pipeline) y te decimos cómo llegaríamos ahí.',
     } as S,
-    primary: { en: 'Book a strategy call', es: 'Agendar una llamada' } as S,
+    /** Footer of a growth case dialog (the page CTA keeps `body`). */
+    caseBody: {
+      en: 'Want numbers like these? Tell us which channel you want to move.',
+      es: '¿Quieres números así? Cuéntanos qué canal quieres mover.',
+    } as S,
+    primary: { en: 'Book a call', es: 'Agendar una llamada' } as S,
     secondary: { en: 'Take the AI diagnostic', es: 'Hacer el diagnóstico de IA' } as S,
   },
 };
 
+/**
+ * Screenshots in /public/work are not rendered: they are template/marketplace images.
+ * Restore card/wide images only with real, client-approved screenshots.
+ *
+ * Metrics: increases carry their sign in the value ('+40%'); labels are noun phrases that match
+ * the results text of the same case.
+ */
 export const CASES: CaseStudy[] = [
   {
     id: 'videographer',
@@ -153,7 +163,7 @@ export const CASES: CaseStudy[] = [
     card: '/work/videographer-card.webp',
     wide: { src: '/work/videographer-wide.webp', w: 1600, h: 1086 },
     metrics: [
-      { value: '40%', label: { en: 'Increase in website traffic', es: 'Más tráfico web' } },
+      { value: '+40%', label: { en: 'Website traffic', es: 'Tráfico web' } },
       { value: '70%', label: { en: 'Target keywords ranked', es: 'Palabras clave objetivo posicionadas' } },
     ],
     challenge: {
@@ -193,7 +203,7 @@ export const CASES: CaseStudy[] = [
     id: 'barbershop',
     unit: 'growth',
     tags: { en: ['Web', 'Local SEO', 'Social', 'Ads'], es: ['Web', 'SEO local', 'Redes', 'Anuncios'] },
-    title: { en: 'Transforming Barber Buzz', es: 'Más clientes para una barbería' },
+    title: { en: 'More new clients for a downtown barbershop', es: 'Más clientes para una barbería' },
     dek: {
       en: 'How a downtown barbershop grew its clientele with digital marketing.',
       es: 'Cómo una barbería del centro amplió su clientela con marketing digital.',
@@ -202,8 +212,8 @@ export const CASES: CaseStudy[] = [
     card: '/work/barbershop-card.webp',
     wide: { src: '/work/barbershop-wide.webp', w: 1600, h: 1086 },
     metrics: [
-      { value: '30%', label: { en: 'New client bookings', es: 'Más reservas de clientes nuevos' } },
-      { value: '50%', label: { en: 'Traffic and online bookings, led by local search', es: 'Tráfico y reservas online, impulsados por búsqueda local' } },
+      { value: '+30%', label: { en: 'New client bookings', es: 'Reservas de clientes nuevos' } },
+      { value: '+50%', label: { en: 'Traffic and online bookings, led by local search', es: 'Tráfico y reservas online, impulsados por búsqueda local' } },
     ],
     challenge: {
       en: 'A loyal base of regulars, but chain salons and booking apps were taking the new customers. The shop needed a modern online presence to keep growing.',
@@ -251,7 +261,7 @@ export const CASES: CaseStudy[] = [
     card: '/work/architecture-card.webp',
     wide: { src: '/work/architecture-wide.webp', w: 1400, h: 950 },
     metrics: [
-      { value: '60%', label: { en: 'Increase in organic traffic', es: 'Más tráfico orgánico' } },
+      { value: '+60%', label: { en: 'Organic traffic', es: 'Tráfico orgánico' } },
       { value: 'Page 1', label: { en: 'Search ranking for key architecture terms', es: 'Posición en búsquedas clave de arquitectura' } },
     ],
     challenge: {
@@ -269,7 +279,7 @@ export const CASES: CaseStudy[] = [
         'Investigamos palabras clave por servicio, tipo de proyecto y ubicación, y optimizamos contenidos, metaetiquetas y encabezados.',
         'Auditamos el sitio y corregimos velocidad, versión móvil, estructura y datos estructurados.',
         'Creamos contenido sobre los proyectos y el enfoque de diseño del estudio, más un blog de arquitectura y tendencias.',
-        'Optimizamos fichas locales y directorios, e impulsamos reseñas de clientes satisfechos.',
+        'Optimizamos fichas locales y perfiles en guías de empresas, e impulsamos reseñas de clientes satisfechos.',
       ],
     },
     results: {
@@ -292,13 +302,13 @@ export const CASES: CaseStudy[] = [
     title: { en: 'SEO for a landscaping business', es: 'SEO para una empresa de paisajismo' },
     dek: {
       en: 'A full SEO program — technical, content and links — for a landscaping company.',
-      es: 'Un programa completo de SEO — técnico, contenido y enlaces — para una empresa de paisajismo.',
+      es: 'Un programa completo de SEO (técnico, contenido y enlaces) para una empresa de paisajismo.',
     },
     client: { en: 'Landscaping business', es: 'Empresa de paisajismo' },
     card: '/work/landscaping-card.webp',
     wide: { src: '/work/landscaping-wide.webp', w: 1600, h: 1086 },
     metrics: [
-      { value: '60%', label: { en: 'Organic traffic increased', es: 'Aumento del tráfico orgánico' } },
+      { value: '+60%', label: { en: 'Organic traffic', es: 'Tráfico orgánico' } },
       { value: '80%', label: { en: 'Target keywords ranked', es: 'Palabras clave objetivo posicionadas' } },
     ],
     challenge: {
@@ -334,7 +344,7 @@ export const CASES: CaseStudy[] = [
     id: 'copywriter',
     unit: 'growth',
     tags: { en: ['Web design', 'Copy'], es: ['Diseño web', 'Copy'] },
-    title: { en: 'Crafting copy, crafting success', es: 'Un portfolio que consigue clientes' },
+    title: { en: 'A portfolio that wins clients for a copywriter', es: 'Un portfolio que consigue clientes' },
     dek: {
       en: 'A copywriter’s portfolio, redesigned to attract better clients.',
       es: 'El portfolio de una redactora, rediseñado para atraer mejores clientes.',
@@ -343,8 +353,8 @@ export const CASES: CaseStudy[] = [
     card: '/work/copywriter-card.webp',
     wide: { src: '/work/copywriter-wide.webp', w: 1600, h: 1280 },
     metrics: [
-      { value: '50%', label: { en: 'More inquiries and client leads', es: 'Más consultas y leads de clientes' } },
-      { value: '70%', label: { en: 'Growth in traffic and engagement', es: 'Crecimiento en tráfico y engagement' } },
+      { value: '+50%', label: { en: 'Inquiries and client leads', es: 'Consultas y leads de clientes' } },
+      { value: '+70%', label: { en: 'Traffic and engagement', es: 'Tráfico e interacción' } },
     ],
     challenge: {
       en: 'Strong work across marketing, technology and healthcare, but a website that hid it: dated design, clumsy navigation and a portfolio that didn’t surface the best pieces.',
@@ -372,7 +382,7 @@ export const CASES: CaseStudy[] = [
       ],
       es: [
         '50% más consultas y leads de clientes durante el primer mes después del relanzamiento.',
-        '70% más tráfico y engagement, incluyendo páginas vistas y tiempo en el sitio.',
+        '70% más tráfico e interacción, incluyendo páginas vistas y tiempo en el sitio.',
         'Los visitantes mencionaron el portfolio más claro como la razón para escribir.',
       ],
     },
@@ -381,7 +391,7 @@ export const CASES: CaseStudy[] = [
     id: 'pet-grooming',
     unit: 'growth',
     tags: { en: ['Web design', 'Local SEO', 'Email'], es: ['Diseño web', 'SEO local', 'Email'] },
-    title: { en: 'Paws & Pampering website design', es: 'Sitio web para un spa de mascotas' },
+    title: { en: 'Website and bookings for a pet grooming salon', es: 'Sitio web para un spa de mascotas' },
     dek: {
       en: 'How a boutique pet grooming salon grew bookings with a new site and digital marketing.',
       es: 'Cómo una peluquería boutique de mascotas aumentó sus reservas con un sitio nuevo y marketing digital.',
@@ -390,8 +400,8 @@ export const CASES: CaseStudy[] = [
     card: '/work/pet-grooming-card.webp',
     wide: { src: '/work/pet-grooming-wide.webp', w: 1600, h: 1086 },
     metrics: [
-      { value: '60%', label: { en: 'Online bookings surged', es: 'Aumento de reservas online' } },
-      { value: '25%', label: { en: 'Increase in repeat business', es: 'Más clientes recurrentes' } },
+      { value: '+60%', label: { en: 'Website traffic and online bookings', es: 'Tráfico web y reservas online' } },
+      { value: '+25%', label: { en: 'Repeat business', es: 'Clientes recurrentes' } },
     ],
     challenge: {
       en: 'Loved by local pet owners, but losing ground to grooming chains and DIY grooming at home. The salon needed new ways to attract clients and keep them coming back.',

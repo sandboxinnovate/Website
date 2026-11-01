@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import type { Lang } from '@/i18n';
+import { localize, type Lang } from '@/i18n';
 import type { ConsoleCopy } from './copy';
 import { pickS, type ScenarioDef } from './scenarios';
 import { TYPE_MS, fmtSec, useFrame, type FrameRegistry, type Timeline } from './engine';
@@ -79,6 +79,12 @@ export default function Outcome({ sc, tl, lang, ui, open, elapsed, reg }: Props)
               </p>
             </div>
           </figure>
+          <p className="ac-out__next">
+            <a className="ac-out__cta" href={localize(lang, '/contact?service=brains&offer=single-agent')}>
+              {ui.outcomeCta}
+              <Ico name="arrow-up-right" size={14} />
+            </a>
+          </p>
         </div>
       </div>
     </div>

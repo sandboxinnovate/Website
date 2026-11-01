@@ -1,7 +1,7 @@
 ---
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import Icon from '@/components/ui/Icon.astro';
-import { UNIT_COMMON } from '@/i18n/units';
+import { UNIT_COMMON, UNIT_COPY } from '@/i18n/units';
 import type { UnitCopy } from '@/i18n/units';
 import type { UnitSlug } from '@/data/site';
 import { localize, type Lang } from '@/i18n';
@@ -12,10 +12,11 @@ const o = copy.offers;
 const C = UNIT_COMMON.offers;
 const n = o.items.length;
 const LETTERS = 'ABCDEFGH';
-const slugify = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const slugify = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+/** ?offer= id: slug of the EN offer name at the same index, so the CRM sees one id in both languages. */
+const offerId = (i: number) => slugify(UNIT_COPY[slug].en.offers.items[i]?.name ?? o.items[i].name);
 ---
 <section class="uo" id="offers">
-  <div class="uo__glow glow-ember" aria-hidden="true"></div>
   <div class="container-x">
     <div class="uo__head">
       <SectionHeading index={index} eyebrow={o.eyebrow} title={o.title} lede={o.lede} />
@@ -52,7 +53,7 @@ const slugify = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]
               </div>
             </dl>
 
-            <a class="uo__ask" href={localize(lang, `/contact?service=${slug}&offer=${slugify(it.name)}`)} aria-label={`${C.ask[lang]}: ${it.name}`}>
+            <a class="uo__ask" href={localize(lang, `/contact?service=${slug}&offer=${offerId(i)}`)} aria-label={`${C.ask[lang]}: ${it.name}`}>
               {C.ask[lang]}<Icon name="arrow-up-right" size={15} />
             </a>
           </article>
@@ -63,9 +64,8 @@ const slugify = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]
 </section>
 
 <style>
-  .uo { padding-block: clamp(64px, 8vw, 112px); }
+  .uo { padding-block: clamp(72px, 9vw, 128px); }
   .uo { position: relative; isolation: isolate; overflow-x: clip; }
-  .uo__glow { z-index: -1; width: 70vw; height: 520px; left: 15vw; top: 30%; opacity: .14; }
   .uo__head { margin-bottom: clamp(40px, 6vw, 72px); }
 
   .uo__grid { display: grid; gap: 14px; grid-template-columns: 1fr; }

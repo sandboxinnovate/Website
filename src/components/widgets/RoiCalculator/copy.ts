@@ -8,6 +8,7 @@ export interface SentenceArgs {
   people: string;
   peopleN: number;
   hours: string;
+  hoursN: number;
   automation: string;
   hoursBack: string;
   value: string;
@@ -69,7 +70,7 @@ export const COPY: Record<Lang, RoiCopy> = {
         label: 'Hours a week each spends on it',
         unit: () => 'h / week',
         hint: 'Copying data, chasing updates, reports, answering the same questions.',
-        valueText: (v) => `${v} hours a week`,
+        valueText: (v, n) => `${v} ${pl(n, 'hour', 'hours')} a week`,
       },
       rate: {
         label: 'Loaded hourly cost',
@@ -87,7 +88,7 @@ export const COPY: Record<Lang, RoiCopy> = {
     tip: {
       label: 'What is realistic?',
       title: 'What is realistic',
-      body: 'Most teams hand 30–50% of their repetitive work to AI in the first year. Go above 60% only when the process follows clear rules and its data already lives in your tools.',
+      body: 'For a first-year estimate, use 30–50%. Go above 60% only when the process follows clear rules and its data already lives in your tools.',
     },
     outputsTitle: 'What comes back',
     outputsMeta: 'per year · at full pace',
@@ -97,7 +98,7 @@ export const COPY: Record<Lang, RoiCopy> = {
       fte: { label: 'Full-time equivalent', unit: (n) => (n >= 0.95 && n < 1.05 ? 'person' : 'people') },
     },
     sentence: (a) => [
-      `With ${a.people} ${pl(a.peopleN, 'person', 'people')} spending ${a.hours} hours a week on repetitive work, handing `,
+      `With ${a.people} ${pl(a.peopleN, 'person', 'people')} spending ${a.hours} ${pl(a.hoursN, 'hour', 'hours')} a week on repetitive work, handing `,
       { b: `${a.automation}%` },
       ' of it to AI gives back about ',
       { b: `${a.hoursBack} hours a year` },
@@ -145,7 +146,7 @@ export const COPY: Record<Lang, RoiCopy> = {
         label: 'Horas a la semana que le dedica cada una',
         unit: () => 'h / semana',
         hint: 'Copiar datos, perseguir actualizaciones, armar reportes, responder lo mismo.',
-        valueText: (v) => `${v} horas a la semana`,
+        valueText: (v, n) => `${v} ${pl(n, 'hora', 'horas')} a la semana`,
       },
       rate: {
         label: 'Costo real por hora',
@@ -163,7 +164,7 @@ export const COPY: Record<Lang, RoiCopy> = {
     tip: {
       label: '¿Qué es realista?',
       title: 'Qué es realista',
-      body: 'La mayoría de los equipos le pasa a la IA entre el 30 y el 50 % de su trabajo repetitivo en el primer año. Pasa del 60 % solo si el proceso sigue reglas claras y sus datos ya viven en tus herramientas.',
+      body: 'Para estimar el primer año, usa entre 30% y 50%. Pasa del 60% solo si el proceso sigue reglas claras y sus datos ya están en tus herramientas.',
     },
     outputsTitle: 'Lo que recuperas',
     outputsMeta: 'por año · a ritmo pleno',
@@ -173,8 +174,8 @@ export const COPY: Record<Lang, RoiCopy> = {
       fte: { label: 'Equivalente a tiempo completo', unit: (n) => (n >= 0.95 && n < 1.05 ? 'persona' : 'personas') },
     },
     sentence: (a) => [
-      `Si ${a.people} ${pl(a.peopleN, 'persona dedica', 'personas dedican')} ${a.hours} horas a la semana a trabajo repetitivo y le pasas a la IA el `,
-      { b: `${a.automation} %` },
+      `Si ${a.people} ${pl(a.peopleN, 'persona dedica', 'personas dedican')} ${a.hours} ${pl(a.hoursN, 'hora', 'horas')} a la semana a trabajo repetitivo y le pasas a la IA el `,
+      { b: `${a.automation}%` },
       ', recuperas cerca de ',
       { b: `${a.hoursBack} horas al año` },
       ` — ${a.fteText}, que hoy te cuestan `,
@@ -206,8 +207,9 @@ export const COPY: Record<Lang, RoiCopy> = {
   },
 };
 
-/** "the time of 2.3 full-time people" — handles < 1 and ≈ 1. */
+/** "the time of 2.3 full-time people" — handles tiny totals, < 1 and ≈ 1. */
 export function fteText(lang: Lang, fte: number, formatted: string): string {
+  if (fte < 0.05) return lang === 'es' ? 'una pequeña parte de un puesto de tiempo completo' : 'a small slice of one full-time role';
   if (lang === 'es') {
     if (fte < 0.95) return `${formatted} de un puesto de tiempo completo`;
     if (fte < 1.05) return 'el tiempo de una persona de tiempo completo';

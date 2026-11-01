@@ -164,6 +164,12 @@ export function fmtDec(lang: Lang, n: number, digits = 1): string {
   return new Intl.NumberFormat(LOCALE[lang], { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(n);
 }
 
+/** Full-time equivalents: one decimal at most, no trailing ".0" ("2", "2.3", "0.4"); "<0.1" for tiny totals. */
+export function fmtFte(lang: Lang, n: number): string {
+  if (n > 0 && n < 0.05) return `<${fmtDec(lang, 0.1, 1)}`;
+  return new Intl.NumberFormat(LOCALE[lang], { maximumFractionDigits: 1 }).format(n);
+}
+
 /**
  * Compact amounts are formatted by hand (not Intl "compact"): server and browser ICU builds
  * disagree on compact output ("$75K" vs "$75.0K"), which would break hydration.

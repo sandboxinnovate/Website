@@ -7,26 +7,42 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 // Duplicate the list so the track can loop seamlessly (translateX -50%).
 const loop = [...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS];
+const pauseLabel = lang === 'en' ? 'Pause' : 'Pausar';
+const playLabel = lang === 'en' ? 'Play' : 'Reanudar';
 ---
-<section class="cm" aria-label={HOME.clients.label[lang]}>
+<section class="cm" aria-label={HOME.clients.label[lang]} data-cm>
   <div class="container-x cm__head">
     <span class="mono-label">{HOME.clients.label[lang]}</span>
     <span class="cm__rule" aria-hidden="true"></span>
+    <button type="button" class="cm__toggle mono-label" aria-pressed="false" data-cm-toggle data-pause={pauseLabel} data-play={playLabel}>{pauseLabel}</button>
   </div>
   <div class="cm__viewport">
     <ul class="cm__track">
       {loop.map((c, i) => (
         <li class="cm__item" aria-hidden={i >= CLIENTS.length ? 'true' : undefined}>
-          {c.src.endsWith('.webp') ? (
-            <span class="cm__tile"><img src={c.src} alt={i < CLIENTS.length ? c.name : ''} width={c.w} height={c.h} loading="lazy" decoding="async" /></span>
+          {c.src ? (
+            <img src={c.src} alt={i < CLIENTS.length ? c.name : ''} width={c.w} height={c.h} loading="lazy" decoding="async" style={`--s:${c.scale ?? 1}`} />
           ) : (
-            <img src={c.src} alt={i < CLIENTS.length ? c.name : ''} width={c.w} height={c.h} loading="lazy" decoding="async" />
+            <span class="cm__word">{c.name}</span>
           )}
         </li>
       ))}
     </ul>
   </div>
 </section>
+
+<script>
+  // WCAG 2.2.2: the moving logo strip can be paused (keyboard and touch).
+  document.querySelectorAll<HTMLElement>('[data-cm]').forEach((root) => {
+    const b = root.querySelector<HTMLButtonElement>('[data-cm-toggle]');
+    if (!b) return;
+    b.addEventListener('click', () => {
+      const paused = root.classList.toggle('is-paused');
+      b.setAttribute('aria-pressed', String(paused));
+      b.textContent = (paused ? b.dataset.play : b.dataset.pause) || '';
+    });
+  });
+</script>
 
 <style>
   .cm { padding-block: 56px 24px; }
@@ -36,9 +52,12 @@ const loop = [...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS];
   .cm__track { --marquee-duration: 60s; display: flex; width: max-content; align-items: center; animation: var(--animate-marquee); }
   .cm__viewport:hover .cm__track { animation-play-state: paused; }
   .cm__item { flex: none; display: grid; place-items: center; height: 64px; padding-inline: clamp(28px, 4vw, 56px); }
-  .cm__item img { height: 22px; width: auto; opacity: .55; filter: grayscale(1); transition: opacity .3s; }
+  .cm__item img { height: calc(22px * var(--s, 1)); width: auto; opacity: .55; filter: grayscale(1); transition: opacity .3s; }
   .cm__item:hover img { opacity: .95; }
-  .cm__tile { display: grid; place-items: center; width: 40px; height: 48px; border-radius: 6px; background: #f4efe9; opacity: .7; }
-  .cm__tile img { height: 40px; opacity: 1; filter: grayscale(1); }
-  @media (prefers-reduced-motion: reduce) { .cm__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } .cm__item[aria-hidden='true'] { display: none; } }
+  .cm__word { font-family: var(--font-display); font-size: 15px; font-weight: 500; letter-spacing: -.01em; color: var(--color-bone); opacity: .55; white-space: nowrap; transition: opacity .3s; }
+  .cm__item:hover .cm__word { opacity: .95; }
+  .cm__toggle { flex: none; display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 99px; border: 1px solid var(--line); background: transparent; cursor: pointer; transition: color .2s, border-color .2s; }
+  .cm__toggle:hover { color: var(--color-bone); border-color: var(--line-strong); }
+  .cm.is-paused .cm__track { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) { .cm__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } .cm__item[aria-hidden='true'] { display: none; } .cm__toggle { display: none; } }
 </style>

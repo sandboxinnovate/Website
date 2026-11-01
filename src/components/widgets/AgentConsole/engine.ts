@@ -90,10 +90,15 @@ export const freshEngine = (): EngineState => ({ cursor: 0, extra: 0, approved: 
 
 export const atGate = (tl: Timeline, e: EngineState) => tl.gateAt !== null && !e.approved && e.cursor >= tl.gateAt;
 
-/** Advance the run by `dt` real milliseconds at `speed`. Mutates `e`. */
-export function advance(tl: Timeline, e: EngineState, dt: number, speed: number) {
+/**
+ * Advance the run by `dt` real milliseconds at `speed`. Mutates `e`.
+ * `holdGate`: the run is waiting at the gate but nobody can see it yet, so the auto-approve
+ * countdown (and the clock) stay where they are.
+ */
+export function advance(tl: Timeline, e: EngineState, dt: number, speed: number, holdGate = false) {
   const sdt = dt * speed;
   if (atGate(tl, e)) {
+    if (holdGate) return;
     e.extra += sdt;
     if (e.extra >= AUTO_APPROVE_MS) { e.approved = 'auto'; e.approvedAfter = e.extra; }
     return;
@@ -146,7 +151,8 @@ export function viewKey(tl: Timeline, e: EngineState): string {
 
 /* --------------------------------------------------------------- format */
 
-const dec = (s: string, lang: Lang) => (lang === 'es' ? s.replace('.', ',') : s);
+/** Decimal point in both languages, like the ROI estimator (es-419 uses a point). */
+const dec = (s: string, _lang: Lang) => s;
 
 /** 00:12.48 */
 export function fmtClock(ms: number, lang: Lang): string {
@@ -156,10 +162,10 @@ export function fmtClock(ms: number, lang: Lang): string {
   return `${String(m).padStart(2, '0')}:${dec(s.toFixed(2).padStart(5, '0'), lang)}`;
 }
 
-/** 12.4s / 12,4 s */
+/** 12.4s / 12.4 s */
 export function fmtSec(ms: number, lang: Lang): string {
   const v = (ms / 1000).toFixed(1);
-  return lang === 'es' ? `${v.replace('.', ',')} s` : `${v}s`;
+  return lang === 'es' ? `${v} s` : `${v}s`;
 }
 
 /** Tool latency, code-style (same in both languages). */

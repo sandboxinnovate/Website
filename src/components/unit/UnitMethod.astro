@@ -39,9 +39,8 @@ const C = UNIT_COMMON;
     </div>
 
     <div class="um__price card" data-reveal>
-      <div class="um__price-glow glow-ember" aria-hidden="true"></div>
       <div class="um__price-head">
-        <span class="eyebrow">{C.pricing.eyebrow[lang]}</span>
+        <span class="mono-label um__price-eb">{C.pricing.eyebrow[lang]}</span>
         <h3 class="um__price-title" set:html={C.pricing.title[lang]} />
         <div class="um__shape" aria-hidden="true">
           <div class="um__shape-a"></div>
@@ -66,7 +65,7 @@ const C = UNIT_COMMON;
 </section>
 
 <style>
-  .um { padding-block: clamp(64px, 8vw, 112px); }
+  .um { padding-block: clamp(72px, 9vw, 128px); }
   .um__head { margin-bottom: clamp(44px, 6vw, 80px); }
 
   .um__track { position: relative; }
@@ -101,11 +100,11 @@ const C = UNIT_COMMON;
 
   /* Pricing */
   .um__price { position: relative; display: grid; gap: 32px; margin-top: clamp(56px, 8vw, 104px); padding: clamp(26px, 4vw, 52px); overflow: hidden; isolation: isolate; }
-  .um__price-glow { z-index: -1; width: 520px; height: 360px; left: -160px; top: -120px; opacity: .22; }
   @media (min-width: 1000px) { .um__price { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; } }
   .um__price-head { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
   .um__price-title { font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.08; letter-spacing: -.04em; }
-  .um__price-title :global(em) { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .um__price-eb { color: var(--color-flame-400); }
+  .um__price-title :global(em) { font-style: normal; color: var(--color-smoke); }
 
   .um__shape { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 10px 6px; width: 100%; max-width: 440px; margin-top: 10px; }
   .um__shape-a { height: 44px; border-radius: 12px 4px 4px 12px; background: var(--grad-cta); }

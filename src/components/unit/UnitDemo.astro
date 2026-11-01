@@ -1,6 +1,7 @@
 ---
 /**
- * The proof section of each unit page: a live widget where it adds evidence.
+ * The proof section of each unit page: an interactive widget (simulated where it shows AI at work).
+ * This is the one section per unit page whose heading gets the flame-gradient accent.
  *   brains     → AgentConsole (compact, next to notes)
  *   consulting → ReadinessDiagnostic teaser (next to notes)
  *   growth     → GeoAnswer (full width)
@@ -28,7 +29,7 @@ const split = slug === 'brains' || slug === 'consulting';
     {split ? (
       <div class="ud__split">
         <div class="ud__copy">
-          <SectionHeading index={index} eyebrow={d.eyebrow} title={d.title} lede={d.lede} size="md" />
+          <SectionHeading index={index} eyebrow={d.eyebrow} title={d.title} lede={d.lede} size="md" accent />
           {d.notes && (
             <div class="ud__notes" data-reveal>
               {d.notesTitle && <span class="mono-label">{d.notesTitle}</span>}
@@ -58,7 +59,7 @@ const split = slug === 'brains' || slug === 'consulting';
     ) : (
       <>
         <div class="ud__head">
-          <SectionHeading index={index} eyebrow={d.eyebrow} title={d.title} lede={d.lede} />
+          <SectionHeading index={index} eyebrow={d.eyebrow} title={d.title} lede={d.lede} accent />
         </div>
         <div class="ud__stage" data-reveal>
           <div class="glow-ember ud__glow" aria-hidden="true"></div>
@@ -73,7 +74,7 @@ const split = slug === 'brains' || slug === 'consulting';
 </section>
 
 <style>
-  .ud { padding-block: clamp(64px, 8vw, 112px); }
+  .ud { padding-block: clamp(72px, 9vw, 128px); }
   .ud { position: relative; overflow-x: clip; }
   .ud__head { margin-bottom: clamp(36px, 5vw, 64px); }
   .ud__stage { position: relative; isolation: isolate; min-width: 0; }

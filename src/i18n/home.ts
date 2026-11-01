@@ -5,12 +5,12 @@ type S = L10n<string>;
 export const HOME = {
   seo: {
     title: {
-      en: 'Sandbox — AI systems, consulting & growth for real businesses',
-      es: 'Sandbox — Sistemas de IA, consultoría y growth para empresas reales',
+      en: 'Sandbox: custom AI agents, AI consulting and AI marketing',
+      es: 'Sandbox: agentes de IA, consultoría y marketing con IA',
     } as S,
     description: {
-      en: 'Sandbox designs, builds and runs AI for companies in the US, Europe and Latin America: custom AI brains and agents, hands-on AI consulting, AI-native marketing and team training.',
-      es: 'Sandbox diseña, construye y opera IA para empresas de Estados Unidos, Europa y Latinoamérica: brains y agentes de IA a medida, consultoría práctica, marketing nativo en IA y formación de equipos.',
+      en: 'Sandbox builds custom AI agents and company brains, and offers AI consulting, AI marketing and team training in the US, Europe and Latin America.',
+      es: 'Sandbox crea agentes y brains de IA a medida, y ofrece consultoría, marketing con IA y formación para empresas de EE. UU., Europa y Latinoamérica.',
     } as S,
   },
 
@@ -20,26 +20,26 @@ export const HOME = {
     titleB: { en: 'your business', es: 'tu negocio' } as S,
     titleC: { en: 'and does the work.', es: 'y hace el trabajo.' } as S,
     lede: {
-      en: 'We design, build and run AI for companies across the US, Europe and Latin America — custom brains and agents, hands-on consulting and AI-native marketing. We use it in our own work first.',
-      es: 'Diseñamos, construimos y operamos IA para empresas de Estados Unidos, Europa y Latinoamérica: brains y agentes a medida, consultoría práctica y marketing nativo en IA. Primero la usamos en nuestro propio trabajo.',
+      en: 'We design, build and run AI for companies across the US, Europe and Latin America: company brains that know your business, custom agents, hands-on consulting and AI-native marketing. We use it in our own work first.',
+      es: 'Diseñamos, construimos y operamos IA para empresas de Estados Unidos, Europa y Latinoamérica: brains (sistemas de IA que conocen tu empresa), agentes a medida, consultoría práctica y marketing nativo en IA. Primero la usamos en nuestro propio trabajo.',
     } as S,
-    ctaPrimary: { en: 'Book a strategy call', es: 'Agendar una llamada' } as S,
-    ctaSecondary: { en: 'Take the 3-min AI diagnostic', es: 'Diagnóstico de IA en 3 min' } as S,
-    tickerLabel: { en: 'Running now', es: 'En ejecución' } as S,
+    ctaPrimary: { en: 'Book a call', es: 'Agendar una llamada' } as S,
+    ctaSecondary: { en: 'Take the 3-min AI diagnostic', es: 'Hacer el diagnóstico (3 min)' } as S,
+    tickerLabel: { en: 'Typical jobs', es: 'Tareas típicas' } as S,
     ticker: ['kb.search', 'lead.score', 'inbox.triage', 'report.weekly', 'crm.sync', 'content.draft', 'ads.variant', 'ticket.route'],
     scroll: { en: 'Scroll', es: 'Scroll' } as S,
   },
 
   clients: {
-    label: { en: 'Brands we’ve worked with', es: 'Marcas con las que trabajamos' } as S,
+    label: { en: 'Brands we’ve worked with', es: 'Marcas con las que hemos trabajado' } as S,
   },
 
   manifesto: {
     index: '01',
     eyebrow: { en: 'Why Sandbox', es: 'Por qué Sandbox' } as S,
     text: {
-      en: 'Most companies don’t need another AI tool. They need AI that understands how they work, connects to the systems they already use and takes real work off their team’s plate. That’s what we build — and what we use in our own work every day.',
-      es: 'La mayoría de las empresas no necesita otra herramienta de IA. Necesita IA que entienda cómo trabaja, se conecte con los sistemas que ya usa y le quite trabajo real a su equipo. Eso es lo que construimos — y lo que usamos en nuestro propio trabajo todos los días.',
+      en: 'Most companies don’t need another AI tool. They need AI that understands how they work, connects to the systems they already use and takes real work off their team’s plate. That’s what we build.',
+      es: 'La mayoría de las empresas no necesita otra herramienta de IA. Necesita IA que entienda cómo trabaja, se conecte con los sistemas que ya usa y le quite trabajo real a su equipo. Eso es lo que construimos.',
     } as S,
     /** Words (lowercase, no punctuation) rendered in flame orange once lit */
     accents: {
@@ -47,7 +47,7 @@ export const HOME = {
       es: ['entienda', 'conecte', 'trabajo', 'real', 'construimos'],
     } as L10n<string[]>,
     points: [
-      { k: { en: 'Systems, not tools', es: 'Sistemas, no herramientas' } as S, v: { en: 'Connected to your CRM, inbox, docs and data — not another tab to open.', es: 'Conectados a tu CRM, email, documentos y datos — no otra pestaña más.' } as S },
+      { k: { en: 'Systems, not tools', es: 'Sistemas, no herramientas' } as S, v: { en: 'Connected to your CRM, inbox, docs and data. Not one more tab to open.', es: 'Conectados a tu CRM, correo, documentos y datos. No una pestaña más.' } as S },
       { k: { en: 'Humans approve what matters', es: 'Las personas aprueban lo importante' } as S, v: { en: 'Agents do the work; your team keeps the judgment calls.', es: 'Los agentes hacen el trabajo; tu equipo conserva las decisiones.' } as S },
       { k: { en: 'Measured in hours and revenue', es: 'Se mide en horas e ingresos' } as S, v: { en: 'Every system ships with the metric it has to move.', es: 'Cada sistema se entrega con la métrica que tiene que mover.' } as S },
     ],
@@ -58,8 +58,8 @@ export const HOME = {
     eyebrow: { en: 'What we do', es: 'Qué hacemos' } as S,
     title: { en: 'Six ways we put <em>AI to work</em>', es: 'Seis formas de poner la <em>IA a trabajar</em>' } as S,
     lede: {
-      en: 'Start with a diagnostic, a single agent or a team workshop. Grow into a company-wide brain. Every unit plugs into the next.',
-      es: 'Empieza con un diagnóstico, un solo agente o un taller para tu equipo. Crece hasta un brain para toda la empresa. Cada unidad se conecta con la siguiente.',
+      en: 'Start with an AI opportunity audit, a single agent or a team workshop. Grow into a company-wide brain. Every unit plugs into the next.',
+      es: 'Empieza con una auditoría de oportunidades de IA, un solo agente o un taller para tu equipo. Crece hasta un brain para toda la empresa. Cada unidad se conecta con la siguiente.',
     } as S,
     explore: { en: 'Explore', es: 'Ver más' } as S,
     earlyAccess: { en: 'Early access', es: 'Acceso anticipado' } as S,
@@ -67,7 +67,7 @@ export const HOME = {
 
   console: {
     index: '03',
-    eyebrow: { en: 'Live demo', es: 'Demo en vivo' } as S,
+    eyebrow: { en: 'Interactive simulation', es: 'Simulación interactiva' } as S,
     title: { en: 'Watch a brain <em>do the work</em>', es: 'Mira un brain <em>haciendo el trabajo</em>' } as S,
     lede: {
       en: 'A simulated run of the kind of systems we deploy: real steps, real tools, and a human approving what matters. Pick a workflow.',
@@ -88,17 +88,17 @@ export const HOME = {
       {
         n: '01', key: 'discover',
         name: { en: 'Discover', es: 'Descubrir' } as S,
-        time: { en: '1–3 weeks', es: '1–3 semanas' } as S,
+        time: { en: '1–2 weeks', es: '1–2 semanas' } as S,
         body: {
-          en: 'We map how work actually happens — interviews, tools, data, bottlenecks — and rank every opportunity by impact and effort.',
-          es: 'Mapeamos cómo se trabaja de verdad — entrevistas, herramientas, datos, cuellos de botella — y ordenamos cada oportunidad por impacto y esfuerzo.',
+          en: 'We map how work actually happens (interviews, tools, data, bottlenecks) and rank every opportunity by impact and effort.',
+          es: 'Mapeamos cómo se trabaja de verdad (entrevistas, herramientas, datos, cuellos de botella) y ordenamos cada oportunidad por impacto y esfuerzo.',
         } as S,
         out: { en: ['Process map', 'Opportunity matrix', '90-day roadmap'], es: ['Mapa de procesos', 'Matriz de oportunidades', 'Hoja de ruta a 90 días'] } as L10n<string[]>,
       },
       {
         n: '02', key: 'design',
         name: { en: 'Design', es: 'Diseñar' } as S,
-        time: { en: '1–2 weeks', es: '1–2 semanas' } as S,
+        time: { en: '1 week', es: '1 semana' } as S,
         body: {
           en: 'We design the system before writing code: what the brain knows, what each agent does, where people approve and how success is measured.',
           es: 'Diseñamos el sistema antes de escribir código: qué sabe el brain, qué hace cada agente, dónde aprueban las personas y cómo se mide el éxito.',
@@ -108,12 +108,12 @@ export const HOME = {
       {
         n: '03', key: 'build',
         name: { en: 'Build', es: 'Construir' } as S,
-        time: { en: '3–8 weeks', es: '3–8 semanas' } as S,
+        time: { en: '2–8 weeks', es: '2–8 semanas' } as S,
         body: {
           en: 'Short sprints with working software every week, connected to your tools and tested on your real cases before anyone relies on it.',
           es: 'Sprints cortos con software funcionando cada semana, conectado a tus herramientas y probado con tus casos reales antes de que alguien dependa de él.',
         } as S,
-        out: { en: ['Working agents', 'Integrations', 'Evaluation suite'], es: ['Agentes funcionando', 'Integraciones', 'Set de evaluación'] } as L10n<string[]>,
+        out: { en: ['Working agents', 'Integrations', 'Evaluation suite'], es: ['Agentes funcionando', 'Integraciones', 'Conjunto de pruebas'] } as L10n<string[]>,
       },
       {
         n: '04', key: 'operate',
@@ -126,6 +126,10 @@ export const HOME = {
         out: { en: ['Monitoring', 'Monthly improvements', 'Team enablement'], es: ['Monitoreo', 'Mejoras mensuales', 'Capacitación del equipo'] } as L10n<string[]>,
       },
     ],
+    cta: {
+      line: { en: 'Every engagement starts with a 30-minute call.', es: 'Todo proyecto empieza con una llamada de 30 minutos.' } as S,
+      label: { en: 'Book a call', es: 'Agendar una llamada' } as S,
+    },
   },
 
   geo: {
@@ -133,10 +137,10 @@ export const HOME = {
     eyebrow: { en: 'Growth · AI search', es: 'Growth · Búsqueda con IA' } as S,
     title: { en: 'Be the answer, <em>not a link</em>', es: 'Sé la respuesta, <em>no un enlace</em>' } as S,
     lede: {
-      en: 'Your next client won’t scroll ten blue links. They’ll ask an AI assistant — and act on what it recommends. We make sure that recommendation is you.',
-      es: 'Tu próximo cliente no va a revisar diez enlaces. Le va a preguntar a un asistente de IA — y va a actuar según lo que le recomiende. Nos aseguramos de que esa recomendación seas tú.',
+      en: 'Your next client won’t scroll ten blue links. They’ll ask an AI assistant and act on what it recommends. We make sure that recommendation is you.',
+      es: 'Tu próximo cliente no va a revisar diez enlaces. Le va a preguntar a un asistente de IA y va a hacer lo que le recomiende. Nos encargamos de que esa recomendación seas tú.',
     } as S,
-    cta: { en: 'See AI Growth', es: 'Ver AI Growth' } as S,
+    cta: { en: 'See Growth', es: 'Ver Growth' } as S,
   },
 
   roi: {
@@ -144,31 +148,31 @@ export const HOME = {
     eyebrow: { en: 'Impact', es: 'Impacto' } as S,
     title: { en: 'What could AI <em>give back</em> to your team?', es: '¿Cuánto tiempo le puede <em>devolver</em> la IA a tu equipo?' } as S,
     lede: {
-      en: 'Move the sliders. It’s a rough estimate — the diagnostic and a discovery call turn it into a real plan.',
-      es: 'Mueve los controles. Es una estimación — el diagnóstico y una llamada inicial la convierten en un plan real.',
+      en: 'Move the sliders for a rough estimate. The AI diagnostic and a 30-minute call turn it into a plan.',
+      es: 'Mueve los controles para una estimación rápida. El diagnóstico de IA y una llamada de 30 minutos la convierten en un plan.',
     } as S,
   },
 
   proof: {
     index: '07',
-    eyebrow: { en: 'Proof', es: 'Resultados' } as S,
-    title: { en: 'Proof, not <em>promises</em>', es: 'Resultados, no <em>promesas</em>' } as S,
-    featureLabel: { en: 'What we build', es: 'Lo que construimos' } as S,
-    featureTitle: { en: 'A brain built around one company', es: 'Un brain construido para una sola empresa' } as S,
+    eyebrow: { en: 'Evidence', es: 'Evidencia' } as S,
+    title: { en: 'Numbers from <em>client work</em>', es: 'Números del <em>trabajo con clientes</em>' } as S,
+    featureLabel: { en: 'Reference architecture · illustrative', es: 'Arquitectura de referencia · ilustrativa' } as S,
+    featureTitle: { en: 'How a company brain is wired', es: 'Cómo se conecta un brain de empresa' } as S,
     featureBody: {
-      en: 'We connect what a company knows — documents, CRM, conversations, history — to agents that research, draft, report and operate across its tools. People stay in the loop where it matters.',
-      es: 'Conectamos lo que sabe una empresa — documentos, CRM, conversaciones, historial — con agentes que investigan, redactan, reportan y operan en sus herramientas. Las personas siguen al mando donde importa.',
+      en: 'We connect what a company knows (documents, CRM, conversations, history) to agents that research, draft, report and operate across its tools. People stay in the loop where it matters.',
+      es: 'Conectamos lo que sabe una empresa (documentos, CRM, conversaciones, historial) con agentes que investigan, redactan, reportan y operan en sus herramientas. Las personas siguen al mando donde importa.',
     } as S,
     featureLayers: {
       en: ['Knowledge', 'Agents', 'Tools', 'Human approval'],
       es: ['Conocimiento', 'Agentes', 'Herramientas', 'Aprobación humana'],
     } as L10n<string[]>,
     featureCta: { en: 'Explore Brains', es: 'Ver Brains' } as S,
-    casesLabel: { en: 'Client results', es: 'Resultados de clientes' } as S,
+    casesLabel: { en: 'Client results · from our Growth work', es: 'Resultados de clientes · de nuestro trabajo en Growth' } as S,
     cases: [
-      { metric: '+40%', label: { en: 'website traffic', es: 'tráfico web' } as S, client: { en: 'Videographer portfolio · content', es: 'Portfolio de videógrafo · contenido' } as S },
-      { metric: '+30%', label: { en: 'new client bookings', es: 'reservas de clientes nuevos' } as S, client: { en: 'Barbershop · local growth', es: 'Barbería · crecimiento local' } as S },
-      { metric: '+60%', label: { en: 'organic traffic', es: 'tráfico orgánico' } as S, client: { en: 'Architecture firm · SEO', es: 'Estudio de arquitectura · SEO' } as S },
+      { id: 'videographer', metric: '+40%', label: { en: 'website traffic', es: 'tráfico web' } as S, client: { en: 'Videographer portfolio · content', es: 'Portfolio de videógrafo · contenido' } as S },
+      { id: 'barbershop', metric: '+30%', label: { en: 'new client bookings', es: 'reservas de clientes nuevos' } as S, client: { en: 'Barbershop · local growth', es: 'Barbería · crecimiento local' } as S },
+      { id: 'architecture', metric: '+60%', label: { en: 'organic traffic', es: 'tráfico orgánico' } as S, client: { en: 'Architecture firm · SEO', es: 'Estudio de arquitectura · SEO' } as S },
     ],
     seeWork: { en: 'See all work', es: 'Ver todos los casos' } as S,
   },
@@ -195,8 +199,8 @@ export const HOME = {
       {
         q: { en: 'What exactly is an “AI brain”?', es: '¿Qué es exactamente un “brain” de IA?' } as S,
         a: {
-          en: 'A system that knows your company — documents, processes, clients, history — and can act on it. It answers your team’s questions with sources, and its agents carry out tasks across your tools: qualifying leads, drafting replies, building reports, updating the CRM. People approve the steps that matter.',
-          es: 'Un sistema que conoce tu empresa — documentos, procesos, clientes, historial — y puede actuar en base a eso. Responde las preguntas de tu equipo citando fuentes, y sus agentes ejecutan tareas en tus herramientas: calificar leads, redactar respuestas, armar reportes, actualizar el CRM. Las personas aprueban los pasos importantes.',
+          en: 'A system that knows your company (documents, processes, clients, history) and can act on it. It answers your team’s questions with sources, and its agents carry out tasks across your tools: qualifying leads, drafting replies, building reports, updating the CRM. People approve the steps that matter.',
+          es: 'Un sistema que conoce tu empresa (documentos, procesos, clientes, historial) y puede actuar con esa información. Responde las preguntas de tu equipo citando fuentes, y sus agentes ejecutan tareas en tus herramientas: calificar leads, redactar respuestas, armar reportes, actualizar el CRM. Las personas aprueban los pasos importantes.',
         } as S,
       },
       {
@@ -207,31 +211,38 @@ export const HOME = {
         } as S,
       },
       {
+        q: { en: 'Are we too small, or too big, to work with you?', es: '¿Somos demasiado pequeños, o demasiado grandes, para trabajar con ustedes?' } as S,
+        a: {
+          en: 'We work best when there is a real process with volume behind it: a team answering the same questions every day, chasing leads by hand or rebuilding the same report every week. If it’s too early, we tell you on the first call, and the AI diagnostic gives you a starting point either way.',
+          es: 'Funcionamos mejor cuando hay un proceso real con volumen detrás: un equipo que responde las mismas preguntas todos los días, persigue leads a mano o rehace el mismo reporte cada semana. Si es muy pronto, te lo decimos en la primera llamada, y el diagnóstico de IA te da un punto de partida de todos modos.',
+        } as S,
+      },
+      {
         q: { en: 'Which AI models do you use?', es: '¿Qué modelos de IA usan?' } as S,
         a: {
-          en: 'We are model-agnostic. We choose the best model for each task — frontier models from the leading labs, or open-source models when privacy or cost call for it — and design systems so you can switch later without rebuilding.',
-          es: 'Somos agnósticos al modelo. Elegimos el mejor modelo para cada tarea — modelos de frontera de los principales laboratorios, u open-source cuando la privacidad o el costo lo piden — y diseñamos los sistemas para que puedas cambiar más adelante sin reconstruir.',
+          en: 'We are model-agnostic. We choose the best model for each task (frontier models from the leading labs, or open-source models when privacy or cost call for it) and design systems so you can switch later without rebuilding.',
+          es: 'No dependemos de un solo modelo. Elegimos el mejor modelo para cada tarea (modelos de frontera de los principales laboratorios, u open-source cuando la privacidad o el costo lo piden) y diseñamos los sistemas para que puedas cambiar más adelante sin reconstruir.',
         } as S,
       },
       {
         q: { en: 'How do you handle security and privacy?', es: '¿Cómo manejan la seguridad y la privacidad?' } as S,
         a: {
           en: 'Least-privilege access, your data stays in your accounts wherever possible, no training on your data, audit logs for every agent action, and human approval gates for anything sensitive. We sign NDAs and DPAs as standard.',
-          es: 'Accesos mínimos necesarios, tus datos quedan en tus cuentas siempre que sea posible, no se entrena ningún modelo con tus datos, registro de cada acción de los agentes y aprobación humana para todo lo sensible. Firmamos NDA y acuerdos de tratamiento de datos de forma estándar.',
+          es: 'Accesos mínimos necesarios, tus datos quedan en tus cuentas siempre que sea posible, no se entrena ningún modelo con tus datos, registro de cada acción de los agentes y aprobación humana para todo lo sensible. Firmamos NDA y acuerdos de tratamiento de datos en todos los proyectos.',
         } as S,
       },
       {
         q: { en: 'How long until we see results?', es: '¿En cuánto tiempo vemos resultados?' } as S,
         a: {
-          en: 'A diagnostic takes 2–3 weeks. A first agent is usually live in 3–4 weeks. Company-wide brains roll out in phases, with something useful in production from the first month.',
-          es: 'Un diagnóstico toma 2–3 semanas. Un primer agente suele estar funcionando en 3–4 semanas. Los brains para toda la empresa se implementan por fases, con algo útil en producción desde el primer mes.',
+          en: 'An AI Opportunity Audit takes 2–3 weeks. A first agent is usually live in 3–5 weeks. Company-wide brains roll out in phases, with something useful in production from the first month.',
+          es: 'Una auditoría de oportunidades de IA toma 2–3 semanas. Un primer agente suele estar funcionando en 3–5 semanas. Los brains para toda la empresa se implementan por fases, con algo útil en producción desde el primer mes.',
         } as S,
       },
       {
         q: { en: 'How do you price?', es: '¿Cómo cobran?' } as S,
         a: {
-          en: 'Every engagement is scoped after a discovery call. You get a fixed proposal — a one-time build plus ongoing operation where it applies — tailored to your scope and market. No hourly billing surprises.',
-          es: 'Cada proyecto se define después de una llamada inicial. Recibes una propuesta cerrada — una implementación única más la operación continua cuando aplica — ajustada a tu alcance y a tu mercado. Sin sorpresas por horas.',
+          en: 'Every engagement is scoped after a discovery call. You get a fixed proposal (a one-time build plus ongoing operation where it applies), tailored to your scope and market. No hourly billing surprises.',
+          es: 'Cada proyecto se define después de una llamada inicial. Recibes una propuesta cerrada (una implementación única más la operación continua cuando aplica), ajustada a tu alcance y a tu mercado. Sin sorpresas por horas.',
         } as S,
       },
       {

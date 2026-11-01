@@ -42,6 +42,29 @@ interface Done {
 
 const reducedMotion = () => typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/** Offer ids in ?offer= are the slug of the English offer name: "AI Opportunity Audit" → "ai-opportunity-audit". */
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+type UnitCopies = (typeof import('@/i18n/units'))['UNIT_COPY'];
+
+/** Localized name of the offer the visitor clicked, looking in the unit they came from first. */
+function offerName(copies: UnitCopies, id: string, lang: Lang, prefer?: Need): string | null {
+  const units = Object.keys(copies) as (keyof UnitCopies)[];
+  const order = prefer && prefer !== 'unsure' ? [prefer, ...units.filter((u) => u !== prefer)] : units;
+  for (const u of order) {
+    const items = copies[u]?.en.offers.items ?? [];
+    const i = items.findIndex((it) => slug(it.name) === id);
+    if (i >= 0) return copies[u][lang]?.offers.items[i]?.name ?? items[i].name;
+  }
+  return null;
+}
+
 const makeRef = () => {
   const a = Date.now().toString(36).slice(-4).toUpperCase();
   const b = Math.floor(Math.random() * 36 ** 2).toString(36).padStart(2, '0').toUpperCase();
@@ -79,6 +102,9 @@ export default function ContactFlow({ lang, initialService }: Props) {
   const [ready, setReady] = useState(false);
   const [trap, setTrap] = useState('');
   const [height, setHeight] = useState<number | null>(null);
+  /** The offer card the visitor clicked on a service page (?offer=), shown as a removable note. */
+  const [offer, setOffer] = useState<string | null>(null);
+  const [offerOff, setOfferOff] = useState(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -113,6 +139,25 @@ export default function ContactFlow({ lang, initialService }: Props) {
     setReady(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /* ?offer= → "You asked about: <offer>". Unit copy is loaded on demand, only when the link carries an offer. */
+  useEffect(() => {
+    const id = readInterest(window.location.search)?.offer;
+    if (!id) return;
+    const prefer = readUrl(window.location.search).needs[0];
+    let live = true;
+    import('@/i18n/units')
+      .then(({ UNIT_COPY }) => {
+        const name = offerName(UNIT_COPY, id.toLowerCase(), lang, prefer);
+        if (live && name) setOffer(name);
+      })
+      .catch(() => {
+        /* chunk failed to load: the lead still carries the interest */
+      });
+    return () => {
+      live = false;
+    };
+  }, [lang]);
 
   /* persist the draft for this tab */
   useEffect(() => {
@@ -265,7 +310,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
       timeline: draft.timeline,
       source: draft.source || undefined,
       context: context ? { from: context.from, note: contextNote(context), ...context.data } : undefined,
-      interest: readInterest(window.location.search),
+      interest: interestPayload(),
       requestId: ref,
     });
     if (res.ok) {
@@ -293,6 +338,13 @@ export default function ContactFlow({ lang, initialService }: Props) {
     if (status === 'sending') return;
     if (step === STEP_COUNT - 1) void submit();
     else advance();
+  }
+
+  /** ?offer= / ?industry= / … from the URL, minus the offer if the visitor removed that note. */
+  function interestPayload() {
+    const interest = readInterest(window.location.search);
+    if (interest && offerOff) delete interest.offer;
+    return interest && Object.keys(interest).length ? interest : undefined;
   }
 
   function contextNote(c: Context) {
@@ -348,9 +400,9 @@ export default function ContactFlow({ lang, initialService }: Props) {
               <code>{done.ref}</code>
             </span>
           </div>
-          <h3 className="cf-title" ref={headingRef} tabIndex={-1}>
+          <h2 className="cf-title" ref={headingRef} tabIndex={-1}>
             {t.done.title(done.first)}
-          </h3>
+          </h2>
           <p className="cf-lede">{t.done.body(done.email)}</p>
 
           <p className="cf-mono cf-done__label">{t.done.next}</p>
@@ -406,7 +458,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
       ];
       return (
         <>
-          <StepHead n={1} title={t.s1.title} lede={t.s1.lede} headingRef={headingRef} total={total} />
+          <StepHead title={t.s1.title} lede={t.s1.lede} headingRef={headingRef} />
           <fieldset className="cf-needs" aria-describedby={describedBy('needs')} aria-invalid={err ? true : undefined}>
             <legend className="cf-sr">{t.s1.title}</legend>
             <div className="cf-needs__grid">
@@ -456,7 +508,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
     if (step === 1) {
       return (
         <>
-          <StepHead n={2} title={t.s2.title} lede={t.s2.lede} headingRef={headingRef} total={total} />
+          <StepHead title={t.s2.title} lede={t.s2.lede} headingRef={headingRef} />
           <div className="cf-grid">
             {text('name', 'text', 'name')}
             {text('email', 'email', 'email')}
@@ -523,7 +575,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
       const len = draft.goal.length;
       return (
         <>
-          <StepHead n={3} title={t.s3.title} lede={t.s3.lede} headingRef={headingRef} total={total} />
+          <StepHead title={t.s3.title} lede={t.s3.lede} headingRef={headingRef} />
           <Field
             id={fid('goal')}
             label={t.s3.goal}
@@ -609,11 +661,11 @@ export default function ContactFlow({ lang, initialService }: Props) {
     const site = draft.website.trim() && isValidWebsite(draft.website) ? draft.website.trim().replace(/^https?:\/\//i, '') : '';
     return (
       <>
-        <StepHead n={4} title={t.s4.title} lede={t.s4.lede} headingRef={headingRef} total={total} />
+        <StepHead title={t.s4.title} lede={t.s4.lede} headingRef={headingRef} />
         <div className="cf-review">
           <section className="cf-review__block" aria-labelledby={fid('rv-need')}>
             <header className="cf-review__head">
-              <h4 id={fid('rv-need')}>{t.s4.need}</h4>
+              <h3 id={fid('rv-need')}>{t.s4.need}</h3>
               <button type="button" className="cf-edit" onClick={() => editFrom(0)} aria-label={`${t.s4.edit}: ${t.s4.need}`}>
                 {t.s4.edit}
               </button>
@@ -633,7 +685,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
 
           <section className="cf-review__block" aria-labelledby={fid('rv-you')}>
             <header className="cf-review__head">
-              <h4 id={fid('rv-you')}>{t.s4.you}</h4>
+              <h3 id={fid('rv-you')}>{t.s4.you}</h3>
               <button type="button" className="cf-edit" onClick={() => editFrom(1)} aria-label={`${t.s4.edit}: ${t.s4.you}`}>
                 {t.s4.edit}
               </button>
@@ -670,7 +722,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
 
           <section className="cf-review__block" aria-labelledby={fid('rv-proj')}>
             <header className="cf-review__head">
-              <h4 id={fid('rv-proj')}>{t.s4.project}</h4>
+              <h3 id={fid('rv-proj')}>{t.s4.project}</h3>
               <button type="button" className="cf-edit" onClick={() => editFrom(2)} aria-label={`${t.s4.edit}: ${t.s4.project}`}>
                 {t.s4.edit}
               </button>
@@ -694,7 +746,12 @@ export default function ContactFlow({ lang, initialService }: Props) {
           </section>
           <p className="cf-consent">
             <Ico name="shield" size={15} stroke={1.6} />
-            {t.s4.consent}
+            <span>
+              {t.s4.consent}{' '}
+              <a className="cf-link" href={localize(lang, '/privacy')}>
+                {t.s4.privacy}
+              </a>
+            </span>
           </p>
         </div>
       </>
@@ -748,7 +805,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
         </ol>
       </nav>
 
-      {!done && (restored || context) && (
+      {!done && (restored || context || (offer && !offerOff)) && (
         <div className="cf-notes">
           {restored && (
             <p className="cf-restored">
@@ -768,10 +825,19 @@ export default function ContactFlow({ lang, initialService }: Props) {
               </button>
             </div>
           )}
+          {offer && !offerOff && (
+            <div className="cf-note">
+              <span className="cf-note__tag">{t.offerTag}</span>
+              <p className="cf-note__text">{offer}</p>
+              <button type="button" className="cf-note__x" onClick={() => setOfferOff(true)} aria-label={`${t.offerRemove}: ${offer}`}>
+                <Ico name="close" size={14} stroke={2} />
+              </button>
+            </div>
+          )}
         </div>
       )}
 
-      <form className="cf-form" onSubmit={onSubmit} noValidate aria-label={t.head}>
+      <form className="cf-form" onSubmit={onSubmit} noValidate aria-label={t.head} data-ready={ready ? '' : undefined}>
         <div
           className="cf-viewport"
           style={height != null ? { height, transition: animate && !reducedMotion() ? undefined : 'none' } : undefined}
@@ -812,7 +878,13 @@ export default function ContactFlow({ lang, initialService }: Props) {
                   {t.enterHint}
                 </span>
               )}
-              <button type="submit" className="btn btn-primary cf-submit" disabled={status === 'sending'} aria-busy={status === 'sending' || undefined}>
+              <button
+                type="submit"
+                className="btn btn-primary cf-submit"
+                disabled={status === 'sending'}
+                aria-busy={status === 'sending' || undefined}
+                aria-disabled={!ready || undefined}
+              >
                 <span>
                   {last ? (status === 'sending' ? t.s4.sending : t.s4.submit) : editing ? t.saveReview : t.next}
                   {status === 'sending' && <span className="cf-dots" aria-hidden="true" />}
@@ -838,26 +910,19 @@ export default function ContactFlow({ lang, initialService }: Props) {
 }
 
 function StepHead({
-  n,
   title,
   lede,
-  total,
   headingRef,
 }: {
-  n: number;
   title: string;
   lede: string;
-  total: string;
   headingRef: RefObject<HTMLHeadingElement | null>;
 }) {
   return (
     <div className="cf-stephead">
-      <span className="cf-mono cf-stephead__n" aria-hidden="true">
-        [{String(n).padStart(2, '0')}/{total}]
-      </span>
-      <h3 className="cf-title" ref={headingRef} tabIndex={-1}>
+      <h2 className="cf-title" ref={headingRef} tabIndex={-1}>
         {title}
-      </h3>
+      </h2>
       <p className="cf-lede">{lede}</p>
     </div>
   );

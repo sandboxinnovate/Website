@@ -35,7 +35,14 @@ PUBLIC_LEADS_ENDPOINT=https://your-endpoint.example.com/leads
 ```
 
 Any endpoint that accepts a JSON `POST` works (Formspree, a serverless function, a CRM webhook, a Zapier/Make hook).
-Without it, submissions are only logged to the browser console — useful for local testing, **not for production**.
+
+Without it:
+
+- **`npm run dev`** logs each submission to the browser console (`[lead:preview]`) and shows the success state, so the flows can be tested end to end.
+- **A production build** (`npm run build`) prints a warning, and every form shows its **error state with the email fallback** instead of pretending to succeed. No lead is ever silently discarded.
+- **Preview builds:** set `PUBLIC_LEADS_PREVIEW=1` at build time to restore the console-only fake success (for demos and QA, never for the live site).
+
+Each payload also carries the page it was sent from, the referrer, the visitor's time zone and a first-party `attribution` object (landing page, referrer and any `utm_*` tags of the visit). Nothing is stored or sent unless a form is submitted. The privacy policy lives at `/privacy` (`src/i18n/privacy.ts`).
 
 ## Where things live
 
@@ -46,11 +53,12 @@ Without it, submissions are only logged to the browser console — useful for lo
 | Navigation, footer and shared button copy (EN/ES) | `src/i18n/ui.ts` |
 | Home page copy (EN/ES) | `src/i18n/home.ts` |
 | Service pages copy (EN/ES) | `src/i18n/units/` |
-| About / Work copy | `src/i18n/about.ts`, `src/i18n/work.ts` |
+| About / Work / Privacy copy | `src/i18n/about.ts`, `src/i18n/work.ts`, `src/i18n/privacy.ts` |
 | Page layouts | `src/views/*.astro` (routes in `src/pages/` are thin wrappers) |
 | Interactive widgets | `src/components/widgets/<Name>/` (each has its own `copy.ts`) |
 | Logo (vector reconstruction of the brand cube) | `src/components/ui/Logo.astro`, `public/favicon.svg` |
 | SEO: sitemap, robots, AI-crawler summary | auto `sitemap-index.xml`, `public/robots.txt`, `public/llms.txt` |
+| Cache headers for Netlify / Cloudflare Pages | `public/_headers` |
 
 ## Editing copy
 
@@ -60,7 +68,7 @@ All user-facing text exists in English and Spanish side by side:
 title: { en: 'Straight <em>answers</em>', es: 'Respuestas <em>directas</em>' }
 ```
 
-`<em>` inside a title renders the orange gradient accent. Spanish copy uses neutral Latin-American Spanish with "tú".
+`<em>` inside a section title renders a two-tone (grey) accent. The orange gradient accent is reserved for heroes, closing CTA bands and one section per page (pass `accent` to `SectionHeading` / `WidgetSection`). Spanish copy uses neutral Latin-American Spanish with "tú".
 
 ## House rules
 
@@ -70,7 +78,8 @@ title: { en: 'Straight <em>answers</em>', es: 'Respuestas <em>directas</em>' }
 
 ## Before launch — checklist
 
-- [ ] Set `PUBLIC_LEADS_ENDPOINT` and send a test lead from every form.
+- [ ] Set `PUBLIC_LEADS_ENDPOINT` and send a test lead from every form (and make sure `PUBLIC_LEADS_PREVIEW` is **not** set on the live build).
+- [ ] Review the privacy policy (`src/i18n/privacy.ts`) with counsel and update its date if it changes.
 - [ ] Replace the reconstructed cube logo with the official SVG if available.
 - [ ] Confirm company stats in `src/data/site.ts` (15+ years, 200+ projects, 150+ clients).
 - [ ] Confirm permission to show each client logo in `public/clients/`.

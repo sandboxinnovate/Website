@@ -39,11 +39,11 @@ export const UNITS: UnitMeta[] = [
   },
   {
     slug: 'consulting', code: '02', icon: 'compass',
-    name: { en: 'Consulting', es: 'Consultoría' },
+    name: { en: 'Consulting', es: 'Consulting' },
     tagline: { en: 'AI strategy & implementation', es: 'Estrategia e implementación de IA' },
     summary: {
-      en: 'From diagnosis to rollout: we find where AI pays off in your business and make it happen.',
-      es: 'Del diagnóstico a la implementación: encontramos dónde la IA rinde en tu negocio y lo hacemos realidad.',
+      en: 'From audit to rollout: we find where AI pays off in your business and make it happen.',
+      es: 'De la auditoría a la implementación: encontramos dónde rinde la IA en tu negocio y lo hacemos realidad.',
     },
   },
   {
@@ -66,11 +66,11 @@ export const UNITS: UnitMeta[] = [
   },
   {
     slug: 'products', code: '05', icon: 'box',
-    name: { en: 'Products', es: 'Productos' },
-    tagline: { en: 'Ready-to-deploy AI', es: 'IA lista para usar' },
+    name: { en: 'Products', es: 'Products' },
+    tagline: { en: 'Packaged AI by industry', es: 'IA empaquetada por industria' },
     summary: {
-      en: 'Proven brains packaged by industry, ready to plug into your business in days.',
-      es: 'Brains probados y empaquetados por industria, listos para conectar a tu negocio en días.',
+      en: 'AI brains packaged by industry, set up on your data and tools in weeks, not months. Now in early access.',
+      es: 'Brains de IA empaquetados por industria, configurados con tus datos y herramientas en semanas, no meses. En acceso anticipado.',
     },
   },
   {
@@ -79,7 +79,7 @@ export const UNITS: UnitMeta[] = [
     tagline: { en: 'White-label AI for agencies', es: 'IA marca blanca para agencias' },
     summary: {
       en: 'Agencies and consultancies resell our systems under their own brand. We build, you deliver.',
-      es: 'Agencias y consultoras revenden nuestros sistemas con su propia marca. Nosotros construimos, ustedes entregan.',
+      es: 'Agencias y consultoras revenden nuestros sistemas con su propia marca. Nosotros construimos; tú entregas.',
     },
   },
 ];
@@ -88,20 +88,27 @@ export const unitBySlug = (slug: string) => UNITS.find((u) => u.slug === slug);
 
 /** Company numbers taken from the current site — confirm before launch. */
 export const STATS: { value: string; label: L10n<string> }[] = [
-  { value: '15+', label: { en: 'Years building for the web', es: 'Años construyendo para la web' } },
+  { value: '15+', label: { en: 'Years in business', es: 'Años de trayectoria' } },
   { value: '200+', label: { en: 'Projects shipped', es: 'Proyectos entregados' } },
   { value: '150+', label: { en: 'Clients served', es: 'Clientes atendidos' } },
   { value: '3', label: { en: 'Markets: US · Europe · LatAm', es: 'Mercados: EE. UU. · Europa · LatAm' } },
 ];
 
-/** Client logos from the current site ("Brands we've touched"). Files live in /public/clients. */
-export const CLIENTS: { name: string; src: string; w: number; h: number }[] = [
-  // White logos, trimmed, 96px tall. Render at ~22–28px height.
-  { name: 'Tony Robbins', src: '/clients/tony-robbins.png', w: 939, h: 96 },
-  { name: 'The Lynx', src: '/clients/the-lynx.png', w: 465, h: 96 },
-  { name: 'Mastermind', src: '/clients/mastermind.png', w: 794, h: 96 },
-  { name: 'BroadEngagement', src: '/clients/broadengagement.png', w: 774, h: 96 },
-  { name: 'AR Marketing Digital', src: '/clients/ar-marketing.png', w: 452, h: 96 },
-  // Full-colour badge on white (not a white logo) — render inside a small white tile.
-  { name: 'The Hathaway Agency', src: '/clients/hathaway.webp', w: 240, h: 310 },
+/**
+ * Client logos from the current site ("Brands we've touched"). Files live in /public/clients.
+ * Contract (shared by home ClientsMarquee and about Numbers):
+ *   - `src` set: a white, trimmed 2x WebP (48px tall), rendered at calc(22px * scale) high.
+ *   - no `src`: rendered as a text wordmark (no light tile).
+ *   - `scale` evens out optical size between wide and compact marks (default 1).
+ */
+export interface ClientLogo { name: string; src?: string; w?: number; h?: number; scale?: number }
+
+export const CLIENTS: ClientLogo[] = [
+  { name: 'Tony Robbins', src: '/clients/tony-robbins.webp', w: 470, h: 48, scale: 0.85 },
+  { name: 'The Lynx', src: '/clients/the-lynx.webp', w: 232, h: 48 },
+  { name: 'Mastermind', src: '/clients/mastermind.webp', w: 397, h: 48 },
+  { name: 'BroadEngagement', src: '/clients/broadengagement.webp', w: 387, h: 48 },
+  { name: 'AR Marketing Digital', src: '/clients/ar-marketing.webp', w: 226, h: 48, scale: 1.3 },
+  // Full-colour badge only (no white version yet): shown as a wordmark.
+  { name: 'The Hathaway Agency' },
 ];

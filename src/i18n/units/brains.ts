@@ -4,9 +4,9 @@ import type { UnitCopy } from './types';
 export const BRAINS: L10n<UnitCopy> = {
   en: {
     seo: {
-      title: 'AI Brains & Custom Agents for Your Business',
+      title: 'AI brains and custom agents for your business',
       description:
-        'Sandbox builds custom AI systems: a company brain that knows your business and agents per process — sales, support, ops, HR — connected to the tools you already use.',
+        'Custom AI systems by Sandbox: a company brain that knows your business and agents for sales, support, ops and HR, connected to the tools you already use.',
     },
     hero: {
       title: 'One brain for your company. <em>An agent for every process.</em>',
@@ -21,7 +21,7 @@ export const BRAINS: L10n<UnitCopy> = {
       ],
     },
     pains: {
-      title: 'Sound <em>familiar?</em>',
+      title: 'Where the work <em>gets stuck</em>',
       lede: 'These are the problems that usually start the conversation — and what changes once the work runs through a brain.',
       items: [
         {
@@ -91,7 +91,7 @@ export const BRAINS: L10n<UnitCopy> = {
       ],
     },
     demo: {
-      eyebrow: 'Simulated run',
+      eyebrow: 'Interactive simulation',
       title: 'Watch an agent <em>work a real process</em>',
       lede: 'A simulated run of the kind of system we deploy: it reads, decides, uses your tools and asks a person before anything sensitive. Pick a workflow.',
       notesTitle: 'What you are watching',
@@ -225,13 +225,13 @@ export const BRAINS: L10n<UnitCopy> = {
     seo: {
       title: 'Brains de IA y agentes a medida para tu empresa',
       description:
-        'Sandbox construye sistemas de IA a medida: un brain que conoce tu empresa y agentes por proceso —ventas, soporte, operaciones, RR. HH.— conectados a las herramientas que ya usas.',
+        'Sistemas de IA a medida: un brain que conoce tu empresa y agentes para ventas, soporte, operaciones y RR. HH., conectados a las herramientas que ya usas.',
     },
     hero: {
       title: 'Un brain para tu empresa. <em>Un agente para cada proceso.</em>',
       lede:
         'Construimos sistemas de IA sobre tus datos, tus herramientas y la forma real en que trabaja tu equipo: una base de conocimiento viva que responde con fuentes, y agentes que califican leads, resuelven tickets y cierran el ciclo en tu CRM, con una persona aprobando lo importante.',
-      primary: 'Agendar llamada',
+      primary: 'Agendar una llamada',
       secondary: { label: 'Ver un agente en acción', href: '#demo' },
       facts: [
         { k: 'Primer agente en producción', v: '3–5 semanas' },
@@ -240,7 +240,7 @@ export const BRAINS: L10n<UnitCopy> = {
       ],
     },
     pains: {
-      title: '¿Te <em>suena?</em>',
+      title: 'Dónde se <em>atasca</em> el trabajo',
       lede: 'Estos son los problemas con los que suele empezar la conversación, y lo que cambia cuando el trabajo pasa por un brain.',
       items: [
         {
@@ -310,7 +310,7 @@ export const BRAINS: L10n<UnitCopy> = {
       ],
     },
     demo: {
-      eyebrow: 'Simulación',
+      eyebrow: 'Simulación interactiva',
       title: 'Mira a un agente <em>trabajar un proceso real</em>',
       lede: 'Una ejecución simulada del tipo de sistema que desplegamos: lee, decide, usa tus herramientas y le pregunta a una persona antes de cualquier acción sensible. Elige un flujo.',
       notesTitle: 'Qué estás viendo',
@@ -341,7 +341,7 @@ export const BRAINS: L10n<UnitCopy> = {
           name: 'Construir',
           time: '2–8 semanas',
           body: 'Construimos en ciclos cortos con casos reales de tu negocio y probamos con tu equipo hasta que las respuestas se sostienen.',
-          out: ['Agente funcionando', 'Set de evaluación', 'Recorrido con el equipo'],
+          out: ['Agente funcionando', 'Conjunto de pruebas', 'Recorrido con el equipo'],
         },
         {
           name: 'Operar',
@@ -352,7 +352,7 @@ export const BRAINS: L10n<UnitCopy> = {
       ],
     },
     pricing: {
-      body: 'Cada brain tiene dos partes: una construcción inicial y una cuota mensual para operarlo, monitorearlo y mejorarlo. Definimos ambas después de una llamada de descubrimiento, cuando ya conocemos los procesos, las herramientas involucradas y el mercado en el que operas.',
+      body: 'Cada brain tiene dos partes: una construcción inicial y una cuota mensual para operarlo, monitorearlo y mejorarlo. Definimos ambas después de una llamada inicial, cuando ya conocemos los procesos, las herramientas involucradas y el mercado en el que operas.',
       points: [
         'Implementación: descubrimiento, diseño, construcción y lanzamiento',
         'Continuo: infraestructura, uso de modelos, monitoreo y mejoras',
@@ -419,7 +419,7 @@ export const BRAINS: L10n<UnitCopy> = {
       },
       {
         q: '¿Qué pasa cuando la IA no está segura?',
-        a: 'Lo dice. Cada agente tiene reglas sobre qué puede hacer solo, qué necesita aprobación y cuándo derivar a una persona. Las acciones sensibles —modificar registros, emitir reembolsos, escribirle a ciertos clientes— pasan por un paso de aprobación que defines tú.',
+        a: 'Lo dice. Cada agente tiene reglas sobre qué puede hacer solo, qué necesita aprobación y cuándo derivar a una persona. Las acciones sensibles (modificar registros, emitir reembolsos, escribirle a ciertos clientes) pasan por un paso de aprobación que defines tú.',
       },
       {
         q: '¿Necesito un equipo técnico?',
@@ -431,7 +431,7 @@ export const BRAINS: L10n<UnitCopy> = {
       },
       {
         q: '¿Cómo se cotiza?',
-        a: 'Depende del alcance: cantidad de procesos, integraciones y uso. Todo proyecto tiene una construcción inicial y una cuota mensual de operación. Te enviamos una propuesta clara después de una llamada de descubrimiento.',
+        a: 'Depende del alcance: cantidad de procesos, integraciones y uso. Todo proyecto tiene una construcción inicial y una cuota mensual de operación. Te enviamos una propuesta clara después de una llamada inicial.',
       },
     ],
     cta: {

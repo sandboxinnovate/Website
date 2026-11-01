@@ -4,24 +4,24 @@ import type { UnitCopy } from './types';
 export const CONSULTING: L10n<UnitCopy> = {
   en: {
     seo: {
-      title: 'AI Consulting & Fractional Head of AI',
+      title: 'AI consulting and fractional Head of AI',
       description:
-        'Find where AI pays off in your business and make it happen: a 2–3 week AI Diagnostic, a 4–8 week Implementation Sprint and a Fractional Head of AI.',
+        'Find where AI pays off in your business and make it happen: a 2–3 week AI Opportunity Audit, a 4–8 week Implementation Sprint and a Fractional Head of AI.',
     },
     hero: {
       title: 'Find where AI pays off. <em>Then make it happen.</em>',
       lede:
         'We interview your team, map how work actually flows and rank every AI opportunity by return and effort. Then we roll it out — tools, usage policies, automations and training — and stay on as your Head of AI if you need one.',
       primary: 'Book a call',
-      secondary: { label: 'Take the self-assessment', href: '/diagnostic' },
+      secondary: { label: 'Take the 3-min AI diagnostic', href: '/diagnostic' },
       facts: [
-        { k: 'AI Diagnostic', v: '2–3 weeks' },
+        { k: 'Opportunity Audit', v: '2–3 weeks' },
         { k: 'Implementation Sprint', v: '4–8 weeks' },
         { k: 'Then', v: 'Monthly, as your Head of AI' },
       ],
     },
     pains: {
-      title: 'Sound <em>familiar?</em>',
+      title: 'Plenty of AI ideas. <em>No plan.</em>',
       lede: 'Most companies are not short on AI ideas. They are short on a plan, an owner and someone to do the work.',
       items: [
         {
@@ -44,11 +44,11 @@ export const CONSULTING: L10n<UnitCopy> = {
     },
     offers: {
       eyebrow: 'What we deliver',
-      title: 'Diagnose, implement, <em>lead</em>',
-      lede: 'Three engagements designed to follow each other. Start with the diagnostic, or join at the stage you are already in.',
+      title: 'Audit, implement, <em>lead</em>',
+      lede: 'Three engagements designed to follow each other. Start with the audit, or join at the stage you are already in.',
       items: [
         {
-          name: 'AI Diagnostic',
+          name: 'AI Opportunity Audit',
           what: 'A fixed-scope assessment of where AI can save time, cut costs or grow revenue in your business — and what it would take to get there.',
           includes: [
             'Interviews with leadership and 6–12 team members',
@@ -94,40 +94,40 @@ export const CONSULTING: L10n<UnitCopy> = {
     demo: {
       eyebrow: 'Self-assessment',
       title: 'How ready is your company <em>for AI?</em>',
-      lede: 'Ten questions, three minutes. You get a readiness profile across strategy, data, processes, people and tools — the same dimensions we use to open a diagnostic.',
-      notesTitle: 'What the full diagnostic adds',
+      lede: 'Ten questions, three minutes. You get a readiness profile across strategy, data, processes, people and tools — the same dimensions we use to open an audit.',
+      notesTitle: 'What the full audit adds',
       notes: [
         'Interviews with your team, not just a questionnaire',
         'A map of how work really flows between people and tools',
         'Opportunities ranked by return, effort and risk',
         'A 90-day roadmap with the first three projects scoped',
       ],
-      link: { label: 'Open the full self-assessment', href: '/diagnostic' },
+      link: { label: 'Open the AI diagnostic', href: '/diagnostic' },
     },
     method: {
       title: 'From interviews <em>to automations running</em>',
       lede: 'One continuous engagement in four steps. Each step ends with something you can use, even if you stop there.',
       steps: [
         {
-          name: 'Discover',
+          name: 'Interview',
           time: 'Week 1',
           body: 'Kickoff with leadership, then interviews across teams. We look at how work flows, where the hours go and which data already exists.',
           out: ['Interview notes', 'Process inventory'],
         },
         {
-          name: 'Design',
+          name: 'Prioritize',
           time: 'Weeks 2–3',
           body: 'We size each opportunity by return, effort and risk and turn the best ones into a sequenced 90-day roadmap.',
           out: ['Ranked opportunities', '90-day roadmap'],
         },
         {
-          name: 'Build',
+          name: 'Implement',
           time: 'Weeks 4–11',
           body: 'The implementation sprint: tools, policies, automations and training, shipped in two-week cycles and measured against the baseline.',
           out: ['Automated processes', 'AI usage policy', 'Trained team'],
         },
         {
-          name: 'Operate',
+          name: 'Lead',
           time: 'Ongoing',
           body: 'As your fractional Head of AI, we keep the roadmap current, evaluate new tools and report progress to leadership.',
           out: ['Monthly review', 'Quarterly report'],
@@ -135,19 +135,19 @@ export const CONSULTING: L10n<UnitCopy> = {
       ],
     },
     pricing: {
-      body: 'The diagnostic and the sprint are fixed-scope projects: you know exactly what you get before we start. The fractional Head of AI is a monthly engagement. We scope all three after a discovery call, according to the size of your team and the market you operate in.',
+      body: 'The audit and the sprint are fixed-scope projects: you know exactly what you get before we start. The fractional Head of AI is a monthly engagement. We scope all three after a discovery call, according to the size of your team and the market you operate in.',
       points: [
-        'Diagnostic: fixed scope, fixed timeline',
-        'Sprint: scoped from the diagnostic roadmap',
+        'Audit: fixed scope, fixed timeline',
+        'Sprint: scoped from the audit roadmap',
         'Head of AI: monthly, adjustable as you grow',
         'Tailored to your market and the size of your team',
       ],
-      shape: ['Diagnostic + sprint', 'Head of AI, monthly'],
+      shape: ['Audit + sprint', 'Head of AI, monthly'],
     },
     cases: {
       eyebrow: 'Use cases',
       title: 'Typical engagements <em>by industry</em>',
-      lede: 'Where a diagnostic usually points first, depending on the sector.',
+      lede: 'Where an audit usually points first, depending on the sector.',
       items: [
         {
           industry: 'Professional services',
@@ -170,7 +170,7 @@ export const CONSULTING: L10n<UnitCopy> = {
         {
           industry: 'Mid-size companies',
           title: 'A roadmap leadership can approve',
-          body: 'A diagnostic across sales, finance and operations that turns a long list of ideas into a sequenced plan with clear owners.',
+          body: 'An audit across sales, finance and operations that turns a long list of ideas into a sequenced plan with clear owners.',
           tags: ['Roadmap', 'Leadership'],
         },
         {
@@ -183,16 +183,16 @@ export const CONSULTING: L10n<UnitCopy> = {
     },
     faq: [
       {
-        q: 'What do we get at the end of the diagnostic?',
+        q: 'What do we get at the end of the audit?',
         a: 'A written report and a readout session: your process map, a ranked list of AI opportunities with expected return and effort, a data and security review, and a 90-day roadmap with the first three projects scoped and ready to execute.',
       },
       {
-        q: 'Do we have to continue with the sprint after the diagnostic?',
+        q: 'Do we have to continue with the sprint after the audit?',
         a: 'No. The roadmap is yours. You can execute it with your own team, with another partner or with us — and we can support your team as Head of AI while they do it.',
       },
       {
         q: 'Who from our team needs to be involved?',
-        a: 'A sponsor from leadership, one owner per area we review, and 6–12 people for interviews of about 45 minutes each. We work around your calendar.',
+        a: 'One leader who backs the project, one owner per area we review, and 6–12 people for interviews of about 45 minutes each. We work around your calendar.',
       },
       {
         q: 'How is this different from a strategy deck?',
@@ -213,7 +213,7 @@ export const CONSULTING: L10n<UnitCopy> = {
     ],
     cta: {
       title: 'Start with <em>a clear picture.</em>',
-      lede: 'A 30-minute call to understand your business and tell you honestly whether a diagnostic makes sense right now.',
+      lede: 'A 30-minute call to understand your business and tell you honestly whether an audit makes sense right now.',
     },
   },
 
@@ -221,22 +221,22 @@ export const CONSULTING: L10n<UnitCopy> = {
     seo: {
       title: 'Consultoría de IA y Head of AI fraccional',
       description:
-        'Encuentra dónde rinde la IA en tu negocio y hazlo realidad: diagnóstico de 2–3 semanas, sprint de implementación de 4–8 semanas y Head of AI fraccional.',
+        'Encuentra dónde rinde la IA en tu negocio: auditoría de oportunidades de 2–3 semanas, sprint de implementación de 4–8 semanas y Head of AI fraccional.',
     },
     hero: {
       title: 'Encuentra dónde rinde la IA. <em>Y hazlo realidad.</em>',
       lede:
-        'Entrevistamos a tu equipo, mapeamos cómo fluye realmente el trabajo y ordenamos cada oportunidad de IA por retorno y esfuerzo. Después la implementamos —herramientas, políticas de uso, automatizaciones y capacitación— y, si lo necesitas, seguimos como tu Head of AI.',
-      primary: 'Agendar llamada',
-      secondary: { label: 'Hacer la autoevaluación', href: '/diagnostic' },
+        'Entrevistamos a tu equipo, mapeamos cómo fluye realmente el trabajo y ordenamos cada oportunidad de IA por retorno y esfuerzo. Después la implementamos (herramientas, políticas de uso, automatizaciones y capacitación) y, si lo necesitas, seguimos como tu Head of AI.',
+      primary: 'Agendar una llamada',
+      secondary: { label: 'Hacer el diagnóstico (3 min)', href: '/diagnostic' },
       facts: [
-        { k: 'Diagnóstico de IA', v: '2–3 semanas' },
+        { k: 'Auditoría de oportunidades', v: '2–3 semanas' },
         { k: 'Sprint de implementación', v: '4–8 semanas' },
         { k: 'Después', v: 'Mensual, como tu Head of AI' },
       ],
     },
     pains: {
-      title: '¿Te <em>suena?</em>',
+      title: 'Muchas ideas de IA. <em>Ningún plan.</em>',
       lede: 'A la mayoría de las empresas no le faltan ideas de IA. Le falta un plan, un responsable y alguien que haga el trabajo.',
       items: [
         {
@@ -253,17 +253,17 @@ export const CONSULTING: L10n<UnitCopy> = {
         },
         {
           pain: 'La dirección quiere una estrategia de IA para el próximo trimestre y nadie se hace cargo.',
-          outcome: 'Una hoja de ruta que el directorio puede leer y una persona senior responsable de ejecutarla.',
+          outcome: 'Una hoja de ruta que el consejo directivo puede leer y una persona senior responsable de ejecutarla.',
         },
       ],
     },
     offers: {
       eyebrow: 'Qué entregamos',
-      title: 'Diagnosticar, implementar, <em>liderar</em>',
-      lede: 'Tres servicios pensados para encadenarse. Empieza por el diagnóstico o entra en la etapa en la que ya estás.',
+      title: 'Auditar, implementar, <em>liderar</em>',
+      lede: 'Tres servicios pensados para encadenarse. Empieza por la auditoría o entra en la etapa en la que ya estás.',
       items: [
         {
-          name: 'Diagnóstico de IA',
+          name: 'Auditoría de oportunidades de IA',
           what: 'Una evaluación de alcance cerrado sobre dónde la IA puede ahorrar tiempo, reducir costos o aumentar ingresos en tu negocio, y qué se necesita para lograrlo.',
           includes: [
             'Entrevistas con la dirección y 6–12 personas del equipo',
@@ -309,40 +309,40 @@ export const CONSULTING: L10n<UnitCopy> = {
     demo: {
       eyebrow: 'Autoevaluación',
       title: '¿Qué tan lista está tu empresa <em>para la IA?</em>',
-      lede: 'Diez preguntas, tres minutos. Obtienes un perfil de preparación en estrategia, datos, procesos, personas y herramientas: las mismas dimensiones con las que abrimos un diagnóstico.',
-      notesTitle: 'Lo que suma el diagnóstico completo',
+      lede: 'Diez preguntas, tres minutos. Obtienes un perfil de preparación en estrategia, datos, procesos, personas y herramientas: las mismas dimensiones con las que abrimos una auditoría.',
+      notesTitle: 'Lo que suma la auditoría completa',
       notes: [
         'Entrevistas con tu equipo, no solo un cuestionario',
         'Un mapa de cómo fluye realmente el trabajo entre personas y herramientas',
         'Oportunidades ordenadas por retorno, esfuerzo y riesgo',
         'Una hoja de ruta a 90 días con los tres primeros proyectos definidos',
       ],
-      link: { label: 'Abrir la autoevaluación completa', href: '/diagnostic' },
+      link: { label: 'Abrir el diagnóstico de IA', href: '/diagnostic' },
     },
     method: {
       title: 'De las entrevistas <em>a las automatizaciones en marcha</em>',
       lede: 'Un solo proceso en cuatro pasos. Cada paso termina con algo que puedes usar, aunque decidas parar ahí.',
       steps: [
         {
-          name: 'Descubrir',
+          name: 'Entrevistar',
           time: 'Semana 1',
           body: 'Arranque con la dirección y luego entrevistas con los equipos. Vemos cómo fluye el trabajo, adónde se van las horas y qué datos ya existen.',
           out: ['Notas de entrevistas', 'Inventario de procesos'],
         },
         {
-          name: 'Diseñar',
+          name: 'Priorizar',
           time: 'Semanas 2–3',
           body: 'Dimensionamos cada oportunidad por retorno, esfuerzo y riesgo, y convertimos las mejores en una hoja de ruta a 90 días.',
           out: ['Oportunidades priorizadas', 'Hoja de ruta a 90 días'],
         },
         {
-          name: 'Construir',
+          name: 'Implementar',
           time: 'Semanas 4–11',
           body: 'El sprint de implementación: herramientas, políticas, automatizaciones y capacitación, entregadas en ciclos de dos semanas y medidas contra la línea base.',
           out: ['Procesos automatizados', 'Política de uso de IA', 'Equipo capacitado'],
         },
         {
-          name: 'Operar',
+          name: 'Liderar',
           time: 'Continuo',
           body: 'Como tu Head of AI fraccional, mantenemos la hoja de ruta al día, evaluamos herramientas nuevas y reportamos avances a la dirección.',
           out: ['Revisión mensual', 'Reporte trimestral'],
@@ -350,19 +350,19 @@ export const CONSULTING: L10n<UnitCopy> = {
       ],
     },
     pricing: {
-      body: 'El diagnóstico y el sprint son proyectos de alcance cerrado: sabes exactamente qué recibes antes de empezar. El Head of AI fraccional es un servicio mensual. Definimos los tres después de una llamada de descubrimiento, según el tamaño de tu equipo y el mercado en el que operas.',
+      body: 'La auditoría y el sprint son proyectos de alcance cerrado: sabes exactamente qué recibes antes de empezar. El Head of AI fraccional es un servicio mensual. Definimos los tres después de una llamada inicial, según el tamaño de tu equipo y el mercado en el que operas.',
       points: [
-        'Diagnóstico: alcance y plazo cerrados',
-        'Sprint: se define a partir de la hoja de ruta',
+        'Auditoría: alcance y plazo cerrados',
+        'Sprint: definido a partir de la hoja de ruta de la auditoría',
         'Head of AI: mensual, ajustable a medida que creces',
         'Ajustado a tu mercado y al tamaño de tu equipo',
       ],
-      shape: ['Diagnóstico + sprint', 'Head of AI, mensual'],
+      shape: ['Auditoría + sprint', 'Head of AI, mensual'],
     },
     cases: {
       eyebrow: 'Casos de uso',
       title: 'Proyectos típicos <em>por industria</em>',
-      lede: 'Hacia dónde suele apuntar primero un diagnóstico, según el sector.',
+      lede: 'Hacia dónde suele apuntar primero una auditoría, según el sector.',
       items: [
         {
           industry: 'Servicios profesionales',
@@ -372,7 +372,7 @@ export const CONSULTING: L10n<UnitCopy> = {
         },
         {
           industry: 'Distribución',
-          title: 'Pedidos sin volver a tipear',
+          title: 'Pedidos sin volver a cargarlos a mano',
           body: 'Los pedidos que llegan por correo y hoja de cálculo se leen, validan y cargan solos; las excepciones pasan a una persona.',
           tags: ['Correo', 'ERP'],
         },
@@ -385,7 +385,7 @@ export const CONSULTING: L10n<UnitCopy> = {
         {
           industry: 'Empresas medianas',
           title: 'Una hoja de ruta que la dirección aprueba',
-          body: 'Un diagnóstico en ventas, finanzas y operaciones que convierte una lista larga de ideas en un plan ordenado con responsables claros.',
+          body: 'Una auditoría en ventas, finanzas y operaciones que convierte una lista larga de ideas en un plan ordenado con responsables claros.',
           tags: ['Hoja de ruta', 'Dirección'],
         },
         {
@@ -398,16 +398,16 @@ export const CONSULTING: L10n<UnitCopy> = {
     },
     faq: [
       {
-        q: '¿Qué recibimos al final del diagnóstico?',
+        q: '¿Qué recibimos al final de la auditoría?',
         a: 'Un informe escrito y una sesión de presentación: el mapa de tus procesos, una lista de oportunidades de IA ordenada por retorno y esfuerzo esperados, una revisión de datos y seguridad, y una hoja de ruta a 90 días con los tres primeros proyectos definidos y listos para ejecutar.',
       },
       {
-        q: '¿Tenemos que seguir con el sprint después del diagnóstico?',
+        q: '¿Tenemos que seguir con el sprint después de la auditoría?',
         a: 'No. La hoja de ruta es tuya. Puedes ejecutarla con tu propio equipo, con otro proveedor o con nosotros, y también podemos acompañar a tu equipo como Head of AI mientras lo hace.',
       },
       {
         q: '¿Quiénes de nuestro equipo tienen que participar?',
-        a: 'Un sponsor de la dirección, un responsable por cada área que revisamos y entre 6 y 12 personas para entrevistas de unos 45 minutos. Nos adaptamos a tu agenda.',
+        a: 'Un patrocinador en la dirección, un responsable por cada área que revisamos y entre 6 y 12 personas para entrevistas de unos 45 minutos. Nos adaptamos a tu agenda.',
       },
       {
         q: '¿En qué se diferencia de una presentación de estrategia?',
@@ -428,7 +428,7 @@ export const CONSULTING: L10n<UnitCopy> = {
     ],
     cta: {
       title: 'Empieza con <em>una foto clara.</em>',
-      lede: 'Una llamada de 30 minutos para entender tu negocio y decirte con honestidad si un diagnóstico tiene sentido ahora.',
+      lede: 'Una llamada de 30 minutos para entender tu negocio y decirte con honestidad si una auditoría tiene sentido ahora.',
     },
   },
 };

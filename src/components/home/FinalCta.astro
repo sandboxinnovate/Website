@@ -30,6 +30,17 @@ const word = f.big[lang];
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-fc]').forEach((el) => {
+    // Fit the giant word to the row width (letter transforms don't affect scrollWidth, so this is safe mid-animation).
+    const fit = () => {
+      el.style.fontSize = '';
+      const fs = parseFloat(getComputedStyle(el).fontSize);
+      if (el.scrollWidth > el.clientWidth + 1) el.style.fontSize = Math.floor((fs * el.clientWidth) / el.scrollWidth * 0.98) + 'px';
+    };
+    fit();
+    document.fonts.ready.then(fit);
+    let fr = 0;
+    addEventListener('resize', () => { cancelAnimationFrame(fr); fr = requestAnimationFrame(fit); }, { passive: true });
+
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.add('is-in'); return; }
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('is-in'); io.disconnect(); } }, { threshold: 0.3 });
     io.observe(el);
@@ -40,8 +51,9 @@ const word = f.big[lang];
   .fc { position: relative; padding-block: clamp(100px, 14vw, 200px) clamp(60px, 8vw, 100px); overflow: hidden; isolation: isolate; }
   .fc__glow { z-index: -1; width: 80vw; height: 60%; left: 10vw; top: 25%; opacity: .45; }
   .fc__inner { display: flex; flex-direction: column; gap: clamp(32px, 4vw, 56px); }
-  .fc__big { font-family: var(--font-display); font-weight: 500; font-size: clamp(3.6rem, 15vw, 15rem); line-height: .86; letter-spacing: -.065em; white-space: nowrap; }
-  .fc__ch { display: inline-block; padding: 0 .08em; margin: 0 -.08em; background: linear-gradient(180deg, var(--color-bone) 40%, var(--color-flame-400) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  .fc__big { font-family: var(--font-display); font-weight: 500; font-size: clamp(3.4rem, 14.2vw, 12.8rem); line-height: .86; letter-spacing: -.065em; white-space: nowrap; }
+  :global(html[lang='es']) .fc__big { font-size: clamp(2.4rem, 9.2vw, 8.4rem); }
+  .fc__ch { display: inline-block; padding: 0 .08em .18em; margin: 0 -.08em -.18em; /* bottom pad: room for descenders (y, g) inside the clipped gradient */ background: linear-gradient(180deg, var(--color-bone) 40%, var(--color-flame-400) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
     transform: translateY(40%) rotate(4deg); opacity: 0; transition: transform 1.2s var(--ease-out-expo), opacity .8s; transition-delay: calc(var(--k) * 45ms); }
   .fc__ch:last-child { background: var(--grad-flame); -webkit-background-clip: text; background-clip: text; }
   .fc__sp { width: .28em; }

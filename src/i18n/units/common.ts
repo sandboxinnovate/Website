@@ -8,7 +8,7 @@ export const UNIT_COMMON = {
   glance: { en: 'At a glance', es: 'En resumen' },
 
   pains: {
-    eyebrow: { en: 'Sound familiar?', es: '¿Te suena?' },
+    eyebrow: { en: 'Before and after', es: 'Antes y después' },
     today: { en: 'Today', es: 'Hoy' },
     after: { en: 'With Sandbox', es: 'Con Sandbox' },
   },
@@ -17,7 +17,7 @@ export const UNIT_COMMON = {
     included: { en: 'What’s included', es: 'Qué incluye' },
     timeline: { en: 'Typical timeline', es: 'Plazo típico' },
     bestFor: { en: 'Best for', es: 'Ideal para' },
-    ask: { en: 'Ask about this', es: 'Consultar por esto' },
+    ask: { en: 'Ask about this', es: 'Preguntar por este servicio' },
   },
 
   method: {
@@ -28,7 +28,18 @@ export const UNIT_COMMON = {
   pricing: {
     eyebrow: { en: 'How pricing works', es: 'Cómo se cotiza' },
     title: { en: 'Scoped to your business, <em>not a price list</em>', es: 'Definido para tu negocio, <em>no una lista de precios</em>' },
-    cta: { en: 'Book a discovery call', es: 'Agendar una llamada' },
+    cta: { en: 'Book a call', es: 'Agendar una llamada' },
+  },
+
+  /** Published client results (only on units that have cases in src/i18n/work.ts). */
+  results: {
+    eyebrow: { en: 'Client results', es: 'Resultados de clientes' },
+    title: { en: 'Numbers from our <em>marketing work</em>', es: 'Números de nuestro <em>trabajo en marketing</em>' },
+    lede: {
+      en: 'Six published cases in content, SEO, web and local growth, with the number each one moved.',
+      es: 'Seis casos publicados de contenido, SEO, web y crecimiento local, con el número que movió cada uno.',
+    },
+    all: { en: 'See all work', es: 'Ver todos los casos' },
   },
 
   faq: {

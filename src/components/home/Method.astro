@@ -2,7 +2,7 @@
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import Icon from '@/components/ui/Icon.astro';
 import { HOME } from '@/i18n/home';
-import type { Lang } from '@/i18n';
+import { localize, type Lang } from '@/i18n';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -48,6 +48,14 @@ const m = HOME.method;
         ))}
       </ol>
     </div>
+
+    <div class="md__cta" data-reveal>
+      <p>{m.cta.line[lang]}</p>
+      <a href={localize(lang, '/contact')} class="btn btn-ghost">
+        <span>{m.cta.label[lang]}</span>
+        <span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -84,9 +92,10 @@ const m = HOME.method;
   .md__rail { display: none; }
   @media (min-width: 1000px) { .md__rail { display: block; } }
   .md__sticky { position: sticky; top: calc(var(--nav-h) + 48px); display: flex; flex-direction: column; gap: 22px; }
-  .md__big { height: clamp(140px, 15vw, 220px); overflow: hidden; font-family: var(--font-display); font-weight: 500; font-size: clamp(140px, 15vw, 220px); line-height: 1; letter-spacing: -.07em; }
-  .md__big-track { display: flex; flex-direction: column; transform: translateY(calc(var(--i, 0) * -100%)); transition: transform .9s var(--ease-out-expo); }
-  .md__big-track span { display: block; height: clamp(140px, 15vw, 220px); background: var(--grad-flame); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  /* One height token: the track moves one numeral (--md-h) per step. A % translate would be relative to the whole track. */
+  .md__big { --md-h: clamp(140px, 15vw, 220px); height: var(--md-h); overflow: hidden; font-family: var(--font-display); font-weight: 500; font-size: var(--md-h); line-height: 1; letter-spacing: -.07em; }
+  .md__big-track { display: flex; flex-direction: column; transform: translateY(calc(var(--i, 0) * var(--md-h) * -1)); transition: transform .9s var(--ease-out-expo); }
+  .md__big-track span { display: block; height: var(--md-h); background: var(--grad-flame); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .md__names { display: grid; }
   .md__name { grid-area: 1 / 1; font-family: var(--font-display); font-size: 30px; letter-spacing: -.035em; opacity: 0; transform: translateY(10px); transition: opacity .5s, transform .7s var(--ease-out-expo); }
   .md__name.is-on { opacity: 1; transform: none; }
@@ -100,7 +109,7 @@ const m = HOME.method;
     .md__steps { padding-left: 22px; }
     .md__steps::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 1px; background: linear-gradient(var(--color-flame-500), var(--line) 70%); }
   }
-  @media (min-width: 1000px) { .md__steps { gap: 22vh; padding-block: 4vh 18vh; } }
+  @media (min-width: 1000px) { .md__steps { gap: 12vh; padding-block: 2vh 4vh; } }
   .md__step { padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 14px; transition: border-color .5s, opacity .5s, transform .8s var(--ease-out-expo); }
   @media (min-width: 1000px) { .md__step:not(.is-active) { opacity: .45; } .md__step.is-active { border-color: rgb(245 131 39 / .35); } }
   .md__step-head { display: flex; align-items: center; justify-content: space-between; }
@@ -112,4 +121,7 @@ const m = HOME.method;
   .md__out ul { display: flex; flex-wrap: wrap; gap: 8px; }
   .md__out li { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 99px; font-size: 14px; background: rgb(255 255 255 / .04); border: 1px solid var(--line); }
   .md__out li :global(svg) { color: var(--color-flame-400); }
+
+  .md__cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-top: clamp(32px, 4vw, 48px); padding-top: 24px; border-top: 1px solid var(--line); }
+  .md__cta p { color: var(--color-mist); font-size: 17px; }
 </style>

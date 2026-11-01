@@ -9,10 +9,10 @@ Pricing is not published: it depends on scope and market and is discussed on a c
 ## Services
 
 - [Brains](https://sandboxinnovate.com/services/brains): Custom AI systems — a company "brain" (living knowledge base plus an assistant that answers and acts) and agents per process (sales, support, operations, HR), internal copilots and integrations. People approve the steps that matter.
-- [Consulting](https://sandboxinnovate.com/services/consulting): AI Diagnostic (2–3 weeks: interviews, process map, opportunities ranked by ROI, roadmap), Implementation Sprint (4–8 weeks: tools, usage policies, 2–3 automated processes, training) and a monthly Fractional Head of AI.
+- [Consulting](https://sandboxinnovate.com/services/consulting): AI Opportunity Audit (2–3 weeks: interviews, process map, opportunities ranked by ROI, roadmap), Implementation Sprint (4–8 weeks: tools, usage policies, 2–3 automated processes, training) and a monthly Fractional Head of AI.
 - [Growth](https://sandboxinnovate.com/services/growth): AI-native marketing — a content engine in the brand's voice, visibility inside AI-generated answers (generative engine optimization), AI-generated and tested ad creative, and personalized email and outbound at scale.
-- [Academy](https://sandboxinnovate.com/services/academy): Hands-on AI workshops for teams, multi-week programs for leaders, and free content (webinars, newsletter).
-- [Products](https://sandboxinnovate.com/services/products): Proven brains packaged by industry, offered as a subscription. Currently in early access.
+- [Academy](https://sandboxinnovate.com/services/academy): Hands-on AI workshops for teams, multi-week programs for leaders, and a free monthly newsletter.
+- [Products](https://sandboxinnovate.com/services/products): AI brains packaged by industry, offered as a subscription. Currently in early access.
 - [Partners](https://sandboxinnovate.com/services/partners): White-label program — agencies and consultancies resell Sandbox-built AI systems under their own brand.
 
 ## Company
@@ -20,7 +20,7 @@ Pricing is not published: it depends on scope and market and is discussed on a c
 - [About](https://sandboxinnovate.com/about): How Sandbox went from marketing agency to AI company, its principles and how it works across markets.
 - [Work](https://sandboxinnovate.com/work): Client case studies with results, and the reference architecture of a Sandbox brain.
 - [AI Diagnostic](https://sandboxinnovate.com/diagnostic): A 3-minute AI-readiness assessment — no sign-up needed to see the score by dimension and the recommended next steps.
-- [Contact](https://sandboxinnovate.com/contact): Book a strategy call.
+- [Contact](https://sandboxinnovate.com/contact): Book a 30-minute call.
 
 ## Languages
 

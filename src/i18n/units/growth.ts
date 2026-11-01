@@ -4,7 +4,7 @@ import type { UnitCopy } from './types';
 export const GROWTH: L10n<UnitCopy> = {
   en: {
     seo: {
-      title: 'AI-Native Marketing & AI Search Visibility (GEO)',
+      title: 'AI-native marketing and AI search visibility (GEO)',
       description:
         'Marketing engineered with AI: a content engine in your brand voice, visibility inside AI answers, ad creative tested at volume and personalized outbound.',
     },
@@ -16,12 +16,12 @@ export const GROWTH: L10n<UnitCopy> = {
       secondary: { label: 'See how AI answers', href: '#demo' },
       facts: [
         { k: 'Channels', v: 'AI answers · Search · Paid social · Email' },
-        { k: 'First outputs', v: 'Week 2' },
+        { k: 'First outputs', v: 'Weeks 3–5' },
         { k: 'Brand voice', v: 'Trained on your material, approved by you' },
       ],
     },
     pains: {
-      title: 'Sound <em>familiar?</em>',
+      title: 'More channels, <em>same team</em>',
       lede: 'Marketing teams are being asked for more output, in more channels, with the same people. This is where AI earns its place.',
       items: [
         {
@@ -102,7 +102,7 @@ export const GROWTH: L10n<UnitCopy> = {
       ],
     },
     demo: {
-      eyebrow: 'Simulated answer',
+      eyebrow: 'Interactive simulation',
       title: 'How AI decides <em>who to recommend</em>',
       lede: 'A simulated assistant answering a buyer’s question. See which sources it reads, which brands it cites and what changes the answer.',
     },
@@ -111,25 +111,25 @@ export const GROWTH: L10n<UnitCopy> = {
       lede: 'Setup takes a few weeks. After that, the engines produce every week and the report tells you what moved.',
       steps: [
         {
-          name: 'Discover',
+          name: 'Audit',
           time: '1 week',
           body: 'We audit your channels and content, and how AI assistants answer the questions in your category today.',
           out: ['Channel audit', 'AI visibility baseline'],
         },
         {
-          name: 'Design',
+          name: 'Calibrate',
           time: '1 week',
           body: 'We train the brand voice, define the question set, the creative angles and the accounts to target, and agree on the metrics that matter.',
           out: ['Voice guide', 'Questions & angles', 'Scorecard'],
         },
         {
-          name: 'Build',
+          name: 'Launch',
           time: '2–3 weeks',
           body: 'We set up the engines, connect your ads manager, CRM and inbox, and ship the first batch of content and tests.',
           out: ['Engines live', 'First outputs'],
         },
         {
-          name: 'Operate',
+          name: 'Publish weekly',
           time: 'Monthly',
           body: 'We publish, test and iterate every week, and report what moved: citations, traffic, leads and pipeline.',
           out: ['Weekly outputs', 'Monthly report'],
@@ -221,7 +221,7 @@ export const GROWTH: L10n<UnitCopy> = {
 
   es: {
     seo: {
-      title: 'Marketing nativo en IA y visibilidad en IA (GEO)',
+      title: 'Marketing con IA y visibilidad en la IA (GEO)',
       description:
         'Marketing diseñado con IA: contenido con la voz de tu marca, visibilidad en las respuestas de IA, creatividades testeadas a escala y prospección personalizada.',
     },
@@ -229,16 +229,16 @@ export const GROWTH: L10n<UnitCopy> = {
       title: 'Sé la respuesta <em>cuando tus clientes le preguntan a la IA.</em>',
       lede:
         'Hoy tus clientes le preguntan a un asistente antes de buscar. Construimos el motor de marketing para ese escenario: contenido con la voz de tu marca, visibilidad dentro de las respuestas de IA, creatividades generadas y testeadas a escala, y prospección que parece escrita para una sola persona.',
-      primary: 'Agendar llamada',
+      primary: 'Agendar una llamada',
       secondary: { label: 'Ver cómo responde la IA', href: '#demo' },
       facts: [
-        { k: 'Canales', v: 'Respuestas de IA · Búsqueda · Social pago · Email' },
-        { k: 'Primeras piezas', v: 'Semana 2' },
+        { k: 'Canales', v: 'Respuestas de IA · Búsqueda · Anuncios en redes · Email' },
+        { k: 'Primeras piezas', v: 'Semanas 3–5' },
         { k: 'Voz de marca', v: 'Entrenada con tu material, aprobada por ti' },
       ],
     },
     pains: {
-      title: '¿Te <em>suena?</em>',
+      title: 'Más canales, <em>el mismo equipo</em>',
       lede: 'A los equipos de marketing se les pide más producción, en más canales, con la misma gente. Ahí es donde la IA se gana su lugar.',
       items: [
         {
@@ -281,7 +281,7 @@ export const GROWTH: L10n<UnitCopy> = {
           name: 'Visibilidad en buscadores de IA (GEO)',
           what: 'Optimización para motores generativos: medimos cómo responden los asistentes de IA a las preguntas de tus clientes, entendemos por qué citan a otros y lo corregimos con contenido, estructura y señales de terceros.',
           includes: [
-            'Set de preguntas basado en consultas reales de clientes',
+            'Banco de preguntas basado en consultas reales de clientes',
             'Línea base de menciones y citas en asistentes',
             'Ajustes técnicos: estructura, schema, rastreabilidad',
             'Plan de contenido y fuentes para ganar citas',
@@ -319,7 +319,7 @@ export const GROWTH: L10n<UnitCopy> = {
       ],
     },
     demo: {
-      eyebrow: 'Simulación',
+      eyebrow: 'Simulación interactiva',
       title: 'Cómo decide la IA <em>a quién recomendar</em>',
       lede: 'Un asistente simulado respondiendo la pregunta de un cliente. Mira qué fuentes lee, qué marcas cita y qué cambia la respuesta.',
     },
@@ -328,25 +328,25 @@ export const GROWTH: L10n<UnitCopy> = {
       lede: 'La puesta en marcha toma unas semanas. Después, los motores producen cada semana y el reporte te dice qué se movió.',
       steps: [
         {
-          name: 'Descubrir',
+          name: 'Auditar',
           time: '1 semana',
           body: 'Auditamos tus canales y tu contenido, y cómo responden hoy los asistentes de IA a las preguntas de tu categoría.',
           out: ['Auditoría de canales', 'Línea base de visibilidad en IA'],
         },
         {
-          name: 'Diseñar',
+          name: 'Calibrar',
           time: '1 semana',
-          body: 'Entrenamos la voz de marca, definimos el set de preguntas, los ángulos creativos y las cuentas objetivo, y acordamos las métricas que importan.',
+          body: 'Entrenamos la voz de marca, definimos el banco de preguntas, los ángulos creativos y las cuentas objetivo, y acordamos las métricas que importan.',
           out: ['Guía de voz', 'Preguntas y ángulos', 'Tablero de métricas'],
         },
         {
-          name: 'Construir',
+          name: 'Lanzar',
           time: '2–3 semanas',
           body: 'Configuramos los motores, conectamos tu administrador de anuncios, tu CRM y tu correo, y entregamos la primera tanda de contenido y tests.',
           out: ['Motores activos', 'Primeras piezas'],
         },
         {
-          name: 'Operar',
+          name: 'Publicar cada semana',
           time: 'Mensual',
           body: 'Publicamos, testeamos e iteramos cada semana, y reportamos qué se movió: citas, tráfico, leads y oportunidades.',
           out: ['Producción semanal', 'Reporte mensual'],
@@ -403,7 +403,7 @@ export const GROWTH: L10n<UnitCopy> = {
     faq: [
       {
         q: '¿Qué es la optimización para motores generativos (GEO)?',
-        a: 'Es el trabajo de hacer que tu marca aparezca —y sea citada— dentro de las respuestas que dan los asistentes de IA. Se cruza con el SEO, pero suma tareas nuevas: medir preguntas en lugar de palabras clave, ganar menciones en las fuentes en las que confían los asistentes y estructurar el contenido para que se pueda citar.',
+        a: 'Es el trabajo de hacer que tu marca aparezca (y sea citada) dentro de las respuestas que dan los asistentes de IA. Se cruza con el SEO, pero suma tareas nuevas: medir preguntas en lugar de palabras clave, ganar menciones en las fuentes en las que confían los asistentes y estructurar el contenido para que se pueda citar.',
       },
       {
         q: '¿Pueden garantizar que los asistentes de IA nos citen?',

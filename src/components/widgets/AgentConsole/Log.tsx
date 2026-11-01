@@ -79,7 +79,7 @@ export default function Log({ sc, tl, lang, ui, view, compact, onApprove, result
           : view.approved === 'auto' ? ui.gate.byAuto(fmtSec(view.approvedAfter, lang))
           : ui.gate.byStatic(g.approver[lang]);
         return (
-          <li key={l.id} className="ac-gate" data-state={ok ? 'ok' : 'wait'}>
+          <li key={l.id} className="ac-gate" data-state={ok ? 'ok' : 'wait'} data-gate-node="">
             <div className="ac-gate__head">
               <Ico name="shield" size={14} />
               <span>{ui.gate.title}</span>

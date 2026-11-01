@@ -23,7 +23,6 @@ const secondaryIcon = h.secondary.href.startsWith('#') ? 'arrow-right' : 'arrow-
   <div class="uh__bg" aria-hidden="true">
     <div class="bg-grid uh__grid"></div>
     <div class="glow-ember uh__glow uh__glow--a"></div>
-    <div class="glow-ember uh__glow uh__glow--b"></div>
   </div>
 
   <div class="container-x uh__inner">
@@ -32,20 +31,14 @@ const secondaryIcon = h.secondary.href.startsWith('#') ? 'arrow-right' : 'arrow-
         <ol>
           <li><a href={localize(lang, '/#services')}>{C.breadcrumb[lang]}</a></li>
           <li aria-hidden="true" class="uh__sep">/</li>
-          <li><span aria-current="page">{unit.code} · {unit.name[lang]}</span></li>
+          <li><span aria-current="page">{unit.code} · {unit.name[lang]}</span><span class="uh__tagline"> — {unit.tagline[lang]}</span></li>
         </ol>
       </nav>
 
-      <div class="uh__meta uh__in" style="--i:1">
-        <span class="uh__icon"><Icon name={unit.icon} size={20} /></span>
-        <span class="uh__unit">{unit.name[lang]}</span>
-        <span class="eyebrow">{unit.tagline[lang]}</span>
-      </div>
+      <h1 id="uh-title" class="uh__title uh__in" style="--i:1" set:html={h.title} />
+      <p class="lede uh__lede uh__in" style="--i:2">{h.lede}</p>
 
-      <h1 id="uh-title" class="uh__title uh__in" style="--i:2" set:html={h.title} />
-      <p class="lede uh__lede uh__in" style="--i:3">{h.lede}</p>
-
-      <div class="uh__ctas uh__in" style="--i:4">
+      <div class="uh__ctas uh__in" style="--i:3">
         <a href={contactHref} class="btn btn-primary">
           <span>{h.primary}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
         </a>
@@ -96,21 +89,19 @@ const secondaryIcon = h.secondary.href.startsWith('#') ? 'arrow-right' : 'arrow-
   .uh__bg { position: absolute; inset: 0; z-index: -1; }
   .uh__grid { position: absolute; inset: 0; opacity: .6; }
   .uh__glow--a { width: 820px; height: 640px; right: -200px; top: 2%; opacity: .42; }
-  .uh__glow--b { width: 600px; height: 420px; left: -320px; top: 40%; opacity: .2; }
 
   .uh__inner { display: grid; gap: clamp(40px, 6vw, 64px); align-items: center; }
   @media (min-width: 1080px) { .uh__inner { grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: 56px; } }
 
   .uh__copy { display: flex; flex-direction: column; align-items: flex-start; gap: 26px; min-width: 0; }
   .uh__crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-smoke); }
-  .uh__crumbs a { color: var(--color-mist); text-decoration: underline; text-decoration-color: rgb(255 255 255 / .2); text-underline-offset: 4px; transition: color .2s; }
+  .uh__crumbs a { display: inline-block; padding-block: 12px; margin-block: -12px; color: var(--color-mist); text-decoration: underline; text-decoration-color: rgb(255 255 255 / .2); text-underline-offset: 4px; transition: color .2s; }
   .uh__crumbs a:hover { color: var(--color-flame-400); }
   .uh__crumbs [aria-current] { color: var(--color-bone); }
+  .uh__tagline { color: var(--color-flame-400); }
+  /* The current page wraps inside its own item instead of dropping below "Services /". */
+  .uh__crumbs li:last-child { flex: 1 1 0; min-width: 14ch; text-wrap: balance; }
   .uh__sep { color: var(--color-ink-500); }
-
-  .uh__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-  .uh__icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; color: var(--color-flame-400); background: rgb(245 131 39 / .08); border: 1px solid rgb(245 131 39 / .3); }
-  .uh__unit { font-family: var(--font-display); font-size: 18px; letter-spacing: -.02em; }
 
   .uh__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.3rem, 4.5vw, 4.25rem); line-height: 1.0; letter-spacing: -.05em; max-width: 15ch; }
   .uh--growth .uh__title { max-width: 16ch; }

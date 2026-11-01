@@ -234,7 +234,10 @@ export default function Palette({ lang, open, initialQuery = '', onClose, return
       // same page: close first (unlocks scroll), then jump to the section
       skipRestore.current = true;
       afterClose.current = () => {
+        const oldURL = location.href;
         history.pushState(null, '', url.hash);
+        // pushState doesn't fire hashchange; pages that react to it (e.g. /work opening a case) should.
+        window.dispatchEvent(new HashChangeEvent('hashchange', { oldURL, newURL: location.href }));
         const el = document.getElementById(url.hash.slice(1));
         if (el) {
           el.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });

@@ -1,11 +1,13 @@
 ---
 /**
- * 404 — "signal lost". src/pages/404.astro renders this once (lang "en"), so the page carries
- * both languages and an inline script picks Spanish before first paint on /es/ URLs.
+ * 404 — "signal lost". Rendered twice: src/pages/404.astro (EN) and src/pages/es/404.astro (ES).
+ * Netlify serves the Spanish one for missing /es/ paths (public/_redirects). Hosts that only know
+ * /404.html get the English page, whose inline script sends /es/ URLs to /es/404/ before paint,
+ * so nav, footer and palette are Spanish too. The requested path is kept for the "last seen" readout.
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/ui/Icon.astro';
-import { localize, LANGS, type Lang } from '@/i18n';
+import { localize, type Lang } from '@/i18n';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -62,11 +64,11 @@ const trace = pts.join(' ');
 <Base lang={lang} title={COPY[lang].title} description={lang === 'es' ? 'Esta página no está conectada a nada. Vuelve al inicio, explora los servicios o contacta a Sandbox.' : 'This page is not wired to anything. Go back home, explore services or contact Sandbox.'} noindex>
   <script is:inline>
     (function () {
-      if (/^\/es(\/|$)/.test(location.pathname)) {
-        var h = document.documentElement;
-        h.classList.add('nf-es');
-        h.lang = 'es';
-        document.title = 'Se perdió la señal (404) — Sandbox';
+      // English 404 served for a missing /es/ URL (hosts without per-language 404s): go to the Spanish one.
+      var p = location.pathname;
+      if (document.documentElement.lang === 'en' && /^\/es(\/|$)/.test(p) && !/^\/es\/404(\/|$)/.test(p)) {
+        try { sessionStorage.setItem('sbx:404-from', p); } catch (e) {}
+        location.replace('/es/404/');
       }
     })();
   </script>
@@ -76,10 +78,10 @@ const trace = pts.join(' ');
     <div class="nf__glow glow-ember" aria-hidden="true"></div>
 
     <div class="container-x nf__inner">
-      {LANGS.map((l) => {
+      {[lang].map((l) => {
         const c = COPY[l];
         return (
-          <div class="nf__copy" lang={l} data-lang-block={l}>
+          <div class="nf__copy">
             <p class="nf__status mono-label"><span class="nf__led" aria-hidden="true"></span>{c.status} · 404</p>
             <h1 id={`nf-title-${l}`} class="nf__title display-xl">{c.h1}</h1>
             <p class="lede nf__body">{c.body}</p>
@@ -111,7 +113,7 @@ const trace = pts.join(' ');
       <!-- Oscilloscope: the request's signal decays into a flatline -->
       <div class="nf__scope" aria-hidden="true">
         <div class="nf__scope-head">
-          {LANGS.map((l) => <span class="mono-label" lang={l} data-lang-block={l}>{COPY[l].scope.ch}</span>)}
+          <span class="mono-label">{COPY[lang].scope.ch}</span>
           <span class="nf__rec"><i></i>REC</span>
         </div>
         <div class="nf__screen">
@@ -124,13 +126,11 @@ const trace = pts.join(' ');
           <span class="nf__sweep"></span>
         </div>
         <div class="nf__read">
-          {LANGS.map((l) => (
-            <div class="nf__read-row" lang={l} data-lang-block={l}>
-              <span>{COPY[l].scope.amp} <b>0.00</b></span>
-              <span>{COPY[l].scope.freq} <b>—</b></span>
-              <span class="nf__read-last">{COPY[l].scope.last} <b data-path>/…</b></span>
-            </div>
-          ))}
+          <div class="nf__read-row">
+            <span>{COPY[lang].scope.amp} <b>0.00</b></span>
+            <span>{COPY[lang].scope.freq} <b>—</b></span>
+            <span class="nf__read-last">{COPY[lang].scope.last} <b data-path>/…</b></span>
+          </div>
         </div>
       </div>
     </div>
@@ -140,8 +140,12 @@ const trace = pts.join(' ');
 <script>
   const root = document.querySelector<HTMLElement>('[data-nf]');
   if (root) {
-    // Show the requested path (as text, never as HTML).
-    const path = decodeURIComponent(location.pathname).slice(0, 48) || '/';
+    // Show the requested path (as text, never as HTML). After the EN → /es/404/ hop, use the original one.
+    let from: string | null = null;
+    try { from = sessionStorage.getItem('sbx:404-from'); sessionStorage.removeItem('sbx:404-from'); } catch { /* storage blocked */ }
+    let path = from || location.pathname;
+    try { path = decodeURIComponent(path); } catch { /* malformed escape: show it raw */ }
+    path = path.slice(0, 48) || '/';
     root.querySelectorAll<HTMLElement>('[data-path]').forEach((el) => (el.textContent = path));
     // Platform-aware shortcut hint, and open the global command palette.
     const mac = /Mac|iPhone|iPad/.test(navigator.userAgent);
@@ -161,12 +165,6 @@ const trace = pts.join(' ');
 </script>
 
 <style>
-  /* Language switch (set before paint by the inline script) */
-  [data-lang-block='es'] { display: none !important; }
-  :global(html.nf-es) [data-lang-block='en'] { display: none !important; }
-  :global(html.nf-es) .nf__copy[data-lang-block='es'] { display: flex !important; }
-  :global(html.nf-es) .nf__read-row[data-lang-block='es'] { display: flex !important; }
-  :global(html.nf-es) .mono-label[data-lang-block='es'] { display: inline !important; }
 
   .nf { position: relative; isolation: isolate; overflow: hidden; min-height: calc(100svh - 40px); display: flex; align-items: center; padding-top: calc(var(--nav-h) + clamp(40px, 6vw, 80px)); padding-bottom: clamp(64px, 8vw, 112px); }
   .nf__grid { position: absolute; inset: 0; z-index: -2; }

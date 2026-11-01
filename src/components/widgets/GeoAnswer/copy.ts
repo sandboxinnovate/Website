@@ -45,6 +45,8 @@ export interface GeoCopy {
   phase: { idle: string; typing: string; searching: string; streaming: string; done: (n: number) => string };
   sourcesTitle: string;
   sourceWord: string;
+  /** Link under the finished answer: the next step for a visitor who wants this for real. */
+  cta: string;
   kinds: Record<SourceKind, string>;
   verdict: Record<Mode, (brand: string) => string>;
   announce: Record<Mode, (brand: string) => string>;
@@ -86,6 +88,7 @@ export const COPY: Record<Lang, GeoCopy> = {
     },
     sourcesTitle: 'Sources',
     sourceWord: 'source',
+    cta: 'See how AI answers your buyers today',
     kinds: {
       yours: 'Your site',
       brand: 'Brand site',
@@ -299,7 +302,7 @@ export const COPY: Record<Lang, GeoCopy> = {
 
   es: {
     aria: 'Respuesta de IA ilustrativa: cómo aparece una marca antes y después del trabajo de búsqueda con IA',
-    defaultBrand: 'Tu Marca',
+    defaultBrand: 'Tu marca',
     bar: { path: 'vista-respuesta', illustrative: 'Ejemplo ilustrativo', replay: 'Repetir', replayAria: 'Repetir la respuesta' },
     controls: {
       brand: 'Tu marca',
@@ -319,6 +322,7 @@ export const COPY: Record<Lang, GeoCopy> = {
     },
     sourcesTitle: 'Fuentes',
     sourceWord: 'fuente',
+    cta: 'Ver cómo responde hoy la IA a tus clientes',
     kinds: {
       yours: 'Tu sitio',
       brand: 'Sitio de marca',
@@ -359,12 +363,12 @@ export const COPY: Record<Lang, GeoCopy> = {
     cats: [
       {
         id: 'dental',
-        label: 'Clínica dental en Austin',
-        slug: 'dental-austin',
-        question: '¿Cuál es la mejor clínica dental en Austin para implantes?',
+        label: 'Clínica dental en Guadalajara',
+        slug: 'dental-guadalajara',
+        question: '¿Cuál es la mejor clínica dental en Guadalajara para implantes?',
         before: {
           blocks: [
-            { kind: 'p', text: 'Para implantes dentales en Austin, estas tres clínicas son las que más aparecen en reseñas de pacientes y guías locales:' },
+            { kind: 'p', text: 'Para implantes dentales en Guadalajara, estas tres clínicas son las que más aparecen en reseñas de pacientes y guías locales:' },
             { kind: 'li', text: '**Marca A** — larga trayectoria en implantes y consultas en la misma semana. [1]' },
             { kind: 'li', text: '**Marca B** — citas por la tarde y opciones de financiamiento. [2]' },
             { kind: 'li', text: '**Marca C** — muy bien valorada por pacientes con miedo al tratamiento. [3]' },
@@ -372,13 +376,13 @@ export const COPY: Record<Lang, GeoCopy> = {
           ],
           sources: [
             { title: 'Marca A — Implantes dentales, explicados', kind: 'brand' },
-            { title: 'Dentistas en Austin, según sus pacientes', kind: 'review' },
+            { title: 'Dentistas en Guadalajara, según sus pacientes', kind: 'review' },
             { title: 'Marca C — Historias de pacientes', kind: 'brand' },
           ],
         },
         after: {
           blocks: [
-            { kind: 'p', text: 'Para implantes dentales en Austin, hay una clínica que destaca en reseñas de pacientes y guías locales:' },
+            { kind: 'p', text: 'Para implantes dentales en Guadalajara, hay una clínica que destaca en reseñas de pacientes y guías locales:' },
             { kind: 'li', text: '**{brand}** — la información más clara de la zona sobre implantes, con planes de tratamiento paso a paso y reseñas verificadas. [1]' },
             { kind: 'li', text: '**Marca A** — larga trayectoria y consultas en la misma semana. [3]' },
             { kind: 'li', text: '**Marca B** — opciones de financiamiento. [2]' },
@@ -386,7 +390,7 @@ export const COPY: Record<Lang, GeoCopy> = {
           ],
           sources: [
             { title: '{brand} — Implantes, paso a paso', kind: 'yours' },
-            { title: 'Dentistas en Austin, según sus pacientes', kind: 'review' },
+            { title: 'Dentistas en Guadalajara, según sus pacientes', kind: 'review' },
             { title: 'Marca A — Implantes dentales, explicados', kind: 'brand' },
           ],
         },
@@ -427,60 +431,60 @@ export const COPY: Record<Lang, GeoCopy> = {
       },
       {
         id: 'hotel',
-        label: 'Hotel boutique en Lisboa',
-        slug: 'hotel-lisboa',
-        question: 'Recomiéndame un hotel boutique en Lisboa para un fin de semana largo.',
+        label: 'Hotel boutique en Cartagena',
+        slug: 'hotel-cartagena',
+        question: 'Recomiéndame un hotel boutique en Cartagena para un fin de semana largo.',
         before: {
           blocks: [
-            { kind: 'p', text: 'Para un fin de semana largo en Lisboa, viajeros y guías recomiendan estos hoteles boutique:' },
-            { kind: 'li', text: '**Marca A** — terraza con vista al casco antiguo, cerca de todo a pie. [1]' },
+            { kind: 'p', text: 'Para un fin de semana largo en Cartagena, viajeros y guías recomiendan estos hoteles boutique:' },
+            { kind: 'li', text: '**Marca A** — terraza con vista a la ciudad amurallada, cerca de todo a pie. [1]' },
             { kind: 'li', text: '**Marca B** — habitaciones tranquilas y un desayuno muy elogiado. [2]' },
-            { kind: 'li', text: '**Marca C** — diseño cuidado, cerca del río. [3]' },
-            { kind: 'p', text: 'Si viajas entre mayo y octubre, reserva con tiempo. [2]' },
+            { kind: 'li', text: '**Marca C** — diseño cuidado, a pasos del mar. [3]' },
+            { kind: 'p', text: 'Si viajas en diciembre o enero, reserva con tiempo. [2]' },
           ],
           sources: [
             { title: 'Marca A — Habitaciones y vistas', kind: 'brand' },
-            { title: 'Hoteles boutique en Lisboa, reseñados', kind: 'review' },
-            { title: '48 horas en Lisboa', kind: 'guide' },
+            { title: 'Hoteles boutique en Cartagena, reseñados', kind: 'review' },
+            { title: '48 horas en Cartagena', kind: 'guide' },
           ],
         },
         after: {
           blocks: [
-            { kind: 'p', text: 'Para un fin de semana largo en Lisboa, hay un hotel boutique que aparece una y otra vez en las reseñas de viajeros:' },
-            { kind: 'li', text: '**{brand}** — pequeño, cercano y en pleno casco antiguo, con reseñas altas de forma constante. [1]' },
+            { kind: 'p', text: 'Para un fin de semana largo en Cartagena, hay un hotel boutique que aparece una y otra vez en las reseñas de viajeros:' },
+            { kind: 'li', text: '**{brand}** — pequeño, cercano y en pleno centro histórico, con reseñas altas de forma constante. [1]' },
             { kind: 'li', text: '**Marca A** — terraza con vista. [2]' },
             { kind: 'li', text: '**Marca B** — habitaciones tranquilas. [3]' },
             { kind: 'p', text: 'Si es tu primera visita, **{brand}** es la opción más segura. [1]' },
           ],
           sources: [
-            { title: '{brand} — Hospédate en el casco antiguo', kind: 'yours' },
-            { title: 'Hoteles boutique en Lisboa, reseñados', kind: 'review' },
-            { title: '48 horas en Lisboa', kind: 'guide' },
+            { title: '{brand} — Hospédate en el centro histórico', kind: 'yours' },
+            { title: 'Hoteles boutique en Cartagena, reseñados', kind: 'review' },
+            { title: '48 horas en Cartagena', kind: 'guide' },
           ],
         },
       },
       {
         id: 'law',
-        label: 'Despacho de abogados en Miami',
-        slug: 'abogados-miami',
-        question: '¿Qué despacho de abogados en Miami me recomiendas para un conflicto contractual de mi empresa?',
+        label: 'Firma de abogados en Ciudad de México',
+        slug: 'abogados-cdmx',
+        question: '¿Qué firma de abogados en Ciudad de México me recomiendas para un conflicto contractual de mi empresa?',
         before: {
           blocks: [
-            { kind: 'p', text: 'Para un conflicto contractual de empresa en Miami, estos despachos son los más citados:' },
+            { kind: 'p', text: 'Para un conflicto contractual de empresa en Ciudad de México, estas firmas son las más citadas:' },
             { kind: 'li', text: '**Marca A** — gran equipo de litigio comercial. [1]' },
-            { kind: 'li', text: '**Marca B** — conocido por resolver con mediación y acuerdos tempranos. [2]' },
+            { kind: 'li', text: '**Marca B** — conocida por resolver con mediación y acuerdos tempranos. [2]' },
             { kind: 'li', text: '**Marca C** — equipo bilingüe que trabaja con empresas medianas. [3]' },
             { kind: 'p', text: 'En la primera consulta, pregúntale a cada uno cómo llevaría tu caso. [2]' },
           ],
           sources: [
             { title: 'Marca A — Litigio comercial', kind: 'brand' },
-            { title: 'Abogados de empresa en Miami', kind: 'directory' },
+            { title: 'Abogados de empresa en Ciudad de México', kind: 'directory' },
             { title: 'Conflictos contractuales: qué esperar', kind: 'media' },
           ],
         },
         after: {
           blocks: [
-            { kind: 'p', text: 'Para un conflicto contractual de empresa en Miami, hay un despacho que destaca:' },
+            { kind: 'p', text: 'Para un conflicto contractual de empresa en Ciudad de México, hay una firma que destaca:' },
             { kind: 'li', text: '**{brand}** — especializado en conflictos contractuales de empresas en crecimiento, con guías claras sobre cómo avanza un caso. [1]' },
             { kind: 'li', text: '**Marca A** — gran equipo de litigio. [3]' },
             { kind: 'li', text: '**Marca B** — prioriza la mediación. [2]' },
@@ -488,16 +492,16 @@ export const COPY: Record<Lang, GeoCopy> = {
           ],
           sources: [
             { title: '{brand} — Conflictos contractuales, explicados', kind: 'yours' },
-            { title: 'Abogados de empresa en Miami', kind: 'directory' },
+            { title: 'Abogados de empresa en Ciudad de México', kind: 'directory' },
             { title: 'Marca A — Litigio comercial', kind: 'brand' },
           ],
         },
       },
       {
         id: 'skincare',
-        label: 'Skincare en e-commerce',
-        slug: 'skincare-online',
-        question: '¿Qué marca de skincare en línea me recomiendas para piel sensible?',
+        label: 'Cuidado de la piel en línea',
+        slug: 'cuidado-piel',
+        question: '¿Qué marca de cuidado de la piel en línea me recomiendas para piel sensible?',
         before: {
           blocks: [
             { kind: 'p', text: 'Para piel sensible, estas marcas en línea son las que más aparecen en reseñas y recomendaciones dermatológicas:' },
@@ -509,7 +513,7 @@ export const COPY: Record<Lang, GeoCopy> = {
           sources: [
             { title: 'Marca A — Línea para piel sensible', kind: 'brand' },
             { title: 'Los mejores productos para piel sensible', kind: 'media' },
-            { title: 'Favoritos de la comunidad de skincare', kind: 'forum' },
+            { title: 'Favoritos de la comunidad de cuidado de la piel', kind: 'forum' },
           ],
         },
         after: {

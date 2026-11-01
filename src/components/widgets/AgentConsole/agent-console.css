@@ -307,6 +307,10 @@
 .ac-st[data-state="gate"] .ac-st__meta { color: var(--ac-warn); }
 .ac-st[data-state="gate"] .ac-st__box { border-color: rgb(242 193 78 / .35); background: rgb(242 193 78 / .05); }
 .ac-st[data-state="gate"] .ac-st__track > span { background: var(--ac-warn); }
+/* waiting at the gate: the row grows to hold the request and the Approve button */
+.ac-st[data-state="gate"][data-open] .ac-st__box { height: auto; min-height: 60px; padding: 12px; gap: 10px; }
+.ac-st__gate { font-size: 14px; font-weight: 500; line-height: 1.35; color: var(--ac-bone); }
+.ac-st__act { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .ac-st[data-state="done"] .ac-st__dot { color: var(--ac-ok); background: #122019; border-color: rgb(122 209 155 / .45); }
 .ac-st[data-state="done"] .ac-st__meta { color: var(--ac-ok); }
 .ac-st[data-state="done"] .ac-st__meta .ac-dot { display: none; }
@@ -403,6 +407,21 @@
 .ac-approve:active { transform: scale(.97); }
 .ac-approve__chip { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; color: var(--ac-flame-l); background: rgb(26 13 3 / .92); }
 .ac-gate__auto { font: 10.5px/1.3 var(--ac-mono); color: var(--ac-smoke); }
+
+/* Approve on the waiting step itself. The stepper (narrow) always shows it; on the graph it appears
+   while the log sits below the graph (stacked layouts), where the log button may be off screen. */
+.ac-approve--node { display: none; }
+.ac-st .ac-approve--node { display: inline-flex; }
+.ac-node .ac-approve--node {
+  align-self: flex-start; height: 26px; gap: 6px; margin-top: 3px; padding: 0 11px 0 8px; font-size: 10px; letter-spacing: .06em;
+  box-shadow: 0 8px 20px -10px rgb(245 111 39 / .9), inset 0 1px 0 rgb(255 255 255 / .35);
+}
+@container ac (width < 980px) {
+  .ac-node[data-approve] .ac-approve--node { display: inline-flex; }
+  .ac-node[data-approve] .ac-node__sub, .ac-node[data-approve] .ac-node__chips { display: none; }
+}
+.ac--compact .ac-node[data-approve] .ac-approve--node { display: inline-flex; }
+.ac--compact .ac-node[data-approve] .ac-node__sub, .ac--compact .ac-node[data-approve] .ac-node__chips { display: none; }
 .ac-gate__done { display: inline-flex; align-items: center; gap: 8px; font: 11.5px/1.4 var(--ac-mono); color: var(--ac-ok); }
 .ac-gate[data-state="ok"] { border-color: rgb(122 209 155 / .3); background: rgb(122 209 155 / .035); box-shadow: none; }
 .ac-gate[data-state="ok"] .ac-gate__head { color: var(--ac-ok); }
@@ -445,6 +464,16 @@
 .ac-art__box { --art-h: 112px; height: var(--art-h); overflow-y: auto; padding: 10px 12px 12px; scrollbar-width: thin; scrollbar-color: rgb(255 255 255 / .16) transparent; }
 .ac-art__subj { margin-bottom: 6px; font-size: 13.5px; font-weight: 600; color: var(--ac-bone); }
 .ac-art__body { font-size: 13px; line-height: 1.55; color: var(--ac-mist); white-space: pre-wrap; }
+.ac-out__next { margin-top: 12px; font-size: 13.5px; font-weight: 500; line-height: 1.45; }
+.ac-out__cta {
+  color: var(--ac-flame-l);
+  text-decoration: underline; text-decoration-color: rgb(255 132 66 / .4); text-underline-offset: 3px;
+  transition: color .3s, text-decoration-color .3s;
+}
+.ac-out__cta svg { display: inline-block; margin-left: 5px; vertical-align: -2px; transition: transform .5s var(--ac-ease); }
+.ac-out__cta:hover { color: var(--ac-flame-200); text-decoration-color: currentColor; }
+.ac-out__cta:hover svg { transform: rotate(45deg); }
+.ac-out__cta:focus-visible { outline: 2px solid var(--ac-flame-l); outline-offset: 3px; border-radius: 4px; }
 .ac-caret { display: inline-block; width: 7px; height: 14px; margin-left: 1px; vertical-align: -2px; background: var(--ac-flame-l); }
 .ac-caret[data-on="off"] { display: none; }
 .ac-caret[data-on=""] { animation: ac-caret 1s steps(1) infinite; }

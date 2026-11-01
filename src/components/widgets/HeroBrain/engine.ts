@@ -9,7 +9,9 @@
  * - Everything is drawn in a handful of batched paths: nodes and links are bucketed by colour family
  *   and quantised alpha (counting sort, no per-frame allocation), so one frame is ~40 fills/strokes
  *   plus a few dozen sprites for the active elements.
- * - DPR is capped at 2 and drops to 1 if the device cannot hold ~40 fps.
+ * - DPR is capped at 2 (1.5 on touch / small screens). A rolling watchdog (also during the intro)
+ *   steps down when frames run long: tier 1 drops to DPR 1 and fewer pulses, tier 2 halves the
+ *   frame rate and thins the graph, tier 3 parks on the reduced-motion still frame.
  * - The loop only runs while the canvas is on screen and the tab is visible.
  * - prefers-reduced-motion renders a single, simulated still frame (re-rendered on resize).
  */
@@ -156,7 +158,7 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
   let W = 0;
   let H = 0;
   let dpr = 1;
-  let dprCap = 2;
+  let dprCap = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 640 ? 1.5 : 2;
   let lowPower = false;
   let S = 1; // px per cube unit
   let ui = 1; // UI scale relative to the reference size
@@ -248,10 +250,15 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
   let still = !!opts.still || mq.matches;
   let stillDirty = true;
 
-  // perf watchdog
+  // perf watchdog (rolling, tiered): 0 full · 1 DPR 1 + fewer pulses · 2 half rate + thinner graph · 3 still frame
   let perfFrames = 0;
   let perfSum = 0;
-  let perfDone = false;
+  let perfTop1 = 0; // the two longest frames of the window are ignored: one-off stalls (hydration, GC) are not a slow device
+  let perfTop2 = 0;
+  let tier = 0;
+  let skip = 0;
+  let degraded = false;
+  let nodeScale = 1; // tier 2 thins the graph; resize() keeps the reduced density
 
   /* ---------- graph ---------- */
   function build(target: number) {
@@ -323,7 +330,7 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
     maxPulses = small || lowPower ? 46 : 90;
     maxLabels = small ? 2 : 3;
     while (pulses.length < maxPulses) pulses.push({ on: false, e: 0, a: 0, b: 0, t: 0, v: 1, hops: 0, label: -1, hot: 1 });
-    const target = nodeTarget(W, H);
+    const target = Math.max(40, Math.round(nodeTarget(W, H) * nodeScale));
     if (!g || Math.abs(target - builtFor) / builtFor > 0.22) {
       build(target);
       if (time > 0) {
@@ -1134,27 +1141,55 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
   }
 
   /* ---------- loop ---------- */
+  function resetPerf() {
+    perfFrames = 0;
+    perfSum = 0;
+    perfTop1 = 0;
+    perfTop2 = 0;
+  }
+
+  /** Rolling watchdog: every ~30 frames (or ~1 s on a very slow device), step down one tier if frames run long. */
+  function watchdog(raw: number) {
+    perfFrames++;
+    perfSum += raw;
+    if (raw > perfTop1) {
+      perfTop2 = perfTop1;
+      perfTop1 = raw;
+    } else if (raw > perfTop2) perfTop2 = raw;
+    if (perfFrames < 30 && !(perfFrames >= 10 && perfSum > 1)) return;
+    const avg = (perfSum - perfTop1 - perfTop2) / (perfFrames - 2);
+    resetPerf();
+    if (tier === 0 && avg > 0.026) {
+      tier = 1;
+      dprCap = 1;
+      lowPower = true;
+      resize(W, H);
+    } else if (tier === 1 && avg > 0.04) {
+      tier = 2;
+      nodeScale = 0.6;
+      build(Math.max(40, Math.round(builtFor * nodeScale)));
+      project();
+    } else if (tier === 2 && avg > 0.08) {
+      tier = 3;
+      degraded = true;
+      still = true;
+      stillDirty = true;
+      sync();
+    } else return;
+    host.dataset.tier = String(tier); // QA hook: which quality tier the device ended up on
+  }
+
   function frame(now: number) {
     if (!running) return;
     raf = requestAnimationFrame(frame);
+    // tier 2: draw every other frame (raw then spans both intervals)
+    if (tier >= 2 && (++skip & 1)) return;
     const raw = (now - last) / 1000;
     last = now;
     const dt = Math.min(0.05, Math.max(0, raw));
     step(dt);
     draw();
-    // watchdog: if the device can't hold ~40 fps after the intro, drop to DPR 1 and fewer pulses
-    if (!perfDone && !introOn) {
-      perfFrames++;
-      perfSum += raw;
-      if (perfFrames >= 90) {
-        perfDone = true;
-        if (perfSum / perfFrames > 0.026 && dprCap > 1) {
-          dprCap = 1;
-          lowPower = true;
-          resize(W, H);
-        }
-      }
-    }
+    watchdog(raw);
   }
 
   function setState(v: string) {
@@ -1173,8 +1208,7 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
     running = false;
     cancelAnimationFrame(raf);
     setState(still ? 'still' : 'paused');
-    perfFrames = 0;
-    perfSum = 0;
+    resetPerf();
   }
 
   function sync() {
@@ -1210,7 +1244,7 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
 
   const onVis = () => sync();
   const onMq = () => {
-    still = !!opts.still || mq.matches;
+    still = degraded || !!opts.still || mq.matches;
     stillDirty = true;
     if (!still) {
       // resume the living version from a clean slate

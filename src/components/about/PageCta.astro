@@ -1,32 +1,37 @@
 ---
 /**
  * Closing call to action shared by the About and Work pages.
- * `title` accepts HTML (<em> for the flame accent).
+ * Same anatomy as the unit CTA band (UnitCta): mono top row, title, then lede and buttons in one row.
+ * `title` accepts HTML (<em> for the flame accent). `meta` is the optional right-hand mono label.
  */
 import Icon from '@/components/ui/Icon.astro';
 
 interface Link { href: string; label: string }
-interface Props { title: string; body: string; primary: Link; secondary?: Link; id?: string }
-const { title, body, primary, secondary, id = 'page-cta' } = Astro.props;
+interface Props { title: string; body: string; primary: Link; secondary?: Link; id?: string; meta?: string }
+const { title, body, primary, secondary, id = 'page-cta', meta } = Astro.props;
 ---
 <section class="pc" aria-labelledby={id}>
   <div class="container-x">
     <div class="pc__card" data-reveal>
       <div class="pc__glow glow-ember" aria-hidden="true"></div>
       <div class="pc__grid bg-grid" aria-hidden="true"></div>
-      <div class="pc__copy">
-        <h2 id={id} class="pc__title display-lg" set:html={title} />
-        <p class="lede pc__body">{body}</p>
+      <div class="pc__top">
+        <span class="mono-label">Sandbox</span>
+        {meta && <span class="mono-label pc__meta">{meta}</span>}
       </div>
-      <div class="pc__ctas">
-        <a href={primary.href} class="btn btn-primary">
-          <span>{primary.label}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
-        </a>
-        {secondary && (
-          <a href={secondary.href} class="btn btn-ghost">
-            <span>{secondary.label}</span><span class="btn-chip"><Icon name="arrow-right" size={16} stroke={1.8} /></span>
+      <h2 id={id} class="pc__title" set:html={title} />
+      <div class="pc__row">
+        <p class="lede pc__body">{body}</p>
+        <div class="pc__ctas">
+          <a href={primary.href} class="btn btn-primary">
+            <span>{primary.label}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
           </a>
-        )}
+          {secondary && (
+            <a href={secondary.href} class="btn btn-ghost">
+              <span>{secondary.label}</span><span class="btn-chip"><Icon name="arrow-right" size={16} stroke={1.8} /></span>
+            </a>
+          )}
+        </div>
       </div>
     </div>
   </div>
@@ -34,16 +39,19 @@ const { title, body, primary, secondary, id = 'page-cta' } = Astro.props;
 
 <style>
   .pc { padding-block: clamp(40px, 6vw, 80px) clamp(80px, 10vw, 140px); }
-  .pc__card { position: relative; isolation: isolate; overflow: hidden; display: grid; gap: 36px; align-items: end;
-    padding: clamp(32px, 6vw, 72px); border-radius: var(--radius-xl2); border: 1px solid var(--line);
-    background: linear-gradient(180deg, rgb(255 255 255 / .03), transparent), var(--color-ink-900); box-shadow: inset 0 1px 0 rgb(255 255 255 / .06); }
-  @media (min-width: 960px) { .pc__card { grid-template-columns: minmax(0, 1.4fr) auto; } }
-  .pc__glow { z-index: -1; width: 70%; height: 140%; right: -20%; bottom: -70%; opacity: .6; }
+  .pc__card { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; gap: clamp(22px, 3vw, 34px);
+    padding: clamp(28px, 5vw, 64px); border-radius: var(--radius-xl2); border: 1px solid rgb(245 131 39 / .28);
+    background: linear-gradient(180deg, rgb(255 255 255 / .035), rgb(255 255 255 / .01)), var(--color-ink-900); box-shadow: inset 0 1px 0 rgb(255 255 255 / .06); }
+  .pc__glow { z-index: -1; width: 900px; height: 520px; right: -260px; bottom: -300px; opacity: .55; }
   .pc__grid { position: absolute; inset: 0; z-index: -1; opacity: .5; }
-  .pc__copy { display: flex; flex-direction: column; gap: 20px; }
-  .pc__title { max-width: 16ch; }
+  .pc__top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+  .pc__meta { color: var(--color-mist); }
+  @media (max-width: 560px) { .pc__meta { display: none; } }
+  .pc__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.1rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -.05em; max-width: 16ch; }
   .pc__title :global(em) { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .pc__body { max-width: 520px; }
+  .pc__row { display: grid; gap: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
+  @media (min-width: 1000px) { .pc__row { grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 48px; } }
+  .pc__body { max-width: 560px; }
   .pc__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
-  @media (min-width: 960px) { .pc__ctas { flex-direction: column; align-items: stretch; } .pc__ctas .btn { justify-content: space-between; } }
+  @media (max-width: 480px) { .pc__ctas .btn { width: 100%; justify-content: space-between; } }
 </style>

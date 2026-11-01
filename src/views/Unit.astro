@@ -1,26 +1,43 @@
 ---
 /**
  * Service (unit) page template. Content per unit and language lives in src/i18n/units/.
- * Sections: hero → pains → offers → proof widget → method + pricing → use cases → FAQ → related → CTA.
+ * Sections: hero → pains → offers → client results (units with published cases) → proof widget
+ *           → method + pricing → use cases → FAQ → related → CTA.
  */
 import Base from '@/layouts/Base.astro';
 import UnitHero from '@/components/unit/UnitHero.astro';
 import UnitPains from '@/components/unit/UnitPains.astro';
 import UnitOffers from '@/components/unit/UnitOffers.astro';
+import UnitResults from '@/components/unit/UnitResults.astro';
 import UnitDemo from '@/components/unit/UnitDemo.astro';
 import UnitMethod from '@/components/unit/UnitMethod.astro';
 import UnitCases from '@/components/unit/UnitCases.astro';
 import UnitFaq from '@/components/unit/UnitFaq.astro';
 import UnitRelated from '@/components/unit/UnitRelated.astro';
 import UnitCta from '@/components/unit/UnitCta.astro';
-import { UNIT_COPY, UNIT_COMMON } from '@/i18n/units';
+import { UNIT_COPY } from '@/i18n/units';
 import { UNITS, SITE, type UnitSlug } from '@/data/site';
+import { CASES } from '@/i18n/work';
 import { localize, type Lang } from '@/i18n';
 
 interface Props { lang: Lang; slug: UnitSlug }
 const { lang, slug } = Astro.props;
 const unit = UNITS.find((u) => u.slug === slug)!;
 const copy = UNIT_COPY[slug][lang];
+const hasResults = CASES.some((c) => c.unit === slug);
+
+// Section indexes in render order, so they never skip a number when a section is absent.
+let n = 0;
+const ix = () => String(++n).padStart(2, '0');
+const idx = {
+  pains: ix(),
+  offers: ix(),
+  results: hasResults ? ix() : '',
+  demo: ix(),
+  method: ix(),
+  cases: ix(),
+  faq: ix(),
+};
 
 const stripTags = (s: string) => s.replace(/<[^>]+>/g, '');
 const pageUrl = new URL(localize(lang, `/services/${slug}`), SITE.url).href;
@@ -34,7 +51,7 @@ const serviceLd = {
   description: copy.seo.description,
   url: pageUrl,
   inLanguage: lang,
-  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url, email: SITE.email },
+  provider: { '@id': 'https://sandboxinnovate.com/#organization' },
   areaServed: [
     { '@type': 'Country', name: 'United States' },
     { '@type': 'Place', name: 'Europe' },
@@ -65,19 +82,19 @@ const breadcrumbLd = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Sandbox', item: new URL(localize(lang, '/'), SITE.url).href },
-    { '@type': 'ListItem', position: 2, name: UNIT_COMMON.breadcrumb[lang], item: new URL(localize(lang, '/#services'), SITE.url).href },
-    { '@type': 'ListItem', position: 3, name: unit.name[lang], item: pageUrl },
+    { '@type': 'ListItem', position: 2, name: unit.name[lang], item: pageUrl },
   ],
 };
 ---
 <Base lang={lang} title={copy.seo.title} description={copy.seo.description} jsonLd={[serviceLd, faqLd, breadcrumbLd]}>
   <UnitHero lang={lang} unit={unit} copy={copy} />
-  <UnitPains lang={lang} copy={copy} index="01" />
-  <UnitOffers lang={lang} slug={slug} copy={copy} index="02" />
-  <UnitDemo lang={lang} slug={slug} copy={copy} index="03" />
-  <UnitMethod lang={lang} slug={slug} copy={copy} index="04" />
-  <UnitCases lang={lang} copy={copy} index="05" />
-  <UnitFaq lang={lang} slug={slug} copy={copy} index="06" />
+  <UnitPains lang={lang} copy={copy} index={idx.pains} />
+  <UnitOffers lang={lang} slug={slug} copy={copy} index={idx.offers} />
+  {hasResults && <UnitResults lang={lang} slug={slug} index={idx.results} />}
+  <UnitDemo lang={lang} slug={slug} copy={copy} index={idx.demo} />
+  <UnitMethod lang={lang} slug={slug} copy={copy} index={idx.method} />
+  <UnitCases lang={lang} copy={copy} index={idx.cases} />
+  <UnitFaq lang={lang} slug={slug} copy={copy} index={idx.faq} />
   <UnitRelated lang={lang} slug={slug} />
   <UnitCta lang={lang} unit={unit} copy={copy} />
 </Base>

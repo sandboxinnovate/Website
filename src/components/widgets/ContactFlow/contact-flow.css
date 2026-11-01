@@ -256,7 +256,6 @@
 }
 
 .cf-stephead { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
-.cf-stephead__n { color: var(--cf-f400); }
 .cf-title {
   font-family: var(--cf-display);
   font-weight: 500;
@@ -361,7 +360,7 @@
   outline: none;
   transition: border-color 0.2s, box-shadow 0.25s, background-color 0.2s;
 }
-.cf-input::placeholder { color: rgb(184 176 170 / 0.55); opacity: 1; }
+.cf-input::placeholder { color: var(--color-smoke, #968d87); opacity: 1; } /* ≥ 4.5:1 on the field */
 .cf-input:hover { border-color: rgb(255 255 255 / 0.22); }
 .cf-input:focus,
 .cf-input:focus-visible {
@@ -469,7 +468,7 @@
 .cf-review__block { padding: 16px 0 18px; border-top: 1px solid var(--cf-line); }
 .cf-review__block:first-child { border-top: 0; padding-top: 0; }
 .cf-review__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-.cf-review__head h4 {
+.cf-review__head h3 {
   font: 500 11px/1.3 var(--cf-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -524,6 +523,8 @@
   color: var(--cf-dim);
 }
 .cf-consent svg { flex: none; margin-top: 2px; color: var(--cf-f400); }
+.cf-link { color: inherit; text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.35); text-underline-offset: 3px; transition: color 0.2s, text-decoration-color 0.2s; }
+.cf-link:hover { color: var(--cf-bone); text-decoration-color: var(--cf-f400); }
 
 /* ---------------------------------------------------------------- footer */
 .cf-foot {
@@ -581,6 +582,8 @@
 .cf .btn:focus-visible,
 .cf-back:focus-visible { border-radius: 999px; }
 .cf-submit[disabled] { opacity: 0.8; cursor: progress; }
+/* before hydration the form can't validate or send: the button waits instead of posting the page */
+.cf-form:not([data-ready]) .cf-foot button[type='submit'] { pointer-events: none; opacity: 0.6; }
 .cf-dots { display: inline-block; width: 1.1em; text-align: left; }
 .cf-dots::after {
   content: '...';

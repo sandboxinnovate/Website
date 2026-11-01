@@ -32,6 +32,9 @@ export const COPY = {
     startOver: 'Start over',
     fixErrors: (n: number) => (n === 1 ? 'One field needs a look.' : `${n} fields need a look.`),
 
+    offerTag: 'You asked about',
+    offerRemove: 'Remove this note',
+
     context: {
       attached: 'Attached',
       remove: 'Remove this note',
@@ -134,7 +137,8 @@ export const COPY = {
       size: 'Company size',
       region: 'Based in',
       language: 'Call in',
-      consent: 'We use these details only to reply and prepare the call. No newsletter unless you ask for it.',
+      consent: 'We use these details only to reply and prepare the call. No newsletter unless you ask for it. Happy to sign an NDA before we talk.',
+      privacy: 'Privacy policy',
       submit: 'Send request',
       sending: 'Sending',
       error: 'Something went wrong on our side. Try again, or write to',
@@ -146,7 +150,7 @@ export const COPY = {
       ref: 'Request ID',
       next: 'What happens next',
       meanwhile: 'While you wait',
-      diagnostic: 'Take the 3-minute AI diagnostic',
+      diagnostic: 'Take the 3-min AI diagnostic',
       diagnosticBody: 'Bring your readiness score to the call. It makes the first 30 minutes sharper.',
       explore: 'Explore what we build',
       another: 'Send another request',
@@ -166,6 +170,9 @@ export const COPY = {
     restored: 'Recuperamos tu borrador de esta sesión',
     startOver: 'Empezar de nuevo',
     fixErrors: (n: number) => (n === 1 ? 'Hay un campo por revisar.' : `Hay ${n} campos por revisar.`),
+
+    offerTag: 'Preguntaste por',
+    offerRemove: 'Quitar esta nota',
 
     context: {
       attached: 'Adjunto',
@@ -187,7 +194,7 @@ export const COPY = {
       title: 'Sobre ti',
       lede: 'Para hacer la tarea antes de hablar.',
       name: 'Nombre y apellido',
-      email: 'Email de trabajo',
+      email: 'Correo de trabajo',
       company: 'Empresa',
       role: 'Cargo',
       website: 'Sitio web',
@@ -215,14 +222,14 @@ export const COPY = {
       ] as [string, string][],
       err: {
         name: 'Necesitamos un nombre para dirigirnos a ti.',
-        email: 'Agrega tu email de trabajo para poder responderte.',
-        emailBad: 'Ese email no parece correcto. Revisa si hay algún error.',
+        email: 'Agrega tu correo de trabajo para poder responderte.',
+        emailBad: 'Ese correo no parece correcto. Revisa si hay algún error.',
         company: '¿Para qué empresa es?',
         website: 'Usa un dominio como empresa.com, o déjalo vacío.',
         size: 'Elige el rango más cercano.',
         region: 'Elige dónde está tu empresa.',
       },
-      freeMail: 'Un email personal también sirve. Con uno de trabajo podemos investigar tu empresa antes de la llamada.',
+      freeMail: 'Un correo personal también sirve. Con uno de trabajo podemos investigar tu empresa antes de la llamada.',
     },
 
     s3: {
@@ -269,7 +276,8 @@ export const COPY = {
       size: 'Tamaño',
       region: 'Ubicación',
       language: 'Llamada en',
-      consent: 'Usamos estos datos solo para responderte y preparar la llamada. Nada de newsletter si no lo pides.',
+      consent: 'Usamos estos datos solo para responderte y preparar la llamada. Nada de newsletter si no lo pides. Si lo necesitas, firmamos un NDA antes de hablar.',
+      privacy: 'Política de privacidad',
       submit: 'Enviar solicitud',
       sending: 'Enviando',
       error: 'Algo falló de nuestro lado. Intenta de nuevo o escríbenos a',
@@ -281,9 +289,9 @@ export const COPY = {
       ref: 'ID de solicitud',
       next: 'Qué sigue',
       meanwhile: 'Mientras tanto',
-      diagnostic: 'Haz el diagnóstico de IA de 3 minutos',
+      diagnostic: 'Hacer el diagnóstico (3 min)',
       diagnosticBody: 'Llega a la llamada con tu puntaje de preparación. Los primeros 30 minutos rinden más.',
-      explore: 'Mira lo que construimos',
+      explore: 'Ver lo que construimos',
       another: 'Enviar otra solicitud',
     },
   },

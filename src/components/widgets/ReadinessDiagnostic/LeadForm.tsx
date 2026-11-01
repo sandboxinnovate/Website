@@ -16,14 +16,17 @@ interface Props {
   /** Email the report was already requested for (restored from the session). */
   sentTo: string | null;
   onSent: (email: string) => void;
+  /** /contact with the score attached (built by Results). */
+  talkHref: string;
 }
 
-export default function LeadForm({ lang, result, answers, sentTo, onSent }: Props) {
+export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHref }: Props) {
   const t = COPY[lang];
   const f = t.form;
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const [vals, setVals] = useState<Record<Field, string>>({ name: '', email: '', company: '', role: '' });
   const [region, setRegion] = useState<Region>('');
+  const [wantsCall, setWantsCall] = useState(false);
   const [trap, setTrap] = useState('');
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [tried, setTried] = useState(false);
@@ -63,6 +66,7 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent }: Prop
       company: vals.company.trim(),
       role: vals.role.trim() || undefined,
       region: region || undefined,
+      wantsCall,
       score: result.score,
       level: result.levelId,
       levelName: t.levels[result.levelId].name,
@@ -94,7 +98,13 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent }: Prop
         </span>
         <div className="rd-lead__ok">
           <h3 className="rd-lead__title">{f.okTitle}</h3>
-          <p className="rd-lead__body">{f.okBody(sentTo)}</p>
+          <p className="rd-lead__body">{f.okBody(sentTo, wantsCall)}</p>
+          <a className="btn btn-primary btn-sm rd-lead__call" href={talkHref}>
+            <span>{f.okCall}</span>
+            <span className="btn-chip">
+              <Ico name="arrow-up-right" size={16} />
+            </span>
+          </a>
           <p className="rd-lead__next">
             <span>{f.okNext}</span>
             {units.map((u) => {
@@ -205,6 +215,14 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent }: Prop
           </label>
         </div>
 
+        <label className="rd-check">
+          <input type="checkbox" name="wantsCall" checked={wantsCall} onChange={(e) => setWantsCall(e.target.checked)} />
+          <span className="rd-check__box" aria-hidden="true">
+            <Ico name="check" size={13} stroke={2.4} />
+          </span>
+          <span className="rd-check__label">{f.wantsCall}</span>
+        </label>
+
         <div className="rd-form__foot">
           <button type="submit" className="btn btn-primary rd-submit" disabled={status === 'sending'} aria-busy={status === 'sending' || undefined}>
             <span>
@@ -215,7 +233,12 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent }: Prop
               <Ico name="arrow-right" size={16} stroke={1.8} />
             </span>
           </button>
-          <p className="rd-form__consent">{f.consent}</p>
+          <p className="rd-form__consent">
+            {f.consent}{' '}
+            <a className="rd-link" href={localize(lang, '/privacy')}>
+              {f.privacy}
+            </a>
+          </p>
         </div>
 
         <p className="rd-form__status" role="alert">

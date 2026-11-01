@@ -3,7 +3,7 @@ import type { Lang } from '@/i18n';
 import { COPY } from './copy';
 import { SCENARIOS } from './scenarios';
 import {
-  STATIC_GATE_WAIT, advance, atGate, buildTimeline, elapsedOf, fmtClock, fmtSec, freshEngine, nodeState,
+  AUTO_APPROVE_MS, STATIC_GATE_WAIT, advance, atGate, buildTimeline, elapsedOf, fmtClock, fmtSec, freshEngine, nodeState,
   useFrame, viewKey, type EngineState, type FrameFn, type NodeState,
 } from './engine';
 import Graph from './Graph';
@@ -52,7 +52,13 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
   const hooks = useRef(new Set<FrameFn>());
   const reducedRef = useRef(false);
   const userRun = useRef(false);
+  /** Progress is announced only after the visitor touched the console: autoplay stays silent for screen readers. */
+  const userActed = useRef(false);
   const autoStarted = useRef(false);
+  /** Is the waiting step (graph card or stepper row) at least half on screen? */
+  const gateVisible = useRef(true);
+  /** Latched once the gate has been seen: only then does the auto-approve countdown run. */
+  const gateSeen = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<HTMLSpanElement>(null);
   const progRef = useRef<HTMLSpanElement>(null);
@@ -80,7 +86,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
         if (st === 'gate' && prev[i] !== 'gate') msg = u.announce.gate(s.steps[i].gate!.title[lg]);
       });
       if (states.every((x) => x === 'done') && !prev.every((x) => x === 'done')) msg = u.announce.done(fmtSec(elapsedOf(t, e), lg));
-      if (msg) setAnnounce(msg);
+      if (msg && userActed.current) setAnnounce(msg);
     }
     prevStates.current = states;
     setView({ ...e });
@@ -101,6 +107,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
       if (t.gateAt !== null) { e.approved = 'static'; e.extra = STATIC_GATE_WAIT; e.approvedAfter = STATIC_GATE_WAIT; }
     }
     eng.current = e;
+    gateSeen.current = false;
     prevStates.current = t.steps.map((_, i) => nodeState(t, i, e.cursor, !!e.approved));
     setAnnounce('');
     sync(true);
@@ -124,7 +131,9 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
     const el = rootRef.current;
     if (!el || !('IntersectionObserver' in window)) { setInView(true); return; }
     const io = new IntersectionObserver(
-      ([entry]) => {
+      (entries) => {
+        // Several crossings can arrive in one batch: the newest entry is the current state.
+        const entry = entries[entries.length - 1];
         const vis = entry.isIntersecting && entry.intersectionRatio >= 0.2;
         setInView(vis);
         if (vis && !autoStarted.current) {
@@ -137,6 +146,34 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  // Watch the gate: its card in the graph or row in the stepper (only one is displayed), plus the
+  // approval card in the run log once it is printed. Any of them half on screen starts the countdown.
+  const gateLogged = tl.gateAt !== null && view.cursor >= tl.gateAt;
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || !('IntersectionObserver' in window)) return;
+    const els = Array.from(root.querySelectorAll<HTMLElement>('[data-gate-node]'));
+    if (!els.length) return;
+    const shown = new Set<Element>();
+    gateVisible.current = false;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const en of entries) {
+          if (en.isIntersecting && en.intersectionRatio >= 0.5) shown.add(en.target);
+          else shown.delete(en.target);
+        }
+        gateVisible.current = shown.size > 0;
+      },
+      // the bottom margin keeps the mobile sticky booking bar from counting as "on screen"
+      { threshold: [0, 0.5, 1], rootMargin: '0px 0px -72px 0px' },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => {
+      io.disconnect();
+      gateVisible.current = true;
+    };
+  }, [sc.id, gateLogged]);
 
   useEffect(() => {
     const on = () => setHidden(document.hidden);
@@ -157,7 +194,9 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
       const dt = Math.min(64, now - last);
       last = now;
       const { tl: t, speed: sp } = live.current;
-      advance(t, eng.current, dt, sp);
+      const e = eng.current;
+      if (!gateSeen.current && gateVisible.current && atGate(t, e)) gateSeen.current = true;
+      advance(t, e, dt, sp, !gateSeen.current);
       runHooks();
       sync();
       if (eng.current.cursor < t.typeEnd) raf = requestAnimationFrame(frame);
@@ -180,6 +219,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
   const approve = useCallback(() => {
     const e = eng.current;
     if (e.approved) return;
+    userActed.current = true;
     e.approved = 'you';
     e.approvedAfter = e.extra;
     setWant(true);
@@ -189,6 +229,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
 
   const replay = () => {
     userRun.current = true;
+    userActed.current = true;
     setRunNo((n) => n + 1);
     setWant(true);
   };
@@ -196,6 +237,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
   const choose = (i: number) => {
     if (i === idx) return;
     userRun.current = false;
+    userActed.current = true;
     setIdx(i);
     setRunNo((n) => n + 1);
     if (!reducedRef.current) setWant(true);
@@ -217,6 +259,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
   const runComplete = view.cursor >= tl.runEnd;
   const togglePlay = () => {
     if (runComplete) { replay(); return; }
+    userActed.current = true;
     if (want) { setWant(false); sync(true); }
     else { userRun.current = true; setWant(true); }
   };
@@ -244,7 +287,9 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
   const isPlaying = want && !runComplete;
   const panelId = `${uid}-panel`;
   const doneSteps = states.filter((s) => s === 'done').length;
-  const shared = { sc, tl, lang, ui, states, focus, cursor: view.cursor, extra: view.extra, reg: hooks, resultFor };
+  const gateOpen = atGate(tl, view);
+  const gateSecs = Math.max(1, Math.ceil((AUTO_APPROVE_MS - view.extra) / 1000));
+  const shared = { sc, tl, lang, ui, states, focus, cursor: view.cursor, extra: view.extra, reg: hooks, resultFor, gateOpen, onApprove: approve };
 
   return (
     <div
@@ -332,7 +377,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
             <span className="ac-graph__trig"><Ico name="bolt" size={12} />{ui.trigger} · {sc.trigger[lang]}</span>
           </div>
           <Graph {...shared} />
-          <Stepper {...shared} />
+          <Stepper {...shared} gateSecs={gateSecs} />
           <div className="ac-legend" aria-hidden="true">
             <span data-k="idle"><span className="ac-dot" />{ui.legend.idle}</span>
             <span data-k="running"><span className="ac-dot" />{ui.legend.running}</span>

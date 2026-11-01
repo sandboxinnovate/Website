@@ -4,9 +4,9 @@ import type { UnitCopy } from './types';
 export const PRODUCTS: L10n<UnitCopy> = {
   en: {
     seo: {
-      title: 'Industry AI Brains — Early Access',
+      title: 'Industry AI brains (early access)',
       description:
-        'AI brains packaged by industry: real estate, clinics, professional services, e-commerce and hospitality. Ready-made agents set up on your own data. Now in early access.',
+        'AI brains packaged by industry for real estate, clinics, professional services, e-commerce and hospitality, set up on your own data. Now in early access.',
     },
     hero: {
       title: 'Start from a brain <em>built for your industry.</em>',
@@ -17,12 +17,12 @@ export const PRODUCTS: L10n<UnitCopy> = {
       facts: [
         { k: 'Status', v: 'Early access' },
         { k: 'Model', v: 'Subscription, set up on your data' },
-        { k: 'Industries open', v: 'Real estate · Clinics · Professional services · E-commerce · Hospitality' },
+        { k: 'Industries open', v: 'Real estate · Clinics · Professional services · E‑commerce · Hospitality' },
       ],
     },
     pains: {
-      title: 'Sound <em>familiar?</em>',
-      lede: 'Not every company needs a custom build to get started. Some need something proven, sized for them, running soon.',
+      title: 'Custom is <em>more than you need</em>',
+      lede: 'Not every company needs a custom build to get started. Some need something ready-made, sized for them, running soon.',
       items: [
         {
           pain: 'A custom AI build is more than you need right now.',
@@ -129,25 +129,25 @@ export const PRODUCTS: L10n<UnitCopy> = {
       lede: 'Shorter than a custom build, because most of the design is already done. Your part is the data, the rules and the feedback.',
       steps: [
         {
-          name: 'Discover',
+          name: 'Fit check',
           time: '1 call',
           body: 'We check fit: your industry, your volume and the tools you use. If a package is not right for you, we say so.',
           out: ['Fit check', 'Pilot scope'],
         },
         {
-          name: 'Design',
+          name: 'Adapt',
           time: 'A few days',
           body: 'We adapt the agents to your services, policies, tone, hours and escalation rules.',
           out: ['Configured agents', 'Escalation rules'],
         },
         {
-          name: 'Build',
+          name: 'Pilot',
           time: '2–4 weeks',
           body: 'Setup on your data and tools, then a pilot on real cases with your team watching every step.',
           out: ['Connected tools', 'Pilot on real cases'],
         },
         {
-          name: 'Operate',
+          name: 'Run',
           time: 'Subscription',
           body: 'We host, monitor and update the agents. New capabilities arrive as the product grows.',
           out: ['Monitoring', 'Product updates'],
@@ -236,7 +236,7 @@ export const PRODUCTS: L10n<UnitCopy> = {
 
   es: {
     seo: {
-      title: 'Brains de IA por industria — acceso anticipado',
+      title: 'Brains de IA por industria (acceso anticipado)',
       description:
         'Brains de IA empaquetados por industria: inmobiliarias, clínicas, servicios profesionales, e-commerce y hotelería. Agentes listos, configurados con tus datos.',
     },
@@ -244,17 +244,17 @@ export const PRODUCTS: L10n<UnitCopy> = {
       title: 'Empieza con un brain <em>hecho para tu industria.</em>',
       lede:
         'Las empresas de una misma industria necesitan una y otra vez los mismos agentes: respuesta a leads, agenda, admisión, seguimiento. Los estamos empaquetando en productos por suscripción que se configuran con tus propios datos y herramientas. Abrimos ahora a un grupo reducido de empresas en acceso anticipado.',
-      primary: 'Solicitar acceso',
+      primary: 'Solicitar acceso anticipado',
       secondary: { label: 'Ver industrias', href: '#demo' },
       facts: [
         { k: 'Estado', v: 'Acceso anticipado' },
         { k: 'Modelo', v: 'Suscripción, configurada con tus datos' },
-        { k: 'Industrias abiertas', v: 'Inmobiliarias · Clínicas · Servicios profesionales · E-commerce · Hotelería' },
+        { k: 'Industrias abiertas', v: 'Inmobiliarias · Clínicas · Servicios profesionales · E‑commerce · Hotelería' },
       ],
     },
     pains: {
-      title: '¿Te <em>suena?</em>',
-      lede: 'No todas las empresas necesitan un desarrollo a medida para empezar. Algunas necesitan algo probado, a su medida y funcionando pronto.',
+      title: 'A medida es <em>más de lo que necesitas</em>',
+      lede: 'No todas las empresas necesitan un desarrollo a medida para empezar. Algunas necesitan algo ya armado, a su medida y funcionando pronto.',
       items: [
         {
           pain: 'Un desarrollo de IA a medida es más de lo que necesitas hoy.',
@@ -281,7 +281,7 @@ export const PRODUCTS: L10n<UnitCopy> = {
       items: [
         {
           name: 'Inmobiliarias',
-          what: 'Para corredoras y administradoras de propiedades: responder cada consulta, agendar visitas y mantener activos a los leads hasta que estén listos.',
+          what: 'Para inmobiliarias y administradoras de propiedades: responder cada consulta, agendar visitas y mantener activos a los leads hasta que estén listos.',
           includes: [
             'Respuesta a consultas de portales y sitio web',
             'Calificación de leads por zona, plazo y tipo',
@@ -309,7 +309,7 @@ export const PRODUCTS: L10n<UnitCopy> = {
         },
         {
           name: 'Servicios profesionales',
-          what: 'Para estudios jurídicos, contables y consultoras: admisión de clientes, primeros borradores y búsqueda en tus propios antecedentes.',
+          what: 'Para firmas de abogados, despachos contables y consultoras: admisión de clientes, primeros borradores y búsqueda en tus propios antecedentes.',
           includes: [
             'Admisión y preevaluación de clientes',
             'Asistente de conocimiento sobre antecedentes y plantillas',
@@ -361,19 +361,19 @@ export const PRODUCTS: L10n<UnitCopy> = {
       lede: 'Más corto que un desarrollo a medida, porque la mayor parte del diseño ya está hecha. Tu parte son los datos, las reglas y la retroalimentación.',
       steps: [
         {
-          name: 'Descubrir',
+          name: 'Evaluar',
           time: '1 llamada',
           body: 'Evaluamos el encaje: tu industria, tu volumen y las herramientas que usas. Si un paquete no es para ti, te lo decimos.',
           out: ['Evaluación de encaje', 'Alcance del piloto'],
         },
         {
-          name: 'Diseñar',
+          name: 'Adaptar',
           time: 'Unos días',
           body: 'Adaptamos los agentes a tus servicios, políticas, tono, horarios y reglas de derivación.',
           out: ['Agentes configurados', 'Reglas de derivación'],
         },
         {
-          name: 'Construir',
+          name: 'Probar',
           time: '2–4 semanas',
           body: 'Configuración con tus datos y herramientas, y luego un piloto con casos reales con tu equipo viendo cada paso.',
           out: ['Herramientas conectadas', 'Piloto con casos reales'],

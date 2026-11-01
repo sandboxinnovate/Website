@@ -1,7 +1,9 @@
 ---
 /**
- * Case studies: unit filter chips + cards; each card opens an accessible <dialog>
+ * Case studies: metric-first cards; each card opens an accessible <dialog>
  * (challenge → what we did → results). Deep links: /work#case-<id> opens that case.
+ * Unit filter chips appear only once two or more units have published cases.
+ * No images: /public/work holds template screenshots that must not be shown (see src/i18n/work.ts).
  */
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import Icon from '@/components/ui/Icon.astro';
@@ -14,6 +16,8 @@ const { lang } = Astro.props;
 const w = WORK.cases;
 const pad = (n: number) => String(n).padStart(2, '0');
 const counts = Object.fromEntries(UNITS.map((u) => [u.slug, CASES.filter((c) => c.unit === u.slug).length]));
+const withCases = UNITS.filter((u) => counts[u.slug] > 0);
+const showFilters = withCases.length >= 2;
 const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${u.code} ${u.name[lang]}` : slug; };
 ---
 <section class="cg section-y" id="cases" aria-label={w.eyebrow[lang]} data-cases data-lang={lang}>
@@ -23,35 +27,34 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
     </div>
 
     <div class="cg__bar" data-reveal>
-      <div class="cg__filters" role="group" aria-label={w.filterLabel[lang]}>
-        <button type="button" class="cg__chip" data-filter="all" aria-pressed="true">
-          {w.all[lang]} <span class="cg__count">{pad(CASES.length)}</span>
-        </button>
-        {UNITS.map((u) => {
-          const n = counts[u.slug];
-          return (
-            <button type="button" class="cg__chip" data-filter={u.slug} aria-pressed="false"
-              aria-disabled={n === 0 ? 'true' : undefined} title={n === 0 ? w.noneYet[lang] : undefined}>
-              <span class="cg__chip-code">{u.code}</span>{u.name[lang]} <span class="cg__count">{pad(n)}</span>
+      {showFilters ? (
+        <>
+          <div class="cg__filters" role="group" aria-label={w.filterLabel[lang]}>
+            <button type="button" class="cg__chip" data-filter="all" aria-pressed="true">
+              {w.all[lang]} <span class="cg__count">{pad(CASES.length)}</span>
             </button>
-          );
-        })}
-      </div>
-      <p class="cg__status mono-label" aria-live="polite" data-status>
-        {w.showing[lang]} <b data-shown>{pad(CASES.length)}</b> {w.of[lang]} {pad(CASES.length)}
-      </p>
+            {withCases.map((u) => (
+              <button type="button" class="cg__chip" data-filter={u.slug} aria-pressed="false">
+                <span class="cg__chip-code">{u.code}</span>{u.name[lang]} <span class="cg__count">{pad(counts[u.slug])}</span>
+              </button>
+            ))}
+          </div>
+          <p class="cg__status mono-label" aria-live="polite" data-status>
+            {w.showing[lang]} <b data-shown>{pad(CASES.length)}</b> {w.of[lang]} {pad(CASES.length)}
+          </p>
+        </>
+      ) : (
+        <p class="cg__status mono-label"><b>{pad(CASES.length)}</b> {WORK.hero.countLabel[lang]}</p>
+      )}
     </div>
 
     <ul class="cg__grid">
       {CASES.map((c, i) => (
         <li class="cg__item" data-unit={c.unit} id={`case-${c.id}`} data-reveal style={`--reveal-delay:${(i % 2) * 110}`}>
           <article class="cg__card">
-            <div class="cg__media">
-              <img src={c.card} alt={`${w.mockup[lang]} — ${c.client[lang]}`} width="960" height="960" loading="lazy" decoding="async" />
-              <span class="cg__unit mono-label">{unitLabel(c.unit)}</span>
-              <span class="cg__no mono-label">{w.caseWord[lang]} {pad(i + 1)}</span>
-            </div>
             <div class="cg__body">
+              <div class="cg__top"><span class="mono-label cg__unit">{unitLabel(c.unit)}</span><span class="mono-label cg__no">{w.caseWord[lang]} {pad(i + 1)}</span></div>
+              <p class="cg__lead"><span class="cg__lead-v">{c.metrics[0].value}</span><span class="cg__lead-l">{c.metrics[0].label[lang]}</span></p>
               <ul class="cg__tags" aria-label={lang === 'en' ? 'Services' : 'Servicios'}>
                 {c.tags[lang].map((t) => <li>{t}</li>)}
               </ul>
@@ -59,11 +62,14 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
                 <button type="button" class="cg__open" data-open={c.id} aria-haspopup="dialog" aria-controls={`dlg-${c.id}`}>{c.title[lang]}</button>
               </h3>
               <p class="cg__dek">{c.dek[lang]}</p>
-              <dl class="cg__metrics">
-                {c.metrics.map((m) => (
-                  <div><dt>{m.label[lang]}</dt><dd>{m.value}</dd></div>
-                ))}
-              </dl>
+              <p class="cg__client mono-label">{c.client[lang]}</p>
+              {c.metrics.length > 1 && (
+                <dl class="cg__metrics">
+                  {c.metrics.slice(1).map((m) => (
+                    <div><dt>{m.label[lang]}</dt><dd>{m.value}</dd></div>
+                  ))}
+                </dl>
+              )}
               <span class="cg__more" aria-hidden="true">{w.open[lang]} <Icon name="arrow-up-right" size={16} /></span>
             </div>
           </article>
@@ -116,10 +122,6 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
               </dl>
             </div>
 
-            <figure class="cg__dlg-fig">
-              <img src={c.wide.src} alt={`${w.mockup[lang]} — ${c.client[lang]}`} width={c.wide.w} height={c.wide.h} loading="lazy" decoding="async" />
-            </figure>
-
             <div class="cg__dlg-story">
               <section class="cg__part">
                 <h3><span class="mono-label">01</span>{w.challenge[lang]}</h3>
@@ -136,8 +138,8 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
             </div>
 
             <footer class="cg__dlg-foot">
-              <span>{WORK.cta.body[lang]}</span>
-              <a href={localize(lang, '/contact')} class="btn btn-primary btn-sm">
+              <span>{c.unit === 'growth' ? WORK.cta.caseBody[lang] : WORK.cta.body[lang]}</span>
+              <a href={localize(lang, `/contact?service=${c.unit}&offer=case-${c.id}`)} class="btn btn-primary btn-sm">
                 <span>{WORK.cta.primary[lang]}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
               </a>
             </footer>
@@ -152,7 +154,7 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
   document.querySelectorAll<HTMLElement>('[data-cases]').forEach((root) => {
     const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-filter]'));
     const items = Array.from(root.querySelectorAll<HTMLElement>('.cg__item'));
-    const shown = root.querySelector<HTMLElement>('[data-shown]')!;
+    const shown = root.querySelector<HTMLElement>('[data-shown]');
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* ---------- Filter ---------- */
@@ -169,10 +171,9 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
           if (!reduce) { it.classList.add('is-entering'); requestAnimationFrame(() => requestAnimationFrame(() => it.classList.remove('is-entering'))); }
         } else if (!on) it.hidden = true;
       });
-      shown.textContent = String(n).padStart(2, '0');
+      if (shown) shown.textContent = String(n).padStart(2, '0');
     };
     chips.forEach((c) => c.addEventListener('click', () => {
-      if (c.getAttribute('aria-disabled') === 'true') return;
       apply(c.getAttribute('aria-pressed') === 'true' && c.dataset.filter !== 'all' ? 'all' : c.dataset.filter!);
     }));
 
@@ -180,28 +181,43 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
     const dialogs = new Map<string, HTMLDialogElement>();
     root.querySelectorAll<HTMLDialogElement>('[data-dlg]').forEach((d) => dialogs.set(d.dataset.dlg!, d));
     let current: string | null = null;
+    /** True while the open case owns a history entry we pushed, so Back closes it and Close pops it. */
+    let pushed = false;
     const base = () => location.pathname + location.search;
 
     const open = (id: string, focusSel?: string) => {
       const d = dialogs.get(id);
       if (!d) return;
+      const switching = current !== null;
       if (current && current !== id) { const prev = dialogs.get(current); prev?.classList.remove('is-in'); prev?.close(); }
       current = id;
       if (!d.open) d.showModal();
       d.querySelector<HTMLElement>('.cg__dlg-scroll')!.scrollTop = 0;
       requestAnimationFrame(() => d.classList.add('is-in'));
       (d.querySelector<HTMLElement>(focusSel || '[data-close]'))?.focus();
-      history.replaceState(null, '', `${base()}#case-${id}`);
+      const url = `${base()}#case-${id}`;
+      // Prev/next inside an open dialog: same history entry. Deep link / Forward: the entry already exists.
+      if (switching) history.replaceState(history.state, '', url);
+      else if (location.hash !== `#case-${id}`) { history.pushState({ sbxCase: id }, '', url); pushed = true; }
     };
-    const close = () => {
+    /** Visual close + focus return, without touching history. */
+    const closeDialogOnly = () => {
       if (!current) return;
       const d = dialogs.get(current)!;
       const id = current;
       current = null;
       d.classList.remove('is-in');
-      const done = () => { d.close(); root.querySelector<HTMLElement>(`[data-open="${id}"]`)?.focus({ preventScroll: true }); };
+      const done = () => {
+        if (current === id) return; // reopened during the exit transition
+        d.close();
+        root.querySelector<HTMLElement>(`[data-open="${id}"]`)?.focus({ preventScroll: true });
+      };
       reduce ? done() : window.setTimeout(done, 220);
-      history.replaceState(null, '', base());
+    };
+    const close = () => {
+      if (!current) return;
+      closeDialogOnly();
+      if (pushed) { pushed = false; history.back(); } else history.replaceState(null, '', base());
     };
 
     root.querySelectorAll<HTMLButtonElement>('[data-open]').forEach((b) => b.addEventListener('click', () => open(b.dataset.open!)));
@@ -221,12 +237,21 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
     });
 
     // Deep links (#case-<id>) — on load, on hash change, and from the index in the page header.
-    const fromHash = () => { const m = location.hash.match(/^#case-(.+)$/); if (m && dialogs.has(m[1])) open(m[1]); };
+    const fromHash = () => {
+      const m = location.hash.match(/^#case-(.+)$/);
+      if (!m || !dialogs.has(m[1]) || current === m[1]) return;
+      open(m[1]);
+    };
     document.querySelectorAll<HTMLAnchorElement>('[data-case-link]').forEach((a) => a.addEventListener('click', (e) => {
       e.preventDefault();
       open(a.dataset.caseLink!);
     }));
     addEventListener('hashchange', fromHash);
+    // Browser Back/Forward: leaving a #case- entry closes the dialog; arriving on one opens it.
+    addEventListener('popstate', () => {
+      if (current && !/^#case-/.test(location.hash)) { pushed = false; closeDialogOnly(); }
+      else fromHash();
+    });
     fromHash();
   });
 </script>
@@ -236,13 +261,11 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
   .cg__filters { display: flex; flex-wrap: wrap; gap: 8px; }
   .cg__chip { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--line-strong); background: rgb(255 255 255 / .02);
     font-size: 14px; color: var(--color-mist); cursor: pointer; transition: border-color .25s, background-color .25s, color .25s; }
-  .cg__chip:hover:not([aria-disabled='true']) { border-color: rgb(245 131 39 / .5); color: var(--color-bone); }
+  .cg__chip:hover { border-color: rgb(245 131 39 / .5); color: var(--color-bone); }
   .cg__chip[aria-pressed='true'] { background: rgb(245 131 39 / .12); border-color: rgb(245 131 39 / .6); color: var(--color-bone); }
-  .cg__chip[aria-disabled='true'] { cursor: not-allowed; color: var(--color-smoke); border-style: dashed; border-color: var(--line); background: transparent; }
   .cg__chip-code { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-smoke); }
   .cg__count { font-family: var(--font-mono); font-size: 11px; padding: 1px 6px; border-radius: 6px; background: rgb(255 255 255 / .05); color: var(--color-mist); }
   .cg__chip[aria-pressed='true'] .cg__count { background: rgb(245 131 39 / .2); color: var(--color-flame-200); }
-  .cg__chip[aria-disabled='true'] .cg__count { background: transparent; color: var(--color-ink-500); }
   .cg__status b { color: var(--color-flame-400); font-weight: 500; }
 
   /* Grid */
@@ -253,19 +276,19 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
   .cg__item[hidden] { display: none; }
 
   .cg__card { position: relative; height: 100%; display: flex; flex-direction: column; border-radius: var(--radius-card); border: 1px solid var(--line); overflow: hidden;
-    background: linear-gradient(180deg, rgb(255 255 255 / .03), rgb(255 255 255 / .005)), var(--color-ink-900); box-shadow: inset 0 1px 0 rgb(255 255 255 / .05);
+    background: radial-gradient(80% 60% at 100% 0%, rgb(217 76 0 / .12), transparent 60%), linear-gradient(180deg, rgb(255 255 255 / .03), rgb(255 255 255 / .005)), var(--color-ink-900);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .05);
     transition: border-color .4s, transform .7s var(--ease-out-expo); }
   .cg__card:hover, .cg__card:focus-within { border-color: rgb(245 131 39 / .38); }
-  .cg__media { position: relative; aspect-ratio: 16 / 11; overflow: hidden; background: var(--color-ink-800); }
-  @media (min-width: 600px) and (max-width: 899px) { .cg__media { aspect-ratio: 16 / 9; } }
-  .cg__media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; filter: saturate(.88) brightness(.9); transform: scale(1.04); transition: transform 1.2s var(--ease-out-expo), filter .6s; }
-  .cg__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 10 10 / .35), transparent 28%, transparent 55%, rgb(19 18 18 / .85) 86%, #131212 100%); pointer-events: none; }
-  .cg__card:hover .cg__media img, .cg__card:focus-within .cg__media img { transform: scale(1.09); filter: saturate(1) brightness(1); }
-  .cg__unit, .cg__no { position: absolute; top: 14px; z-index: 1; padding: 5px 10px; border-radius: 99px; background: rgb(10 10 10 / .72); border: 1px solid var(--line-strong); color: var(--color-bone); backdrop-filter: blur(6px); }
-  .cg__unit { left: 14px; }
-  .cg__no { right: 14px; color: var(--color-mist); }
 
-  .cg__body { position: relative; display: flex; flex-direction: column; gap: 12px; flex: 1; padding: 22px clamp(20px, 2.4vw, 30px) 26px; margin-top: -32px; z-index: 1; }
+  .cg__body { position: relative; display: flex; flex-direction: column; flex: 1; margin-top: 0; padding: clamp(22px, 2.6vw, 32px); gap: 14px; }
+  .cg__top { display: flex; justify-content: space-between; gap: 12px; }
+  .cg__unit { color: var(--color-flame-400); }
+  .cg__lead { display: flex; flex-direction: column; gap: 6px; padding: clamp(14px, 2.4vw, 28px) 0 18px; border-bottom: 1px solid var(--line); }
+  .cg__lead-v { font-family: var(--font-display); font-weight: 500; font-size: clamp(3.4rem, 6vw, 5.2rem); line-height: .9; letter-spacing: -.06em; padding-right: .04em;
+    background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cg__lead-l { font-size: 15px; color: var(--color-mist); }
+  .cg__client { color: var(--color-smoke); }
   .cg__tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .cg__tags li { font-family: var(--font-mono); font-size: 11px; color: var(--color-flame-300); padding: 3px 9px; border-radius: 99px; background: rgb(245 131 39 / .08); border: 1px solid rgb(245 131 39 / .2); }
   .cg__title { font-size: clamp(1.3rem, 2vw, 1.65rem); line-height: 1.12; letter-spacing: -.03em; }
@@ -275,10 +298,11 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
   .cg__open:focus-visible { outline: none; }
   .cg__open:focus-visible::after { outline: 2px solid var(--color-flame-400); outline-offset: -2px; }
   .cg__dek { color: var(--color-mist); font-size: 15.5px; max-width: 46ch; }
-  .cg__metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line); }
-  .cg__metrics div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; }
-  .cg__metrics dd { white-space: nowrap; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.9rem, 3.4vw, 2.7rem); line-height: 1; letter-spacing: -.045em; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .cg__metrics dt { font-size: 13.5px; color: var(--color-mist); line-height: 1.35; }
+  .cg__metrics { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); }
+  .cg__metrics div { display: flex; flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 14px; }
+  .cg__metrics dd { flex: none; white-space: nowrap; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.4rem, 2.2vw, 1.8rem); line-height: 1; letter-spacing: -.04em; color: var(--color-bone); }
+  .cg__metrics dt { font-size: 14px; color: var(--color-mist); line-height: 1.35; }
+  .cg__client + .cg__more { margin-top: auto; }
   .cg__more { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; font-family: var(--font-display); font-size: 11.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--color-flame-400); }
   .cg__more :global(svg) { transition: transform .5s var(--ease-out-expo); }
   .cg__card:hover .cg__more :global(svg) { transform: rotate(45deg); }
@@ -326,9 +350,6 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
   .cg__dlg-metrics div + div { border-left: 1px solid var(--line); }
   .cg__dlg-metrics dd { white-space: nowrap; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1; letter-spacing: -.045em; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .cg__dlg-metrics dt { font-size: 13.5px; color: var(--color-mist); line-height: 1.35; }
-
-  .cg__dlg-fig { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--color-ink-800); aspect-ratio: 16 / 9; }
-  .cg__dlg-fig img { width: 100%; height: 100%; object-fit: cover; }
 
   .cg__dlg-story { display: grid; gap: 28px; }
   @media (min-width: 820px) { .cg__dlg-story { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; } }

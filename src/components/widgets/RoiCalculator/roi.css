@@ -221,7 +221,7 @@
   border: 1px solid rgb(245 131 39 / .45) !important; background: rgb(245 131 39 / .06) !important;
   transition: background-color .3s, border-color .3s;
 }
-.roi-tip__btn::after { content: ""; position: absolute; inset: -10px; } /* 42px hit area */
+.roi-tip__btn::before { content: ""; position: absolute; inset: -11px; } /* 44px hit area */
 .roi-tip__btn:hover, .roi-tip__btn[aria-expanded="true"] { background: rgb(245 131 39 / .16) !important; border-color: var(--r-flame) !important; }
 .roi-tip__pop {
   position: absolute; z-index: 5; top: calc(100% + 10px); left: -96px; width: min(300px, 76cqw);

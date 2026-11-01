@@ -37,13 +37,14 @@ const layers = p.featureLayers[lang];
       <div class="pf__cases">
         <span class="mono-label">{p.casesLabel[lang]}</span>
         {p.cases.map((c, i) => (
-          <div class="pf__case" data-reveal style={`--reveal-delay:${i * 120}`}>
+          <a class="pf__case" href={localize(lang, `/work#case-${c.id}`)} data-reveal style={`--reveal-delay:${i * 120}`}>
             <span class="pf__metric" data-count={c.metric}>{c.metric}</span>
             <span class="pf__metric-l">{c.label[lang]}</span>
             <span class="pf__client">{c.client[lang]}</span>
-          </div>
+            <Icon name="arrow-up-right" size={14} class="pf__case-arrow" />
+          </a>
         ))}
-        <a href={localize(lang, '/work')} class="pf__all">{p.seeWork[lang]} <Icon name="arrow-right" size={16} /></a>
+        <a href={localize(lang, '/work')} class="pf__all">{p.seeWork[lang]} <Icon name="arrow-up-right" size={16} /></a>
       </div>
     </div>
   </div>
@@ -96,16 +97,23 @@ const layers = p.featureLayers[lang];
   .pf__layer:last-child { border-color: rgb(245 131 39 / .45); }
   .pf__layer-name { font-family: var(--font-display); font-size: 14px; letter-spacing: -.01em; }
   .pf__layer-bits { display: flex; gap: 4px; }
-  .pf__layer-bits i { width: 6px; height: 14px; border-radius: 2px; background: rgb(255 255 255 / .12); animation: pf-bit 2.4s calc(var(--j) * .18s + var(--k) * .3s) infinite; }
-  @keyframes pf-bit { 0%, 70%, 100% { background: rgb(255 255 255 / .12); } 20% { background: var(--color-flame-500); } }
+  .pf__layer-bits i { position: relative; width: 6px; height: 14px; border-radius: 2px; background: rgb(255 255 255 / .12); }
+  /* Opacity (compositor-only) instead of animating background-color. */
+  .pf__layer-bits i::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: var(--color-flame-500); opacity: 0;
+    animation: pf-bit 2.4s calc(var(--j) * .18s + var(--k) * .3s) infinite; }
+  @keyframes pf-bit { 0%, 70%, 100% { opacity: 0; } 20% { opacity: 1; } }
   .pf__signal { position: absolute; left: 22px; top: 18px; bottom: 18px; width: 1px; background: linear-gradient(var(--color-flame-500), transparent); opacity: .5; }
 
   .pf__cases { display: flex; flex-direction: column; gap: 0; padding: 8px 0; }
   .pf__cases > .mono-label { padding-bottom: 14px; }
-  .pf__case { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 18px; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--line); }
+  .pf__case { display: grid; grid-template-columns: auto 1fr auto; grid-template-rows: auto auto; column-gap: 18px; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--line); color: inherit; }
+  .pf__case :global(.pf__case-arrow) { grid-column: 3; grid-row: 1 / span 2; align-self: center; color: var(--color-smoke); transition: color .25s, transform .5s var(--ease-out-expo); }
+  .pf__metric-l { transition: color .25s; }
+  .pf__case:hover .pf__metric-l, .pf__case:focus-visible .pf__metric-l { color: var(--color-bone); }
+  .pf__case:hover :global(.pf__case-arrow), .pf__case:focus-visible :global(.pf__case-arrow) { color: var(--color-flame-400); transform: translate(2px, -2px); }
   .pf__metric { grid-row: span 2; font-family: var(--font-display); font-size: clamp(2.4rem, 4vw, 3.4rem); letter-spacing: -.05em; line-height: 1; color: var(--color-flame-400); font-variant-numeric: tabular-nums; min-width: 3.1ch; }
-  .pf__metric-l { font-size: 17px; }
+  .pf__metric-l { font-size: 17px; color: var(--color-mist); }
   .pf__client { font-family: var(--font-mono); font-size: 12px; color: var(--color-smoke); }
   .pf__all { display: inline-flex; align-items: center; gap: 8px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--font-display); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--color-flame-400); }
-  @media (prefers-reduced-motion: reduce) { .pf__layer-bits i { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .pf__layer-bits i::after { animation: none; } }
 </style>

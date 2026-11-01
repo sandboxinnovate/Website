@@ -1,0 +1,78 @@
+---
+/**
+ * Privacy policy (/privacy, /es/privacy). Copy lives in src/i18n/privacy.ts.
+ * `{email}` tokens in the copy become a mailto link to SITE.email.
+ */
+import Base from '@/layouts/Base.astro';
+import { PRIVACY } from '@/i18n/privacy';
+import { SITE } from '@/data/site';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const p = PRIVACY;
+const t = <T,>(o: Record<Lang, T>) => o[lang];
+
+/** Split copy on the {email} token so the address can render as a link. */
+const parts = (text: string) => text.split('{email}');
+---
+<Base lang={lang} title={t(p.seo.title)} description={t(p.seo.description)}>
+  <article class="pv container-x" aria-labelledby="pv-title">
+    <header class="pv__head">
+      <span class="eyebrow">{t(p.eyebrow)}</span>
+      <h1 id="pv-title" class="pv__title display-lg">{t(p.title)}</h1>
+      <p class="mono-label pv__date"><time datetime={p.updatedIso}>{t(p.updated)}</time></p>
+      <p class="pv__intro">{t(p.intro)}</p>
+    </header>
+
+    <ol class="pv__sections">
+      {p.sections.map((s, i) => (
+        <li class="pv__section">
+          <h2 class="pv__h2"><span class="pv__n mono-label" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{t(s.title)}</h2>
+          {s.body && (
+            <p class="pv__p">
+              {parts(t(s.body)).map((chunk, k, all) => (
+                <>{chunk}{k < all.length - 1 && <a href={`mailto:${SITE.email}`}>{SITE.email}</a>}</>
+              ))}
+            </p>
+          )}
+          {s.list && (
+            <ul class="pv__list">
+              {t(s.list).map((item) => <li>{item}</li>)}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ol>
+
+    <footer class="pv__foot">
+      <span class="mono-label">{SITE.legalName} · {SITE.location}</span>
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .pv { max-width: 760px; padding-top: calc(var(--nav-h) + clamp(48px, 8vw, 96px)); padding-bottom: clamp(72px, 9vw, 128px); }
+  .pv__head { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding-bottom: 36px; border-bottom: 1px solid var(--line); }
+  .pv__title { margin-top: 4px; }
+  .pv__date { color: var(--color-smoke); }
+  .pv__intro { font-size: clamp(1.06rem, 1.4vw, 1.2rem); line-height: 1.6; color: var(--color-mist); }
+
+  .pv__sections { list-style: none; padding: 0; }
+  .pv__section { padding-top: 40px; }
+  .pv__h2 { display: flex; align-items: baseline; gap: 14px; font-size: 1.35rem; line-height: 1.2; letter-spacing: -.02em; }
+  .pv__n { flex: none; width: 16px; color: var(--color-flame-400); }
+  .pv__p, .pv__list { margin-top: 14px; padding-left: 30px; /* number column (16px) + gap (14px): body aligns with the heading text */ color: var(--color-mist); font-size: 17px; line-height: 1.65; }
+  .pv__list { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+  .pv__list li { position: relative; padding-left: 20px; }
+  .pv__list li::before { content: ''; position: absolute; left: 2px; top: .7em; width: 6px; height: 6px; border-radius: 9px; background: var(--color-flame-500); }
+  .pv a { color: var(--color-bone); text-decoration: underline; text-decoration-color: rgb(245 131 39 / .6); text-underline-offset: 3px; transition: text-decoration-color .2s; }
+  .pv a:hover { text-decoration-color: var(--color-flame-400); }
+
+  .pv__foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 15px; }
+
+  @media (max-width: 599px) {
+    .pv__p, .pv__list { padding-left: 0; }
+  }
+</style>

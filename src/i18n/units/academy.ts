@@ -4,7 +4,7 @@ import type { UnitCopy } from './types';
 export const ACADEMY: L10n<UnitCopy> = {
   en: {
     seo: {
-      title: 'AI Training for Teams: Workshops & Programs',
+      title: 'AI training for teams: workshops and programs',
       description:
         'Hands-on AI workshops for teams, multi-week programs for leaders and company-wide enablement. Your people working with AI on their own tasks from week one.',
     },
@@ -21,7 +21,7 @@ export const ACADEMY: L10n<UnitCopy> = {
       ],
     },
     pains: {
-      title: 'Sound <em>familiar?</em>',
+      title: 'Everyone has AI. <em>Few use it well.</em>',
       lede: 'Buying AI licenses is the easy part. Getting people to change how they work is where most rollouts stall.',
       items: [
         {
@@ -98,25 +98,25 @@ export const ACADEMY: L10n<UnitCopy> = {
       lede: 'We design every session from your team’s real work, then stay long enough for the habits to stick.',
       steps: [
         {
-          name: 'Discover',
+          name: 'Assess',
           time: '1 week',
           body: 'A short survey and a few interviews tell us which tools your people use, which tasks eat their time and what they are allowed to do.',
           out: ['Skills snapshot', 'Task inventory'],
         },
         {
-          name: 'Design',
+          name: 'Tailor',
           time: '1–2 weeks',
           body: 'We build the exercises from your real tasks and documents, and adapt the rules to your AI policy.',
           out: ['Custom curriculum', 'Exercise kit'],
         },
         {
-          name: 'Build',
+          name: 'Train',
           time: '1 day to 6 weeks',
           body: 'Hands-on sessions, live or on-site. Everyone works on their own tasks, with short exercises between sessions.',
           out: ['Live sessions', 'Workflow library'],
         },
         {
-          name: 'Operate',
+          name: 'Follow up',
           time: 'After training',
           body: 'Office hours, a follow-up session and adoption tracking, so the habits stay once we leave.',
           out: ['Follow-up session', 'Adoption report'],
@@ -124,12 +124,12 @@ export const ACADEMY: L10n<UnitCopy> = {
       ],
     },
     pricing: {
-      body: 'Workshops are scoped per session and group, programs per cohort and enablement plans per company. We define each one after a short call about your team, your tools and your market. Webinars and the newsletter are free.',
+      body: 'Workshops are scoped per session and group, programs per cohort and enablement plans per company. We define each one after a short call about your team, your tools and your market. The newsletter is free.',
       points: [
         'Workshops: per session and group',
         'Leadership program: per cohort',
         'Enablement: a plan scoped to your company',
-        'Free webinars and newsletter, always',
+        'Free monthly newsletter with practical AI workflows',
       ],
       shape: ['Workshop or program', 'Follow-up & office hours'],
     },
@@ -193,7 +193,7 @@ export const ACADEMY: L10n<UnitCopy> = {
       },
       {
         q: 'Is there free content?',
-        a: 'Yes. We run free webinars and send one email a month with what we are building and learning. You can subscribe at the bottom of any page.',
+        a: 'Yes. We send one email a month with what we are building and learning. You can subscribe at the bottom of any page.',
       },
     ],
     cta: {
@@ -211,8 +211,8 @@ export const ACADEMY: L10n<UnitCopy> = {
     hero: {
       title: 'Aprende IA con <em>tu propio trabajo.</em>',
       lede:
-        'Talleres y programas prácticos donde cada persona trae tareas reales —un reporte, una propuesta, una bandeja de entrada llena— y se va con ellas resueltas y un flujo que puede repetir. Diseñados por un equipo que usa IA en su propio trabajo todos los días.',
-      primary: 'Agendar llamada',
+        'Talleres y programas prácticos donde cada persona trae tareas reales (un reporte, una propuesta, una bandeja de entrada llena) y se va con ellas resueltas y un flujo que puede repetir. Diseñados por un equipo que usa IA en su propio trabajo todos los días.',
+      primary: 'Agendar una llamada',
       secondary: { label: 'Explorar el programa', href: '#demo' },
       facts: [
         { k: 'Formatos', v: 'Talleres · Programas · Capacitación a medida' },
@@ -221,7 +221,7 @@ export const ACADEMY: L10n<UnitCopy> = {
       ],
     },
     pains: {
-      title: '¿Te <em>suena?</em>',
+      title: 'Todos tienen IA. <em>Pocos la usan bien.</em>',
       lede: 'Comprar licencias de IA es lo fácil. Lograr que la gente cambie su forma de trabajar es donde se frena la mayoría de las implementaciones.',
       items: [
         {
@@ -230,7 +230,7 @@ export const ACADEMY: L10n<UnitCopy> = {
         },
         {
           pain: 'La capacitación fue una demo de dos horas. El lunes nadie se acordaba.',
-          outcome: 'Sesiones cortas y prácticas a lo largo de varias semanas, con ejercicios entre medio y horario de consultas.',
+          outcome: 'Sesiones cortas y prácticas a lo largo de varias semanas, con ejercicios entre sesiones y horario de consultas.',
         },
         {
           pain: 'A los líderes les piden un plan de IA que no se sienten preparados para armar.',
@@ -298,25 +298,25 @@ export const ACADEMY: L10n<UnitCopy> = {
       lede: 'Diseñamos cada sesión a partir del trabajo real de tu equipo y nos quedamos lo suficiente para que los hábitos se instalen.',
       steps: [
         {
-          name: 'Descubrir',
+          name: 'Evaluar',
           time: '1 semana',
           body: 'Una encuesta breve y algunas entrevistas nos dicen qué herramientas usa tu gente, qué tareas les consumen el tiempo y qué tienen permitido hacer.',
           out: ['Foto de habilidades', 'Inventario de tareas'],
         },
         {
-          name: 'Diseñar',
+          name: 'Adaptar',
           time: '1–2 semanas',
           body: 'Armamos los ejercicios con tus tareas y documentos reales, y adaptamos las reglas a tu política de IA.',
           out: ['Programa a medida', 'Kit de ejercicios'],
         },
         {
-          name: 'Construir',
+          name: 'Capacitar',
           time: 'De 1 día a 6 semanas',
           body: 'Sesiones prácticas, en vivo o presenciales. Cada persona trabaja en sus propias tareas, con ejercicios breves entre sesiones.',
           out: ['Sesiones en vivo', 'Biblioteca de flujos'],
         },
         {
-          name: 'Operar',
+          name: 'Acompañar',
           time: 'Después de la formación',
           body: 'Horario de consultas, una sesión de seguimiento y medición de adopción, para que los hábitos sigan cuando nos vamos.',
           out: ['Sesión de seguimiento', 'Reporte de adopción'],
@@ -324,12 +324,12 @@ export const ACADEMY: L10n<UnitCopy> = {
       ],
     },
     pricing: {
-      body: 'Los talleres se cotizan por sesión y grupo, los programas por cohorte y la capacitación a medida por empresa. Definimos cada uno después de una llamada breve sobre tu equipo, tus herramientas y tu mercado. Los webinars y la newsletter son gratuitos.',
+      body: 'Los talleres se cotizan por sesión y grupo, los programas por cohorte y la capacitación a medida por empresa. Definimos cada uno después de una llamada breve sobre tu equipo, tus herramientas y tu mercado. La newsletter es gratuita.',
       points: [
         'Talleres: por sesión y grupo',
         'Programa para líderes: por cohorte',
         'Capacitación a medida: un plan para tu empresa',
-        'Webinars y newsletter gratuitos, siempre',
+        'Newsletter mensual gratuita con flujos de IA prácticos',
       ],
       shape: ['Taller o programa', 'Seguimiento y consultas'],
     },
@@ -393,7 +393,7 @@ export const ACADEMY: L10n<UnitCopy> = {
       },
       {
         q: '¿Hay contenido gratuito?',
-        a: 'Sí. Hacemos webinars gratuitos y enviamos un email al mes con lo que estamos construyendo y aprendiendo. Puedes suscribirte al pie de cualquier página.',
+        a: 'Sí. Enviamos un correo al mes con lo que estamos construyendo y aprendiendo. Puedes suscribirte al pie de cualquier página.',
       },
     ],
     cta: {

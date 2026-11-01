@@ -42,12 +42,22 @@ const company = [
     <div class="ft__col ft__news">
       <p class="mono-label">{t(UI.footer.newsletterTitle)}</p>
       <p class="ft__news-body">{t(UI.footer.newsletterBody)}</p>
-      <form class="ft__form" data-newsletter data-lang={lang} novalidate>
-        <label class="sr-only" for="ft-email">Email</label>
-        <input id="ft-email" type="email" name="email" required autocomplete="email" placeholder={t(UI.footer.newsletterPlaceholder)} />
+      <form
+        class="ft__form"
+        data-newsletter
+        data-lang={lang}
+        data-msg-invalid={t(UI.footer.newsletterInvalid)}
+        data-msg-fail={`${t(UI.footer.newsletterFail)}${SITE.email}.`}
+        novalidate
+      >
+        <label class="sr-only" for="ft-email">{t(UI.footer.newsletterLabel)}</label>
+        <input id="ft-email" type="email" name="email" required autocomplete="email" placeholder={t(UI.footer.newsletterPlaceholder)} aria-describedby="ft-email-msg" />
+        <input type="text" name="company_fax" tabindex="-1" autocomplete="off" aria-hidden="true" class="ft__hp" />
         <button type="submit" aria-label={t(UI.footer.newsletterCta)}><Icon name="arrow-right" size={18} /></button>
       </form>
-      <p class="ft__news-ok" data-newsletter-ok hidden>{t(UI.footer.newsletterOk)}</p>
+      <p id="ft-email-msg" class="ft__news-err" role="alert" hidden></p>
+      <p class="ft__news-ok" data-newsletter-ok role="status" tabindex="-1" hidden>{t(UI.footer.newsletterOk)}</p>
+      <p class="ft__news-legal">{t(UI.footer.newsletterLegal)}<a href={localize(lang, '/privacy')}>{t(UI.footer.privacy)}</a></p>
       <div class="ft__contact">
         <a href={`mailto:${SITE.email}`}><Icon name="mail" size={16} />{SITE.email}</a>
         <span><Icon name="globe" size={16} />{t(SITE.markets)}</span>
@@ -55,10 +65,10 @@ const company = [
     </div>
   </div>
 
-  <div class="ft__giant" aria-hidden="true">SANDBOX</div>
+  <div class="ft__giant" aria-hidden="true">SANDB<svg class="ft__cube" viewBox="11.89 6 76.21 88" aria-hidden="true"><defs><linearGradient id="ft-cube-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f58327" stop-opacity=".24" /><stop offset="1" stop-color="#f58327" stop-opacity=".03" /></linearGradient></defs><path fill="url(#ft-cube-g)" fill-rule="evenodd" d="M50 6L88.11 28L88.11 72L50 94L11.89 72L11.89 28ZM50 44.28L78.2 28L65.62 20.74L50 25.36L34.38 20.74L21.8 28ZM47.14 54.07L16.85 36.58L16.85 49.78L32.09 58.58L32.09 77.94L47.14 86.63ZM52.86 54.07L83.15 36.58L83.15 49.78L67.91 58.58L67.91 77.94L52.86 86.63Z" /></svg>X</div>
 
   <div class="container-x ft__base">
-    <span>© {year} {SITE.legalName}. {t(UI.footer.rights)}</span>
+    <span>© {year} {SITE.legalName}. {t(UI.footer.rights)} <a class="ft__legal" href={localize(lang, '/privacy')}>{t(UI.footer.privacy)}</a></span>
     <span class="mono-label">{SITE.location}</span>
   </div>
 </footer>
@@ -66,13 +76,38 @@ const company = [
 <script>
   import { submitLead, isValidEmail } from '@/lib/leads';
   document.querySelectorAll<HTMLFormElement>('[data-newsletter]').forEach((form) => {
+    const input = form.querySelector<HTMLInputElement>('input[type="email"]')!;
+    const hp = form.querySelector<HTMLInputElement>('input[name="company_fax"]');
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const box = form.parentElement!;
+    const err = box.querySelector<HTMLElement>('.ft__news-err')!;
+    const ok = box.querySelector<HTMLElement>('[data-newsletter-ok]')!;
+    const showErr = (msg: string) => { err.textContent = msg; err.hidden = false; };
+    input.addEventListener('input', () => { if (input.getAttribute('aria-invalid') && isValidEmail(input.value)) { input.removeAttribute('aria-invalid'); err.hidden = true; } });
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const input = form.querySelector('input')!;
-      if (!isValidEmail(input.value)) { input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
+      if (hp && hp.value) return; // bots fill every field
+      if (button.disabled) return;
+      if (!isValidEmail(input.value)) {
+        input.setAttribute('aria-invalid', 'true');
+        showErr(form.dataset.msgInvalid || '');
+        input.focus();
+        return;
+      }
       input.removeAttribute('aria-invalid');
-      const res = await submitLead({ kind: 'newsletter', email: input.value, lang: (form.dataset.lang as 'en' | 'es') ?? 'en' });
-      if (res.ok) { form.hidden = true; form.parentElement!.querySelector<HTMLElement>('[data-newsletter-ok]')!.hidden = false; }
+      err.hidden = true;
+      button.disabled = true;
+      form.setAttribute('aria-busy', 'true');
+      const res = await submitLead({ kind: 'newsletter', email: input.value.trim(), lang: (form.dataset.lang as 'en' | 'es') ?? 'en', source: 'footer' });
+      form.removeAttribute('aria-busy');
+      if (!res.ok) {
+        button.disabled = false;
+        showErr(form.dataset.msgFail || '');
+        return;
+      }
+      form.hidden = true;
+      ok.hidden = false;
+      ok.focus();
     });
   });
 </script>
@@ -82,6 +117,7 @@ const company = [
   .ft__grid { display: grid; gap: 48px; padding-top: 80px; padding-bottom: 40px; grid-template-columns: 1fr; }
   @media (min-width: 720px) { .ft__grid { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 1080px) { .ft__grid { grid-template-columns: 1.4fr .8fr .8fr 1.3fr; } }
+  @media (max-width: 719px) { .ft__grid { grid-template-columns: 1fr 1fr; gap: 40px 24px; padding-top: 56px; } .ft__brand, .ft__news { grid-column: 1 / -1; } }
   .ft__brand { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
   .ft__tagline { max-width: 340px; color: var(--color-mist); font-size: 16px; }
   .ft__status { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--color-mist); padding: 7px 12px; border-radius: 99px; border: 1px solid var(--line); }
@@ -90,6 +126,7 @@ const company = [
   .ft__col ul { display: flex; flex-direction: column; gap: 10px; }
   .ft__col a { color: var(--color-mist); transition: color .2s; display: inline-flex; gap: 10px; align-items: baseline; }
   .ft__col a:hover { color: var(--color-bone); }
+  @media (pointer: coarse) { .ft__col a { min-height: 40px; align-items: center; } .ft__col ul { gap: 2px; } }
   .ft__code { font-family: var(--font-mono); font-size: 11px; color: var(--color-smoke); }
   .ft__news-body { color: var(--color-mist); font-size: 15px; margin-top: -6px; }
   .ft__form { display: flex; align-items: center; height: 52px; padding: 5px 5px 5px 18px; border-radius: 99px; border: 1px solid var(--line-strong); background: rgb(255 255 255 / .02); transition: border-color .2s; }
@@ -98,12 +135,24 @@ const company = [
   .ft__form input[aria-invalid='true'] { color: var(--color-err); }
   .ft__form input::placeholder { color: var(--color-smoke); }
   .ft__form button { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 99px; background: var(--grad-cta); color: #1a0d03; cursor: pointer; }
+  .ft__form[aria-busy='true'] { opacity: .7; }
+  .ft__form button:disabled { cursor: progress; }
+  .ft__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .ft__news-err { color: var(--color-err); font-size: 14px; margin-top: -8px; }
   .ft__news-ok { color: var(--color-ok); font-size: 15px; }
+  .ft__news-ok:focus { outline: none; }
+  .ft__news-legal { font-size: 13px; color: var(--color-smoke); margin-top: -8px; }
+  .ft__news-legal a { color: var(--color-smoke); text-decoration: underline; text-underline-offset: 3px; }
+  .ft__news-legal a:hover { color: var(--color-bone); }
   .ft__contact { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; font-size: 14.5px; }
   .ft__contact a, .ft__contact span { display: inline-flex; align-items: center; gap: 10px; color: var(--color-mist); }
   .ft__giant { font-family: var(--font-display); font-weight: 600; font-size: clamp(56px, 15.6vw, 236px); line-height: .8; letter-spacing: -.055em; text-align: center;
     color: transparent; user-select: none; margin-top: 24px; white-space: nowrap;
     background: linear-gradient(180deg, rgb(245 131 39 / .22), rgb(245 131 39 / .02) 78%); -webkit-background-clip: text; background-clip: text; }
+  /* The real mark: cube sized a touch over cap height (its vertices overshoot, like the logo) and centred on the caps. Same fade as the letters. */
+  .ft__cube { display: inline-block; height: .84em; width: auto; margin: 0 .02em; vertical-align: -.045em; }
+  .ft__legal { color: var(--color-mist); text-decoration: underline; text-underline-offset: 3px; margin-left: 10px; }
+  .ft__legal:hover { color: var(--color-bone); }
   .ft__base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 24px; padding-bottom: 28px; font-size: 13px; color: var(--color-smoke); border-top: 1px solid var(--line); }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>

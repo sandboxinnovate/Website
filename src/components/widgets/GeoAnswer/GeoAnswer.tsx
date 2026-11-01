@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
-import type { Lang } from '@/i18n';
+import { localize, type Lang } from '@/i18n';
 import { ICONS } from '@/components/ui/icons';
 import { CAT_IDS, COPY, METER, type CatId, type GeoCopy, type Mode, type Source } from './copy';
 import { fillBrand, tokenDelay, tokenize, type Tokenized } from './stream';
@@ -12,6 +12,8 @@ interface Run { id: number; typeQ: boolean }
 
 const MODES: Mode[] = ['before', 'after'];
 const BRAND_MAX = 32;
+/** The question never takes longer than this to type, whatever its length. */
+const TYPE_BUDGET_MS = 1200;
 
 function Ico({ name, size = 16 }: { name: keyof typeof ICONS; size?: number }) {
   return (
@@ -160,6 +162,8 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
   activeRef.current = active;
   const pausedRef = useRef(false);
   pausedRef.current = !inView || !pageVisible;
+  /** Offscreen / hidden tab: the next step of the stream waits here instead of polling. */
+  const resumeRef = useRef<(() => void) | null>(null);
 
   // Autoplay the first stream when the panel comes into view.
   useEffect(() => {
@@ -208,7 +212,10 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
     };
     function step() {
       if (cancelled) return;
-      if (pausedRef.current) return later(160);
+      if (pausedRef.current) {
+        resumeRef.current = step;
+        return;
+      }
       if (ph === 'typing') {
         ti += 1;
         setTyped(ti);
@@ -218,7 +225,7 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
           t0 = performance.now();
           return later(900);
         }
-        return later(20 + Math.random() * 38);
+        return later(Math.min(20 + Math.random() * 38, TYPE_BUDGET_MS / Math.max(1, qLenRef.current)));
       }
       if (ph === 'searching') {
         if (!t0) t0 = performance.now();
@@ -242,8 +249,17 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
+      resumeRef.current = null;
     };
   }, [run, started, reduced]);
+
+  // Back on screen (or tab visible again): pick the stream up where it stopped.
+  useEffect(() => {
+    if (!inView || !pageVisible || !resumeRef.current) return;
+    const resume = resumeRef.current;
+    resumeRef.current = null;
+    resume();
+  }, [inView, pageVisible]);
 
   // After the first autoplay ends on "Before", invite the visitor to flip to "After".
   useEffect(() => {
@@ -284,6 +300,8 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
 
   const done = phase === 'done';
   const streaming = phase === 'streaming';
+  // Until the first token lands, the answer area shows placeholder lines instead of an empty box.
+  const waiting = phase === 'idle' || phase === 'typing' || phase === 'searching';
   const qShown = Math.min(typed, cat.question.length);
   const citedFirst = useMemo(() => {
     // Global index at which each citation first appears → the source row shows up with it.
@@ -447,6 +465,11 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
               </div>
 
               <div className="ga-answer__stack">
+                <div className="ga-skel-group" data-on={waiting ? '' : undefined} aria-hidden="true">
+                  <span className="ga-skel" style={{ width: '60%' }} />
+                  <span className="ga-skel" style={{ width: '90%' }} />
+                  <span className="ga-skel" style={{ width: '75%' }} />
+                </div>
                 <AnswerText
                   tk={tkBefore}
                   sources={cat.before.sources}
@@ -472,6 +495,14 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
               <div className="ga-sources">
                 <span className="ga-sources__title">{t.sourcesTitle}</span>
                 <div className="ga-sources__stack">
+                  <div className="ga-skel-group ga-skel-group--src" data-on={waiting ? '' : undefined} aria-hidden="true">
+                    {[0, 1].map((i) => (
+                      <span key={i} className="ga-skel-row">
+                        <span className="ga-skel ga-skel--n" />
+                        <span className="ga-skel" style={{ width: i ? '46%' : '62%' }} />
+                      </span>
+                    ))}
+                  </div>
                   {MODES.map((m) => {
                     const list = m === 'before' ? cat.before.sources : cat.after.sources;
                     const isActive = m === mode;
@@ -505,6 +536,17 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
               <p className="ga-verdict" data-on={done ? '' : undefined} data-mode={mode}>
                 <span className="ga-verdict__dot" aria-hidden="true" />
                 {t.verdict[mode](brand)}
+              </p>
+              <p className="ga-next" data-on={done ? '' : undefined}>
+                <a
+                  className="ga-cta"
+                  href={localize(lang, '/contact?service=growth&offer=ai-search-visibility-geo')}
+                  aria-hidden={done ? undefined : true}
+                  tabIndex={done ? undefined : -1}
+                >
+                  {t.cta}
+                  <Ico name="arrow-up-right" size={14} />
+                </a>
               </p>
             </div>
           </div>

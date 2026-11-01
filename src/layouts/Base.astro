@@ -3,6 +3,8 @@ import '@/styles/global.css';
 import Nav from '@/components/Nav.astro';
 import Footer from '@/components/Footer.astro';
 import CommandPalette from '@/components/widgets/CommandPalette/CommandPalette';
+import Icon from '@/components/ui/Icon.astro';
+import { UI } from '@/i18n/ui';
 import { LANG_META, LANGS, stripLang, localize, type Lang } from '@/i18n';
 import { SITE } from '@/data/site';
 import unboundedWoff2 from '@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2?url';
@@ -23,18 +25,37 @@ const { lang, title, description, ogImage = '/og/default.png', noindex = false, 
 const neutralPath = stripLang(Astro.url.pathname);
 const canonical = new URL(localize(lang, neutralPath), SITE.url).href;
 const fullTitle = title.includes('Sandbox') ? title : `${title} — Sandbox`;
+const ogAlt = lang === 'es' ? 'Sandbox: sistemas de IA, consultoría y growth' : 'Sandbox: AI systems, consulting and growth';
+
+// Mobile conversion bar: every indexable page except the two conversion pages themselves.
+const np = stripLang(Astro.url.pathname).replace(/\/$/, '') || '/';
+const showMcta = !noindex && !['/contact', '/diagnostic'].includes(np);
+const um = np.match(/^\/services\/([a-z]+)$/);
+const mctaHref = localize(lang, um ? `/contact?service=${um[1]}` : '/contact');
 
 const org = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
+  '@id': 'https://sandboxinnovate.com/#organization',
   name: 'Sandbox',
   legalName: SITE.legalName,
-  url: SITE.url,
+  url: 'https://sandboxinnovate.com/',
   logo: `${SITE.url}/favicon.svg`,
   email: SITE.email,
+  founder: { '@type': 'Person', name: 'Axel Parra' },
+  contactPoint: { '@type': 'ContactPoint', contactType: 'sales', email: SITE.email, availableLanguage: ['English', 'Spanish'], areaServed: ['US', 'Europe', 'Latin America'] },
+  description: lang === 'es'
+    ? 'Sandbox diseña, construye y opera sistemas de IA para empresas de Estados Unidos, Europa y Latinoamérica.'
+    : 'Sandbox designs, builds and runs AI systems for businesses in the US, Europe and Latin America.',
   address: { '@type': 'PostalAddress', addressLocality: 'Albuquerque', addressRegion: 'NM', addressCountry: 'US' },
-  areaServed: ['US', 'Europe', 'Latin America'],
-  knowsAbout: ['Artificial intelligence', 'AI agents', 'AI consulting', 'AI marketing', 'Generative engine optimization', 'AI training'],
+  areaServed: [
+    { '@type': 'Country', name: 'United States' },
+    { '@type': 'Place', name: 'Europe' },
+    { '@type': 'Place', name: 'Latin America' },
+  ],
+  knowsAbout: lang === 'es'
+    ? ['Inteligencia artificial', 'Agentes de IA', 'Consultoría de IA', 'Marketing con IA', 'Optimización para motores generativos', 'Formación en IA']
+    : ['Artificial intelligence', 'AI agents', 'AI consulting', 'AI marketing', 'Generative engine optimization', 'AI training'],
 };
 ---
 <!doctype html>
@@ -44,9 +65,13 @@ const org = {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={new URL(localize(l, neutralPath), SITE.url).href} />)}
-    <link rel="alternate" hreflang="x-default" href={new URL(localize('en', neutralPath), SITE.url).href} />
+    {!noindex && (
+      <>
+        <link rel="canonical" href={canonical} />
+        {LANGS.map((l) => <link rel="alternate" hreflang={l} href={new URL(localize(l, neutralPath), SITE.url).href} />)}
+        <link rel="alternate" hreflang="x-default" href={new URL(localize('en', neutralPath), SITE.url).href} />
+      </>
+    )}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <meta property="og:type" content="website" />
@@ -55,8 +80,13 @@ const org = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(ogImage, SITE.url).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta property="og:locale" content={LANG_META[lang].ogLocale} />
+    <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_LA'} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image:alt" content={ogAlt} />
 
     <meta name="theme-color" content="#0a0a0a" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -75,6 +105,15 @@ const org = {
       <slot />
     </main>
     {!bare && <Footer lang={lang} />}
+    {showMcta && (
+      <div class="mcta is-off" data-mcta inert>
+        <a class="btn btn-primary mcta__book" href={mctaHref}>
+          <span>{UI.cta.primary[lang]}</span>
+          <span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
+        </a>
+        <a class="mcta__diag" href={localize(lang, '/diagnostic')} aria-label={UI.cta.diagnostic[lang]}><Icon name="spark" size={20} /></a>
+      </div>
+    )}
     <CommandPalette client:idle lang={lang} />
 
     <script>
@@ -89,6 +128,45 @@ const org = {
       } else {
         els.forEach((el) => el.classList.add('is-in'));
       }
+
+      // Pause decorative infinite animations in top-level sections that are far offscreen.
+      if ('IntersectionObserver' in window) {
+        const po = new IntersectionObserver(
+          (es) => es.forEach((e) => e.target.toggleAttribute('data-offscreen', !e.isIntersecting)),
+          { rootMargin: '200px 0px' },
+        );
+        [...document.querySelectorAll('main section'), document.querySelector('footer.ft')]
+          .filter((s): s is Element => !!s && !(s.parentElement && s.parentElement.closest('section')))
+          .forEach((s) => po.observe(s));
+      }
+
+      // Mobile conversion bar: hidden while the hero CTAs are on screen and near closing CTAs / the footer.
+      const bar = document.querySelector<HTMLElement>('[data-mcta]');
+      if (bar && 'IntersectionObserver' in window) {
+        const anchor = document.querySelector('.hero__ctas, .uh__ctas') || document.querySelector('main h1');
+        const enders = document.querySelectorAll('.fc, .ucta, .pc, footer.ft');
+        let heroOn = !!anchor;
+        const on = new Set<Element>();
+        const upd = () => {
+          const off = heroOn || on.size > 0;
+          bar.classList.toggle('is-off', off);
+          bar.inert = off;
+        };
+        if (anchor) new IntersectionObserver(([e]) => { heroOn = e.isIntersecting || e.boundingClientRect.top > 0; upd(); }).observe(anchor);
+        const io2 = new IntersectionObserver((es) => { es.forEach((e) => (e.isIntersecting ? on.add(e.target) : on.delete(e.target))); upd(); });
+        enders.forEach((el) => io2.observe(el));
+        upd();
+      }
+
+      // First-party attribution, kept for this tab only and sent only with a submitted form (src/lib/leads.ts).
+      try {
+        if (!sessionStorage.getItem('sbx:attr')) {
+          const q = new URLSearchParams(location.search);
+          const a: Record<string, string> = { landing: location.pathname + location.search, referrer: document.referrer };
+          ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach((k) => { const v = q.get(k); if (v) a[k] = v.slice(0, 120); });
+          sessionStorage.setItem('sbx:attr', JSON.stringify(a));
+        }
+      } catch {}
     </script>
   </body>
 </html>

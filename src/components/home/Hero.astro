@@ -14,11 +14,10 @@ const t = <T,>(o: Record<Lang, T>) => o[lang];
   <div class="hero__bg" aria-hidden="true">
     <div class="bg-grid hero__grid"></div>
     <div class="glow-ember hero__glow hero__glow--a"></div>
-    <div class="glow-ember hero__glow hero__glow--b"></div>
   </div>
 
   <div class="hero__visual">
-    <HeroBrain client:load lang={lang} />
+    <HeroBrain client:idle lang={lang} />
   </div>
 
   <div class="container-x hero__inner">
@@ -49,18 +48,20 @@ const t = <T,>(o: Record<Lang, T>) => o[lang];
     </div>
   </div>
 
-  <div class="container-x hero__stats">
-    {STATS.map((s, i) => (
-      <div class="hero__stat hero__in" style={`--i:${7 + i}`}>
-        <span class="hero__stat-v">{s.value}</span>
-        <span class="hero__stat-l">{t(s.label)}</span>
-      </div>
-    ))}
+  <div class="container-x">
+    <div class="hero__stats">
+      {STATS.map((s, i) => (
+        <div class="hero__stat hero__in" style={`--i:${7 + i}`}>
+          <span class="hero__stat-v">{s.value}</span>
+          <span class="hero__stat-l">{t(s.label)}</span>
+        </div>
+      ))}
+    </div>
   </div>
 </section>
 
 <script>
-  // Cycle the "running now" ticker words
+  // Cycle the "typical jobs" ticker words
   document.querySelectorAll<HTMLElement>('[data-ticker]').forEach((track) => {
     const words = [...track.children] as HTMLElement[];
     if (matchMedia('(prefers-reduced-motion: reduce)').matches || words.length < 2) return;
@@ -79,11 +80,16 @@ const t = <T,>(o: Record<Lang, T>) => o[lang];
   .hero__bg { position: absolute; inset: 0; z-index: -2; }
   .hero__grid { position: absolute; inset: 0; opacity: .7; }
   .hero__glow--a { width: 900px; height: 700px; right: -160px; top: 4%; opacity: .5; }
-  .hero__glow--b { width: 700px; height: 500px; left: -300px; bottom: -260px; opacity: .3; }
 
   .hero__visual { position: absolute; z-index: -1; inset: var(--nav-h) 0 0 auto; width: min(64vw, 980px); }
+  /* Keep the cube to the right of the copy and above the stats hairline; fade its left edge under the headline. */
+  @media (min-width: 900px) {
+    .hero__visual { inset: var(--nav-h) -2vw 132px auto; width: min(54vw, 880px);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%); mask-image: linear-gradient(90deg, transparent 0%, #000 34%); }
+  }
   @media (max-width: 899px) {
-    .hero__visual { inset: calc(var(--nav-h) - 10px) -20% auto -20%; width: auto; height: 62svh; opacity: .55; }
+    .hero__visual { inset: calc(var(--nav-h) - 10px) -38% auto 8%; width: auto; height: 62svh; opacity: .55;
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 30%, transparent 58%); mask-image: linear-gradient(180deg, #000 0%, #000 30%, transparent 58%); }
   }
 
   .hero__inner { position: relative; display: flex; flex-direction: column; gap: 40px; padding-bottom: 48px; }

@@ -16,10 +16,15 @@ interface Props {
   extra: number;
   reg: FrameRegistry;
   resultFor: (i: number) => string;
+  /** The run is waiting at the human gate (not yet approved). */
+  gateOpen: boolean;
+  onApprove: () => void;
+  /** Seconds left before the demo approves on its own. */
+  gateSecs: number;
 }
 
 /** Narrow-container version of the workflow: a vertical stepper with the active step expanded. */
-export default function Stepper({ sc, tl, lang, ui, states, focus, cursor, extra, reg, resultFor }: Props) {
+export default function Stepper({ sc, tl, lang, ui, states, focus, cursor, extra, reg, resultFor, gateOpen, onApprove, gateSecs }: Props) {
   const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useFrame(reg, (e) => {
@@ -37,7 +42,7 @@ export default function Stepper({ sc, tl, lang, ui, states, focus, cursor, extra
         const chips = step.chips ? chipStates(tl, i, step.chips.length, cursor) : null;
         const dur = step.dur + (step.gate ? extra : 0);
         return (
-          <li key={step.id} className="ac-st" data-state={st} data-open={open ? '' : undefined}>
+          <li key={step.id} className="ac-st" data-state={st} data-open={open ? '' : undefined} data-gate-node={step.gate ? '' : undefined}>
             <span className="ac-st__dot" aria-hidden="true">
               <Ico name={st === 'done' ? 'check' : step.icon} size={14} stroke={st === 'done' ? 2 : 1.5} />
             </span>
@@ -55,7 +60,18 @@ export default function Stepper({ sc, tl, lang, ui, states, focus, cursor, extra
                   <span className="ac-st__tool">
                     {ui.kinds[step.kind]} · {step.tool}
                   </span>
-                  {st === 'done' ? (
+                  {st === 'gate' && gateOpen && step.gate ? (
+                    <>
+                      <span className="ac-st__gate">{step.gate.title[lang]}</span>
+                      <span className="ac-st__act">
+                        <button type="button" className="ac-approve ac-approve--node" onClick={onApprove} tabIndex={open ? undefined : -1}>
+                          <span className="ac-approve__chip" aria-hidden="true"><Ico name="check" size={14} stroke={2} /></span>
+                          {ui.gate.approve}
+                        </button>
+                        <span className="ac-gate__auto">{ui.gate.auto(gateSecs)}</span>
+                      </span>
+                    </>
+                  ) : st === 'done' ? (
                     <span className="ac-st__res">{resultFor(i)}</span>
                   ) : chips ? (
                     <span className="ac-node__chips">

@@ -5,6 +5,7 @@ import BrainDiagram from '@/components/work/BrainDiagram.astro';
 import CaseGrid from '@/components/work/CaseGrid.astro';
 import PageCta from '@/components/about/PageCta.astro';
 import { WORK, CASES } from '@/i18n/work';
+import { UNIT_COMMON } from '@/i18n/units';
 import { localize, type Lang } from '@/i18n';
 import { SITE } from '@/data/site';
 
@@ -24,7 +25,6 @@ const jsonLd = {
     name: c.title[lang],
     abstract: c.dek[lang],
     url: `${pageUrl}#case-${c.id}`,
-    image: new URL(c.card, SITE.url).href,
   })),
 };
 ---
@@ -38,5 +38,6 @@ const jsonLd = {
     body={WORK.cta.body[lang]}
     primary={{ href: localize(lang, '/contact'), label: WORK.cta.primary[lang] }}
     secondary={{ href: localize(lang, '/diagnostic'), label: WORK.cta.secondary[lang] }}
+    meta={UNIT_COMMON.cta.meta[lang]}
   />
 </Base>

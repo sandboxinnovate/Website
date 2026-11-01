@@ -22,8 +22,8 @@ export const VISUAL_COPY = {
     },
     consulting: {
       file: 'roadmap / 12 weeks',
-      phases: ['Diagnostic', 'Sprint', 'Ongoing'],
-      phasesShort: ['Diag.', 'Sprint', '→'],
+      phases: ['Audit', 'Sprint', 'Ongoing'],
+      phasesShort: ['Audit', 'Sprint', '→'],
       week: 'W',
       today: 'Today',
       rows: [
@@ -115,8 +115,8 @@ export const VISUAL_COPY = {
     },
     consulting: {
       file: 'hoja de ruta / 12 semanas',
-      phases: ['Diagnóstico', 'Sprint', 'Continuo'],
-      phasesShort: ['Diag.', 'Sprint', '→'],
+      phases: ['Auditoría', 'Sprint', 'Continuo'],
+      phasesShort: ['Audit.', 'Sprint', '→'],
       week: 'S',
       today: 'Hoy',
       rows: [

@@ -39,6 +39,8 @@ export interface ConsoleCopy {
     resultStatic: string;
   };
   outcome: string;
+  /** Text link at the end of the outcome card (a booking hand-off). */
+  outcomeCta: string;
   to: string;
   announce: {
     step: (i: number, n: number, label: string, result: string) => string;
@@ -69,7 +71,7 @@ export const COPY: Record<Lang, ConsoleCopy> = {
     legend: { idle: 'Queued', running: 'Running', done: 'Done', gate: 'Needs approval' },
     log: 'Run log',
     events: (n) => `${n} ${n === 1 ? 'event' : 'events'}`,
-    live: 'Live',
+    live: 'Playing',
     waiting: 'Listening for the trigger…',
     stepShort: (i, n) => `Step ${i}/${n}`,
     toolsConnected: (n) => `${n} tools connected`,
@@ -85,10 +87,11 @@ export const COPY: Record<Lang, ConsoleCopy> = {
       resultStatic: 'Approved',
     },
     outcome: 'Outcome',
+    outcomeCta: 'Want this on one of your processes? Book a call',
     to: 'To',
     announce: {
       step: (i, n, label, result) => `Step ${i} of ${n} done: ${label}. ${result}.`,
-      gate: (title) => `Approval needed: ${title}. The Approve button is in the run log.`,
+      gate: (title) => `Approval needed: ${title}. The Approve button is on the step and in the run log.`,
       done: (t) => `Run completed in ${t}.`,
     },
   },
@@ -113,7 +116,7 @@ export const COPY: Record<Lang, ConsoleCopy> = {
     legend: { idle: 'En cola', running: 'En curso', done: 'Listo', gate: 'Requiere aprobación' },
     log: 'Registro',
     events: (n) => `${n} ${n === 1 ? 'evento' : 'eventos'}`,
-    live: 'En vivo',
+    live: 'Reproduciendo',
     waiting: 'Esperando el disparador…',
     stepShort: (i, n) => `Paso ${i}/${n}`,
     toolsConnected: (n) => `${n} herramientas conectadas`,
@@ -129,10 +132,11 @@ export const COPY: Record<Lang, ConsoleCopy> = {
       resultStatic: 'Aprobado',
     },
     outcome: 'Resultado',
+    outcomeCta: '¿Quieres esto en uno de tus procesos? Agendar una llamada',
     to: 'Para',
     announce: {
       step: (i, n, label, result) => `Paso ${i} de ${n} listo: ${label}. ${result}.`,
-      gate: (title) => `Se necesita aprobación: ${title}. El botón Aprobar está en el registro.`,
+      gate: (title) => `Se necesita aprobación: ${title}. El botón Aprobar está en el paso y en el registro.`,
       done: (t) => `Ejecución completada en ${t}.`,
     },
   },

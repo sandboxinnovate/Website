@@ -14,6 +14,8 @@ import type { PaletteProps } from './Palette';
  */
 
 type Panel = ComponentType<PaletteProps>;
+/** Flags shared with the nav script: it queues an open request until this island is ready. */
+type CmdkWindow = Window & { __sbxCmdkReady?: boolean; __sbxCmdkQueued?: boolean | string };
 let chunk: Promise<{ default: Panel }> | null = null;
 const load = () => (chunk ??= import('./Palette'));
 
@@ -68,7 +70,18 @@ export default function CommandPalette({ lang }: { lang: Lang }) {
     window.addEventListener('sbx:cmdk', onEvent);
     document.addEventListener('pointerover', warm, { passive: true });
     document.addEventListener('focusin', warm);
+
+    // Hand-shake with the nav: a ⌘K / click before this island hydrated is queued, not lost.
+    const w = window as CmdkWindow;
+    w.__sbxCmdkReady = true;
+    if (w.__sbxCmdkQueued) {
+      const q = w.__sbxCmdkQueued;
+      w.__sbxCmdkQueued = false;
+      show(typeof q === 'string' ? q : '');
+    }
+
     return () => {
+      w.__sbxCmdkReady = false;
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('sbx:cmdk', onEvent);
       document.removeEventListener('pointerover', warm);

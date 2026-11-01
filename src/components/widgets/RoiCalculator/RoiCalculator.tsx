@@ -3,7 +3,7 @@ import { localize, type Lang } from '@/i18n';
 import { ICONS } from '@/components/ui/icons';
 import { COPY, fteText, type Seg } from './copy';
 import {
-  CURRENCIES, DEFAULTS, compute, currencySymbol, fmtDec, fmtInt, fmtMoney, handoffQuery, niceCeil,
+  CURRENCIES, DEFAULTS, compute, currencySymbol, fmtFte, fmtInt, fmtMoney, handoffQuery, niceCeil,
   type Currency, type FieldId, type Inputs,
 } from './model';
 import { useDebounced, useReducedMotion, useSeenOnce, useStoredChoice, useTween } from './hooks';
@@ -67,10 +67,10 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
   const r = useMemo(() => compute(inputs), [inputs]);
   const yMax = niceCeil(r.fullPace[11] || 1);
 
-  // Count-up + chart morph. Starts from zero the first time the widget is seen.
+  // Numbers render final on the server and on hydration (no 0 → n count-up); after that, edits
+  // morph from the previous values. The chart still draws itself in when first seen.
   const target = [r.hoursBack, r.value, r.fte, yMax, ...r.cumulative, ...r.fullPace];
-  const zeros = useMemo(() => target.map(() => 0), []); // eslint-disable-line react-hooks/exhaustive-deps
-  const tw = useTween(target, { duration: seen ? 1100 : 0, from: zeros, instant: reduced, enabled: seen });
+  const tw = useTween(target, { duration: 700, instant: reduced });
   const [twHours, twValue, twFte, twYMax] = tw;
   const twCum = tw.slice(4, 16);
   const twFull = tw.slice(16, 28);
@@ -93,13 +93,14 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
 
   const sym = currencySymbol(lang, cur);
   const money = (n: number) => fmtMoney(lang, cur, n);
-  const fteFmt = fmtDec(lang, r.fte, 1);
+  const fteFmt = fmtFte(lang, r.fte);
   const fteSentence = fteText(lang, r.fte, fteFmt);
 
   const sentence = t.sentence({
     people: fmtInt(lang, inputs.people),
     peopleN: inputs.people,
     hours: fmtInt(lang, inputs.hours),
+    hoursN: inputs.hours,
     automation: String(inputs.automation),
     hoursBack: fmtInt(lang, r.hoursBack),
     value: money(r.value),
@@ -281,7 +282,7 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
             <div className="roi-kpi">
               <dt>{t.kpi.fte.label}</dt>
               <dd>
-                <span className="roi-kpi__num">{fmtDec(lang, twFte, 1)}</span>
+                <span className="roi-kpi__num">{fmtFte(lang, twFte)}</span>
                 <span className="roi-kpi__unit">{t.kpi.fte.unit(r.fte)}</span>
               </dd>
             </div>

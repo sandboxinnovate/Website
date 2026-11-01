@@ -346,8 +346,8 @@ export const SCENARIOS: ScenarioDef[] = [
         result: l('2 anomalies flagged', '2 anomalías detectadas'),
         logs: [
           { t: 80, k: 'call', fn: 'anomaly.scan', args: 'method: "z-score", threshold: 2', code: 200, ms: 460 },
-          { t: 760, k: 'warn', text: l('On-time delivery 88% (−6 pts) · Denver hub', 'Entregas a tiempo 88 % (−6 pts) · centro Denver') },
-          { t: 1240, k: 'warn', text: l('Cost per lead +38% · campaign freight-quote', 'Costo por lead +38 % · campaña freight-quote') },
+          { t: 760, k: 'warn', text: l('On-time delivery 88% (−6 pts) · Denver hub', 'Entregas a tiempo 88% (−6 pts) · centro Denver') },
+          { t: 1240, k: 'warn', text: l('Cost per lead +38% · campaign freight-quote', 'Costo por lead +38% · campaña freight-quote') },
           { t: 1800, k: 'think', text: l(
             'The Denver drop lines up with 2 trucks in maintenance since Tuesday.',
             'La caída en Denver coincide con 2 camiones en mantenimiento desde el martes.',
@@ -393,7 +393,7 @@ export const SCENARIOS: ScenarioDef[] = [
         meta: l('Atlas Logistics · week 44', 'Atlas Logistics · semana 44'),
         body: l(
           'Watch\n• On-time delivery fell to 88% (−6 pts), driven by Denver: 2 trucks in maintenance since Tuesday.\n• Cost per lead is up 38% on freight-quote. Suggest pausing its two weakest ad sets.\n\nWins\n• Shipments up 2% week over week.\n• 3 new contracts signed; 41 qualified deals in the pipeline.',
-          'Atención\n• Las entregas a tiempo bajaron a 88 % (−6 pts) por Denver: 2 camiones en mantenimiento desde el martes.\n• El costo por lead subió 38 % en freight-quote. Sugiero pausar sus dos grupos de anuncios más débiles.\n\nLogros\n• Envíos +2 % frente a la semana anterior.\n• 3 contratos nuevos firmados; 41 oportunidades calificadas.',
+          'Atención\n• Las entregas a tiempo bajaron a 88% (−6 pts) por Denver: 2 camiones en mantenimiento desde el martes.\n• El costo por lead subió 38% en freight-quote. Sugiero pausar sus dos grupos de anuncios más débiles.\n\nLogros\n• Envíos +2% frente a la semana anterior.\n• 3 contratos nuevos firmados; 41 oportunidades calificadas.',
         ),
       },
     },

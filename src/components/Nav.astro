@@ -8,7 +8,8 @@ import { UNITS } from '@/data/site';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = <T,>(o: Record<Lang, T>) => o[lang];
-const path = Astro.url.pathname;
+// No trailing slash, so switchLang yields '/es/contact' rather than '/es/contact/'.
+const path = Astro.url.pathname.replace(/(.)\/$/, '$1');
 const other: Lang = lang === 'en' ? 'es' : 'en';
 
 const links = [
@@ -24,7 +25,7 @@ const servicesActive = path.includes('/services/');
   <div class="nav__inner container-x">
     <Logo href={localize(lang, '/')} />
 
-    <nav class="nav__center" aria-label="Main">
+    <nav class="nav__center" aria-label={t({ en: 'Main', es: 'Principal' })}>
       <div class="nav__item nav__item--mega" data-mega>
         <button class:list={['nav__link', servicesActive && 'is-active']} aria-expanded="false" aria-controls="mega-services" data-mega-trigger>
           {t(UI.nav.services)}
@@ -62,11 +63,11 @@ const servicesActive = path.includes('/services/');
     </nav>
 
     <div class="nav__right">
-      <button class="nav__search" data-cmdk-open aria-label={t(UI.nav.search)}>
+      <button class="nav__search" data-cmdk-open aria-label={`${t(UI.nav.search)} ⌘K`} data-label={t(UI.nav.search)} aria-keyshortcuts="Control+K Meta+K">
         <Icon name="search" size={16} />
-        <span class="kbd nav__kbd" data-cmdk-hint>⌘K</span>
+        <span class="kbd nav__kbd" data-cmdk-hint aria-hidden="true">⌘K</span>
       </button>
-      <a class="nav__lang" href={switchLang(path, other)} hreflang={other} lang={other} aria-label={`${t(UI.nav.language)}: ${LANG_META[other].label}`}>
+      <a class="nav__lang" href={switchLang(path, other)} hreflang={other} aria-label={`EN / ES — ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
         <span class:list={[lang === 'en' && 'is-on']}>EN</span><span class="nav__lang-sep">/</span><span class:list={[lang === 'es' && 'is-on']}>ES</span>
       </a>
       <a href={localize(lang, '/contact')} class="btn btn-primary btn-sm nav__cta">
@@ -80,34 +81,40 @@ const servicesActive = path.includes('/services/');
   </div>
 
   <!-- Mobile menu -->
-  <div class="mm" id="mobile-menu" data-menu hidden>
+  <div class="mm" id="mobile-menu" data-menu hidden role="dialog" aria-modal="true" aria-label={t(UI.nav.menu)}>
     <div class="mm__top container-x">
       <Logo href={localize(lang, '/')} />
       <button class="nav__burger" data-menu-close aria-label={t(UI.nav.close)}><Icon name="close" size={22} /></button>
     </div>
     <div class="mm__body container-x">
-      <p class="mono-label">{t(UI.nav.services)}</p>
-      <ul class="mm__units">
-        {UNITS.map((u) => (
-          <li>
-            <a href={localize(lang, `/services/${u.slug}`)}>
-              <span class="mono-label">{u.code}</span>
-              <span class="mm__unit-name">{t(u.name)}</span>
-              <Icon name="arrow-up-right" size={18} />
-            </a>
-          </li>
-        ))}
-      </ul>
-      <ul class="mm__links">
-        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-        <li><a href={localize(lang, '/diagnostic')}>{t(UI.nav.diagnostic)}</a></li>
-        <li><a href={localize(lang, '/contact')}>{t(UI.nav.contact)}</a></li>
-      </ul>
+      <nav class="mm__nav" aria-label={t(UI.nav.menu)}>
+        <p class="mono-label">{t(UI.nav.services)}</p>
+        <ul class="mm__units">
+          {UNITS.map((u) => (
+            <li>
+              <a href={localize(lang, `/services/${u.slug}`)}>
+                <span class="mono-label">{u.code}</span>
+                <span class="mm__unit-text">
+                  <span class="mm__unit-name">{t(u.name)}</span>
+                  <span class="mm__unit-tag">{t(u.tagline)}</span>
+                </span>
+                <Icon name="arrow-up-right" size={18} />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <ul class="mm__links">
+          <li><button type="button" class="mm__search" data-cmdk-open><Icon name="search" size={16} />{lang === 'en' ? 'Search' : 'Buscar'}</button></li>
+          {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          <li><a href={localize(lang, '/diagnostic')}>{t(UI.nav.diagnostic)}</a></li>
+          <li><a href={localize(lang, '/contact')}>{t(UI.nav.contact)}</a></li>
+        </ul>
+      </nav>
       <div class="mm__foot">
         <a href={localize(lang, '/contact')} class="btn btn-primary">
           <span>{t(UI.nav.cta)}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
         </a>
-        <a class="nav__lang" href={switchLang(path, other)} hreflang={other}>
+        <a class="nav__lang" href={switchLang(path, other)} hreflang={other} aria-label={`EN / ES — ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
           <span class:list={[lang === 'en' && 'is-on']}>EN</span><span class="nav__lang-sep">/</span><span class:list={[lang === 'es' && 'is-on']}>ES</span>
         </a>
       </div>
@@ -127,41 +134,118 @@ const servicesActive = path.includes('/services/');
   const trigger = mega.querySelector<HTMLButtonElement>('[data-mega-trigger]')!;
   const panel = mega.querySelector<HTMLElement>('[data-mega-panel]')!;
   let closeTimer: number | undefined;
+  let hoverTimer: number | undefined;
+  // True while the panel was opened by hover intent: the first click then "pins" it instead of closing it.
+  let viaHover = false;
   const setMega = (open: boolean) => {
     window.clearTimeout(closeTimer);
+    if (!open) viaHover = false;
     trigger.setAttribute('aria-expanded', String(open));
     if (open) { panel.hidden = false; requestAnimationFrame(() => panel.classList.add('is-open')); }
     else { panel.classList.remove('is-open'); closeTimer = window.setTimeout(() => (panel.hidden = true), 250); }
   };
-  trigger.addEventListener('click', () => setMega(trigger.getAttribute('aria-expanded') !== 'true'));
+  trigger.addEventListener('click', () => {
+    window.clearTimeout(hoverTimer);
+    if (viaHover && trigger.getAttribute('aria-expanded') === 'true') { viaHover = false; return; }
+    setMega(trigger.getAttribute('aria-expanded') !== 'true');
+  });
   if (matchMedia('(hover: hover)').matches) {
-    mega.addEventListener('mouseenter', () => setMega(true));
-    mega.addEventListener('mouseleave', () => { closeTimer = window.setTimeout(() => setMega(false), 120); });
+    mega.addEventListener('mouseenter', () => {
+      window.clearTimeout(hoverTimer);
+      // Already open (back within the 120ms grace period): just cancel the pending close.
+      if (trigger.getAttribute('aria-expanded') === 'true') { window.clearTimeout(closeTimer); return; }
+      // Hover intent: a quick sweep across the nav does not flash the panel.
+      hoverTimer = window.setTimeout(() => { viaHover = true; setMega(true); }, 90);
+    });
+    mega.addEventListener('mouseleave', () => {
+      window.clearTimeout(hoverTimer);
+      if (trigger.getAttribute('aria-expanded') !== 'true') return;
+      closeTimer = window.setTimeout(() => setMega(false), 120);
+    });
   }
-  mega.addEventListener('focusout', (e) => { if (!mega.contains(e.relatedTarget as Node)) setMega(false); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMega(false); });
+  mega.addEventListener('focusout', (e) => { if (e.relatedTarget && !mega.contains(e.relatedTarget as Node)) setMega(false); });
+  document.addEventListener('pointerdown', (e) => {
+    if (trigger.getAttribute('aria-expanded') === 'true' && !mega.contains(e.target as Node)) setMega(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || trigger.getAttribute('aria-expanded') !== 'true') return;
+    const inside = panel.contains(document.activeElement);
+    setMega(false);
+    if (inside) trigger.focus();
+  });
 
   // Mobile menu
   const menu = nav.querySelector<HTMLElement>('[data-menu]')!;
   const openBtn = nav.querySelector<HTMLButtonElement>('[data-menu-open]')!;
   const closeBtn = nav.querySelector<HTMLButtonElement>('[data-menu-close]')!;
-  const setMenu = (open: boolean) => {
+  let menuTimer: number | undefined;
+  // Everything behind the menu is made inert while it is open (it is a modal dialog).
+  const setBackgroundInert = (on: boolean) => {
+    [
+      document.querySelector('main'),
+      document.querySelector('footer.ft'),
+      nav.querySelector('.nav__inner'),
+      nav.querySelector('.nav__skip'),
+      document.querySelector('[data-mcta]'),
+      ...document.querySelectorAll('body > astro-island'),
+    ].forEach((el) => { if (el) (el as HTMLElement).inert = on; });
+  };
+  const setMenu = (open: boolean, restoreFocus = true) => {
+    window.clearTimeout(menuTimer);
     openBtn.setAttribute('aria-expanded', String(open));
     document.documentElement.classList.toggle('menu-open', open);
-    if (open) { menu.hidden = false; requestAnimationFrame(() => menu.classList.add('is-open')); closeBtn.focus(); }
-    else { menu.classList.remove('is-open'); window.setTimeout(() => (menu.hidden = true), 400); openBtn.focus(); }
+    if (open) {
+      setBackgroundInert(true);
+      menu.hidden = false;
+      requestAnimationFrame(() => menu.classList.add('is-open'));
+      closeBtn.focus();
+    } else {
+      menu.classList.remove('is-open');
+      menuTimer = window.setTimeout(() => (menu.hidden = true), 400);
+      setBackgroundInert(false);
+      if (restoreFocus) openBtn.focus();
+    }
   };
   openBtn.addEventListener('click', () => setMenu(true));
   closeBtn.addEventListener('click', () => setMenu(false));
   menu.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) setMenu(false); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) setMenu(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && openBtn.getAttribute('aria-expanded') === 'true') setMenu(false); });
+  // Keep Tab / Shift+Tab inside the menu.
+  menu.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const f = [...menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')].filter((x) => x.offsetParent !== null);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  // Close the menu if the viewport grows past the burger breakpoint.
+  matchMedia('(min-width: 1280px)').addEventListener('change', (e) => { if (e.matches && openBtn.getAttribute('aria-expanded') === 'true') setMenu(false, false); });
 
-  // Command palette trigger (the palette island listens for this event)
+  // Command palette trigger (the palette island listens for this event).
+  // Until the island hydrates, the request is queued in window.__sbxCmdkQueued and consumed on mount.
+  const w = window as unknown as { __sbxCmdkQueued?: boolean; __sbxCmdkReady?: boolean };
   nav.querySelectorAll('[data-cmdk-open]').forEach((b) =>
-    b.addEventListener('click', () => window.dispatchEvent(new CustomEvent('sbx:cmdk', { detail: { open: true } }))),
+    b.addEventListener('click', () => {
+      if (!menu.hidden) setMenu(false, false);
+      if (!w.__sbxCmdkReady) w.__sbxCmdkQueued = true;
+      window.dispatchEvent(new CustomEvent('sbx:cmdk', { detail: { open: true } }));
+    }),
+  );
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && !w.__sbxCmdkReady) { e.preventDefault(); w.__sbxCmdkQueued = true; }
+  }, true);
+
+  // Language switch keeps the query string and hash (?service=…, #case-…).
+  nav.querySelectorAll<HTMLAnchorElement>('a.nav__lang').forEach((a) =>
+    a.addEventListener('click', () => { a.href = a.getAttribute('href')!.split(/[?#]/)[0] + location.search + location.hash; }),
   );
   // Show Ctrl+K instead of ⌘K off Apple platforms
-  if (!/Mac|iPhone|iPad/.test(navigator.platform)) nav.querySelectorAll('[data-cmdk-hint]').forEach((k) => (k.textContent = 'Ctrl K'));
+  // (The search button's accessible name carries the same hint, so it always contains the visible text.)
+  if (!/Mac|iPhone|iPad/.test(navigator.platform)) {
+    nav.querySelectorAll('[data-cmdk-hint]').forEach((k) => (k.textContent = 'Ctrl K'));
+    nav.querySelectorAll<HTMLElement>('.nav__search[data-label]').forEach((b) => b.setAttribute('aria-label', `${b.dataset.label} Ctrl K`));
+  }
 </script>
 
 <style>
@@ -173,7 +257,9 @@ const servicesActive = path.includes('/services/');
 
   .nav__center { display: none; align-items: center; gap: 2px; padding: 5px; border-radius: 999px; border: 1px solid var(--line);
     background: rgb(20 18 18 / .55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-  @media (min-width: 1080px) { .nav__center { display: flex; } }
+  @media (min-width: 1280px) { .nav__center { display: flex; } }
+  .nav__link, .nav__kbd, .nav__cta { white-space: nowrap; }
+  @media (min-width: 1280px) and (max-width: 1439px) { .nav__link { padding: 0 13px; } .nav__inner { gap: 16px; } }
   .nav__item { position: relative; }
   .nav__link { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 16px; border-radius: 999px;
     font-family: var(--font-display); font-size: 12px; font-weight: 500; letter-spacing: .03em; text-transform: uppercase; color: var(--color-bone);
@@ -181,7 +267,12 @@ const servicesActive = path.includes('/services/');
   .nav__link:hover { background: rgb(255 255 255 / .06); }
   .nav__link.is-active { background: rgb(255 255 255 / .08); color: var(--color-flame-400); }
   .nav__link--accent { color: var(--color-flame-400); }
-  .nav__dot { width: 6px; height: 6px; border-radius: 9px; background: var(--color-flame-500); animation: var(--animate-pulse-dot); }
+  /* Pulse as a scaling/fading ring (transform + opacity, compositor-only): the nav is always on screen,
+     so a box-shadow animation here would repaint every frame on every page. */
+  .nav__dot { position: relative; width: 6px; height: 6px; border-radius: 9px; background: var(--color-flame-500); }
+  .nav__dot::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: rgb(245 131 39 / .55); animation: nav-ping 2s var(--ease-out-expo) infinite; }
+  @keyframes nav-ping { 0% { transform: scale(1); opacity: 1; } 70%, 100% { transform: scale(3.6); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .nav__dot::after { animation: none; opacity: 0; } }
   .nav__chev { transition: transform .3s var(--ease-out-expo); opacity: .7; }
   [aria-expanded='true'] > .nav__chev { transform: rotate(180deg); }
 
@@ -191,6 +282,7 @@ const servicesActive = path.includes('/services/');
   .nav__search:hover { border-color: var(--line-strong); color: var(--color-bone); }
   @media (min-width: 720px) { .nav__search { display: inline-flex; } }
   .nav__kbd { height: 24px; }
+  @media (max-width: 1365px) { .nav__kbd { display: none; } .nav__search { padding: 0; width: 42px; justify-content: center; } }
   .nav__lang { display: none; align-items: center; gap: 2px; font-family: var(--font-mono); font-size: 12px; color: var(--color-smoke); padding: 8px 6px; }
   .nav__lang .is-on { color: var(--color-bone); }
   .nav__lang-sep { opacity: .4; }
@@ -198,12 +290,12 @@ const servicesActive = path.includes('/services/');
   .nav__cta { display: none; }
   @media (min-width: 720px) { .nav__cta { display: inline-flex; } }
   .nav__burger { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--line); background: rgb(255 255 255 / .03); cursor: pointer; color: var(--color-bone); }
-  @media (min-width: 1080px) { .nav__right > .nav__burger { display: none; } }
+  @media (min-width: 1280px) { .nav__right > .nav__burger { display: none; } }
 
   /* Mega panel */
   .mega { position: absolute; top: calc(100% + 14px); left: 50%; width: min(880px, 92vw); transform: translate(-30%, -6px); opacity: 0;
     display: grid; grid-template-columns: 1fr 260px; gap: 8px; padding: 8px; border-radius: 22px;
-    background: rgb(18 16 16 / .96); border: 1px solid var(--line-strong); backdrop-filter: blur(20px);
+    background: rgb(18 16 16 / .985); border: 1px solid var(--line-strong); backdrop-filter: blur(20px);
     box-shadow: 0 40px 80px -20px rgb(0 0 0 / .8), 0 0 0 1px rgb(0 0 0 / .4);
     transition: opacity .25s, transform .4s var(--ease-out-expo); }
   .mega.is-open { opacity: 1; transform: translate(-30%, 0); }
@@ -229,10 +321,15 @@ const servicesActive = path.includes('/services/');
   .mm__top { height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; }
   .mm__body { padding-top: 24px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 18px; }
   .mm__units { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-  .mm__units a { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); color: var(--color-bone); }
-  .mm__unit-name { font-family: var(--font-display); font-size: 22px; letter-spacing: -.03em; }
+  .mm__nav { display: flex; flex-direction: column; gap: 18px; }
+  .mm__units a { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--color-bone); }
+  .mm__unit-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .mm__unit-name { font-family: var(--font-display); font-size: 22px; letter-spacing: -.03em; line-height: 1.15; }
+  .mm__unit-tag { font-family: var(--font-sans); font-size: 13px; letter-spacing: 0; color: var(--color-smoke); }
   .mm__links { display: flex; flex-wrap: wrap; gap: 8px 22px; padding-top: 6px; }
-  .mm__links a { font-size: 17px; color: var(--color-mist); }
+  .mm__links a, .mm__search { font-size: 17px; color: var(--color-mist); }
+  .mm__search { display: inline-flex; align-items: center; gap: 8px; padding: 0; background: none; border: 0; font-family: inherit; line-height: inherit; cursor: pointer; }
+  .mm__links a:hover, .mm__search:hover { color: var(--color-bone); }
   .mm__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 16px; }
   .mm__foot .nav__lang { display: inline-flex; }
   :global(html.menu-open) { overflow: hidden; }

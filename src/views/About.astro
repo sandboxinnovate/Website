@@ -7,6 +7,7 @@ import Markets from '@/components/about/Markets.astro';
 import Numbers from '@/components/about/Numbers.astro';
 import PageCta from '@/components/about/PageCta.astro';
 import { ABOUT } from '@/i18n/about';
+import { UNIT_COMMON } from '@/i18n/units';
 import { localize, type Lang } from '@/i18n';
 import { SITE } from '@/data/site';
 
@@ -21,7 +22,7 @@ const jsonLd = {
   description: a.seo.description[lang],
   url: new URL(localize(lang, '/about'), SITE.url).href,
   inLanguage: lang,
-  about: { '@type': 'Organization', name: 'Sandbox', url: SITE.url, founder: { '@type': 'Person', name: 'Axel Parra' } },
+  about: { '@id': 'https://sandboxinnovate.com/#organization' },
 };
 ---
 <Base lang={lang} title={a.seo.title[lang]} description={a.seo.description[lang]} jsonLd={[jsonLd]}>
@@ -36,5 +37,6 @@ const jsonLd = {
     body={a.cta.body[lang]}
     primary={{ href: localize(lang, '/contact'), label: a.cta.primary[lang] }}
     secondary={{ href: localize(lang, '/work'), label: a.cta.secondary[lang] }}
+    meta={UNIT_COMMON.cta.meta[lang]}
   />
 </Base>

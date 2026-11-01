@@ -43,7 +43,6 @@ const faqLd = {
     title={t(HOME.console.title)}
     lede={t(HOME.console.lede)}
     link={{ href: localize(lang, '/services/brains'), label: lang === 'en' ? 'See Brains' : 'Ver Brains' }}
-    glow="left"
   >
     <AgentConsole client:visible lang={lang} />
   </WidgetSection>
@@ -57,7 +56,7 @@ const faqLd = {
     title={t(HOME.geo.title)}
     lede={t(HOME.geo.lede)}
     link={{ href: localize(lang, '/services/growth'), label: t(HOME.geo.cta) }}
-    glow="right"
+    accent
   >
     <GeoAnswer client:visible lang={lang} />
   </WidgetSection>
@@ -68,7 +67,6 @@ const faqLd = {
     eyebrow={t(HOME.roi.eyebrow)}
     title={t(HOME.roi.title)}
     lede={t(HOME.roi.lede)}
-    glow="center"
   >
     <RoiCalculator client:visible lang={lang} />
   </WidgetSection>

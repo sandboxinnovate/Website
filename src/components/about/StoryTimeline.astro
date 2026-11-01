@@ -282,7 +282,7 @@ const gid = 'st-cube';
     .st__step:first-child { min-height: 50vh; justify-content: flex-start; padding-top: 8px; }
     .st__step:last-child { min-height: 56vh; }
   }
-  .st__dot { position: absolute; left: -36px; top: 6px; width: 13px; height: 13px; border-radius: 99px; background: var(--color-ink-950); border: 1px solid var(--line-strong); transition: border-color .4s, background-color .4s, box-shadow .4s; }
+  .st__dot { position: absolute; left: -36px; top: 6px; width: 13px; height: 13px; border-radius: 99px; background: var(--color-ink-950); border: 1px solid var(--line-strong); transition: border-color .4s, background-color .4s, box-shadow .4s, opacity .6s; }
   @media (min-width: 1024px) { .st__step:not(:first-child) .st__dot { top: calc(50% - 90px); } }
   .st__step-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
   .st__step-tag { font-family: var(--font-mono); font-size: 12px; color: var(--color-flame-400); }
@@ -291,9 +291,16 @@ const gid = 'st-cube';
   .st__notes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
   .st__notes li { font-family: var(--font-mono); font-size: 11.5px; color: var(--color-mist); padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line); background: rgb(255 255 255 / .02); }
 
-  /* JS-on states: dim inactive steps on desktop, light the dots */
-  .st.is-live .st__step { transition: opacity .6s var(--ease-out-expo); }
-  @media (min-width: 1024px) { .st.is-live .st__step:not(.is-active) { opacity: .38; } }
+  /* JS-on states: mute inactive steps on desktop (by colour, not opacity, so text keeps AA contrast), light the dots */
+  .st.is-live .st__step *:not(.st__dot) { transition: color .6s var(--ease-out-expo); }
+  @media (min-width: 1024px) {
+    .st.is-live .st__step:not(.is-active) .st__step-title,
+    .st.is-live .st__step:not(.is-active) .st__step-body,
+    .st.is-live .st__step:not(.is-active) li,
+    .st.is-live .st__step:not(.is-active) .st__step-num,
+    .st.is-live .st__step:not(.is-active) .st__step-tag { color: var(--color-smoke); }
+    .st.is-live .st__step:not(.is-active) .st__dot { opacity: .4; }
+  }
   .st.is-live .st__step.is-active .st__dot, .st.is-live .st__step.is-past .st__dot { border-color: var(--color-flame-500); background: var(--color-flame-500); box-shadow: 0 0 0 4px rgb(245 131 39 / .16), 0 0 18px rgb(245 131 39 / .6); }
   .st.is-live .st__step.is-past .st__dot { box-shadow: none; }
 </style>

@@ -85,7 +85,7 @@
 }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--nav-h) + 16px); overflow-x: clip; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } :root { --animate-pulse-dot: none; } }
 
 body {
   background: var(--color-ink-950);
@@ -103,19 +103,23 @@ body {
 
 :focus-visible { outline: 2px solid var(--color-flame-400); outline-offset: 3px; }
 
-h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text-wrap: balance; }
-p { text-wrap: pretty; }
+/* Base heading rules live in @layer base so the display-* utilities (in @layer utilities) can override them. */
+@layer base {
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text-wrap: balance; }
+  p { text-wrap: pretty; }
+}
 
 /* ------------------------------------------------------------------
    Layout primitives
 ------------------------------------------------------------------- */
 @utility container-x { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
-@utility section-y { padding-block: clamp(80px, 12vw, 160px); }
+@utility section-y { padding-block: clamp(72px, 9vw, 128px); }
 
 /* ------------------------------------------------------------------
    Type helpers
 ------------------------------------------------------------------- */
-@utility display-xl { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.6rem, 7.2vw, 6.4rem); line-height: .98; letter-spacing: -0.045em; }
+/* H1 tier A (Home, About, Work, 404) — same scale as .hero__title */
+@utility display-xl { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.5rem, 5.7vw, 5.6rem); line-height: .98; letter-spacing: -0.05em; }
 @utility display-lg { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.1rem, 4.6vw, 4rem); line-height: 1.02; letter-spacing: -0.04em; }
 @utility display-md { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.08; letter-spacing: -0.035em; }
 @utility lede { font-size: clamp(1.06rem, 1.4vw, 1.3rem); line-height: 1.55; color: var(--color-mist); }
@@ -189,7 +193,7 @@ p { text-wrap: pretty; }
 
 /* Film grain overlay — breaks the "flat digital" look */
 .grain::after {
-  content: ""; position: fixed; inset: -50%; z-index: 100; pointer-events: none; opacity: .055;
+  content: ""; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: .055;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -207,3 +211,27 @@ p { text-wrap: pretty; }
   background: rgb(255 255 255 / .05); border: 1px solid var(--line-strong); border-bottom-width: 2px; }
 
 .sr-only-focusable:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Pause decorative infinite animations in sections that are far offscreen (Base.astro toggles data-offscreen). */
+[data-offscreen] *, [data-offscreen] *::before, [data-offscreen] *::after { animation-play-state: paused !important; }
+
+/* ------------------------------------------------------------------
+   Mobile conversion bar (Base.astro) — appears under 720px after the hero CTAs
+   scroll away, hides near closing CTAs, the footer, the menu and dialogs.
+------------------------------------------------------------------- */
+.mcta {
+  position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 45;
+  display: flex; gap: 8px; padding: 6px; border-radius: 999px;
+  background: rgb(13 12 12 / .86); border: 1px solid var(--line-strong);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 18px 40px -12px rgb(0 0 0 / .8);
+  transition: transform .5s var(--ease-out-expo), opacity .3s;
+}
+.mcta.is-off { transform: translateY(calc(100% + 24px)); opacity: 0; pointer-events: none; }
+.mcta__book { flex: 1; justify-content: space-between; --btn-h: 48px; }
+.mcta__diag { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: rgb(255 255 255 / .04); color: var(--color-flame-400); }
+@media (min-width: 720px) { .mcta { display: none; } }
+html.menu-open .mcta, html:has(dialog[open]) .mcta { display: none; }
+@media (max-width: 719px) { footer.ft { padding-bottom: 84px; } }
+@media (prefers-reduced-motion: reduce) { .mcta { transition: opacity .2s; } }

@@ -53,9 +53,12 @@ interface Props {
   extra: number;
   reg: FrameRegistry;
   resultFor: (i: number) => string;
+  /** The run is waiting at the human gate (not yet approved). */
+  gateOpen: boolean;
+  onApprove: () => void;
 }
 
-export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, reg, resultFor }: Props) {
+export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, reg, resultFor, gateOpen, onApprove }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLLIElement | null)[]>([]);
   const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -176,6 +179,8 @@ export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, 
           const { row, col } = cell(i);
           const chips = step.chips ? chipStates(tl, i, step.chips.length, cursor) : null;
           const dur = step.dur + (step.gate ? extra : 0);
+          // Stacked layouts show Approve on the waiting card itself (CSS decides), so nobody has to find it in the log.
+          const approveHere = st === 'gate' && gateOpen;
           return (
             <li
               key={step.id}
@@ -183,6 +188,8 @@ export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, 
               className="ac-node"
               data-state={st}
               data-kind={step.kind}
+              data-gate-node={step.gate ? '' : undefined}
+              data-approve={approveHere ? '' : undefined}
               style={{ gridRow: row, gridColumn: col }}
             >
               <span className="ac-node__icon" aria-hidden="true">
@@ -210,6 +217,12 @@ export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, 
                   </span>
                 ) : (
                   <span className="ac-node__sub">{st === 'done' ? resultFor(i) : step.tool}</span>
+                )}
+                {approveHere && (
+                  <button type="button" className="ac-approve ac-approve--node" onClick={onApprove}>
+                    <Ico name="check" size={12} stroke={2.4} />
+                    {ui.gate.approve}
+                  </button>
                 )}
               </span>
               <span className="ac-node__bar" aria-hidden="true" ref={(el) => { barRefs.current[i] = el; }} />

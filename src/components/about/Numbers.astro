@@ -10,9 +10,10 @@ const n = ABOUT.numbers;
 // Repeat the logos so the track is always wider than the viewport, then double it for a seamless -50% loop.
 const half = [...CLIENTS, ...CLIENTS];
 const loop = [...half, ...half];
+const pauseLabel = lang === 'en' ? 'Pause' : 'Pausar';
+const playLabel = lang === 'en' ? 'Play' : 'Reanudar';
 ---
 <section class="nb section-y" aria-label={n.eyebrow[lang]} data-numbers>
-  <div class="nb__glow glow-ember" aria-hidden="true"></div>
   <div class="container-x">
     <SectionHeading index={n.index} eyebrow={n.eyebrow[lang]} title={n.title[lang]} />
 
@@ -30,18 +31,18 @@ const loop = [...half, ...half];
     <div class="container-x nb__brands-head">
       <span class="mono-label">{n.brandsLabel[lang]}</span>
       <span class="nb__rule" aria-hidden="true"></span>
+      <button type="button" class="nb__toggle mono-label" aria-pressed="false" data-nb-toggle data-pause={pauseLabel} data-play={playLabel}>{pauseLabel}</button>
     </div>
     <div class="nb__viewport">
       <ul class="nb__track" aria-label={n.brandsLabel[lang]}>
         {loop.map((c, i) => {
           const dup = i >= CLIENTS.length;
-          const tile = c.src.endsWith('.webp');
           return (
             <li class="nb__item" aria-hidden={dup ? 'true' : undefined}>
-              {tile ? (
-                <span class="nb__tile"><img src={c.src} alt={dup ? '' : c.name} width={c.w} height={c.h} loading="lazy" decoding="async" /></span>
+              {c.src ? (
+                <img src={c.src} alt={dup ? '' : c.name} width={c.w} height={c.h} loading="lazy" decoding="async" style={`--s:${c.scale ?? 1}`} />
               ) : (
-                <img src={c.src} alt={dup ? '' : c.name} width={c.w} height={c.h} loading="lazy" decoding="async" />
+                <span class="nb__word">{c.name}</span>
               )}
             </li>
           );
@@ -52,6 +53,17 @@ const loop = [...half, ...half];
 </section>
 
 <script>
+  // WCAG 2.2.2: the moving logo strip can be paused (keyboard and touch). Same control as the home marquee.
+  document.querySelectorAll<HTMLElement>('[data-numbers]').forEach((root) => {
+    const b = root.querySelector<HTMLButtonElement>('[data-nb-toggle]');
+    if (!b) return;
+    b.addEventListener('click', () => {
+      const paused = root.classList.toggle('is-paused');
+      b.setAttribute('aria-pressed', String(paused));
+      b.textContent = (paused ? b.dataset.play : b.dataset.pause) || '';
+    });
+  });
+
   // Count the numeric part of "15+", "200+", "3" up once, when the stats come into view.
   document.querySelectorAll<HTMLElement>('[data-numbers]').forEach((root) => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
@@ -80,7 +92,6 @@ const loop = [...half, ...half];
 
 <style>
   .nb { position: relative; isolation: isolate; overflow: hidden; border-top: 1px solid var(--line); }
-  .nb__glow { z-index: -1; width: 70vw; height: 420px; left: -20vw; top: 30%; opacity: .32; }
 
   .nb__stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: clamp(40px, 6vw, 72px); border-top: 1px solid var(--line); }
   @media (min-width: 960px) { .nb__stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
@@ -107,13 +118,16 @@ const loop = [...half, ...half];
   .nb__track { --marquee-duration: 70s; display: flex; width: max-content; align-items: center; animation: var(--animate-marquee-reverse); }
   .nb__viewport:hover .nb__track { animation-play-state: paused; }
   .nb__item { flex: none; display: grid; place-items: center; height: 72px; padding-inline: clamp(28px, 4vw, 56px); border-left: 1px solid var(--line); }
-  .nb__item img { height: 24px; width: auto; opacity: .62; transition: opacity .3s; }
+  .nb__item img { height: calc(22px * var(--s, 1)); width: auto; opacity: .62; transition: opacity .3s; }
   .nb__item:hover img { opacity: 1; }
-  .nb__tile { display: grid; place-items: center; height: 44px; aspect-ratio: 240 / 310; padding: 4px; border-radius: 6px; background: #f4efe9; opacity: .8; transition: opacity .3s; }
-  .nb__tile img { height: 100%; width: auto; opacity: 1; }
-  .nb__item:hover .nb__tile { opacity: 1; }
+  .nb__word { font-family: var(--font-display); font-size: 15px; font-weight: 500; letter-spacing: -.01em; color: var(--color-bone); opacity: .55; white-space: nowrap; transition: opacity .3s; }
+  .nb__item:hover .nb__word { opacity: .95; }
+  .nb__toggle { flex: none; display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 99px; border: 1px solid var(--line); background: transparent; cursor: pointer; transition: color .2s, border-color .2s; }
+  .nb__toggle:hover { color: var(--color-bone); border-color: var(--line-strong); }
+  .nb.is-paused .nb__track { animation-play-state: paused; }
   @media (prefers-reduced-motion: reduce) {
     .nb__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
     .nb__item[aria-hidden='true'] { display: none; }
+    .nb__toggle { display: none; }
   }
 </style>

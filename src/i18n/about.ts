@@ -5,14 +5,14 @@ type S = L10n<string>;
 /**
  * About page copy (EN/ES).
  * Rules: no prices, no invented results, no client or client-software names.
- * `<em>` inside titles renders the flame-gradient accent.
+ * `<em>` renders the flame-gradient accent in the hero and the closing CTA, and two-tone grey in section titles.
  */
 export const ABOUT = {
   seo: {
-    title: { en: 'About Sandbox — an AI company that started as a marketing agency', es: 'Nosotros — Sandbox, una empresa de IA que nació como agencia de marketing' } as S,
+    title: { en: 'About Sandbox: from marketing agency to AI company', es: 'Sobre Sandbox: de agencia de marketing a empresa de IA' } as S,
     description: {
-      en: 'Sandbox started as a digital marketing agency. Using AI in our own work changed how we operate. Now we design, build and run AI for businesses in the US, Europe and Latin America.',
-      es: 'Sandbox nació como agencia de marketing digital. Usar IA en nuestro propio trabajo cambió cómo operamos. Hoy diseñamos, construimos y operamos IA para empresas de Estados Unidos, Europa y Latinoamérica.',
+      en: 'Sandbox started as a marketing agency and rebuilt its own work around AI. Now it builds and runs AI for businesses in the US, Europe and Latin America.',
+      es: 'Sandbox nació como agencia de marketing y rehízo su propio trabajo con IA. Hoy construye y opera IA para empresas de EE. UU., Europa y Latinoamérica.',
     } as S,
   },
 
@@ -20,11 +20,11 @@ export const ABOUT = {
     eyebrow: { en: 'About Sandbox', es: 'Sobre Sandbox' } as S,
     title: {
       en: 'We ran the experiment on <em>ourselves</em> first.',
-      es: 'Hicimos el experimento con <em>nosotros</em> primero.',
+      es: 'Primero hicimos el experimento con <em>nosotros mismos</em>.',
     } as S,
     lede: {
       en: 'Sandbox started as a digital marketing agency. Putting AI into our own work changed how we operate — so now we design, build and run it for other businesses.',
-      es: 'Sandbox nació como una agencia de marketing digital. Meter IA en nuestro propio trabajo cambió cómo operamos — y ahora la diseñamos, construimos y operamos para otras empresas.',
+      es: 'Sandbox nació como una agencia de marketing digital. Incorporar IA a nuestro propio trabajo cambió cómo operamos, y ahora la diseñamos, construimos y operamos para otras empresas.',
     } as S,
     /** The "config diff" under the headline: an old value gets replaced by a new one. */
     diffFile: 'sandbox.config',
@@ -55,7 +55,7 @@ export const ABOUT = {
         title: { en: 'We built websites and campaigns', es: 'Hacíamos sitios web y campañas' } as S,
         body: {
           en: 'Websites, SEO, content and paid media for brands and growing businesses. Years of client work taught us how businesses actually win and keep customers — and how much of a team’s week goes to repetitive work.',
-          es: 'Sitios web, SEO, contenido y pauta para marcas y empresas en crecimiento. Años de trabajo con clientes nos enseñaron cómo las empresas consiguen y retienen clientes de verdad — y cuánto de la semana de un equipo se va en trabajo repetitivo.',
+          es: 'Sitios web, SEO, contenido y publicidad pagada para marcas y empresas en crecimiento. Años de trabajo con clientes nos enseñaron cómo las empresas consiguen y retienen clientes de verdad — y cuánto de la semana de un equipo se va en trabajo repetitivo.',
         } as S,
         notes: { en: ['Web', 'SEO', 'Content', 'Ads'], es: ['Web', 'SEO', 'Contenido', 'Anuncios'] } as L10n<string[]>,
       },
@@ -118,7 +118,7 @@ export const ABOUT = {
         title: { en: 'Systems over tools', es: 'Sistemas, no herramientas' } as S,
         body: {
           en: 'A new app rarely changes a business. A process redesigned around AI — with data, owners and guardrails — does.',
-          es: 'Una app nueva casi nunca cambia un negocio. Un proceso rediseñado con IA — con datos, responsables y límites claros — sí.',
+          es: 'Una app nueva casi nunca cambia un negocio. Un proceso rediseñado con IA (con datos, responsables y límites claros) sí.',
         } as S,
       },
       {
@@ -136,7 +136,7 @@ export const ABOUT = {
         } as S,
       },
       {
-        title: { en: 'Start small, then scale', es: 'Empezar chico, después escalar' } as S,
+        title: { en: 'Start small, then scale', es: 'Empezar en pequeño, después escalar' } as S,
         body: {
           en: 'One process that hurts, proven in weeks. Then the next one. Big-bang AI projects are how budgets disappear.',
           es: 'Un proceso que duele, probado en semanas. Después el siguiente. Los proyectos de IA gigantes son la forma más rápida de perder presupuesto.',
@@ -172,7 +172,7 @@ export const ABOUT = {
     facts: [
       {
         icon: 'globe',
-        title: { en: 'Remote-first', es: 'Remoto primero' } as S,
+        title: { en: 'Remote-first', es: 'Remotos por diseño' } as S,
         body: {
           en: 'We work where your team works: shared channels, recorded walkthroughs and written decisions, so nobody waits for a meeting.',
           es: 'Trabajamos donde trabaja tu equipo: canales compartidos, recorridos grabados y decisiones por escrito, para que nadie dependa de una reunión.',
@@ -201,7 +201,7 @@ export const ABOUT = {
     index: '04',
     eyebrow: { en: 'Track record', es: 'Trayectoria' } as S,
     title: { en: 'Fifteen years of <em>shipping</em>', es: 'Quince años <em>entregando</em>' } as S,
-    brandsLabel: { en: 'Brands we’ve worked with', es: 'Marcas con las que trabajamos' } as S,
+    brandsLabel: { en: 'Brands we’ve worked with', es: 'Marcas con las que hemos trabajado' } as S,
   },
 
   cta: {
@@ -210,7 +210,7 @@ export const ABOUT = {
       en: 'A 30-minute call. We look at one process together and tell you honestly whether AI is worth it there.',
       es: 'Una llamada de 30 minutos. Revisamos juntos un proceso y te decimos con honestidad si ahí vale la pena usar IA.',
     } as S,
-    primary: { en: 'Book a strategy call', es: 'Agendar una llamada' } as S,
+    primary: { en: 'Book a call', es: 'Agendar una llamada' } as S,
     secondary: { en: 'See our work', es: 'Ver casos' } as S,
   },
 };

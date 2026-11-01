@@ -59,6 +59,8 @@ export function useTween(target: number[], opts: { duration?: number; from?: num
       return;
     }
     const start = cur.current.slice();
+    // Already there (e.g. the first render): nothing to animate.
+    if (start.length === target.length && target.every((v, i) => v === start[i])) return;
     let raf = 0;
     let t0 = 0;
     const tick = (now: number) => {

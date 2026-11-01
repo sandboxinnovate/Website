@@ -4,7 +4,7 @@ import type { UnitCopy } from './types';
 export const PARTNERS: L10n<UnitCopy> = {
   en: {
     seo: {
-      title: 'White-Label AI for Agencies & Consultancies',
+      title: 'White-label AI for agencies and consultancies',
       description:
         'Resell AI systems built by Sandbox under your own brand: white-label builds, co-delivery or referral partnerships for agencies and consultancies.',
     },
@@ -21,7 +21,7 @@ export const PARTNERS: L10n<UnitCopy> = {
       ],
     },
     pains: {
-      title: 'Sound <em>familiar?</em>',
+      title: 'Your clients want AI. <em>You don’t have the team.</em>',
       lede: 'Agencies and consultancies are getting AI requests faster than they can staff for them.',
       items: [
         {
@@ -98,25 +98,25 @@ export const PARTNERS: L10n<UnitCopy> = {
       lede: 'We start with one real opportunity, not a contract full of hypotheticals.',
       steps: [
         {
-          name: 'Discover',
+          name: 'Qualify',
           time: '1–2 calls',
           body: 'We learn about your agency, your clients and the AI requests you are getting, and agree on the model that fits.',
           out: ['Partnership model', 'First opportunity'],
         },
         {
-          name: 'Design',
+          name: 'Package',
           time: '1–2 weeks',
           body: 'Partner agreement, brand kit, sales materials and the first client opportunity scoped together.',
           out: ['Agreement', 'Branded sales kit'],
         },
         {
-          name: 'Build',
+          name: 'Deliver',
           time: 'Per project',
           body: 'We build the first client system under your brand, with your team in every review.',
           out: ['First system live', 'Delivery playbook'],
         },
         {
-          name: 'Operate',
+          name: 'Grow',
           time: 'Ongoing',
           body: 'We run the systems, support your team and grow the offer as your clients ask for more.',
           out: ['Operation & support', 'Quarterly review'],
@@ -209,10 +209,10 @@ export const PARTNERS: L10n<UnitCopy> = {
         'Revende sistemas de IA construidos por Sandbox con tu marca: desarrollo marca blanca, entrega conjunta o referidos para agencias y consultoras.',
     },
     hero: {
-      title: 'Vende IA con tu marca. <em>Nosotros la construimos detrás.</em>',
+      title: 'Vende IA con tu marca. <em>Nosotros la construimos.</em>',
       lede:
         'Tus clientes te piden IA y no quieres armar un equipo de ingeniería para responderles. Asóciate con nosotros: tú mantienes la relación y la marca; nosotros diseñamos, construimos y operamos los sistemas.',
-      primary: 'Agendar llamada de partners',
+      primary: 'Agendar una llamada de partners',
       secondary: { label: 'Ver cómo funciona', href: '#demo' },
       facts: [
         { k: 'Modelos', v: 'Marca blanca · Entrega conjunta · Referidos' },
@@ -221,7 +221,7 @@ export const PARTNERS: L10n<UnitCopy> = {
       ],
     },
     pains: {
-      title: '¿Te <em>suena?</em>',
+      title: 'Tus clientes piden IA. <em>Te falta el equipo.</em>',
       lede: 'Las agencias y consultoras reciben pedidos de IA más rápido de lo que pueden armar equipo para atenderlos.',
       items: [
         {
@@ -298,25 +298,25 @@ export const PARTNERS: L10n<UnitCopy> = {
       lede: 'Empezamos con una oportunidad real, no con un contrato lleno de supuestos.',
       steps: [
         {
-          name: 'Descubrir',
+          name: 'Calificar',
           time: '1–2 llamadas',
           body: 'Conocemos tu agencia, tus clientes y los pedidos de IA que estás recibiendo, y acordamos el modelo que encaja.',
           out: ['Modelo de alianza', 'Primera oportunidad'],
         },
         {
-          name: 'Diseñar',
+          name: 'Empaquetar',
           time: '1–2 semanas',
           body: 'Acuerdo de partners, kit de marca, materiales de venta y la primera oportunidad con alcance definido en conjunto.',
           out: ['Acuerdo', 'Kit de venta con tu marca'],
         },
         {
-          name: 'Construir',
+          name: 'Entregar',
           time: 'Por proyecto',
           body: 'Construimos el primer sistema para tu cliente con tu marca, con tu equipo en cada revisión.',
           out: ['Primer sistema en marcha', 'Manual de entrega'],
         },
         {
-          name: 'Operar',
+          name: 'Crecer',
           time: 'Continuo',
           body: 'Operamos los sistemas, damos soporte a tu equipo y ampliamos la oferta a medida que tus clientes piden más.',
           out: ['Operación y soporte', 'Revisión trimestral'],
@@ -324,7 +324,7 @@ export const PARTNERS: L10n<UnitCopy> = {
       ],
     },
     pricing: {
-      body: 'Los partners trabajan con condiciones de partner y fijan su propio precio al cliente. Cada proyecto sigue nuestro modelo —implementación más operación continua—, con un alcance que definimos contigo después del descubrimiento y ajustado a tu mercado.',
+      body: 'Los partners trabajan con condiciones de partner y fijan su propio precio al cliente. Cada proyecto sigue nuestro modelo (implementación más operación continua), con un alcance que definimos contigo después del descubrimiento y ajustado a tu mercado.',
       points: [
         'Tú fijas el precio a tu cliente',
         'Implementación más operación continua, por proyecto',
@@ -354,7 +354,7 @@ export const PARTNERS: L10n<UnitCopy> = {
           industry: 'Consultora de gestión',
           title: 'De la hoja de ruta a la implementación',
           body: 'Tus consultores entregan la estrategia; nosotros implementamos los agentes y automatizaciones que plantea.',
-          tags: ['Entrega conjunta', 'Consultoría'],
+          tags: ['Entrega conjunta', 'Consulting'],
         },
         {
           industry: 'TI y servicios gestionados',
@@ -366,7 +366,7 @@ export const PARTNERS: L10n<UnitCopy> = {
           industry: 'Asesores de industria',
           title: 'Un producto para tu nicho',
           body: 'Combina un brain de industria con tu experiencia y ofrécelo a tu red, con nosotros entregando detrás.',
-          tags: ['Referidos', 'Productos'],
+          tags: ['Referidos', 'Products'],
         },
       ],
     },

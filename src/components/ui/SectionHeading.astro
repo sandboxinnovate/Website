@@ -1,8 +1,9 @@
 ---
 /**
- * Standard section header: mono index + eyebrow + title + optional lede.
- *   <SectionHeading index="02" eyebrow="Method" title="How we work" lede="…" align="left" />
- * Title accepts HTML (use <em> for the flame-gradient accent words).
+ * Standard section header: mono "[NN]  EYEBROW ———" + title + optional lede.
+ *   <SectionHeading index="02" eyebrow="Method" title="How we <em>work</em>" lede="…" align="left" />
+ * Title accepts HTML. <em> renders two-tone (smoke grey). Pass `accent` on the ONE section per page
+ * that gets the flame-gradient <em> (home: GEO; unit pages: the demo section).
  */
 interface Props {
   index?: string;
@@ -15,14 +16,17 @@ interface Props {
   class?: string;
   /** id for the heading element (for aria-labelledby on the parent section) */
   id?: string;
+  /** Flame-gradient <em> (one section per page). Default: two-tone grey. */
+  accent?: boolean;
 }
-const { index, eyebrow, title, lede, align = 'left', as: H = 'h2', size = 'lg', class: cls = '', id } = Astro.props;
+const { index, eyebrow, title, lede, align = 'left', as: H = 'h2', size = 'lg', class: cls = '', id, accent = false } = Astro.props;
 ---
-<header class:list={['sh', `sh--${align}`, cls]} data-reveal>
+<header class:list={['sh', `sh--${align}`, accent && 'sh--accent', cls]} data-reveal>
   {(index || eyebrow) && (
     <div class="sh__meta">
-      {index && <span class="mono-label">[{index}]</span>}
-      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+      {index && <span class="mono-label sh__idx">[{index}]</span>}
+      {eyebrow && <span class="mono-label sh__eb">{eyebrow}</span>}
+      <span class="sh__rule" aria-hidden="true"></span>
     </div>
   )}
   <H id={id} class:list={['sh__title', size === 'lg' ? 'display-lg' : 'display-md']} set:html={title} />
@@ -33,10 +37,14 @@ const { index, eyebrow, title, lede, align = 'left', as: H = 'h2', size = 'lg', 
 <style>
   .sh { display: flex; flex-direction: column; gap: 22px; max-width: 900px; }
   .sh--center { align-items: center; text-align: center; margin-inline: auto; }
-  .sh__meta { display: flex; align-items: center; gap: 14px; }
+  .sh__meta { display: flex; align-items: center; gap: 14px; width: 100%; max-width: 520px; }
+  .sh__eb { color: var(--color-flame-400); }
+  .sh__rule { flex: 1; min-width: 40px; height: 1px; background: linear-gradient(90deg, var(--line-strong), transparent); }
+  .sh--center .sh__meta { justify-content: center; }
+  .sh--center .sh__rule { display: none; }
   .sh__lede { max-width: 640px; }
-  .sh :global(em) {
-    font-style: normal;
+  .sh :global(em) { font-style: normal; color: var(--color-smoke); }
+  .sh--accent :global(em) {
     background: var(--grad-text);
     -webkit-background-clip: text;
     background-clip: text;
