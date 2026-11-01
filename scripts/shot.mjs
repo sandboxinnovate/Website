@@ -49,10 +49,10 @@ for (const [name, viewport] of targets) {
   page.on('requestfailed', (r) => { problems++; console.log(`[${name}] requestfailed: ${r.url()} ${r.failure()?.errorText}`); });
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
   if (doScroll) {
-    await page.evaluate(async () => {
-      for (let y = 0; y < document.body.scrollHeight; y += 300) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 90)); }
-      window.scrollTo(0, 0);
-    });
+    // Step from the Node side so IntersectionObserver-driven reveals fire like real scrolling.
+    const h = await page.evaluate(() => document.body.scrollHeight);
+    for (let y = 0; y < h; y += 300) { await page.evaluate((yy) => window.scrollTo(0, yy), y); await page.waitForTimeout(110); }
+    await page.evaluate(() => window.scrollTo(0, 0));
   }
   await page.waitForTimeout(video && name === 'desktop' ? video : wait);
   await page.screenshot({ path: `${out}-${name}.png`, fullPage: full });

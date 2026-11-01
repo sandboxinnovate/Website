@@ -1,10 +1,80 @@
 ---
-// STUB — to be replaced.
 import Base from '@/layouts/Base.astro';
-import type { Lang } from '@/i18n';
+import Hero from '@/components/home/Hero.astro';
+import ClientsMarquee from '@/components/home/ClientsMarquee.astro';
+import Manifesto from '@/components/home/Manifesto.astro';
+import UnitsBento from '@/components/home/UnitsBento.astro';
+import WidgetSection from '@/components/home/WidgetSection.astro';
+import Method from '@/components/home/Method.astro';
+import Proof from '@/components/home/Proof.astro';
+import DiagnosticCta from '@/components/home/DiagnosticCta.astro';
+import Faq from '@/components/home/Faq.astro';
+import FinalCta from '@/components/home/FinalCta.astro';
+import AgentConsole from '@/components/widgets/AgentConsole/AgentConsole';
+import GeoAnswer from '@/components/widgets/GeoAnswer/GeoAnswer';
+import RoiCalculator from '@/components/widgets/RoiCalculator/RoiCalculator';
+import { HOME } from '@/i18n/home';
+import { localize, type Lang } from '@/i18n';
+
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const t = <T,>(o: Record<Lang, T>) => o[lang];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME.faq.items.map((it) => ({
+    '@type': 'Question',
+    name: it.q[lang],
+    acceptedAnswer: { '@type': 'Answer', text: it.a[lang] },
+  })),
+};
 ---
-<Base lang={lang} title="Home" description="Home">
-  <section class="container-x section-y" style="padding-top:160px"><h1 class="display-lg">Home ({lang})</h1></section>
+<Base lang={lang} title={t(HOME.seo.title)} description={t(HOME.seo.description)} jsonLd={[faqLd]}>
+  <Hero lang={lang} />
+  <ClientsMarquee lang={lang} />
+  <Manifesto lang={lang} />
+  <UnitsBento lang={lang} />
+
+  <WidgetSection
+    id="console"
+    index={HOME.console.index}
+    eyebrow={t(HOME.console.eyebrow)}
+    title={t(HOME.console.title)}
+    lede={t(HOME.console.lede)}
+    link={{ href: localize(lang, '/services/brains'), label: lang === 'en' ? 'See Brains' : 'Ver Brains' }}
+    glow="left"
+  >
+    <AgentConsole client:visible lang={lang} />
+  </WidgetSection>
+
+  <Method lang={lang} />
+
+  <WidgetSection
+    id="geo"
+    index={HOME.geo.index}
+    eyebrow={t(HOME.geo.eyebrow)}
+    title={t(HOME.geo.title)}
+    lede={t(HOME.geo.lede)}
+    link={{ href: localize(lang, '/services/growth'), label: t(HOME.geo.cta) }}
+    glow="right"
+  >
+    <GeoAnswer client:visible lang={lang} />
+  </WidgetSection>
+
+  <WidgetSection
+    id="roi"
+    index={HOME.roi.index}
+    eyebrow={t(HOME.roi.eyebrow)}
+    title={t(HOME.roi.title)}
+    lede={t(HOME.roi.lede)}
+    glow="center"
+  >
+    <RoiCalculator client:visible lang={lang} />
+  </WidgetSection>
+
+  <Proof lang={lang} />
+  <DiagnosticCta lang={lang} />
+  <Faq lang={lang} />
+  <FinalCta lang={lang} />
 </Base>

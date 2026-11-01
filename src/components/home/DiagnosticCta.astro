@@ -1,0 +1,40 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import ReadinessDiagnostic from '@/components/widgets/ReadinessDiagnostic/ReadinessDiagnostic';
+import { HOME } from '@/i18n/home';
+import { localize, type Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = HOME.diagnostic;
+---
+<section class="dc section-y" id="diagnostic" aria-labelledby="dc-title">
+  <div class="container-x dc__grid">
+    <div class="dc__copy">
+      <SectionHeading index={d.index} eyebrow={d.eyebrow[lang]} title={d.title[lang]} lede={d.lede[lang]} />
+      <ul class="dc__list" data-reveal>
+        {d.bullets[lang].map((b) => <li><Icon name="check" size={16} stroke={2} />{b}</li>)}
+      </ul>
+      <a href={localize(lang, '/diagnostic')} class="btn btn-primary" data-reveal>
+        <span>{lang === 'en' ? 'Start the diagnostic' : 'Empezar el diagnóstico'}</span>
+        <span class="btn-chip"><Icon name="arrow-right" size={16} stroke={1.8} /></span>
+      </a>
+    </div>
+    <div class="dc__widget" data-reveal>
+      <div class="glow-ember dc__glow" aria-hidden="true"></div>
+      <ReadinessDiagnostic client:visible lang={lang} variant="teaser" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .dc__grid { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 1000px) { .dc__grid { grid-template-columns: 1fr minmax(0, 560px); gap: 72px; } }
+  .dc__copy { display: flex; flex-direction: column; gap: 28px; align-items: flex-start; }
+  .dc__list { display: flex; flex-direction: column; gap: 12px; }
+  .dc__list li { display: flex; gap: 12px; align-items: center; color: var(--color-mist); }
+  .dc__list li :global(svg) { flex: none; color: var(--color-flame-400); }
+  .dc__widget { position: relative; isolation: isolate; }
+  .dc__glow { z-index: -1; inset: 10% 5%; opacity: .35; }
+</style>

@@ -1,0 +1,76 @@
+---
+import { HOME } from '@/i18n/home';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const m = HOME.manifesto;
+const accents = new Set(m.accents[lang]);
+const words = m.text[lang].split(' ').map((w) => ({
+  w,
+  accent: accents.has(w.toLowerCase().replace(/[^\p{L}]/gu, '')),
+}));
+---
+<section class="mf section-y" aria-labelledby="mf-title">
+  <div class="container-x">
+    <div class="mf__meta" data-reveal>
+      <span class="mono-label">[{m.index}]</span>
+      <span class="eyebrow" id="mf-title">{m.eyebrow[lang]}</span>
+    </div>
+
+    <p class="mf__text" data-manifesto>
+      {words.map((x, i) => (
+        <span class:list={['mf__w', x.accent && 'mf__w--accent']} style={`--k:${i}`}>{x.w}{' '}</span>
+      ))}
+    </p>
+
+    <ul class="mf__points">
+      {m.points.map((p, i) => (
+        <li class="mf__point" data-reveal style={`--reveal-delay:${i * 120}`}>
+          <span class="mono-label mf__pi">0{i + 1}</span>
+          <h3 class="mf__pk">{p.k[lang]}</h3>
+          <p class="mf__pv">{p.v[lang]}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  // Words light up as the paragraph scrolls through the viewport.
+  const els = document.querySelectorAll<HTMLElement>('[data-manifesto]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  els.forEach((el) => {
+    const words = [...el.querySelectorAll<HTMLElement>('.mf__w')];
+    if (reduce) { words.forEach((w) => w.classList.add('is-lit')); return; }
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // 0 when the paragraph's top hits 85% of the viewport, 1 when its bottom reaches 45%
+      const start = vh * 0.85, end = vh * 0.45;
+      const p = Math.min(1, Math.max(0, (start - r.top) / (start - end + r.height)));
+      const lit = Math.round(p * words.length * 1.08);
+      words.forEach((w, i) => w.classList.toggle('is-lit', i < lit));
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  });
+</script>
+
+<style>
+  .mf__meta { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
+  .mf__text { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem, 3.9vw, 3.5rem); line-height: 1.16; letter-spacing: -.035em; max-width: 1180px; }
+  .mf__w { color: rgb(244 239 233 / .2); transition: color .5s var(--ease-out-expo); }
+  .mf__w.is-lit { color: var(--color-bone); }
+  .mf__w--accent.is-lit { color: var(--color-flame-400); }
+  .mf__points { display: grid; gap: 1px; margin-top: clamp(56px, 8vw, 96px); background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-card); overflow: hidden; }
+  @media (min-width: 900px) { .mf__points { grid-template-columns: repeat(3, 1fr); } }
+  .mf__point { display: flex; flex-direction: column; gap: 10px; padding: 28px; background: var(--color-ink-950); }
+  .mf__pi { color: var(--color-flame-500); }
+  .mf__pk { font-size: 20px; letter-spacing: -.02em; line-height: 1.2; }
+  .mf__pv { color: var(--color-mist); font-size: 16px; }
+</style>

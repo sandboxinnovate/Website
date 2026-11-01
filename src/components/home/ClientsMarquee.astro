@@ -1,0 +1,44 @@
+---
+import { CLIENTS } from '@/data/site';
+import { HOME } from '@/i18n/home';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+// Duplicate the list so the track can loop seamlessly (translateX -50%).
+const loop = [...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS];
+---
+<section class="cm" aria-label={HOME.clients.label[lang]}>
+  <div class="container-x cm__head">
+    <span class="mono-label">{HOME.clients.label[lang]}</span>
+    <span class="cm__rule" aria-hidden="true"></span>
+  </div>
+  <div class="cm__viewport">
+    <ul class="cm__track">
+      {loop.map((c, i) => (
+        <li class="cm__item" aria-hidden={i >= CLIENTS.length ? 'true' : undefined}>
+          {c.src.endsWith('.webp') ? (
+            <span class="cm__tile"><img src={c.src} alt={i < CLIENTS.length ? c.name : ''} width={c.w} height={c.h} loading="lazy" decoding="async" /></span>
+          ) : (
+            <img src={c.src} alt={i < CLIENTS.length ? c.name : ''} width={c.w} height={c.h} loading="lazy" decoding="async" />
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cm { padding-block: 56px 24px; }
+  .cm__head { display: flex; align-items: center; gap: 20px; margin-bottom: 28px; }
+  .cm__rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--line-strong), transparent); }
+  .cm__viewport { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .cm__track { --marquee-duration: 60s; display: flex; width: max-content; align-items: center; animation: var(--animate-marquee); }
+  .cm__viewport:hover .cm__track { animation-play-state: paused; }
+  .cm__item { flex: none; display: grid; place-items: center; height: 64px; padding-inline: clamp(28px, 4vw, 56px); }
+  .cm__item img { height: 22px; width: auto; opacity: .55; filter: grayscale(1); transition: opacity .3s; }
+  .cm__item:hover img { opacity: .95; }
+  .cm__tile { display: grid; place-items: center; width: 40px; height: 48px; border-radius: 6px; background: #f4efe9; opacity: .7; }
+  .cm__tile img { height: 40px; opacity: 1; filter: grayscale(1); }
+  @media (prefers-reduced-motion: reduce) { .cm__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } .cm__item[aria-hidden='true'] { display: none; } }
+</style>

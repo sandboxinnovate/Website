@@ -91,7 +91,7 @@ export const STATS: { value: string; label: L10n<string> }[] = [
   { value: '15+', label: { en: 'Years building for the web', es: 'Años construyendo para la web' } },
   { value: '200+', label: { en: 'Projects shipped', es: 'Proyectos entregados' } },
   { value: '150+', label: { en: 'Clients served', es: 'Clientes atendidos' } },
-  { value: '3', label: { en: 'Continents, one team', es: 'Continentes, un equipo' } },
+  { value: '3', label: { en: 'Markets: US · Europe · LatAm', es: 'Mercados: EE. UU. · Europa · LatAm' } },
 ];
 
 /** Client logos from the current site ("Brands we've touched"). Files live in /public/clients. */

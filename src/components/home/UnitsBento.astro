@@ -1,0 +1,204 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { UNITS } from '@/data/site';
+import { HOME } from '@/i18n/home';
+import { localize, type Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = HOME.units;
+const steps = HOME.method.steps.map((s) => s.name[lang]);
+const modules = lang === 'en'
+  ? ['Prompting that holds up', 'Agents for your role', 'Automating a workflow', 'AI policy & safety']
+  : ['Prompts que funcionan', 'Agentes para tu rol', 'Automatizar un flujo', 'Política y seguridad de IA'];
+const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
+---
+<section class="ub section-y" id="services" aria-labelledby="ub-title">
+  <div class="container-x">
+    <div class="ub__head">
+      <SectionHeading index={u.index} eyebrow={u.eyebrow[lang]} title={u.title[lang]} lede={u.lede[lang]} />
+    </div>
+
+    <ul class="ub__grid">
+      {UNITS.map((unit, i) => (
+        <li class:list={['ub__cell', `ub__cell--${unit.slug}`]} data-reveal style={`--reveal-delay:${(i % 3) * 110}`}>
+          <a href={localize(lang, `/services/${unit.slug}`)} class="ub__card card card-hover" aria-label={`${unit.name[lang]} — ${unit.tagline[lang]}`}>
+            <div class="ub__top">
+              <span class="ub__icon"><Icon name={unit.icon} size={20} /></span>
+              <span class="mono-label">{unit.code} / 06</span>
+            </div>
+
+            <div class="ub__viz" aria-hidden="true">
+              {unit.slug === 'brains' && (
+                <svg viewBox="0 0 420 220" class="viz-brains">
+                  <g class="viz-brains__edges">
+                    <path d="M210 110 L90 52" /><path d="M210 110 L96 172" /><path d="M210 110 L330 48" /><path d="M210 110 L338 168" />
+                    <path d="M210 110 L210 24" /><path d="M210 110 L214 198" /><path d="M90 52 L30 110" /><path d="M96 172 L30 110" />
+                    <path d="M330 48 L392 104" /><path d="M338 168 L392 104" />
+                  </g>
+                  <g class="viz-brains__pulses">
+                    <path d="M210 110 L90 52" style="--d:0s" /><path d="M210 110 L338 168" style="--d:.7s" />
+                    <path d="M210 110 L330 48" style="--d:1.4s" /><path d="M96 172 L30 110" style="--d:2.1s" />
+                    <path d="M210 110 L214 198" style="--d:2.8s" />
+                  </g>
+                  <g class="viz-brains__nodes">
+                    {[[90,52,'kb'],[96,172,'crm'],[330,48,'inbox'],[338,168,'reports'],[210,24,'docs'],[214,198,'chat'],[30,110,'web'],[392,104,'ads']].map(([x,y,l]) => (
+                      <g><circle cx={x} cy={y} r="5" /><text x={(x as number) + 10} y={(y as number) + 4}>{l}</text></g>
+                    ))}
+                  </g>
+                  <circle cx="210" cy="110" r="26" class="viz-brains__core-glow" />
+                  <circle cx="210" cy="110" r="11" class="viz-brains__core" />
+                </svg>
+              )}
+              {unit.slug === 'consulting' && (
+                <div class="viz-gantt">
+                  {steps.map((s, k) => (
+                    <div class="viz-gantt__row" style={`--k:${k}`}>
+                      <span class="viz-gantt__label">{s}</span>
+                      <span class="viz-gantt__lane"><span class="viz-gantt__bar"></span></span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {unit.slug === 'growth' && (
+                <div class="viz-growth">
+                  <svg viewBox="0 0 300 110" preserveAspectRatio="none">
+                    <defs><linearGradient id="vg-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f58327" stop-opacity=".35" /><stop offset="1" stop-color="#f58327" stop-opacity="0" /></linearGradient></defs>
+                    <path class="viz-growth__area" d="M0 100 C40 96 60 88 90 84 S150 70 180 52 S240 30 300 10 L300 110 L0 110Z" fill="url(#vg-fill)" />
+                    <path class="viz-growth__line" d="M0 100 C40 96 60 88 90 84 S150 70 180 52 S240 30 300 10" pathLength="1" />
+                  </svg>
+                  <span class="viz-growth__chip"><b>[1]</b> yourbrand.com</span>
+                </div>
+              )}
+              {unit.slug === 'academy' && (
+                <ul class="viz-mods">
+                  {modules.map((m, k) => (
+                    <li style={`--k:${k}; --p:${[100, 82, 56, 30][k]}%`}>
+                      <span class="viz-mods__n">{String(k + 1).padStart(2, '0')}</span>
+                      <span class="viz-mods__name">{m}</span>
+                      <span class="viz-mods__bar"><span></span></span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {unit.slug === 'products' && (
+                <div class="viz-stack">
+                  {[0, 1, 2].map((k) => (
+                    <svg viewBox="0 0 60 66" style={`--k:${k}`}><path d="M30 2 58 18v30L30 64 2 48V18Z" /><path d="M2 18l28 16 28-16M30 34v30" /></svg>
+                  ))}
+                  <span class="viz-stack__pill">{u.earlyAccess[lang]}</span>
+                </div>
+              )}
+              {unit.slug === 'partners' && (
+                <div class="viz-hand">
+                  <span class="viz-hand__node">{brandLabel}</span>
+                  <span class="viz-hand__wire"><span class="viz-hand__packet"></span></span>
+                  <span class="viz-hand__node viz-hand__node--sbx">Sandbox</span>
+                </div>
+              )}
+            </div>
+
+            <div class="ub__body">
+              <h3 class="ub__name">{unit.name[lang]}<span class="ub__tag">{unit.tagline[lang]}</span></h3>
+              <p class="ub__sum">{unit.summary[lang]}</p>
+              <span class="ub__more">{u.explore[lang]} <Icon name="arrow-up-right" size={16} /></span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ub__head { margin-bottom: clamp(40px, 6vw, 72px); }
+  .ub__grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .ub__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) {
+    .ub__grid { grid-template-columns: repeat(12, 1fr); }
+    .ub__cell--brains { grid-column: span 7; grid-row: span 2; }
+    .ub__cell--consulting, .ub__cell--growth { grid-column: span 5; }
+    .ub__cell--academy, .ub__cell--products, .ub__cell--partners { grid-column: span 4; }
+  }
+  @media (min-width: 760px) and (max-width: 1079px) { .ub__cell--brains { grid-column: span 2; } }
+  .ub__cell { display: flex; }
+  .ub__card { display: flex; flex-direction: column; gap: 20px; width: 100%; padding: 22px; overflow: hidden; }
+  .ub__card::after { content: ''; position: absolute; inset: auto -20% -60% auto; width: 70%; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(closest-side, rgb(217 76 0 / .35), transparent); opacity: 0; transition: opacity .6s; }
+  .ub__card:hover::after { opacity: 1; }
+  .ub__top { display: flex; align-items: center; justify-content: space-between; }
+  .ub__icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; border: 1px solid rgb(245 131 39 / .35); color: var(--color-flame-400); background: rgb(245 131 39 / .06); }
+  .ub__viz { position: relative; flex: 1; min-height: 130px; display: grid; place-items: center; }
+  .ub__cell--brains .ub__viz { min-height: 260px; }
+  .ub__body { display: flex; flex-direction: column; gap: 10px; }
+  .ub__name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; font-size: clamp(1.4rem, 2vw, 1.75rem); letter-spacing: -.03em; }
+  .ub__cell--brains .ub__name { font-size: clamp(1.7rem, 2.8vw, 2.4rem); }
+  .ub__tag { font-family: var(--font-mono); font-size: 11.5px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; color: var(--color-flame-400); }
+  .ub__sum { color: var(--color-mist); font-size: 15.5px; max-width: 520px; }
+  .ub__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-family: var(--font-display); font-size: 12px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+  .ub__more :global(svg) { transition: transform .5s var(--ease-out-expo); }
+  .ub__card:hover .ub__more :global(svg) { transform: translate(3px, -3px); }
+
+  /* --- Brains: knowledge graph --- */
+  .viz-brains { width: 100%; max-width: 560px; height: auto; overflow: visible; }
+  .ub__cell--brains .viz-brains { max-width: 100%; }
+  .viz-brains__edges path { stroke: rgb(255 255 255 / .12); stroke-width: 1; fill: none; }
+  .viz-brains__pulses path { stroke: var(--color-flame-400); stroke-width: 2; fill: none; stroke-linecap: round; stroke-dasharray: 14 400; stroke-dashoffset: 14; opacity: 0; }
+  :global(.is-in) .viz-brains__pulses path, :global(html:not(.js)) .viz-brains__pulses path { animation: vb-pulse 3.5s var(--d) infinite cubic-bezier(.4,0,.2,1); }
+  @keyframes vb-pulse { 0% { stroke-dashoffset: 14; opacity: 0; } 8% { opacity: 1; } 55% { stroke-dashoffset: -150; opacity: 1; } 60%, 100% { stroke-dashoffset: -150; opacity: 0; } }
+  .viz-brains__nodes circle { fill: var(--color-ink-950); stroke: rgb(255 255 255 / .45); stroke-width: 1.2; }
+  .viz-brains__nodes text { font-family: var(--font-mono); font-size: 10px; fill: var(--color-smoke); }
+  .viz-brains__core { fill: var(--color-flame-500); }
+  .viz-brains__core-glow { fill: rgb(245 131 39 / .18); stroke: rgb(245 131 39 / .4); animation: vb-breathe 3s ease-in-out infinite; transform-origin: 210px 110px; }
+  @keyframes vb-breathe { 50% { transform: scale(1.18); opacity: .6; } }
+
+  /* --- Consulting: roadmap --- */
+  .viz-gantt { width: 100%; display: flex; flex-direction: column; gap: 9px; }
+  .viz-gantt__row { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 12px; }
+  .viz-gantt__label { font-family: var(--font-mono); font-size: 11px; color: var(--color-smoke); text-transform: uppercase; letter-spacing: .06em; }
+  .viz-gantt__lane { position: relative; height: 12px; border-radius: 99px; background: rgb(255 255 255 / .04); }
+  .viz-gantt__bar { position: absolute; top: 0; bottom: 0; border-radius: 99px; left: calc(var(--k) * 22%); width: 30%; background: linear-gradient(90deg, var(--color-flame-600), var(--color-flame-400)); transform-origin: left; transform: scaleX(1); }
+  .viz-gantt__row:last-child .viz-gantt__bar { width: 34%; background: repeating-linear-gradient(90deg, var(--color-flame-500) 0 8px, transparent 8px 12px); }
+  :global(.js) .ub__cell:not(.is-in) .viz-gantt__bar { transform: scaleX(0); }
+  .viz-gantt__bar { transition: transform 1s var(--ease-out-expo); transition-delay: calc(var(--k) * 180ms + 300ms); }
+
+  /* --- Growth: rising chart + citation --- */
+  .viz-growth { position: relative; width: 100%; height: 120px; }
+  .viz-growth svg { width: 100%; height: 100%; overflow: visible; }
+  .viz-growth__line { fill: none; stroke: var(--color-flame-400); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 1.6s var(--ease-out-expo) .3s; }
+  :global(.js) .ub__cell:not(.is-in) .viz-growth__line { stroke-dashoffset: 1; }
+  .viz-growth__chip { position: absolute; right: 0; top: -6px; padding: 5px 10px; border-radius: 99px; font-family: var(--font-mono); font-size: 11px; color: var(--color-bone);
+    background: rgb(245 131 39 / .14); border: 1px solid rgb(245 131 39 / .45); transition: opacity .6s 1.4s, transform .8s var(--ease-out-expo) 1.4s; }
+  .viz-growth__chip b { color: var(--color-flame-400); font-weight: 600; }
+  :global(.js) .ub__cell:not(.is-in) .viz-growth__chip { opacity: 0; transform: translateY(8px); }
+
+  /* --- Academy: modules --- */
+  .viz-mods { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+  .viz-mods li { display: grid; grid-template-columns: 22px 1fr 64px; align-items: center; gap: 10px; font-size: 13px; color: var(--color-mist); }
+  .viz-mods__n { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-smoke); }
+  .viz-mods__name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .viz-mods__bar { height: 4px; border-radius: 9px; background: rgb(255 255 255 / .07); overflow: hidden; }
+  .viz-mods__bar span { display: block; height: 100%; width: var(--p); background: var(--color-flame-500); border-radius: 9px; transition: width 1.2s var(--ease-out-expo); transition-delay: calc(var(--k) * 150ms + 300ms); }
+  :global(.js) .ub__cell:not(.is-in) .viz-mods__bar span { width: 0; }
+
+  /* --- Products: stacked modules --- */
+  .viz-stack { position: relative; display: flex; align-items: flex-end; gap: 6px; }
+  .viz-stack svg { width: 54px; height: auto; fill: rgb(245 131 39 / .08); stroke: var(--color-flame-400); stroke-width: 1.2; stroke-linejoin: round;
+    transform: translateY(calc(var(--k) * -14px)); transition: transform .9s var(--ease-out-expo); transition-delay: calc(var(--k) * 120ms + 200ms); }
+  :global(.js) .ub__cell:not(.is-in) .viz-stack svg { transform: translateY(20px); }
+  .ub__card:hover .viz-stack svg { transform: translateY(calc(var(--k) * -20px)); }
+  .viz-stack__pill { position: absolute; top: -46px; left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 4px 9px; border-radius: 99px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-flame-400); border: 1px dashed rgb(245 131 39 / .5); }
+
+  /* --- Partners: handoff --- */
+  .viz-hand { display: flex; align-items: center; width: 100%; gap: 0; }
+  .viz-hand__node { flex: none; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line-strong); font-family: var(--font-mono); font-size: 11.5px; color: var(--color-mist); background: var(--color-ink-900); }
+  .viz-hand__node--sbx { border-color: rgb(245 131 39 / .5); color: var(--color-flame-400); }
+  .viz-hand__wire { position: relative; flex: 1; height: 1px; background: repeating-linear-gradient(90deg, rgb(255 255 255 / .3) 0 4px, transparent 4px 8px); }
+  .viz-hand__packet { position: absolute; top: -3px; left: 0; width: 7px; height: 7px; border-radius: 9px; background: var(--color-flame-400); box-shadow: 0 0 12px var(--color-flame-500); animation: vh-move 2.6s var(--ease-in-out-quart) infinite alternate; }
+  @keyframes vh-move { to { left: calc(100% - 7px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .viz-brains__pulses path, .viz-brains__core-glow, .viz-hand__packet { animation: none !important; }
+  }
+</style>

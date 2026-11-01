@@ -1,0 +1,111 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { HOME } from '@/i18n/home';
+import { localize, type Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const p = HOME.proof;
+const layers = p.symphonyLayers[lang];
+---
+<section class="pf section-y" aria-labelledby="pf-title">
+  <div class="container-x">
+    <SectionHeading index={p.index} eyebrow={p.eyebrow[lang]} title={p.title[lang]} />
+
+    <div class="pf__grid">
+      <a href={localize(lang, '/work')} class="pf__sym card card-hover" data-reveal>
+        <div class="pf__sym-copy">
+          <span class="mono-label pf__label"><span class="pf__dot" aria-hidden="true"></span>{p.symphonyLabel[lang]}</span>
+          <h3 class="pf__sym-title">{p.symphonyTitle[lang]}</h3>
+          <p class="pf__sym-body">{p.symphonyBody[lang]}</p>
+          <span class="pf__more">{p.seeWork[lang]} <Icon name="arrow-up-right" size={16} /></span>
+        </div>
+        <!-- Architecture sketch: four stacked layers with signal lines -->
+        <div class="pf__arch" aria-hidden="true">
+          {layers.map((l, i) => (
+            <div class="pf__layer" style={`--k:${i}`}>
+              <span class="mono-label">L{i + 1}</span>
+              <span class="pf__layer-name">{l}</span>
+              <span class="pf__layer-bits">{Array.from({ length: 6 }).map((_, j) => <i style={`--j:${j}`}></i>)}</span>
+            </div>
+          ))}
+          <span class="pf__signal"></span>
+        </div>
+      </a>
+
+      <div class="pf__cases">
+        <span class="mono-label">{p.casesLabel[lang]}</span>
+        {p.cases.map((c, i) => (
+          <div class="pf__case" data-reveal style={`--reveal-delay:${i * 120}`}>
+            <span class="pf__metric" data-count={c.metric}>{c.metric}</span>
+            <span class="pf__metric-l">{c.label[lang]}</span>
+            <span class="pf__client">{c.client[lang]}</span>
+          </div>
+        ))}
+        <a href={localize(lang, '/work')} class="pf__all">{p.seeWork[lang]} <Icon name="arrow-right" size={16} /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Count up "+40%" style metrics when they enter the viewport.
+  const els = document.querySelectorAll<HTMLElement>('[data-count]');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        const el = e.target as HTMLElement;
+        const m = (el.dataset.count || '').match(/^(\D*)(\d+)(\D*)$/);
+        if (!m) return;
+        const [, pre, num, post] = m;
+        const target = Number(num);
+        const t0 = performance.now();
+        const step = (t: number) => {
+          const k = Math.min(1, (t - t0) / 1400);
+          const eased = 1 - Math.pow(1 - k, 4);
+          el.textContent = `${pre}${Math.round(target * eased)}${post}`;
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.6 });
+    els.forEach((el) => io.observe(el));
+  }
+</script>
+
+<style>
+  .pf__grid { display: grid; gap: 14px; margin-top: clamp(40px, 6vw, 72px); }
+  @media (min-width: 1000px) { .pf__grid { grid-template-columns: 1.55fr 1fr; } }
+  .pf__sym { display: grid; gap: 32px; padding: clamp(24px, 3.4vw, 44px); overflow: hidden;
+    background: radial-gradient(90% 80% at 100% 100%, rgb(217 76 0 / .28), transparent 60%), linear-gradient(180deg, rgb(255 255 255 / .035), rgb(255 255 255 / .01)), var(--color-ink-850); }
+  @media (min-width: 720px) { .pf__sym { grid-template-columns: 1.1fr 1fr; align-items: center; } }
+  .pf__sym-copy { display: flex; flex-direction: column; gap: 16px; }
+  .pf__label { display: inline-flex; align-items: center; gap: 8px; color: var(--color-flame-400); }
+  .pf__dot { width: 7px; height: 7px; border-radius: 9px; background: var(--color-flame-500); animation: var(--animate-pulse-dot); }
+  .pf__sym-title { font-size: clamp(1.6rem, 2.6vw, 2.3rem); letter-spacing: -.035em; }
+  .pf__sym-body { color: var(--color-mist); }
+  .pf__more { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+
+  .pf__arch { position: relative; display: flex; flex-direction: column; gap: 8px; }
+  .pf__layer { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 14px;
+    border: 1px solid var(--line-strong); background: rgb(10 10 10 / .55); backdrop-filter: blur(6px);
+    transform: translateX(calc(var(--k) * 10px)); }
+  .pf__layer:last-child { border-color: rgb(245 131 39 / .45); }
+  .pf__layer-name { font-family: var(--font-display); font-size: 14px; letter-spacing: -.01em; }
+  .pf__layer-bits { display: flex; gap: 4px; }
+  .pf__layer-bits i { width: 6px; height: 14px; border-radius: 2px; background: rgb(255 255 255 / .12); animation: pf-bit 2.4s calc(var(--j) * .18s + var(--k) * .3s) infinite; }
+  @keyframes pf-bit { 0%, 70%, 100% { background: rgb(255 255 255 / .12); } 20% { background: var(--color-flame-500); } }
+  .pf__signal { position: absolute; left: 22px; top: 18px; bottom: 18px; width: 1px; background: linear-gradient(var(--color-flame-500), transparent); opacity: .5; }
+
+  .pf__cases { display: flex; flex-direction: column; gap: 0; padding: 8px 0; }
+  .pf__cases > .mono-label { padding-bottom: 14px; }
+  .pf__case { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 18px; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--line); }
+  .pf__metric { grid-row: span 2; font-family: var(--font-display); font-size: clamp(2.4rem, 4vw, 3.4rem); letter-spacing: -.05em; line-height: 1; color: var(--color-flame-400); font-variant-numeric: tabular-nums; min-width: 3.1ch; }
+  .pf__metric-l { font-size: 17px; }
+  .pf__client { font-family: var(--font-mono); font-size: 12px; color: var(--color-smoke); }
+  .pf__all { display: inline-flex; align-items: center; gap: 8px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--font-display); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--color-flame-400); }
+  @media (prefers-reduced-motion: reduce) { .pf__layer-bits i { animation: none; } }
+</style>

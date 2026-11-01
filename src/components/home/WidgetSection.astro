@@ -1,0 +1,47 @@
+---
+/**
+ * Generic section that frames an interactive widget: heading on top, widget slot below,
+ * with an optional side link and an ember glow behind the widget.
+ */
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+
+interface Props {
+  id: string;
+  index: string;
+  eyebrow: string;
+  title: string;
+  lede: string;
+  link?: { href: string; label: string };
+  glow?: 'left' | 'right' | 'center';
+}
+const { id, index, eyebrow, title, lede, link, glow = 'center' } = Astro.props;
+---
+<section class="ws section-y" id={id} aria-labelledby={`${id}-h`}>
+  <div class="container-x">
+    <div class="ws__head">
+      <SectionHeading index={index} eyebrow={eyebrow} title={title} lede={lede} />
+      {link && (
+        <a class="ws__link" href={link.href} data-reveal>
+          {link.label}<Icon name="arrow-up-right" size={16} />
+        </a>
+      )}
+    </div>
+    <div class="ws__stage" data-reveal>
+      <div class:list={['glow-ember ws__glow', `ws__glow--${glow}`]} aria-hidden="true"></div>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .ws { overflow-x: clip; }
+  .ws__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(36px, 5vw, 64px); }
+  .ws__link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 12.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--color-flame-400); padding-bottom: 6px; border-bottom: 1px solid rgb(245 131 39 / .4); }
+  .ws__link:hover { color: var(--color-bone); border-color: var(--color-bone); }
+  .ws__stage { position: relative; isolation: isolate; }
+  .ws__glow { z-index: -1; width: 70%; height: 80%; top: 10%; opacity: .28; }
+  .ws__glow--center { left: 15%; }
+  .ws__glow--left { left: -15%; }
+  .ws__glow--right { right: -15%; }
+</style>

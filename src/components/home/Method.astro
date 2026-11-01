@@ -1,0 +1,115 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { HOME } from '@/i18n/home';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const m = HOME.method;
+---
+<section class="md section-y" id="method" aria-labelledby="md-title">
+  <div class="container-x">
+    <SectionHeading index={m.index} eyebrow={m.eyebrow[lang]} title={m.title[lang]} lede={m.lede[lang]} />
+
+    <div class="md__layout" data-method>
+      <aside class="md__rail" aria-hidden="true">
+        <div class="md__sticky">
+          <div class="md__big">
+            <span class="md__big-track" data-method-num>
+              {m.steps.map((s) => <span>{s.n}</span>)}
+            </span>
+          </div>
+          <div class="md__names">
+            {m.steps.map((s, i) => <span class:list={['md__name', i === 0 && 'is-on']} data-method-name>{s.name[lang]}</span>)}
+          </div>
+          <div class="md__progress">
+            {m.steps.map((_, i) => <span class:list={['md__seg', i === 0 && 'is-on']} data-method-seg><span></span></span>)}
+          </div>
+        </div>
+      </aside>
+
+      <ol class="md__steps">
+        {m.steps.map((s, i) => (
+          <li class="md__step card" data-method-step data-index={i}>
+            <div class="md__step-head">
+              <span class="md__step-n">{s.n}</span>
+              <span class="mono-label md__time"><Icon name="calendar" size={14} /> {s.time[lang]}</span>
+            </div>
+            <h3 class="md__step-name">{s.name[lang]}</h3>
+            <p class="md__step-body">{s.body[lang]}</p>
+            <div class="md__out">
+              <span class="mono-label">{m.deliverables[lang]}</span>
+              <ul>
+                {s.out[lang].map((o) => <li><Icon name="check" size={14} stroke={2} />{o}</li>)}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-method]').forEach((root) => {
+    const steps = [...root.querySelectorAll<HTMLElement>('[data-method-step]')];
+    const names = [...root.querySelectorAll<HTMLElement>('[data-method-name]')];
+    const segs = [...root.querySelectorAll<HTMLElement>('[data-method-seg]')];
+    const num = root.querySelector<HTMLElement>('[data-method-num]')!;
+    let active = -1;
+    const set = (i: number) => {
+      if (i === active) return;
+      active = i;
+      num.style.setProperty('--i', String(i));
+      names.forEach((n, k) => n.classList.toggle('is-on', k === i));
+      segs.forEach((s, k) => { s.classList.toggle('is-on', k <= i); s.classList.toggle('is-done', k < i); });
+      steps.forEach((s, k) => s.classList.toggle('is-active', k === i));
+    };
+    set(0);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) set(Number((e.target as HTMLElement).dataset.index)); });
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
+    );
+    steps.forEach((s) => io.observe(s));
+  });
+</script>
+
+<style>
+  .md__layout { display: grid; gap: 40px; margin-top: clamp(48px, 7vw, 88px); }
+  @media (min-width: 1000px) { .md__layout { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; } }
+
+  .md__rail { display: none; }
+  @media (min-width: 1000px) { .md__rail { display: block; } }
+  .md__sticky { position: sticky; top: calc(var(--nav-h) + 48px); display: flex; flex-direction: column; gap: 22px; }
+  .md__big { height: clamp(140px, 15vw, 220px); overflow: hidden; font-family: var(--font-display); font-weight: 500; font-size: clamp(140px, 15vw, 220px); line-height: 1; letter-spacing: -.07em; }
+  .md__big-track { display: flex; flex-direction: column; transform: translateY(calc(var(--i, 0) * -100%)); transition: transform .9s var(--ease-out-expo); }
+  .md__big-track span { display: block; height: clamp(140px, 15vw, 220px); background: var(--grad-flame); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .md__names { display: grid; }
+  .md__name { grid-area: 1 / 1; font-family: var(--font-display); font-size: 30px; letter-spacing: -.035em; opacity: 0; transform: translateY(10px); transition: opacity .5s, transform .7s var(--ease-out-expo); }
+  .md__name.is-on { opacity: 1; transform: none; }
+  .md__progress { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; max-width: 360px; }
+  .md__seg { height: 3px; border-radius: 9px; background: rgb(255 255 255 / .08); overflow: hidden; }
+  .md__seg span { display: block; height: 100%; width: 0; background: var(--color-flame-500); transition: width .8s var(--ease-out-expo); }
+  .md__seg.is-on span { width: 100%; }
+
+  .md__steps { display: flex; flex-direction: column; gap: 16px; position: relative; }
+  @media (max-width: 999px) {
+    .md__steps { padding-left: 22px; }
+    .md__steps::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 1px; background: linear-gradient(var(--color-flame-500), var(--line) 70%); }
+  }
+  @media (min-width: 1000px) { .md__steps { gap: 22vh; padding-block: 4vh 18vh; } }
+  .md__step { padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 14px; transition: border-color .5s, opacity .5s, transform .8s var(--ease-out-expo); }
+  @media (min-width: 1000px) { .md__step:not(.is-active) { opacity: .45; } .md__step.is-active { border-color: rgb(245 131 39 / .35); } }
+  .md__step-head { display: flex; align-items: center; justify-content: space-between; }
+  .md__step-n { font-family: var(--font-mono); font-size: 13px; color: var(--color-flame-400); }
+  .md__time { display: inline-flex; align-items: center; gap: 6px; }
+  .md__step-name { font-size: clamp(1.6rem, 2.6vw, 2.2rem); letter-spacing: -.035em; }
+  .md__step-body { color: var(--color-mist); font-size: 17px; max-width: 560px; }
+  .md__out { display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .md__out ul { display: flex; flex-wrap: wrap; gap: 8px; }
+  .md__out li { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 99px; font-size: 14px; background: rgb(255 255 255 / .04); border: 1px solid var(--line); }
+  .md__out li :global(svg) { color: var(--color-flame-400); }
+</style>

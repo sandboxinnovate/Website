@@ -1,0 +1,119 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import HeroBrain from '@/components/widgets/HeroBrain/HeroBrain';
+import { HOME } from '@/i18n/home';
+import { localize, type Lang } from '@/i18n';
+import { STATS } from '@/data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const h = HOME.hero;
+const t = <T,>(o: Record<Lang, T>) => o[lang];
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="bg-grid hero__grid"></div>
+    <div class="glow-ember hero__glow hero__glow--a"></div>
+    <div class="glow-ember hero__glow hero__glow--b"></div>
+  </div>
+
+  <div class="hero__visual" aria-hidden="true">
+    <HeroBrain client:load lang={lang} />
+  </div>
+
+  <div class="container-x hero__inner">
+    <div class="hero__copy">
+      <span class="eyebrow hero__in" style="--i:0">{t(h.eyebrow)}</span>
+      <h1 id="hero-title" class="hero__title">
+        <span class="hero__line"><span class="hero__in" style="--i:1">{t(h.titleA)}</span></span>
+        <span class="hero__line"><span class="hero__in" style="--i:2">{t(h.titleB)}</span></span>
+        <span class="hero__line"><span class="hero__in hero__accent" style="--i:3">{t(h.titleC)}</span></span>
+      </h1>
+      <p class="lede hero__lede hero__in" style="--i:4">{t(h.lede)}</p>
+      <div class="hero__ctas hero__in" style="--i:5">
+        <a href={localize(lang, '/contact')} class="btn btn-primary">
+          <span>{t(h.ctaPrimary)}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
+        </a>
+        <a href={localize(lang, '/diagnostic')} class="btn btn-ghost">
+          <span>{t(h.ctaSecondary)}</span><span class="btn-chip"><Icon name="arrow-right" size={16} stroke={1.8} /></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__ticker hero__in" style="--i:6" aria-hidden="true">
+      <span class="hero__ticker-dot"></span>
+      <span class="mono-label">{t(h.tickerLabel)}</span>
+      <span class="hero__ticker-track" data-ticker>
+        {h.ticker.map((w, i) => <span class:list={['hero__ticker-word', i === 0 && 'is-on']}>{w}</span>)}
+      </span>
+    </div>
+  </div>
+
+  <div class="container-x hero__stats">
+    {STATS.map((s, i) => (
+      <div class="hero__stat hero__in" style={`--i:${7 + i}`}>
+        <span class="hero__stat-v">{s.value}</span>
+        <span class="hero__stat-l">{t(s.label)}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  // Cycle the "running now" ticker words
+  document.querySelectorAll<HTMLElement>('[data-ticker]').forEach((track) => {
+    const words = [...track.children] as HTMLElement[];
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || words.length < 2) return;
+    let i = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      words[i].classList.remove('is-on');
+      i = (i + 1) % words.length;
+      words[i].classList.add('is-on');
+    }, 2200);
+  });
+</script>
+
+<style>
+  .hero { position: relative; min-height: max(760px, 100svh); display: flex; flex-direction: column; justify-content: flex-end; padding-top: calc(var(--nav-h) + 40px); overflow: hidden; isolation: isolate; }
+  .hero__bg { position: absolute; inset: 0; z-index: -2; }
+  .hero__grid { position: absolute; inset: 0; opacity: .7; }
+  .hero__glow--a { width: 900px; height: 700px; right: -160px; top: 4%; opacity: .5; }
+  .hero__glow--b { width: 700px; height: 500px; left: -300px; bottom: -260px; opacity: .3; }
+
+  .hero__visual { position: absolute; z-index: -1; inset: var(--nav-h) 0 0 auto; width: min(64vw, 980px); }
+  @media (max-width: 899px) {
+    .hero__visual { inset: calc(var(--nav-h) - 10px) -20% auto -20%; width: auto; height: 62svh; opacity: .55; }
+  }
+
+  .hero__inner { position: relative; display: flex; flex-direction: column; gap: 40px; padding-bottom: 48px; }
+  .hero__copy { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; max-width: 920px; }
+  .hero__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.5rem, 5.7vw, 5.6rem); line-height: .98; letter-spacing: -.055em; }
+  .hero__line { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+  .hero__accent { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .04em; }
+  .hero__lede { max-width: 560px; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .hero__ticker { display: inline-flex; align-items: center; gap: 12px; align-self: flex-start; padding: 8px 16px 8px 12px; border-radius: 99px; border: 1px solid var(--line); background: rgb(10 10 10 / .5); backdrop-filter: blur(8px); }
+  .hero__ticker-dot { width: 7px; height: 7px; border-radius: 9px; background: var(--color-flame-500); animation: var(--animate-pulse-dot); }
+  .hero__ticker-track { position: relative; display: inline-grid; margin-left: 2px; font-family: var(--font-mono); font-size: 12.5px; color: var(--color-bone); min-width: 15ch; }
+  .hero__ticker-word { grid-area: 1 / 1; opacity: 0; transform: translateY(8px); transition: opacity .5s var(--ease-out-expo), transform .6s var(--ease-out-expo); }
+  .hero__ticker-word.is-on { opacity: 1; transform: none; }
+
+  .hero__stats { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line); }
+  @media (min-width: 900px) { .hero__stats { grid-template-columns: repeat(4, 1fr); } }
+  .hero__stat { display: flex; flex-direction: column; gap: 4px; padding: 22px 0 28px; border-right: 1px solid var(--line); padding-left: 20px; }
+  .hero__stat:first-child, .hero__stat:nth-child(3) { padding-left: 0; }
+  @media (min-width: 900px) { .hero__stat:nth-child(3) { padding-left: 20px; } }
+  .hero__stat:last-child { border-right: 0; }
+  @media (max-width: 899px) { .hero__stat:nth-child(2) { border-right: 0; } .hero__stat:nth-child(n+3) { border-top: 1px solid var(--line); } }
+  .hero__stat-v { font-family: var(--font-display); font-size: clamp(1.6rem, 2.6vw, 2.2rem); letter-spacing: -.04em; line-height: 1; }
+  .hero__stat-l { font-size: 14px; color: var(--color-smoke); }
+
+  /* Entrance choreography */
+  .hero__in { animation: hero-in 1.2s var(--ease-out-expo) both; animation-delay: calc(var(--i) * 90ms + 120ms); }
+  .hero__line > .hero__in { display: inline-block; animation-name: hero-line; }
+  @keyframes hero-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes hero-line { from { opacity: 0; transform: translateY(105%); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero__in { animation: none; } }
+</style>

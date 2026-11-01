@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://sandboxinnovate.com',
   trailingSlash: 'ignore',
+  devToolbar: { enabled: false },
   i18n: {
     locales: ['en', 'es'],
     defaultLocale: 'en',

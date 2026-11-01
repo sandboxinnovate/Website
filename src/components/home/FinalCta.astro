@@ -1,0 +1,55 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { HOME } from '@/i18n/home';
+import { UI } from '@/i18n/ui';
+import { localize, type Lang } from '@/i18n';
+import { SITE } from '@/data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const f = HOME.final;
+const word = f.big[lang];
+---
+<section class="fc" aria-labelledby="fc-title">
+  <div class="fc__glow glow-ember" aria-hidden="true"></div>
+  <div class="container-x fc__inner">
+    <h2 id="fc-title" class="fc__big" data-fc>
+      {[...word].map((ch, i) => <span class:list={['fc__ch', ch === ' ' && 'fc__sp']} style={`--k:${i}`}>{ch}</span>)}
+    </h2>
+    <div class="fc__row" data-reveal>
+      <p class="lede fc__lede">{f.lede[lang]}</p>
+      <div class="fc__ctas">
+        <a href={localize(lang, '/contact')} class="btn btn-primary">
+          <span>{UI.cta.primary[lang]}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
+        </a>
+        <a href={`mailto:${SITE.email}`} class="fc__mail"><Icon name="mail" size={16} />{SITE.email}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-fc]').forEach((el) => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.add('is-in'); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('is-in'); io.disconnect(); } }, { threshold: 0.3 });
+    io.observe(el);
+  });
+</script>
+
+<style>
+  .fc { position: relative; padding-block: clamp(100px, 14vw, 200px) clamp(60px, 8vw, 100px); overflow: hidden; isolation: isolate; }
+  .fc__glow { z-index: -1; width: 80vw; height: 60%; left: 10vw; top: 25%; opacity: .45; }
+  .fc__inner { display: flex; flex-direction: column; gap: clamp(32px, 4vw, 56px); }
+  .fc__big { font-family: var(--font-display); font-weight: 500; font-size: clamp(3.6rem, 15vw, 15rem); line-height: .86; letter-spacing: -.065em; white-space: nowrap; }
+  .fc__ch { display: inline-block; padding: 0 .08em; margin: 0 -.08em; background: linear-gradient(180deg, var(--color-bone) 40%, var(--color-flame-400) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+    transform: translateY(40%) rotate(4deg); opacity: 0; transition: transform 1.2s var(--ease-out-expo), opacity .8s; transition-delay: calc(var(--k) * 45ms); }
+  .fc__ch:last-child { background: var(--grad-flame); -webkit-background-clip: text; background-clip: text; }
+  .fc__sp { width: .28em; }
+  :global(html:not(.js)) .fc__ch, .fc__big.is-in .fc__ch { transform: none; opacity: 1; }
+  .fc__row { display: grid; gap: 28px; align-items: end; padding-top: 28px; border-top: 1px solid var(--line); }
+  @media (min-width: 900px) { .fc__row { grid-template-columns: 1fr auto; } }
+  .fc__lede { max-width: 560px; }
+  .fc__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+  .fc__mail { display: inline-flex; align-items: center; gap: 10px; color: var(--color-mist); font-size: 15px; }
+  .fc__mail:hover { color: var(--color-bone); }
+</style>
