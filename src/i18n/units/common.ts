@@ -20,6 +20,17 @@ export const UNIT_COMMON = {
     ask: { en: 'Ask about this', es: 'Preguntar por este servicio' },
   },
 
+  /** Explainer video right after the hero. `{d}` is the duration label, e.g. "1:04". */
+  video: {
+    mark: { en: '▶', es: '▶' },
+    eyebrow: { en: 'Video overview · {d}', es: 'Resumen en video · {d}' },
+    title: { en: 'How it works, <em>in about a minute</em>', es: 'Cómo funciona, <em>en poco más de un minuto</em>' },
+    lede: {
+      en: 'No sound needed. Everything shown on screen is also in the transcript below the player.',
+      es: 'No necesita sonido. Todo lo que aparece en pantalla también está en la transcripción debajo del video.',
+    },
+  },
+
   method: {
     eyebrow: { en: 'How engagements work', es: 'Cómo trabajamos' },
     outputs: { en: 'You get', es: 'Recibes' },

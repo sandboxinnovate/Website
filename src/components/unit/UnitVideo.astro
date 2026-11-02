@@ -1,0 +1,250 @@
+---
+/**
+ * Explainer video for a unit page: framed 16:9 poster with a large play button and a duration chip.
+ * Nothing loads until the visitor presses play (preload="none", lazy poster); it then plays inline with
+ * native controls. Never autoplays. Silent videos: the on-screen text carries the story, and the
+ * transcript below makes the same content available to screen readers and search engines.
+ *
+ * Files (rendered by video/render.mjs --publish) in public/video/:
+ *   <unit>-<lang>.webm, <unit>-<lang>.mp4, <unit>-<lang>-poster.jpg (1920w), <unit>-<lang>-poster-960.jpg
+ *
+ * <UnitVideo unit="brains" lang={lang} title="How a Brains agent works" duration="0:52" transcript={text} />
+ */
+import type { Lang } from '@/i18n';
+import type { UnitSlug } from '@/data/site';
+
+interface Props {
+  unit: UnitSlug;
+  lang: Lang;
+  /** Accessible name and visible caption, e.g. "How a Brains agent works". */
+  title: string;
+  /** Duration label shown on the chip, e.g. "0:52". */
+  duration: string;
+  /** Plain-text transcript of everything shown on screen. Blank lines split paragraphs. */
+  transcript?: string | string[];
+  /** Optional ISO date; when set, a schema.org VideoObject is emitted. */
+  uploadDate?: string;
+  /** Optional one-sentence description for the VideoObject. */
+  description?: string;
+  /** Cache-busting token appended as ?v= to every media URL (files are cached for a year). */
+  version?: string;
+  class?: string;
+}
+
+const { unit, lang, title, duration, transcript, uploadDate, description, version, class: cls = '' } = Astro.props;
+
+const base = `/video/${unit}-${lang}`;
+const q = version ? `?v=${encodeURIComponent(version)}` : '';
+const src = (suffix: string) => `${base}${suffix}${q}`;
+const id = `uv-${unit}-${lang}`;
+const T = {
+  en: { play: 'Play video', watch: 'Watch', mute: 'No sound needed', read: 'Read the transcript', minutes: 'Duration' },
+  es: { play: 'Reproducir video', watch: 'Ver', mute: 'No necesita sonido', read: 'Leer la transcripción', minutes: 'Duración' },
+}[lang];
+
+const paragraphs = (Array.isArray(transcript) ? transcript : (transcript ?? '').split(/\n\s*\n/))
+  .map((p) => p.trim())
+  .filter(Boolean);
+
+// "0:52" -> "PT0M52S" for the VideoObject.
+const [mm, ss] = duration.split(':').map((n) => parseInt(n, 10) || 0);
+const isoDuration = `PT${mm}M${ss}S`;
+const site = 'https://sandboxinnovate.com';
+const videoLd = uploadDate
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: title,
+      description: description || paragraphs[0] || title,
+      thumbnailUrl: `${site}${base}-poster.jpg`,
+      contentUrl: `${site}${base}.mp4`,
+      uploadDate,
+      duration: isoDuration,
+      inLanguage: lang,
+      ...(paragraphs.length ? { transcript: paragraphs.join('\n\n') } : {}),
+    }
+  : null;
+---
+<figure class:list={['uv', cls]} data-unit-video id={id}>
+  <div class="uv__frame">
+    <div class="uv__player">
+      <img
+        class="uv__poster"
+        src={src('-poster.jpg')}
+        srcset={`${src('-poster-960.jpg')} 960w, ${src('-poster.jpg')} 1920w`}
+        sizes="(min-width: 1320px) 1240px, calc(100vw - 32px)"
+        width="1920"
+        height="1080"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+      <button class="uv__play" type="button" aria-label={`${T.play}: ${title} (${duration})`}>
+        <span class="uv__group" aria-hidden="true">
+        <span class="uv__btn">
+          <svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5.2v13.6a.8.8 0 0 0 1.2.7l11-6.8a.8.8 0 0 0 0-1.4l-11-6.8A.8.8 0 0 0 8 5.2z" fill="currentColor" /></svg>
+        </span>
+        <span class="uv__chip"><span class="uv__chip-dot"></span>{T.watch} · {duration}</span>
+        </span>
+      </button>
+      <video
+        class="uv__video"
+        preload="none"
+        playsinline
+        muted
+        controls
+        hidden
+        poster={src('-poster.jpg')}
+        aria-label={title}
+      >
+        <source src={src('.webm')} type="video/webm" />
+        <source src={src('.mp4')} type="video/mp4" />
+      </video>
+    </div>
+  </div>
+
+  <figcaption class="uv__cap">
+    <span class="uv__title">{title}</span>
+    <span class="uv__meta mono-label"><span class="sr-only">{T.minutes}: </span>{duration} · {T.mute}</span>
+  </figcaption>
+
+  {paragraphs.length > 0 && (
+    <details class="uv__tx">
+      <summary>
+        <span>{T.read}</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+      </summary>
+      <div class="uv__tx-body" lang={lang}>
+        {paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </details>
+  )}
+
+  {videoLd && <script type="application/ld+json" set:html={JSON.stringify(videoLd)} />}
+</figure>
+
+<script>
+  // Swap the poster for the native player on the first press. No autoplay anywhere else.
+  function init(root: HTMLElement) {
+    if (root.dataset.ready) return;
+    root.dataset.ready = '1';
+    const btn = root.querySelector<HTMLButtonElement>('.uv__play');
+    const video = root.querySelector<HTMLVideoElement>('.uv__video');
+    if (!btn || !video) return;
+    btn.addEventListener('click', () => {
+      video.hidden = false;
+      root.classList.add('is-playing');
+      video.focus({ preventScroll: true });
+      const p = video.play();
+      // If playback is blocked or fails, the native controls stay visible so the visitor can retry.
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    });
+  }
+  const run = () => document.querySelectorAll<HTMLElement>('[data-unit-video]').forEach(init);
+  run();
+  document.addEventListener('astro:page-load', run);
+</script>
+
+<style>
+  .uv { margin: 0; display: grid; gap: 14px; }
+
+  .uv__frame {
+    position: relative;
+    padding: 8px;
+    border-radius: var(--radius-xl2);
+    background: linear-gradient(180deg, rgb(255 255 255 / .05), rgb(255 255 255 / .015)), var(--color-ink-900);
+    border: 1px solid var(--line);
+    box-shadow: 0 40px 100px -40px rgb(0 0 0 / .9), inset 0 1px 0 rgb(255 255 255 / .05);
+  }
+
+  .uv__player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: calc(var(--radius-xl2) - 8px);
+    overflow: hidden;
+    background: var(--color-ink-950);
+    isolation: isolate;
+  }
+
+  .uv__poster, .uv__video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .uv__video { background: var(--color-ink-950); }
+  .uv__video[hidden] { display: none; }
+
+  .uv__play {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    width: 100%; height: 100%;
+    padding: 0; border: 0; cursor: pointer;
+    color: var(--color-bone);
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgb(10 10 10 / .25), transparent 70%);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .uv__play:focus-visible { outline: none; }
+  .uv__play:focus-visible .uv__btn { outline: 2px solid var(--color-flame-400); outline-offset: 6px; }
+
+  .uv__btn {
+    display: grid; place-items: center;
+    width: clamp(64px, 9vw, 104px); aspect-ratio: 1;
+    border-radius: 999px;
+    background: var(--grad-cta);
+    color: #1a0d03;
+    box-shadow: 0 18px 60px -12px rgb(245 111 39 / .75), inset 0 1px 0 rgb(255 255 255 / .35);
+    transition: transform .5s var(--ease-out-expo), box-shadow .5s var(--ease-out-expo);
+  }
+  .uv__btn svg { width: 34%; height: 34%; margin-left: 6%; }
+  .uv__play:hover .uv__btn { transform: scale(1.05); box-shadow: 0 24px 70px -12px rgb(245 111 39 / .9), inset 0 1px 0 rgb(255 255 255 / .35); }
+  .uv__play:active .uv__btn { transform: scale(.98); }
+
+  .uv__group { display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 1.6vw, 18px); }
+  .uv__chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 12px; border-radius: 999px;
+    background: rgb(10 10 10 / .72);
+    border: 1px solid var(--line-strong);
+    backdrop-filter: blur(8px);
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--color-bone);
+  }
+  .uv__chip-dot { width: 6px; height: 6px; border-radius: 6px; background: var(--color-flame-500); }
+
+  .uv.is-playing .uv__play, .uv.is-playing .uv__poster { display: none; }
+
+  .uv__cap {
+    display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px;
+    padding-inline: 6px;
+  }
+  .uv__title { font-size: 15.5px; color: var(--color-mist); }
+
+  .uv__tx { padding-inline: 6px; }
+  .uv__tx summary {
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer; list-style: none;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--color-flame-400);
+    border-radius: 6px;
+  }
+  .uv__tx summary::-webkit-details-marker { display: none; }
+  .uv__tx summary svg { transition: transform .3s var(--ease-out-expo); }
+  .uv__tx[open] summary svg { transform: rotate(180deg); }
+  .uv__tx summary:hover { color: var(--color-flame-300); }
+  .uv__tx-body {
+    margin-top: 14px; padding: 18px 20px;
+    border-radius: 14px; border: 1px solid var(--line);
+    background: rgb(255 255 255 / .02);
+    max-width: 72ch;
+  }
+  .uv__tx-body p { margin: 0 0 .8em; font-size: 15.5px; line-height: 1.65; color: var(--color-mist); }
+  .uv__tx-body p:last-child { margin-bottom: 0; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .uv__btn, .uv__tx summary svg { transition: none; }
+    .uv__play:hover .uv__btn { transform: none; }
+  }
+</style>

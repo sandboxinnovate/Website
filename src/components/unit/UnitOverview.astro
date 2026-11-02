@@ -1,0 +1,44 @@
+---
+/**
+ * Video overview right after the hero: "[▶] Video overview · 1:04" heading + the unit's explainer video
+ * and its transcript. Renders nothing when the unit has no video for this language.
+ * The VideoObject structured data is emitted by Unit.astro (it needs the page URL for embedUrl).
+ */
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import UnitVideo from '@/components/unit/UnitVideo.astro';
+import { UNIT_COMMON } from '@/i18n/units';
+import { VIDEO_UPLOAD_DATE, type UnitVideoData } from '@/data/videos';
+import type { UnitSlug } from '@/data/site';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang; slug: UnitSlug; video: UnitVideoData }
+const { lang, slug, video } = Astro.props;
+const C = UNIT_COMMON.video;
+---
+<section class="uo" id="video" aria-labelledby="uo-title">
+  <div class="container-x">
+    <SectionHeading
+      id="uo-title"
+      index={C.mark[lang]}
+      eyebrow={C.eyebrow[lang].replace('{d}', video.durationLabel)}
+      title={C.title[lang]}
+      lede={C.lede[lang]}
+      size="md"
+    />
+    <div class="uo__player" data-reveal>
+      <UnitVideo
+        unit={slug}
+        lang={lang}
+        title={video.title}
+        duration={video.durationLabel}
+        transcript={video.transcript}
+        version={VIDEO_UPLOAD_DATE}
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .uo { padding-block: clamp(56px, 7vw, 104px) 0; }
+  .uo__player { margin-top: clamp(28px, 4vw, 48px); max-width: 1240px; }
+</style>

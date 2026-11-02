@@ -1,0 +1,141 @@
+{
+  "unit": "products",
+  "durationSec": 64,
+  "posterSec": 12.5,
+  "heroMockup": "Industry package catalog (five industry tiles with Early access chips) opening into a package-contents window, then a real-estate buyer message thread next to an agent calendar where a Saturday-night portal inquiry becomes a held Monday showing. Ends on an ops panel of running agents and a 'stays with your team' list. No other unit uses the industry catalog + messaging thread + calendar slot combination; there is no approval-card hero here (that belongs to Brains).",
+  "sourceOfClaims": "src/i18n/units/products.ts (hero, pains, offers, method, cases, faq, cta) and src/components/unit/ProductsSelector/copy.ts (industries, agents, connects, stays). Timelines used only as stated: Fit check 1 call, Adapt a few days, Pilot 2-4 weeks, Run by subscription; real estate 2-3 weeks to pilot. The Sat 23:40 inquiry and Monday showing come from the site's own illustrative use case (cases.items[0]) and are labeled 'Illustrative scenario' on screen. Listing address, hours, times and slot labels inside mock UIs are example UI states, never claims. No prices, no clients, no results.",
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 8,
+      "visual": "HUD chrome visible ([05] PRODUCTS top left, small wordmark). Two windows side by side between y 220 and 740. LEFT (x 120 to 900): a docPage titled 'AI project plan v1' with a long stack of grey placeholder blocks and section headings 'Discovery', 'Architecture', 'Integrations', 'Build', 'Testing', 'Rollout', fading up staggered from 0.4 s; the page slowly scrolls (y offset tween, power1.inOut) to suggest length, no dates or figures. RIGHT (x 1020 to 1800): a generic chat window titled 'Assistant' with a user message typed by typeText at 1.2 s: 'Can you book showings for my listings?' (ES: '¿Puedes agendar visitas para mis propiedades?'), and a reply at 2.6 s: 'Sure. Can you explain what a showing is and how your team works?' (ES: 'Claro. ¿Me explicas qué es una visita y cómo trabaja tu equipo?'). Headline size md, left aligned, y 800 to 930: line 1 at 2.0 s, line 2 at 4.6 s, hold to 7.4 s. Exit fade 7.4 to 8.0 s, power2.in.",
+      "textEn": [
+        "A custom AI build is too much, for now.",
+        "Generic tools don't know your industry."
+      ],
+      "textEs": [
+        "Un desarrollo a medida es demasiado por ahora.",
+        "Y las herramientas genéricas no conocen tu industria."
+      ]
+    },
+    {
+      "id": "promise",
+      "start": 8,
+      "end": 16,
+      "visual": "Title card left (x 120 to 960): eyebrow '[05] PRODUCTS' at 8.2 s, headline size lg in two lines (line 2 in <em>, flame gradient) at 8.4 s and 9.4 s, sub line (28 px) at 11.0 s. RIGHT (x 1180 to 1800, y 250 to 830): a tiles component, 'products / industries' window header, five stacked rows, each with a mono code chip and name: RE Real estate, CL Clinics, PS Professional services, EC E-commerce, HO Hospitality (ES: IN Inmobiliarias, CL Clínicas, SP Servicios profesionales, EC E-commerce, HO Hotelería); each row has a small 'Early access' chip (ES 'Acceso anticipado') on the right. Rows fade up 0.3 s apart from 10.0 s. Center of frame (between the two columns) stays quiet: poster at 12.5 s. Hold to 15.4 s, swap out.",
+      "textEn": [
+        "Start from a brain",
+        "built for your industry.",
+        "Ready-made agents, set up on your data."
+      ],
+      "textEs": [
+        "Empieza con un brain",
+        "hecho para tu industria.",
+        "Agentes listos, configurados con tus datos."
+      ]
+    },
+    {
+      "id": "step1-pick",
+      "start": 16,
+      "end": 24,
+      "visual": "Step header top left (y 160): mono '01' in flame + step headline size sm; time chip '1 call' (ES '1 llamada') to its right. Window 'Package contents' (ES 'Contenido del paquete'), badge 'Early access', x 280 to 1640, y 280 to 860. Top row: five industry tabs (pill buttons). Cursor enters at 16.6 s, moves to 'Real estate' (ES 'Inmobiliarias') and clicks at 17.6 s; the tab fills flame. Left column 'Agents included' lists five rows fading up 0.25 s apart from 18.0 s: Inquiry responder, Lead qualifier, Showing scheduler, Listing writer, Follow-up agent (ES: Respuesta a consultas, Calificador de leads, Agenda de visitas, Redactor de fichas, Seguimiento), each with its one-line 'does' text from ProductsSelector copy in muted 17 px. Right column 'Connects to' chips appear at 19.6 s: CRM, Calendar, Inbox, Listing portals, Messaging. Footer chip 'Pilot · 2-3 weeks' (ES 'Piloto · 2-3 semanas') at 20.2 s. Second caption line at 20.4 s. Hold to 23.4 s, fade out.",
+      "textEn": [
+        "01  Pick your industry's package",
+        "Agents already designed for your sector."
+      ],
+      "textEs": [
+        "01  Elige el paquete de tu industria",
+        "Agentes ya diseñados para tu sector."
+      ]
+    },
+    {
+      "id": "step2-adapt",
+      "start": 24,
+      "end": 32,
+      "visual": "Step header '02' + time chip 'A few days' (ES 'Unos días'). Window 'real-estate / settings' (x 280 to 1640, y 280 to 860) laid out as a settings form with five labeled rows on a hairline grid. Values fill in one after another by typeText from 24.8 s, 0.7 s apart: Services 'Sales, Rentals' (ES 'Venta, Alquiler'); Areas 'North, Center, Coast' (ES 'Norte, Centro, Costa'); Tone 'Warm, short, no jargon' (ES 'Cercano, breve, sin tecnicismos'); Hours 'Replies 24/7, showings Mon to Sat' (ES 'Responde 24/7, visitas de lunes a sábado'); Escalation 'Pricing questions go to the listing agent' (ES 'Preguntas de precio van al asesor'). At 28.6 s the Escalation row is highlighted with a flame left border and a small person icon. Second caption line at 28.4 s. Hold to 31.4 s, fade out.",
+      "textEn": [
+        "02  Adapt it to your business",
+        "Your services, tone, hours and escalation rules."
+      ],
+      "textEs": [
+        "02  Lo adaptamos a tu negocio",
+        "Tus servicios, tono, horarios y derivaciones."
+      ]
+    },
+    {
+      "id": "step3-pilot",
+      "start": 32,
+      "end": 44,
+      "visual": "Step header '03' + time chip '2-4 weeks' (ES '2-4 semanas'); small mono tag 'Illustrative scenario' (ES 'Escenario ilustrativo') under the header. LEFT (x 120 to 1060, y 260 to 900): a messaging thread window titled 'Portal inquiry · Sat 23:40' (ES 'Consulta de portal · sáb 23:40'), played with chat.play: buyer at 32.6 s 'Hi, is the 3-bedroom near the school still available?' (ES 'Hola, ¿sigue disponible la casa de 3 dormitorios cerca del colegio?'); assistant at 34.0 s, cube icon, 'Yes, it is. I'm the brokerage's assistant. Which area works for you, and when do you plan to move?' (ES 'Sí, sigue disponible. Soy el asistente de la inmobiliaria. ¿Qué zona te sirve y cuándo piensas mudarte?'); buyer at 35.8 s 'This area. Within 3 months.' (ES 'Esta zona. En unos 3 meses.'); assistant at 37.2 s 'Monday 9:30 or Tuesday 18:00 for a showing?' (ES '¿Te sirve una visita el lunes 9:30 o el martes 18:00?'); buyer at 38.6 s 'Monday works.' (ES 'El lunes me sirve.'). RIGHT (x 1140 to 1800, y 260 to 900): agent calendar 'Listing agent · week' with a grid Mon to Fri; at 37.4 s two candidate slots outline in dashed flame; at 39.0 s Monday 9:30 fills solid with label 'Showing · held' (ES 'Visita · reservada'); at 39.6 s a CRM row slides in under the calendar: 'Lead qualified · area, timing' (ES 'Lead calificado · zona, plazo'). At 40.4 s a thin 'Team review' strip appears across the bottom with an eye icon: 'Every pilot conversation visible to your team' (ES 'Tu equipo ve cada conversación del piloto'). Caption line 2 at 40.0 s. Hold to 43.4 s, fade out.",
+      "textEn": [
+        "03  Pilot it on real cases",
+        "Your team watches every step."
+      ],
+      "textEs": [
+        "03  Un piloto con casos reales",
+        "Tu equipo ve cada paso."
+      ]
+    },
+    {
+      "id": "step4-run",
+      "start": 44,
+      "end": 52,
+      "visual": "Step header '04' + time chip 'Subscription' (ES 'Suscripción'). Window 'real-estate / agents' (x 280 to 1640, y 280 to 860) styled as an ops panel: five agent rows (same names as step 1) each with a status chip that flips from muted to chip--ok 'Running' (ES 'Activo') one by one via typeText from 44.8 s. Right column 'Recent' with three log rows fading up from 46.6 s: 'Pricing question → handed to listing agent' (ES 'Pregunta de precio → derivada al asesor'), 'Monitoring check · OK' (ES 'Revisión de monitoreo · OK'), 'Product update installed' (ES 'Actualización del producto instalada'). The first log row is highlighted at 47.6 s. Caption line 2 at 48.2 s. Hold to 51.4 s, fade out.",
+      "textEn": [
+        "04  We host and run it",
+        "Monitoring, updates and support included."
+      ],
+      "textEs": [
+        "04  Nosotros lo alojamos y operamos",
+        "Monitoreo, actualizaciones y soporte incluidos."
+      ]
+    },
+    {
+      "id": "stays-and-grows",
+      "start": 52,
+      "end": 58,
+      "visual": "Two flat cards on a centered grid (y 300 to 760). LEFT card (x 120 to 920), eyebrow 'Always stays with your team' (ES 'Siempre queda en manos de tu equipo'): three rows with a person icon, fading up from 52.4 s: 'Pricing advice and negotiation', 'The showings themselves', 'Final say on every listing' (ES 'Asesoría de precio y negociación', 'Las visitas en sí', 'La última palabra en cada ficha'). RIGHT card (x 1000 to 1800): a small three-step steps component 'Package → Your setup → Custom brain' (ES 'Paquete → Tu configuración → Brain a medida') that advances with .go at 54.6 s and 55.4 s, last node in flame. Headline lines size sm at the bottom (y 820 to 930): line 1 at 52.6 s, line 2 at 54.8 s. Hold to 57.4 s, fade out.",
+      "textEn": [
+        "People keep the calls that matter.",
+        "Outgrow it? It extends, no restart."
+      ],
+      "textEs": [
+        "Las decisiones importantes siguen siendo tuyas.",
+        "¿Te queda chico? Crece sin empezar de cero."
+      ]
+    },
+    {
+      "id": "cta",
+      "start": 58,
+      "end": 64,
+      "visual": "ctaCard({lang}) on the warm dark background: headline size lg from endCard.title with <em> flame gradient at 58.3 s, sub line at 59.2 s; sub line is the second text line below, button and sandboxinnovate.com at 60.0 s. Small mono row above the headline listing the five industries separated by middle dots (RE · CL · PS · EC · HO). Hold to 64 s. hud.progress and lib.drift on the glow span the full timeline.",
+      "textEn": [
+        "Join early access.",
+        "Tell us your industry and volume."
+      ],
+      "textEs": [
+        "Súmate al acceso anticipado.",
+        "Cuéntanos tu industria y tu volumen."
+      ]
+    }
+  ],
+  "endCard": {
+    "en": {
+      "title": "Join <em>early access.</em>",
+      "button": "Request early access",
+      "url": "sandboxinnovate.com"
+    },
+    "es": {
+      "title": "Súmate al <em>acceso anticipado.</em>",
+      "button": "Solicitar acceso anticipado",
+      "url": "sandboxinnovate.com"
+    }
+  },
+  "meta": {
+    "title": {
+      "en": "How Sandbox industry products work",
+      "es": "Cómo funcionan los productos por industria de Sandbox"
+    }
+  }
+}

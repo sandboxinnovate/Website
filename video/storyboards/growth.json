@@ -1,0 +1,147 @@
+{
+  "unit": "growth",
+  "durationSec": 64,
+  "posterSec": 12.5,
+  "heroMockup": "An AI answer card (search box + streamed answer + numbered source chips) where a buyer's question is answered with other brands, then a question-by-question visibility tracker, a content pipeline (expert interview to approved pieces in the brand voice), a weekly ad-variant board and a personalized outbound draft waiting for approval. No other unit uses the AI answer + question tracker + content pipeline combination.",
+  "sourceOfClaims": "src/i18n/units/growth.ts (hero, pains, offers, method, faq, cta), src/components/unit/visuals/copy.ts (growth: question, brand placeholder, source labels, 'Ad variant 14 testing', 'written for 1 person'), src/components/widgets/GeoAnswer/copy.ts (Brand A/B/C placeholders, levers) and the blog posts generative-engine-optimization-guide and ai-content-without-the-slop (entity consistency, third-party mentions, source library, voice and claims guide). Timelines used only as stated: Audit 1 week, Calibrate 1 week, Launch 2-3 weeks, Publish weekly / Monthly report, first outputs weeks 3-5. No results, percentages or growth figures are shown; mock UI numbers (variant 14, question 3 of the set) are illustrative UI states. The 'no one can guarantee citations' line comes straight from the FAQ.",
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 8,
+      "visual": "Dark warm stage, HUD chrome visible ([03] GROWTH top left, small wordmark). Centered column x 360 to 1560, y 200 to 780: aiAnswer component. At 0.5 s the search box types the buyer question with typeQuery (cps 26): EN 'Which accounting firm is best for a growing startup?' / ES '¿Qué estudio contable conviene para una startup en crecimiento?' (the exact question from the page's hero visual). At 2.4 s the answer card rises (aiAnswer.in) with label 'AI answer' / 'Respuesta de IA' and three short paragraphs naming placeholder brands, each wrapped in .brand: 'Brand A: works with venture-backed startups. [1]', 'Brand B: fixed monthly packages for small teams. [2]', 'Brand C: strong reviews for tax season support. [3]' (ES: 'Marca A: trabaja con startups con inversión. [1]', 'Marca B: paquetes mensuales para equipos pequeños. [2]', 'Marca C: muy bien valorada en temporada de impuestos. [3]'). Source chips row: 1 review site, 2 industry guide, 3 directory (ES: sitio de reseñas, guía del sector, directorio). At 3.6 s a small muted chip slides in to the right of the answer card (x 1580 to 1800, y 300): 'yourbrand.com · not mentioned' (ES 'tumarca.com · no aparece'), chip style neutral, no red. Headline (size md, left aligned, y 820 to 940) line 1 at 2.0 s, line 2 at 4.6 s, hold to 7.4 s. Exit: all fades out power2.in 7.4 to 8.0 s.",
+      "textEn": [
+        "Your buyers ask AI before they search.",
+        "Today it recommends your competitors."
+      ],
+      "textEs": [
+        "Tus clientes le preguntan primero a la IA.",
+        "Hoy recomienda a tu competencia."
+      ]
+    },
+    {
+      "id": "promise",
+      "start": 8,
+      "end": 16,
+      "visual": "Title card, left aligned (x 120 to 1000): eyebrow '[03] GROWTH' at 8.2 s, headline size lg, line 1 at 8.4 s, line 2 wrapped in <em> (flame gradient) at 9.4 s (mirrors the hero title). Sub line (lede, 28 px) at 11.2 s. Right column (x 1200 to 1800, y 280 to 800): four flat engine cards stacked with 18 px gaps, fading up 0.3 s apart from 10.0 s, each a row with icon, name and a mono chip: 'AI answers · GEO' (icon search), 'Content engine' (pen), 'Ad creative' (image), 'Personalized outbound' (mail) (ES: 'Respuestas de IA · GEO', 'Motor de contenido', 'Creatividades', 'Prospección personalizada'). A thin vertical hairline on their left edge labeled in mono 15 px 'one voice · one report' / 'una voz · un reporte'. The space between title and cards keeps the frame center quiet: poster at 12.5 s. Hold to 15.4 s, then swap.",
+      "textEn": [
+        "Be the answer",
+        "when buyers ask AI.",
+        "Four engines. One brand voice."
+      ],
+      "textEs": [
+        "Sé la respuesta",
+        "cuando tus clientes le preguntan a la IA.",
+        "Cuatro motores. Una sola voz."
+      ]
+    },
+    {
+      "id": "step1-measure",
+      "start": 16,
+      "end": 25,
+      "visual": "Step header top left (y 160): mono '01' in flame plus step headline size sm. Window 'visibility / question set' (win, x 120 to 1180, y 290 to 840) shows a table built from inbox rows: each row is a buyer question in the category with three status chips for 'Assistant A / B / C' (generic labels, no product names or logos). Rows: 'Best accounting firm for a startup?', 'Who handles payroll for small teams?', 'Accountant for a first funding round?', 'Firms that do monthly bookkeeping?' (ES: '¿Mejor estudio contable para una startup?', '¿Quién lleva la nómina de equipos pequeños?', '¿Contador para una primera ronda de inversión?', '¿Estudios que llevan la contabilidad mensual?'). Rows fade up staggered from 16.6 s. Status chips appear at 17.6 to 19.0 s via typeText: mostly 'not mentioned' (muted) and 'cites others' (neutral), one 'mentioned' (ok). Header chip 'Baseline' (ES 'Línea base'). At 20.6 s a paper docPage slides in on the right (x 1240 to 1800, y 300 to 820), kicker 'Why they cite others' (ES 'Por qué citan a otros'), three short findings that mark one by one at 21.4, 22.2, 23.0 s: 'Directory listing shows an old address', 'Services page has no plain answers', 'Missing from the industry guide' (ES: 'El directorio muestra una dirección antigua', 'La página de servicios no responde nada concreto', 'No apareces en la guía del sector'). Caption line 1 at 16.4 s, line 2 at 20.8 s. Hold to 24.4 s, fade out.",
+      "textEn": [
+        "01  Track the questions your buyers ask",
+        "Then find out why AI cites others."
+      ],
+      "textEs": [
+        "01  Medimos las preguntas de tus clientes",
+        "Y vemos por qué la IA cita a otros."
+      ]
+    },
+    {
+      "id": "step2-content",
+      "start": 25,
+      "end": 34,
+      "visual": "Step header '02'. A horizontal flow (flow component, x 120 to 1800, y 300 to 620) with nodes left to right: 'Expert interview' (icon mic, sub 'your team') -> 'Voice guide' (book, sub 'what we say, what we never say') -> 'Draft' (pen) -> 'Editor review' (kind human, icon user) -> 'Approved' (check, kind accent). ES: 'Entrevista con expertos' / 'tu equipo', 'Guía de voz' / 'qué decimos, qué nunca decimos', 'Borrador', 'Revisión editorial', 'Aprobado'. Nodes in by order from 25.6 s, edges drawn 0.45 s apart from 26.4 s, a pulse travels the chain at 28.2 s, focus on 'Editor review' at 29.4 s. Below the flow (y 680 to 900), four output cards fan out from 'Approved' at 30.2 s, staggered 0.15 s: 'Article', 'Newsletter', 'Social post', 'Video script' (ES: 'Artículo', 'Newsletter', 'Publicación', 'Guion de video'), each a small win-style card with a title bar and two grey text bars, chip 'ready for approval' on the first ('listo para aprobar'). Caption line 1 at 25.4 s, line 2 at 29.6 s. Hold to 33.4 s.",
+      "textEn": [
+        "02  Content in your voice, from your experts",
+        "An editor approves every piece."
+      ],
+      "textEs": [
+        "02  Contenido con tu voz, desde tus expertos",
+        "Un editor aprueba cada pieza."
+      ]
+    },
+    {
+      "id": "step3-test-and-reach",
+      "start": 34,
+      "end": 43,
+      "visual": "Step header '03'. Left half (x 120 to 920, y 290 to 840): window 'ads / this week' (ES 'anuncios / esta semana') with a tiles grid, cols 3, six ad variant cards; each tile label is an angle ('Angle: founder story', 'Angle: speed', 'Angle: expert tip') and value text 'Variant 12' to 'Variant 17' (illustrative UI numbering, echoing 'Ad variant 14' from the hero visual), no metrics. Tiles pop in from 34.6 s. At 36.2 s status chips land: two 'testing' (flame), one 'scaled' (ok), one 'retired' (muted), rest 'new'. ES chips: 'en test', 'escalada', 'retirada', 'nueva'. Right half (x 980 to 1800, y 290 to 840): approval card titled 'Outbound sequence · Account research done' (ES 'Secuencia de prospección · Cuenta investigada'), fields: 'To' -> 'Plant manager, industrial distributor (example)' (ES 'Gerente de planta, distribuidor industrial (ejemplo)'), 'Context' -> 'Opened a second warehouse this year' (ES 'Abrió un segundo almacén este año'), 'Draft' -> first line of the email 'Saw the new warehouse. One question about…' (ES 'Vi el nuevo almacén. Una pregunta sobre…'), buttons Approve / Edit. Card enters 37.8 s, cursor enters at 39.4 s, moves to Approve, clicks at 40.6 s, card resolves to 'Approved · sends from your inbox' (ES 'Aprobada · sale desde tu correo'). Caption line 1 at 34.4 s, line 2 at 38.2 s. Hold to 42.4 s.",
+      "textEn": [
+        "03  New ad creative tested every week",
+        "Outbound researched per account, approved first."
+      ],
+      "textEs": [
+        "03  Creatividades nuevas testeadas cada semana",
+        "Prospección investigada por cuenta, aprobada antes."
+      ],
+      "_visualNote": "Tile angle labels to use: 'Angle: founder story', 'Angle: speed', 'Angle: expert tip' (ES 'Ángulo: historia del fundador', 'Ángulo: rapidez', 'Ángulo: consejo experto'), repeated across the six tiles."
+    },
+    {
+      "id": "step4-report",
+      "start": 43,
+      "end": 51,
+      "visual": "Step header '04'. Window 'monthly report' (ES 'reporte mensual'), x 120 to 1800, y 290 to 820. Top row: tiles cols 4 with labels 'Citations', 'Traffic', 'Leads', 'Pipeline' (ES 'Citas', 'Tráfico', 'Leads', 'Oportunidades'), no numbers at all (text empty), each with a sparkline drawn via .count at 43.8 s (stagger 0.15), shapes deliberately mixed (one flat, two gently rising, one dipping then rising) so it reads as a real monthly view, not a promise. Under the tiles a small mono note 'example view' ('vista de ejemplo'). Bottom row (y 620 to 800): the question-set rows from step 1 return compressed into one line each with a 'what moved' column; one row tag changes from 'not mentioned' to 'mentioned' at 45.6 s, another stays 'not mentioned' with a chip 'next fix: third-party mentions' (ES 'siguiente ajuste: menciones de terceros'), so the report shows both what moved and what did not. Caption line 1 at 43.4 s, line 2 at 46.8 s. Hold to 50.4 s.",
+      "textEn": [
+        "04  Publish weekly. Report what moved.",
+        "No one can guarantee citations. We show progress."
+      ],
+      "textEs": [
+        "04  Publicar cada semana. Reportar qué se movió.",
+        "Nadie garantiza citas. Te mostramos el avance."
+      ],
+      "_textNote": "Line 2 is the FAQ position ('No one can guarantee... what we commit to is the process'). EN line 2 is 8 words."
+    },
+    {
+      "id": "how-we-run-it",
+      "start": 51,
+      "end": 58,
+      "visual": "Headline size sm, left, at 51.4 s: line 1. Horizontal steps component (x 120 to 1800, y 500) with four items from the method copy: Audit 1 week, Calibrate 1 week, Launch 2-3 weeks, Publish weekly / Monthly (ES: Auditar 1 semana, Calibrar 1 semana, Lanzar 2-3 semanas, Publicar cada semana / Mensual). Steps light with .go at 52.2, 52.9, 53.6, 54.3 s. Under 'Publish weekly' a chip 'Monthly report' (ES 'Reporte mensual'). At 54.8 s a fact row in hero-facts style (mono label + value): 'First outputs' / 'Weeks 3 to 5' (ES 'Primeras piezas' / 'Semanas 3 a 5'), and a second fact 'Works inside' / 'your own accounts' (ES 'Trabajamos en' / 'tus propias cuentas'). Line 2 caption at 55.0 s. Hold to 57.4 s, then hud.chrome hides at 57.6 s.",
+      "textEn": [
+        "Your team sets the strategy and approves.",
+        "First outputs in weeks 3 to 5."
+      ],
+      "textEs": [
+        "Tu equipo define la estrategia y aprueba.",
+        "Primeras piezas en las semanas 3 a 5."
+      ]
+    },
+    {
+      "id": "cta",
+      "start": 58,
+      "end": 64,
+      "visual": "ctaCard({lang}) centered: headline from the unit CTA, second line in <em> flame gradient, line by line at 58.3 s and 59.1 s; primary button 'Book a call' / 'Agendar una llamada' pops in at 60.0 s; url 'sandboxinnovate.com' in mono below at 60.4 s; small Sandbox wordmark above. Hold static to 64 s. No HUD.",
+      "textEn": [
+        "See where you stand",
+        "in AI answers.",
+        "Book a call",
+        "sandboxinnovate.com"
+      ],
+      "textEs": [
+        "Mira dónde estás",
+        "en las respuestas de IA.",
+        "Agendar una llamada",
+        "sandboxinnovate.com"
+      ]
+    }
+  ],
+  "endCard": {
+    "en": {
+      "title": "See where you stand <em>in AI answers.</em>",
+      "button": "Book a call",
+      "url": "sandboxinnovate.com"
+    },
+    "es": {
+      "title": "Mira dónde estás <em>en las respuestas de IA.</em>",
+      "button": "Agendar una llamada",
+      "url": "sandboxinnovate.com"
+    }
+  },
+  "meta": {
+    "title": {
+      "en": "How Sandbox Growth works",
+      "es": "Cómo funciona Sandbox Growth"
+    }
+  }
+}

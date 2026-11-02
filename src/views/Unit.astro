@@ -1,11 +1,12 @@
 ---
 /**
  * Service (unit) page template. Content per unit and language lives in src/i18n/units/.
- * Sections: hero → pains → offers → client results (units with published cases) → proof widget
+ * Sections: hero → video overview → pains → offers → client results (units with published cases) → proof widget
  *           → method + pricing → use cases → FAQ → related reading (blog) → other units → CTA.
  */
 import Base from '@/layouts/Base.astro';
 import UnitHero from '@/components/unit/UnitHero.astro';
+import UnitOverview from '@/components/unit/UnitOverview.astro';
 import UnitPains from '@/components/unit/UnitPains.astro';
 import UnitOffers from '@/components/unit/UnitOffers.astro';
 import UnitResults from '@/components/unit/UnitResults.astro';
@@ -19,6 +20,7 @@ import UnitCta from '@/components/unit/UnitCta.astro';
 import { UNIT_COPY } from '@/i18n/units';
 import { UNITS, SITE, type UnitSlug } from '@/data/site';
 import { CASES } from '@/i18n/work';
+import { getUnitVideo, isoDuration, VIDEO_UPLOAD_DATE } from '@/data/videos';
 import { localize, type Lang } from '@/i18n';
 
 interface Props { lang: Lang; slug: UnitSlug }
@@ -26,6 +28,7 @@ const { lang, slug } = Astro.props;
 const unit = UNITS.find((u) => u.slug === slug)!;
 const copy = UNIT_COPY[slug][lang];
 const hasResults = CASES.some((c) => c.unit === slug);
+const video = getUnitVideo(slug, lang);
 
 // Section indexes in render order, so they never skip a number when a section is absent.
 let n = 0;
@@ -78,6 +81,25 @@ const faqLd = {
   })),
 };
 
+const videoBase = `${SITE.url}/video/${slug}-${lang}`;
+const videoLd = video
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      '@id': `${pageUrl}#video`,
+      name: video.title,
+      description: video.description,
+      thumbnailUrl: [`${videoBase}-poster.jpg`, `${videoBase}-poster-960.jpg`],
+      uploadDate: VIDEO_UPLOAD_DATE,
+      duration: isoDuration(video.duration),
+      contentUrl: `${videoBase}.mp4`,
+      embedUrl: pageUrl,
+      inLanguage: lang,
+      transcript: video.transcript,
+      publisher: { '@id': 'https://sandboxinnovate.com/#organization' },
+    }
+  : null;
+
 const breadcrumbLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -87,8 +109,9 @@ const breadcrumbLd = {
   ],
 };
 ---
-<Base lang={lang} title={copy.seo.title} description={copy.seo.description} jsonLd={[serviceLd, faqLd, breadcrumbLd]}>
+<Base lang={lang} title={copy.seo.title} description={copy.seo.description} jsonLd={[serviceLd, faqLd, breadcrumbLd, ...(videoLd ? [videoLd] : [])]}>
   <UnitHero lang={lang} unit={unit} copy={copy} />
+  {video && <UnitOverview lang={lang} slug={slug} video={video} />}
   <UnitPains lang={lang} copy={copy} index={idx.pains} />
   <UnitOffers lang={lang} slug={slug} copy={copy} index={idx.offers} />
   {hasResults && <UnitResults lang={lang} slug={slug} index={idx.results} />}

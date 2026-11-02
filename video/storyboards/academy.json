@@ -1,0 +1,145 @@
+{
+  "unit": "academy",
+  "durationSec": 66,
+  "posterSec": 13.5,
+  "heroMockup": "Lesson plan for one role (the site's sample Operations track, four modules with lab lines and a role picker), then a practice exercise where a participant reviews an AI draft of their own weekly report against a checklist, then a short AI usage rules sheet pinned into the exercise. No other unit uses the curriculum + lab + policy combination; no chat-with-agent, no approval card.",
+  "sourceOfClaims": "src/i18n/units/academy.ts (hero, pains, offers, method, faq, cta) and src/components/unit/AcademyExplorer/copy.ts (Operations track modules, lab text, 90/60 min module times, role names). Review checklist items come from the blog post training-teams-on-ai ('numbers match the source; exceptions flagged') and its FAQ (a human reviews output before it leaves the company). Timelines used only as stated: Assess 1 week, Tailor 1-2 weeks, Train 1 day to 6 weeks, Follow up after training; Leadership program 4-6 weeks; Enablement 6-12 weeks. Mock report text contains no figures. No stats, clients or results.",
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 9,
+      "visual": "Dark warm stage, HUD chrome visible ([04] ACADEMY top left, small wordmark). Beat 1 (0.4 s): a calendar event card (card, x 120 to 760, y 250 to 470) fades up: mono kicker 'FRI' / 'VIE', title 'AI training: live demo' / 'Capacitación en IA: demo en vivo', meta '2 h · All staff' / '2 h · Todo el equipo', small chip 'Done' / 'Hecho' in ok color. Beat 2 (3.2 s): the card slides 60 px left and dims to 40% opacity; to its right (x 820 to 1800, y 220 to 720) an AI assistant app window (win, title 'Assistant', badge 'Monday' / 'Lunes') fades up, almost empty: one prompt field with the grey placeholder 'Ask anything' / 'Pregunta lo que quieras', no messages, a static caret, a small 'New chat' / 'Nuevo chat' button. Nothing types. The emptiness is the point. Headline (size md, left aligned, y 800 to 930) appears line by line: line 1 at 0.8 s, line 2 at 3.4 s, line 3 at 5.8 s (line 3 replaces lines 1 and 2 with a fadeOut/fadeUp swap at 5.6 s). Hold to 8.4 s, everything fades out power2.in by 9.0 s.",
+      "textEn": [
+        "Everyone got an AI account.",
+        "Nobody showed them what to do with it.",
+        "The two-hour demo? Forgotten by Monday."
+      ],
+      "textEs": [
+        "Todos recibieron una cuenta de IA.",
+        "Nadie les mostró qué hacer con ella.",
+        "¿La demo de dos horas? El lunes, olvidada."
+      ]
+    },
+    {
+      "id": "promise",
+      "start": 9,
+      "end": 17,
+      "visual": "Title card left aligned (x 120 to 960): eyebrow '[04] ACADEMY' at 9.2 s; headline size lg from the hero, two lines: 'Learn AI on' at 9.4 s and '<em>your own work.</em>' (flame gradient) at 10.2 s; ES 'Aprende IA con' / '<em>tu propio trabajo.</em>'. Sub lines (lede, 28 px) fade up at 11.6 s and 13.4 s. Right side (x 1220 to 1800, y 260 to 800): three paper task cards people bring to the session, stacked with 24 px offsets and 1 degree rotation, fading up 0.3 s apart from 10.6 s: a spreadsheet thumbnail 'Monthly report' / 'Reporte mensual', a document thumbnail 'Client proposal' / 'Propuesta para cliente', and an inbox thumbnail 'Inbox' / 'Bandeja de entrada' with a few grey rows. At 14.2 s the top card gets a small chip 'Done' / 'Resuelta' (ok color) pop in, plus a mono label under the stack 'Workflow saved' / 'Flujo guardado'. Clear gap between title and cards keeps the center quiet: poster at 13.5 s. Swap out at 16.6 to 17.0 s.",
+      "textEn": [
+        "Bring a real task. Leave with it done.",
+        "And a workflow you can repeat."
+      ],
+      "textEs": [
+        "Trae una tarea real. Llévatela resuelta.",
+        "Y un flujo que puedes repetir."
+      ]
+    },
+    {
+      "id": "step1-assess",
+      "start": 17,
+      "end": 25,
+      "visual": "Step header top left (y 160): mono '01' in flame plus step headline size sm. Center left (x 120 to 1060, y 260 to 860): a light paper window (win paper:true, title 'Pre-session survey' / 'Encuesta previa') with a short form: field 'Role' / 'Rol' filled 'Operations' / 'Operaciones'; field 'Tools you use' / 'Herramientas que usas' with three neutral chips 'Spreadsheets', 'Email', 'Team chat' / 'Hojas de cálculo', 'Correo', 'Chat del equipo' (generic, no brand logos); field 'Which tasks eat your week?' / '¿Qué tareas te consumen la semana?' where typeText writes at 18.6 s 'The weekly status report from a spreadsheet' / 'El reporte semanal a partir de una hoja de cálculo'. Right (x 1140 to 1800, y 300 to 800): a card 'Task inventory' / 'Inventario de tareas' whose rows appear one by one from 21.0 s, 0.4 s apart: 'Weekly status report', 'Supplier email triage', 'Procedure for a weekly task' / 'Reporte semanal de estado', 'Clasificar correos de proveedores', 'Procedimiento de una tarea semanal', the first row highlighted with a thin flame left rule as it arrives. Thin hairline arrow from the typed answer to the first row draws at 21.0 s. Caption line 2 appears at 20.4 s. Swap at 24.6 s.",
+      "textEn": [
+        "01  We start from your team's real tasks.",
+        "A short survey and a few interviews."
+      ],
+      "textEs": [
+        "01  Partimos de las tareas reales de tu equipo.",
+        "Una encuesta breve y algunas entrevistas."
+      ]
+    },
+    {
+      "id": "step2-tailor",
+      "start": 25,
+      "end": 34,
+      "visual": "Hero mockup part 1, the lesson plan. Step header '02' top left. Center (x 120 to 1180, y 250 to 880): an app window (win, title 'Curriculum · Operations' / 'Programa · Operaciones', badge 'Sample' / 'Ejemplo') holding the lessons component with the four Operations modules from the site's sample curriculum, each row with 'when' as module number 'M1' to 'M4', title and meta '90 min' (last one '60 min'): 'Spreadsheets without the busywork', 'Reports that draft themselves', 'Documenting how work gets done', 'Your first automation' / 'Hojas de cálculo sin trabajo repetitivo', 'Reportes que se arman solos', 'Documentar cómo se hace el trabajo', 'Tu primera automatización'. Rows slide in 0.25 s apart from 25.6 s. At 28.4 s row M2 expands to show its lab line in mono small: 'Lab: turn last month's data into a weekly report draft.' / 'Laboratorio: convierte los datos del mes pasado en un borrador de reporte semanal.' Right column (x 1260 to 1800): a vertical role picker as small chips, 'Leadership', 'Sales', 'Marketing', 'Operations', 'Customer support' / 'Dirección', 'Ventas', 'Marketing', 'Operaciones', 'Atención al cliente', with 'Operations' selected (chip--flame) by a cursor click at 26.2 s before the module rows appear. Caption line 2 at 30.0 s. Swap at 33.6 s.",
+      "textEn": [
+        "02  A curriculum built for each role.",
+        "Exercises made from your own documents."
+      ],
+      "textEs": [
+        "02  Un programa armado para cada rol.",
+        "Ejercicios hechos con tus propios documentos."
+      ]
+    },
+    {
+      "id": "step3-practice",
+      "start": 34,
+      "end": 44,
+      "visual": "Hero mockup part 2, the practice exercise. Step header '03' top left. Left (x 120 to 700, y 260 to 820): a card 'Lab · M2' with the exercise text 'Turn last month's data into a weekly report draft.' / 'Convierte los datos del mes pasado en un borrador de reporte semanal.' and below it a short review checklist (three rows with empty boxes): 'Numbers match the source', 'Exceptions flagged', 'A person reviews before sending' / 'Las cifras coinciden con la fuente', 'Excepciones marcadas', 'Una persona revisa antes de enviar'. Right (x 780 to 1800, y 240 to 860): a paper document window (docPage, kicker 'Draft' / 'Borrador', title 'Weekly status report' / 'Reporte semanal de estado') with a heading, two short paragraphs of plausible neutral report text with no real figures (placeholder-like phrases such as 'Deliveries on schedule this week' / 'Entregas a tiempo esta semana'), and two bar blocks. At 37.0 s, 38.0 s the participant's review marks two phrases (mark, flame highlight); the checklist boxes tick 0.5 s after each mark, third box ticks at 39.6 s. A cursor moves from doc to checklist with restrained easing. At 40.6 s a small chip pops on the doc corner 'Saved to the team library' / 'Guardado en la biblioteca del equipo'. Caption line 2 at 39.0 s. Swap at 43.6 s.",
+      "textEn": [
+        "03  Everyone practices on their own task.",
+        "Live or on-site, in English or Spanish."
+      ],
+      "textEs": [
+        "03  Cada persona practica con su propia tarea.",
+        "En vivo o presencial, en español o inglés."
+      ]
+    },
+    {
+      "id": "step4-rules",
+      "start": 44,
+      "end": 52,
+      "visual": "Hero mockup part 3, the policy. Step header '04' top left. Center (x 420 to 1500, y 250 to 820): a paper window 'AI usage rules' / 'Reglas de uso de IA' with the mono tag 'Adapted to your policy' / 'Adaptadas a tu política', containing three rule rows that fade up 0.5 s apart from 44.8 s, each with an icon (check or lock from lib ICONS): 'Use the tools your company approved' / 'Usa las herramientas que tu empresa aprobó'; 'Sensitive data stays out of unapproved tools' / 'Los datos sensibles no van a herramientas no aprobadas'; 'A person reviews output before it leaves' / 'Una persona revisa antes de que algo salga'. At 47.4 s the same rule row 2 appears miniaturized as a small chip pinned onto a shrunken copy of the Lab card from scene 3 at the left edge (x 120 to 380), showing that rules live inside the exercise, not in a separate slide. No red alarm styling, warm neutral palette. Caption line 2 at 48.2 s. Swap at 51.6 s.",
+      "textEn": [
+        "04  Your rules, built into every exercise.",
+        "Which data, which tools, which uses."
+      ],
+      "textEs": [
+        "04  Tus reglas, dentro de cada ejercicio.",
+        "Qué datos, qué herramientas, qué usos."
+      ]
+    },
+    {
+      "id": "follow-up",
+      "start": 52,
+      "end": 60,
+      "visual": "Horizontal steps component across the frame (x 120 to 1800, y 330): 'Assess · 1 week', 'Tailor · 1-2 weeks', 'Train · 1 day to 6 weeks', 'Follow up · after training' / 'Evaluar · 1 semana', 'Adaptar · 1-2 semanas', 'Capacitar · de 1 día a 6 semanas', 'Acompañar · después de la formación'. steps.in at 52.2 s, then go() advances 0.5 s per step to the fourth, which stays highlighted in flame. Below (y 520 to 700) four deliverable chips fade up 0.25 s apart from 54.6 s: 'Workflow library', 'Follow-up session', 'Office hours', 'Adoption report' / 'Biblioteca de flujos', 'Sesión de seguimiento', 'Horario de consultas', 'Reporte de adopción'. Small mono line under the chips at 56.0 s: 'Workshops · Leadership program 4-6 weeks · Enablement 6-12 weeks' / 'Talleres · Programa para líderes 4-6 semanas · Capacitación a medida 6-12 semanas'. Headline lines at the bottom (y 800 to 930): line 1 at 52.6 s, line 2 at 55.6 s. Hold to 59.4 s, then hud.chrome off and fade.",
+      "textEn": [
+        "We stay until the habits stick.",
+        "Follow-up, office hours, adoption tracking."
+      ],
+      "textEs": [
+        "Nos quedamos hasta que el hábito se instale.",
+        "Seguimiento, consultas y medición de adopción."
+      ]
+    },
+    {
+      "id": "cta",
+      "start": 60,
+      "end": 66,
+      "visual": "ctaCard({lang}) centered: headline from the unit CTA, second line in <em> flame gradient, appears line by line at 60.3 s and 61.1 s; primary button 'Book a call' / 'Agendar una llamada' pops in at 62.0 s (tiny press scale only); url 'sandboxinnovate.com' in mono below at 62.4 s; Sandbox wordmark small above. Hold static to 66 s. No HUD.",
+      "textEn": [
+        "Train one team.",
+        "Then decide.",
+        "Book a call",
+        "sandboxinnovate.com"
+      ],
+      "textEs": [
+        "Forma a un equipo.",
+        "Después decides.",
+        "Agendar una llamada",
+        "sandboxinnovate.com"
+      ]
+    }
+  ],
+  "endCard": {
+    "en": {
+      "title": "Train one team. <em>Then decide.</em>",
+      "button": "Book a call",
+      "url": "sandboxinnovate.com"
+    },
+    "es": {
+      "title": "Forma a un equipo. <em>Después decides.</em>",
+      "button": "Agendar una llamada",
+      "url": "sandboxinnovate.com"
+    }
+  },
+  "meta": {
+    "title": {
+      "en": "How Sandbox Academy trains a team",
+      "es": "Cómo capacita Sandbox Academy a un equipo"
+    }
+  }
+}
