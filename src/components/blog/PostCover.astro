@@ -56,7 +56,7 @@ const sources = cover
 ---
 <div
   class:list={['pcv', `pcv--${variant}`, `pcv--${unit}`, !cover && 'pcv--empty', cls]}
-  style={`--pcv-ratio:${ratio};${cover ? `--pcv-pos:${cover.focal}` : ''}`}
+  style={`--pcv-ratio:${ratio};${cover ? `--pcv-pos:${cover.focal};--pcv-exp:${cover.exposure ?? 1}` : ''}`}
   aria-hidden={hero && cover ? undefined : 'true'}
 >
   {cover && sources && (
@@ -88,7 +88,7 @@ const sources = cover
     position: absolute; inset: 0; width: 100%; height: 100%; display: block;
     object-fit: cover; object-position: var(--pcv-pos, 50% 50%);
     /* brand grade, part 1: a touch less colour and light so bright photos sit on the near-black page */
-    filter: saturate(.86) contrast(1.04) brightness(.9);
+    filter: saturate(.86) contrast(1.04) brightness(calc(.9 * var(--pcv-exp, 1)));
     transition: transform 1.2s var(--ease-out-expo);
   }
   /* brand grade, part 2: warm flame wash (soft-light) + bottom/edge vignette */

@@ -29,6 +29,11 @@ export interface BlogCover {
   alt: Record<Lang, string>;
   /** CSS object-position, e.g. "45% 70%". */
   focal: string;
+  /**
+   * Optional exposure multiplier on top of the shared grade (default 1), for photos far darker or brighter
+   * than the rest of the series. Applied to the cover (CSS brightness) and the OG image alike.
+   */
+  exposure?: number;
   credit: {
     /** Photographer's name as shown on Unsplash. */
     name: string;
@@ -74,6 +79,7 @@ export const BLOG_COVERS: Record<string, BlogCover> = {
       es: 'Columna de concreto desgastada con varillas expuestas frente a un edificio de departamentos inconcluso y abandonado',
     },
     focal: '45% 38%',
+    exposure: 0.88,
     credit: { name: 'Muhammed Faizan Hussain', url: 'https://unsplash.com/@5zantrigger', photoPage: 'https://unsplash.com/photos/xbeeNZCgrFI' },
   },
   'measuring-ai-roi': {
@@ -110,6 +116,7 @@ export const BLOG_COVERS: Record<string, BlogCover> = {
       es: 'Adultos sentados en mesas largas en una sala de capacitación escuchan a un ponente fuera de cuadro',
     },
     focal: '62% 45%',
+    exposure: 0.94,
     credit: { name: 'Dwayne joe', url: 'https://unsplash.com/@spliff_dj_joe', photoPage: 'https://unsplash.com/photos/HETN8rHahA8' },
   },
   'generative-engine-optimization-guide': {
@@ -128,6 +135,7 @@ export const BLOG_COVERS: Record<string, BlogCover> = {
       es: 'Mano de un hombre con un bolígrafo junto a una libreta abierta y una máquina de escribir antigua en un escritorio oscuro',
     },
     focal: '45% 60%',
+    exposure: 1.3,
     credit: { name: 'Christian', url: 'https://unsplash.com/@axcreativeagency', photoPage: 'https://unsplash.com/photos/MjROQpMVNVA' },
   },
   'ai-for-real-estate-teams': {
@@ -142,11 +150,11 @@ export const BLOG_COVERS: Record<string, BlogCover> = {
   'white-label-ai-for-agencies': {
     image: whiteLabel,
     alt: {
-      en: 'A small creative studio team sits together on a yellow sofa beneath framed posters',
-      es: 'El equipo de un pequeño estudio creativo sentado en un sofá amarillo bajo carteles enmarcados',
+      en: 'Color swatch book and paper samples beside a tablet with hand-drawn palette sketches on a dark desk',
+      es: 'Muestrario de colores y tiras de papel junto a una tableta con bocetos de paletas sobre un escritorio oscuro',
     },
-    focal: '55% 78%',
-    credit: { name: 'Michael Proctor', url: 'https://unsplash.com/@mproctor', photoPage: 'https://unsplash.com/photos/GaaVbBLDLv0' },
+    focal: '60% 50%',
+    credit: { name: 'Balázs Kétyi', url: 'https://unsplash.com/@balazsketyi', photoPage: 'https://unsplash.com/photos/LPWl2pEVGKc' },
   },
 };
 

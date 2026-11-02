@@ -53,7 +53,7 @@ export async function GET({ params }: { params: { key: string } }) {
     const graded = await sharp(src)
       .resize(rw, rh)
       .extract({ left, top, width: W, height: H })
-      .modulate({ saturation: 0.86, brightness: 0.9 })
+      .modulate({ saturation: 0.86, brightness: 0.9 * (cover.exposure ?? 1) })
       .linear(1.04, -5.1)
       .toBuffer();
     const jpg = await sharp(graded)
