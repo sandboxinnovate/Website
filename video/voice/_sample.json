@@ -1,0 +1,17 @@
+{
+  "unit": "brains",
+  "voices": { "en": "af_heart", "es": "ef_dora" },
+  "pronounce": { "en": {}, "es": {} },
+  "lines": {
+    "en": [
+      { "scene": "hook", "at": 0.6, "text": "Most companies already know the answers. They're just stuck in a few people's heads." },
+      { "scene": "promise", "at": 8.6, "text": "Sandbox builds one brain for your company, and an agent for each process." },
+      { "scene": "step3-act", "at": 34.2, "text": "Agents qualify leads and keep your CRM up to date. That's where AI earns its keep." }
+    ],
+    "es": [
+      { "scene": "hook", "at": 0.6, "text": "Casi todas las empresas ya tienen las respuestas. El problema es que están en la cabeza de unas pocas personas." },
+      { "scene": "promise", "at": 8.6, "text": "En Sandbox armamos un brain para tu empresa y un agente para cada proceso." },
+      { "scene": "step3-act", "at": 34.2, "text": "Los agentes califican leads y mantienen al día tu CRM. Ahí es donde la IA se gana su lugar." }
+    ]
+  }
+}
