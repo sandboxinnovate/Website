@@ -1,0 +1,83 @@
+---
+/**
+ * Newsletter signup for the blog (lead kind 'newsletter', source 'blog').
+ * The submit logic is the shared newsletter script in Footer.astro ([data-newsletter] forms).
+ *   variant="band"  — blog index, full width with the quiet "Book a call" path
+ *   variant="card"  — end of a post, inside the article column
+ */
+import Icon from '@/components/ui/Icon.astro';
+import { UI } from '@/i18n/ui';
+import { BLOG } from '@/i18n/blog';
+import { localize, type Lang } from '@/i18n';
+import { SITE } from '@/data/site';
+
+interface Props { lang: Lang; variant?: 'band' | 'card'; id?: string }
+const { lang, variant = 'band', id = `bn-${variant}` } = Astro.props;
+const t = <T,>(o: Record<Lang, T>) => o[lang];
+const F = UI.footer;
+const N = BLOG.newsletter;
+---
+<div class:list={['bn', `bn--${variant}`]} data-reveal>
+  <div class="bn__copy">
+    <span class="mono-label bn__eb"><Icon name="mail" size={14} />{t(N.eyebrow)} · {t(BLOG.name)}</span>
+    <h2 class="bn__title" id={`${id}-title`} set:html={t(N.title)} />
+    <p class="bn__body">{t(N.body)}</p>
+  </div>
+  <div class="bn__box">
+    <form
+      class="bn__form"
+      data-newsletter
+      data-source="blog"
+      data-lang={lang}
+      data-msg-invalid={t(F.newsletterInvalid)}
+      data-msg-fail={`${t(F.newsletterFail)}${SITE.email}.`}
+      aria-labelledby={`${id}-title`}
+      novalidate
+    >
+      <label class="sr-only" for={`${id}-email`}>{t(F.newsletterLabel)}</label>
+      <input id={`${id}-email`} type="email" name="email" required autocomplete="email" placeholder={t(F.newsletterPlaceholder)} aria-describedby={`${id}-msg`} />
+      <input type="text" name="company_fax" tabindex="-1" autocomplete="off" aria-hidden="true" class="bn__hp" />
+      <button type="submit" class="btn btn-primary btn-sm bn__submit">
+        <span>{t(F.newsletterCta)}</span><span class="btn-chip"><Icon name="arrow-right" size={16} stroke={1.8} /></span>
+      </button>
+    </form>
+    <p id={`${id}-msg`} class="bn__err" data-newsletter-err role="alert" hidden></p>
+    <p class="bn__ok" data-newsletter-ok role="status" tabindex="-1" hidden><Icon name="check" size={16} stroke={2} />{t(F.newsletterOk)}</p>
+    <p class="bn__legal">{t(F.newsletterLegal)}<a href={localize(lang, '/privacy')}>{t(F.privacy)}</a></p>
+  </div>
+</div>
+
+<style>
+  .bn { position: relative; display: grid; gap: 24px; align-items: end; }
+  .bn--band { padding: clamp(26px, 4vw, 48px); border-radius: var(--radius-xl2); border: 1px solid var(--line); background: linear-gradient(180deg, rgb(255 255 255 / .03), rgb(255 255 255 / .008)), var(--color-ink-900); }
+  @media (min-width: 960px) { .bn--band { grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 56px; } }
+  .bn--card { padding: clamp(22px, 3vw, 32px); border-radius: 22px; border: 1px solid var(--line-strong); background: linear-gradient(180deg, rgb(245 131 39 / .06), rgb(255 255 255 / .01)), var(--color-ink-900); }
+  .bn__copy { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .bn__eb { display: inline-flex; align-items: center; gap: 8px; color: var(--color-flame-400); }
+  .bn__title { font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -.04em; line-height: 1.06; }
+  .bn--card .bn__title { font-size: clamp(1.3rem, 2vw, 1.6rem); }
+  .bn__title :global(em) { font-style: normal; color: var(--color-smoke); }
+  .bn__body { color: var(--color-mist); max-width: 52ch; font-size: 16px; }
+  .bn__box { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .bn__form { display: flex; align-items: center; gap: 8px; height: 56px; padding: 6px 6px 6px 20px; border-radius: 99px; border: 1px solid var(--line-strong); background: rgb(10 10 10 / .5); transition: border-color .2s; }
+  .bn__form:focus-within { border-color: rgb(245 131 39 / .6); }
+  .bn__form input[type='email'] { flex: 1; min-width: 0; height: 100%; background: transparent; border: 0; outline: 0; color: var(--color-bone); font-size: 16px; }
+  .bn__form input::placeholder { color: var(--color-smoke); }
+  .bn__form input[aria-invalid='true'] { color: var(--color-err); }
+  .bn__form[aria-busy='true'] { opacity: .7; }
+  .bn__submit { flex: none; }
+  .bn__submit:disabled { cursor: progress; }
+  @media (max-width: 420px) {
+    .bn__form { height: auto; flex-wrap: wrap; padding: 6px; border-radius: 24px; }
+    .bn__form input[type='email'] { flex: 1 1 100%; height: 46px; padding: 0 14px; }
+    .bn__submit { width: 100%; justify-content: space-between; }
+  }
+  .bn__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .bn__err { color: var(--color-err); font-size: 14px; }
+  .bn__ok { display: inline-flex; align-items: center; gap: 8px; color: var(--color-ok); font-size: 15px; }
+  .bn__ok:focus { outline: none; }
+  .bn__legal { font-size: 13px; color: var(--color-smoke); }
+  .bn__legal a { color: var(--color-smoke); text-decoration: underline; text-underline-offset: 3px; }
+  .bn__legal a:hover { color: var(--color-bone); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>

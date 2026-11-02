@@ -75,7 +75,7 @@ function scoreAnswer(p: Prepared, tokens: string[]): { score: number; indices: n
   return { score: (total / toks.length) * (0.6 + 0.4 * (hits / toks.length)), indices };
 }
 
-const ORDER: GroupId[] = ['recent', 'answers', 'pages', 'sections', 'cases', 'actions', 'fallback'];
+const ORDER: GroupId[] = ['recent', 'answers', 'pages', 'sections', 'cases', 'posts', 'actions', 'fallback'];
 
 export function search(query: string, prepared: Prepared[], recentIds: string[]): Group[] {
   const tokens = tokenize(query);

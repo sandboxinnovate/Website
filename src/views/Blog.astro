@@ -1,0 +1,366 @@
+---
+/**
+ * Blog index — "Field notes on applied AI" (routes: src/pages/blog/index.astro, src/pages/es/blog/index.astro).
+ * masthead → lead story (+ second story) → all articles with unit filters (URL hash, e.g. /blog/#brains)
+ * → newsletter + a quiet "Book a call" path.
+ * Without JS every post is visible (lead stories on top, the rest in the list) and the filters are hidden.
+ */
+import Base from '@/layouts/Base.astro';
+import Icon from '@/components/ui/Icon.astro';
+import PostCover from '@/components/blog/PostCover.astro';
+import BlogNewsletter from '@/components/blog/BlogNewsletter.astro';
+import { BLOG } from '@/i18n/blog';
+import { UI } from '@/i18n/ui';
+import { localize, type Lang } from '@/i18n';
+import { SITE, UNITS } from '@/data/site';
+import { blogIndexHref, formatDate, getPosts, isoDate, postHref, readingMinutes, rssHref, unitOf } from '@/lib/blog';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = <T,>(o: Record<Lang, T>) => o[lang];
+const I = BLOG.index;
+
+const posts = await getPosts(lang, { featuredFirst: true });
+const top = posts.slice(0, posts.length >= 4 ? 2 : posts.length ? 1 : 0);
+const [lead, second] = top;
+const topIds = new Set(top.map((p) => p.id));
+const counts = Object.fromEntries(UNITS.map((u) => [u.slug, posts.filter((p) => p.data.unit === u.slug).length]));
+const newest = posts.length ? new Date(Math.max(...posts.map((p) => p.data.date.getTime()))) : null;
+const minRead = (n: number) => BLOG.post.minRead[lang](n);
+
+const indexUrl = new URL(blogIndexHref(lang), SITE.url).href;
+const blogLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': `${indexUrl}#blog`,
+  name: t(BLOG.name),
+  description: t(BLOG.seo.description),
+  url: indexUrl,
+  inLanguage: lang,
+  publisher: { '@id': 'https://sandboxinnovate.com/#organization' },
+  blogPost: posts.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    url: new URL(postHref(p), SITE.url).href,
+    datePublished: isoDate(p.data.date),
+    articleSection: unitOf(p).name[lang],
+  })),
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Sandbox', item: new URL(localize(lang, '/'), SITE.url).href },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: indexUrl },
+  ],
+};
+---
+<Base lang={lang} title={t(BLOG.seo.title)} description={t(BLOG.seo.description)} jsonLd={[blogLd, breadcrumbLd]}>
+  <section class="bh" aria-labelledby="bh-title">
+    <div class="bh__bg" aria-hidden="true">
+      <div class="bg-grid bh__grid"></div>
+      <div class="glow-ember bh__glow"></div>
+    </div>
+    <div class="container-x bh__inner">
+      <div class="bh__meta-top" data-reveal>
+        <span class="mono-label bh__idx">[{t(I.eyebrow)}]</span>
+        <span class="mono-label bh__eb">{t(BLOG.home.eyebrow)}</span>
+        <span class="bh__rule" aria-hidden="true"></span>
+      </div>
+      <div class="bh__grid-2">
+        <h1 id="bh-title" class="bh__title display-xl" data-reveal style="--reveal-delay:80" set:html={t(I.title)} />
+        <div class="bh__side" data-reveal style="--reveal-delay:160">
+          <p class="lede bh__lede">{t(I.lede)}</p>
+          <ul class="bh__facts">
+            <li><span class="bh__dot" aria-hidden="true"></span>{I.count[lang](posts.length)}</li>
+            {newest && <li><time datetime={isoDate(newest)}>{formatDate(newest, lang)}</time></li>}
+            <li>{t(I.languages)}</li>
+            <li><a href={rssHref(lang)} class="bh__rss"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14" /><circle cx="6" cy="18" r="1.3" fill="currentColor" /></svg>{t(I.rss)}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {lead && (
+    <section class="bt" aria-label={t(I.featured)} data-blog-top>
+      <div class:list={['container-x bt__grid', second && 'bt__grid--2']}>
+        <article class="lead" data-card data-reveal>
+          <div class="lead__media">
+            <PostCover seed={lead.data.translationKey} unit={lead.data.unit} variant="lead" ratio="16 / 10" />
+          </div>
+          <div class="lead__body">
+            <p class="lead__kicker">
+              {lead.data.featured && <span class="lead__feat"><span class="lead__pulse" aria-hidden="true"></span>{t(I.featured)}</span>}
+              <span class="lead__unit">{unitOf(lead).code} · {unitOf(lead).name[lang]}</span>
+            </p>
+            <h2 class="lead__title"><a href={postHref(lead)} class="card-link">{lead.data.title}</a></h2>
+            <p class="lead__dek">{lead.data.dek}</p>
+            <ul class="lead__takeaways">
+              {lead.data.takeaways.slice(0, 3).map((k) => <li><Icon name="check" size={15} stroke={2} /><span>{k}</span></li>)}
+            </ul>
+            <p class="lead__foot">
+              <span class="lead__read">{t(I.read)}<Icon name="arrow-up-right" size={16} /></span>
+              <span class="lead__meta"><time datetime={isoDate(lead.data.date)}>{formatDate(lead.data.date, lang, 'short')}</time> · {minRead(readingMinutes(lead))}</span>
+            </p>
+          </div>
+        </article>
+
+        {second && (
+          <article class="second" data-card data-reveal style="--reveal-delay:120">
+            <PostCover seed={second.data.translationKey} unit={second.data.unit} variant="card" ratio="16 / 10" class="second__cover" />
+            <p class="second__kicker">
+              {second.data.featured && <span class="lead__feat">{t(I.featured)}</span>}
+              <span class="lead__unit">{unitOf(second).code} · {unitOf(second).name[lang]}</span>
+            </p>
+            <h2 class="second__title"><a href={postHref(second)} class="card-link">{second.data.title}</a></h2>
+            <p class="second__dek">{second.data.dek}</p>
+            <p class="lead__meta second__meta"><time datetime={isoDate(second.data.date)}>{formatDate(second.data.date, lang, 'short')}</time> · {minRead(readingMinutes(second))}</p>
+          </article>
+        )}
+      </div>
+    </section>
+  )}
+
+  <section class="bl" aria-labelledby="bl-title" data-blog>
+    <div class="container-x">
+      <div class="bl__head">
+        <h2 id="bl-title" class="bl__title">{t(I.allTitle)}</h2>
+        <div class="bl__filters" role="group" aria-label={t(I.filterLabel)} data-filters>
+          <button type="button" class="bl__chip" data-filter="" aria-pressed="true">
+            {t(I.all)}<span class="bl__chip-n">{posts.length}</span>
+          </button>
+          {UNITS.map((u) => (
+            <button type="button" class="bl__chip" data-filter={u.slug} aria-pressed="false" disabled={counts[u.slug] === 0}>
+              {u.name[lang]}<span class="bl__chip-n">{counts[u.slug]}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+      <p class="mono-label bl__status" role="status" aria-live="polite" data-status data-total={posts.length}></p>
+
+      {posts.length > 0 ? (
+        <ol class="bl__rows" data-rows>
+          {posts.map((p) => {
+            const u = unitOf(p);
+            return (
+              <li class="row" data-unit={p.data.unit} data-top={topIds.has(p.id) ? '' : undefined} data-card>
+                <span class="row__n" aria-hidden="true"></span>
+                <PostCover seed={p.data.translationKey} unit={p.data.unit} variant="thumb" ratio="4 / 3" class="row__cover" />
+                <div class="row__body">
+                  <p class="row__meta">
+                    <span class="row__unit">{u.name[lang]}</span>
+                    <span aria-hidden="true">·</span>
+                    <time datetime={isoDate(p.data.date)}>{formatDate(p.data.date, lang, 'short')}</time>
+                    <span aria-hidden="true">·</span>
+                    <span>{minRead(readingMinutes(p))}</span>
+                  </p>
+                  <h3 class="row__title"><a href={postHref(p)} class="card-link">{p.data.title}</a></h3>
+                  <p class="row__dek">{p.data.dek}</p>
+                </div>
+                <span class="row__go" aria-hidden="true"><Icon name="arrow-up-right" size={18} /></span>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <div class="bl__empty">
+          <p class="bl__empty-title">{t(I.emptyTitle)}</p>
+          <p>{t(I.empty)}</p>
+        </div>
+      )}
+      <p class="bl__none" data-none hidden>{t(I.empty)}</p>
+    </div>
+  </section>
+
+  <section class="bnl" aria-label={t(BLOG.newsletter.eyebrow)}>
+    <div class="container-x bnl__inner">
+      <BlogNewsletter lang={lang} variant="band" id="blog-news" />
+      <div class="bnl__quiet" data-reveal>
+        <p><span class="bnl__q">{t(I.quiet)}</span> {t(I.quietBody)}</p>
+        <a href={localize(lang, '/contact')} class="bnl__link">{t(UI.cta.primary)}<Icon name="arrow-up-right" size={16} /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-blog]');
+  if (root) {
+    const rows = root.querySelector<HTMLElement>('[data-rows]');
+    const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const filters = root.querySelector<HTMLElement>('[data-filters]');
+    const status = root.querySelector<HTMLElement>('[data-status]');
+    const none = root.querySelector<HTMLElement>('[data-none]');
+    const top = document.querySelector<HTMLElement>('[data-blog-top]');
+    const items = rows ? [...rows.querySelectorAll<HTMLElement>(':scope > li')] : [];
+    const units = chips.map((c) => c.dataset.filter).filter((u): u is string => !!u);
+    const es = document.documentElement.lang.startsWith('es');
+    const total = items.length;
+
+    const apply = (unit: string, keepPlace = false) => {
+      if (unit && !units.includes(unit)) unit = '';
+      const chip = chips.find((c) => c.dataset.filter === unit);
+      if (unit && chip?.disabled) unit = '';
+      const before = keepPlace && filters ? filters.getBoundingClientRect().top : 0;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String((c.dataset.filter || '') === unit)));
+      let shown = 0;
+      items.forEach((li) => {
+        // "All": the lead stories stay on top, the list shows the rest. A unit: the list shows every match.
+        const show = unit ? li.dataset.unit === unit : !li.hasAttribute('data-top');
+        li.hidden = !show;
+        if (show) shown++;
+      });
+      if (rows) rows.dataset.filter = unit || 'all';
+      if (top) top.hidden = !!unit;
+      if (none) none.hidden = shown > 0;
+      if (status) {
+        const name = chip && unit ? chip.firstChild?.textContent?.trim() : '';
+        const n = items.filter((li) => !unit || li.dataset.unit === unit).length;
+        status.textContent = unit ? (es ? `${n} de ${total} artículos · ${name}` : `${n} of ${total} articles · ${name}`) : '';
+      }
+      if (keepPlace && filters) {
+        const after = filters.getBoundingClientRect().top;
+        if (Math.abs(after - before) > 1) window.scrollBy({ top: after - before, behavior: 'instant' as ScrollBehavior });
+      }
+    };
+
+    const fromHash = () => decodeURIComponent(location.hash.slice(1)).toLowerCase();
+    chips.forEach((c) =>
+      c.addEventListener('click', () => {
+        const unit = c.dataset.filter || '';
+        apply(unit, true);
+        history.replaceState(history.state, '', unit ? `#${unit}` : location.pathname + location.search);
+      }),
+    );
+    addEventListener('hashchange', () => apply(fromHash()));
+    apply(fromHash());
+    root.classList.add('is-ready');
+  }
+</script>
+
+<style>
+  /* ---------- masthead ---------- */
+  .bh { position: relative; padding-top: calc(var(--nav-h) + clamp(40px, 6vw, 80px)); padding-bottom: clamp(36px, 5vw, 56px); isolation: isolate; overflow: hidden; }
+  .bh__bg { position: absolute; inset: 0; z-index: -1; }
+  .bh__grid { position: absolute; inset: 0; opacity: .6; }
+  .bh__glow { width: 900px; height: 600px; right: -260px; top: -180px; opacity: .4; }
+  .bh__inner { display: flex; flex-direction: column; gap: clamp(22px, 3vw, 32px); }
+  .bh__meta-top { display: flex; align-items: center; gap: 14px; max-width: 520px; }
+  .bh__eb { color: var(--color-flame-400); }
+  .bh__rule { flex: 1; min-width: 40px; height: 1px; background: linear-gradient(90deg, var(--line-strong), transparent); }
+  .bh__grid-2 { display: grid; gap: 28px; align-items: end; }
+  @media (min-width: 1080px) { .bh__grid-2 { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 64px; } }
+  .bh__title { max-width: 12ch; }
+  :global(:lang(es)) .bh__title { max-width: 13ch; font-size: clamp(2.3rem, 5.1vw, 5rem); }
+  .bh__title :global(em) { font-style: normal; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .bh__side { display: flex; flex-direction: column; gap: 22px; padding-bottom: 8px; }
+  .bh__lede { max-width: 36em; }
+  .bh__facts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .bh__facts li { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 13px; border-radius: 999px; border: 1px solid var(--line-strong); background: rgb(255 255 255 / .025);
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-mist); }
+  .bh__facts li:has(.bh__rss) { padding: 0; }
+  .bh__dot { width: 6px; height: 6px; border-radius: 9px; background: var(--color-flame-500); box-shadow: 0 0 10px var(--color-flame-500); }
+  .bh__rss { display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 13px; border-radius: inherit; color: var(--color-mist); transition: color .2s, background-color .2s; }
+  .bh__rss:hover { color: var(--color-flame-400); background: rgb(245 131 39 / .06); }
+  .bh__rss :global(svg) { color: var(--color-flame-400); }
+
+  /* ---------- stretched card links ---------- */
+  .card-link::after { content: ''; position: absolute; inset: 0; z-index: 2; border-radius: inherit; }
+  .card-link:focus-visible { outline: none; }
+  [data-card]:has(.card-link:focus-visible) { outline: 2px solid var(--color-flame-400); outline-offset: 4px; }
+
+  /* ---------- top stories ---------- */
+  .bt { padding-bottom: clamp(56px, 8vw, 104px); }
+  .bt__grid { display: grid; gap: 14px; }
+  @media (min-width: 1080px) { .bt__grid--2 { grid-template-columns: minmax(0, 2.05fr) minmax(0, 1fr); } }
+  .lead { position: relative; display: grid; border-radius: var(--radius-xl2); border: 1px solid var(--line); overflow: hidden;
+    background: linear-gradient(180deg, rgb(255 255 255 / .035), rgb(255 255 255 / .01)), var(--color-ink-900); transition: border-color .4s; }
+  .lead:hover, .second:hover { border-color: rgb(245 131 39 / .38); }
+  @media (min-width: 760px) and (max-width: 1079px), (min-width: 1280px) { .lead { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); } }
+  .lead__media { position: relative; min-height: 100%; }
+  .lead__media :global(.pcv) { height: 100%; }
+  @media (min-width: 760px) and (max-width: 1079px), (min-width: 1280px) { .lead__media { min-height: 340px; } .lead__media :global(.pcv) { position: absolute; inset: 0; aspect-ratio: auto; } }
+  .lead__body { display: flex; flex-direction: column; gap: 16px; padding: clamp(22px, 3vw, 36px); }
+  .lead__kicker, .second__kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; }
+  .lead__feat { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; border-radius: 99px; color: #1a0d03; background: var(--grad-cta); font-weight: 600; }
+  .lead__pulse { width: 6px; height: 6px; border-radius: 9px; background: #1a0d03; }
+  .lead__unit { color: var(--color-flame-400); }
+  .lead__title { font-size: clamp(1.5rem, 2.2vw, 2.15rem); line-height: 1.06; letter-spacing: -.04em; transition: color .3s; }
+  .lead:hover .lead__title, .second:hover .second__title { color: var(--color-flame-400); }
+  .lead__dek { color: var(--color-mist); font-size: clamp(15.5px, 1.2vw, 17px); line-height: 1.55; }
+  .lead__takeaways { display: flex; flex-direction: column; gap: 8px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .lead__takeaways li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; font-size: 14.5px; line-height: 1.45; color: var(--color-mist); }
+  .lead__takeaways li :global(svg) { margin-top: 2px; color: var(--color-flame-400); }
+  .lead__foot { margin-top: auto; padding-top: 8px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+  .lead__read { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 12px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--color-bone); }
+  .lead__read :global(svg) { color: var(--color-flame-400); transition: transform .5s var(--ease-out-expo); }
+  .lead:hover .lead__read :global(svg) { transform: rotate(45deg); }
+  .lead__meta { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-smoke); }
+  .second { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 10px 10px 24px; border-radius: var(--radius-xl2); border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgb(255 255 255 / .03), rgb(255 255 255 / .008)), var(--color-ink-900); transition: border-color .4s; }
+  .second :global(.second__cover) { border-radius: 20px; }
+  .second__kicker, .second__title, .second__dek, .second__meta { padding-inline: 14px; }
+  .second__kicker { margin-top: 6px; }
+  .second__title { font-size: clamp(1.25rem, 1.8vw, 1.55rem); line-height: 1.15; letter-spacing: -.03em; transition: color .3s; }
+  .second__dek { color: var(--color-mist); font-size: 15px; line-height: 1.55; }
+  .second__meta { margin-top: auto; }
+
+  /* ---------- list ---------- */
+  .bl { padding-bottom: clamp(64px, 9vw, 120px); scroll-margin-top: var(--nav-h); }
+  .bl__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; padding-bottom: 20px; border-bottom: 1px solid var(--line-strong); }
+  .bl__title { font-size: clamp(1.5rem, 2.6vw, 2.1rem); letter-spacing: -.04em; }
+  .bl__filters { display: flex; gap: 6px; max-width: 100%; overflow-x: auto; scrollbar-width: none; padding: 3px; margin: -3px; }
+  .bl__filters::-webkit-scrollbar { display: none; }
+  :global(.no-js) .bl__filters { display: none; }
+  .bl__chip { flex: none; display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 12px 0 15px; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--line-strong); background: rgb(255 255 255 / .02); color: var(--color-mist);
+    font-family: var(--font-display); font-size: 11.5px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; transition: color .2s, border-color .2s, background-color .2s; }
+  .bl__chip:hover:not(:disabled) { color: var(--color-bone); border-color: rgb(245 131 39 / .45); }
+  .bl__chip[aria-pressed='true'] { color: #1a0d03; background: var(--grad-cta); border-color: transparent; }
+  .bl__chip:disabled { opacity: .4; cursor: not-allowed; }
+  .bl__chip-n { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 99px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0; background: rgb(255 255 255 / .07); color: inherit; }
+  .bl__chip[aria-pressed='true'] .bl__chip-n { background: rgb(26 13 3 / .16); }
+  .bl__status { min-height: 1em; margin-top: 14px; color: var(--color-smoke); }
+  .bl__status:empty { margin-top: 0; }
+
+  .bl__rows { counter-reset: row; }
+  .row { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; grid-template-areas: 'cover meta meta' 'title title title' 'dek dek dek'; column-gap: 14px; row-gap: 10px; align-items: center;
+    padding: 22px 0 24px; border-bottom: 1px solid var(--line); counter-increment: row; transition: background-color .4s; }
+  .row[hidden] { display: none; }
+  .bl__rows:not([data-filter]) > .row[data-top] { display: none; }
+  .row__n { display: none; }
+  .row :global(.row__cover) { grid-area: cover; border-radius: 12px; }
+  .row__body { display: contents; }
+  .row__meta { grid-area: meta; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-smoke); }
+  .row__unit { color: var(--color-flame-400); }
+  .row__title { grid-area: title; font-size: clamp(1.18rem, 2vw, 1.62rem); line-height: 1.16; letter-spacing: -.03em; transition: color .3s; }
+  .row__dek { grid-area: dek; color: var(--color-mist); font-size: 15.5px; line-height: 1.55; max-width: 64ch; }
+  .row__go { display: none; }
+  .row:hover .row__title { color: var(--color-flame-400); }
+  .row:has(.card-link:focus-visible) { outline-offset: 2px; border-radius: 12px; }
+  @media (min-width: 860px) {
+    .row { grid-template-columns: 52px 220px minmax(0, 1fr) 48px; grid-template-areas: 'n cover body go'; column-gap: 28px; padding: 26px 16px 26px 0; align-items: center; }
+    .row::before { content: ''; position: absolute; inset: 0 -16px; border-radius: 18px; background: rgb(245 131 39 / .035); opacity: 0; transition: opacity .4s; z-index: -1; }
+    .row:hover::before { opacity: 1; }
+    .row__n { display: block; grid-area: n; align-self: start; padding-top: 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--color-smoke); }
+    .row__n::before { content: counter(row, decimal-leading-zero); }
+    .row:hover .row__n { color: var(--color-flame-400); }
+    .row__body { display: flex; flex-direction: column; gap: 10px; grid-area: body; min-width: 0; }
+    .row__go { grid-area: go; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 99px; border: 1px solid var(--line-strong); color: var(--color-mist); transition: transform .5s var(--ease-out-expo), color .3s, border-color .3s; }
+    .row:hover .row__go { transform: rotate(45deg); color: var(--color-flame-400); border-color: rgb(245 131 39 / .5); }
+  }
+  @media (min-width: 1080px) { .row { grid-template-columns: 64px 280px minmax(0, 1fr) 48px; column-gap: 36px; } }
+  .bl__empty, .bl__none { padding: 48px 0; color: var(--color-mist); }
+  .bl__empty-title { font-family: var(--font-display); font-size: 1.3rem; color: var(--color-bone); margin-bottom: 8px; }
+  @media (prefers-reduced-motion: reduce) { .row, .row::before, .row__go, .lead__read :global(svg) { transition: none; } }
+
+  /* ---------- newsletter + quiet call ---------- */
+  .bnl { padding-bottom: clamp(48px, 7vw, 96px); }
+  .bnl__inner { display: flex; flex-direction: column; gap: 14px; }
+  .bnl__quiet { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 28px; padding: 20px clamp(20px, 3vw, 32px); border-radius: 20px; border: 1px dashed var(--line-strong); color: var(--color-mist); font-size: 15.5px; }
+  .bnl__quiet p { max-width: 72ch; }
+  .bnl__q { color: var(--color-bone); font-weight: 500; }
+  .bnl__link { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-family: var(--font-display); font-size: 12px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--color-flame-400); border-bottom: 1px solid rgb(245 131 39 / .4); }
+  .bnl__link:hover { color: var(--color-bone); border-color: var(--color-bone); }
+</style>

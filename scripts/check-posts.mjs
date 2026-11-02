@@ -19,7 +19,7 @@ const BANNED = {
   en: [/\bdelv(e|ing)\b/i, /\bunlock(s|ing)?\b/i, /\bunleash/i, /\bseamless(ly)?\b/i, /\bgame[- ]chang/i, /\brevolutioni[sz]e/i, /\bsupercharg/i, /\bempower/i, /\bharness(ing)? the\b/i, /\belevate\b/i, /\bcutting[- ]edge\b/i, /\bnext[- ]level\b/i, /fast[- ]paced world/i, /ever[- ]evolving/i, /\bin conclusion\b/i, /let'?s dive in/i, /\btapestry\b/i, /\btestament to\b/i, /\blandscape of\b/i, /navigate the complexit/i],
   es: [/en el mundo actual/i, /en la era de/i, /\bpotenci(ar|a|e)\b/i, /\bdesbloque/i, /\brevolucion(ar|a)\b/i, /sin precedentes/i, /\bsumerj/i, /aprovechar al m[aá]ximo/i, /un antes y un despu[eé]s/i, /cabe destacar/i, /en conclusi[oó]n/i, /llevar(lo)? al siguiente nivel/i, /\bsinergia/i],
 };
-const VOSEO = /\b(vos|ten[eé]s|pod[eé]s|quer[eé]s|sab[eé]s|ven[ií]s|sos|hac[eé]s|dec[ií]s|mir[aá] |fijate|ten[eé] en cuenta|vosotros|vuestr[oa]s?|ten[eé]is|pod[eé]is|ordenador)\b/i;
+const VOSEO = /\b(vos|ten[eé]s|pod[eé]s|quer[eé]s|sabés|ven[ií]s|sos|hacés|dec[ií]s|mirá |fijate|ten[eé] en cuenta|vosotros|vuestr[oa]s?|ten[eé]is|pod[eé]is|ordenador)\b/i;
 const FORBIDDEN = /symphon|sinfon[ií]a os|auto[ -_]?client/i;
 const MONEY = /(US?\$|€|£|USD|EUR|MXN|ARS|COP|CLP)\s?\d|\d\s?(USD|EUR|d[oó]lares|euros)\b/i;
 

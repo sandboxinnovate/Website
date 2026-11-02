@@ -55,11 +55,12 @@ Each payload also carries the page it was sent from, the referrer, the visitor's
 | Navigation, footer and shared button copy (EN/ES) | `src/i18n/ui.ts` |
 | Home page copy (EN/ES) | `src/i18n/home.ts` |
 | Service pages copy (EN/ES) | `src/i18n/units/` |
+| Blog posts and copy | `src/content/blog/`, `src/i18n/blog.ts` (see **Blog** below) |
 | About / Work / Privacy copy | `src/i18n/about.ts`, `src/i18n/work.ts`, `src/i18n/privacy.ts` |
 | Page layouts | `src/views/*.astro` (routes in `src/pages/` are thin wrappers) |
 | Interactive widgets | `src/components/widgets/<Name>/` (each has its own `copy.ts`) |
 | Logo (vector reconstruction of the brand cube) | `src/components/ui/Logo.astro`, `public/favicon.svg` |
-| SEO: sitemap, robots, AI-crawler summary | auto `sitemap-index.xml`, `public/robots.txt`, `public/llms.txt` |
+| SEO: sitemap, robots, AI-crawler summary | auto `sitemap-index.xml`, `public/robots.txt`, `/llms.txt` (`src/pages/llms.txt.ts` + `src/data/llms.txt`) |
 | Cache headers for Netlify / Cloudflare Pages | `public/_headers` |
 
 ## Editing copy
@@ -71,6 +72,46 @@ title: { en: 'Straight <em>answers</em>', es: 'Respuestas <em>directas</em>' }
 ```
 
 `<em>` inside a section title renders a two-tone (grey) accent. The orange gradient accent is reserved for heroes, closing CTA bands and one section per page (pass `accent` to `SectionHeading` / `WidgetSection`). Spanish copy uses neutral Latin-American Spanish with "tú".
+
+## Blog
+
+“Field notes on applied AI” / “Notas de campo sobre IA aplicada” — `/blog/` and `/es/blog/`.
+
+**Add a post:** write `src/content/blog/en/<en-slug>.md` and its Spanish pair `src/content/blog/es/<es-slug>.md` (plain Markdown, no MDX). Files starting with `_` are ignored (drafts). The two versions are paired by `translationKey` (= the EN slug); a post without its pair still builds, and the EN/ES switch falls back to the other language's blog index.
+
+```yaml
+---
+title: "What a company brain is (and what it isn't)"   # 20–75 chars, sentence case (the H1)
+description: "…"                                         # 110–170 chars (meta description)
+dek: "…"                                                 # 40–240 chars (subtitle)
+date: 2026-11-02
+lang: en                                                 # must match the folder
+translationKey: what-is-a-company-brain
+unit: brains                                             # brains | consulting | growth | academy | products | partners
+tags: ["agents", "knowledge base"]                       # 2–4, lowercase
+readingMinutes: 8                                        # ≈ words / 220
+takeaways: ["…", "…", "…"]                               # 3–5 → "Key takeaways" box
+faq: [{ q: "…", a: "…" }]                                # optional, 2–4 → accordion + FAQPage JSON-LD
+featured: true                                           # optional → lead story on the index / home
+author: sandbox
+---
+```
+
+Body: no H1; 1–3 intro paragraphs, then `## ` sections (`###` allowed). GFM tables, lists, fenced code blocks (rendered with a Copy button) and callouts written as `> **Example:** …`, `> **Note:** …`, `> **Rule of thumb:** …` (ES: `Ejemplo`, `Nota`, `Regla práctica`). Internal links are root-relative with a trailing slash (`/services/brains/`, `/es/blog/<es-slug>/`, `/#roi`).
+
+**Check before committing:** `node scripts/check-posts.mjs [translationKey]` — 0 errors required; read every warning. The build also validates the frontmatter (`src/content.config.ts`) and fails on an invalid post.
+
+| What | Where |
+| --- | --- |
+| Schema / helpers (sorting, translations, related posts) | `src/content.config.ts`, `src/lib/blog.ts` |
+| Index and post templates | `src/views/Blog.astro`, `src/views/Post.astro`, prose styles in `src/styles/prose.css` |
+| Markdown extras (heading anchors, callouts, scrollable tables, code Copy) | `src/lib/markdown/blog-hast.mjs` (registered in `astro.config.mjs`) |
+| Generated cover art (seeded by `translationKey`, themed by unit) | `src/lib/cover.ts`, `src/components/blog/PostCover.astro` |
+| Per-post OG images (built from the cover, sharp) | `src/pages/og/blog/[key].png.ts` |
+| Copy (EN/ES), unit CTAs | `src/i18n/blog.ts` |
+| RSS / AI-crawler summary / palette search index | `/rss.xml`, `/es/rss.xml`, `/llms.txt` (base text in `src/data/llms.txt`), `/blog/index.json` |
+
+Posts also appear on the home page (“Field notes”, featured first), on their unit's service page (“Related reading”), in the ⌘K palette and in the sitemap (with hreflang pairs from `translationKey`). `node scripts/shoot-all.mjs` screenshots every post.
 
 ## House rules
 

@@ -19,6 +19,7 @@ Pricing is not published: it depends on scope and market and is discussed on a c
 
 - [About](https://sandboxinnovate.com/about): How Sandbox went from marketing agency to AI company, its principles and how it works across markets.
 - [Work](https://sandboxinnovate.com/work): Client case studies with results, and the reference architecture of a Sandbox brain.
+- [Blog](https://sandboxinnovate.com/blog/): Field notes on applied AI — practical articles on AI agents, company brains, AI ROI, training and visibility in AI answers (English and Spanish).
 - [AI Diagnostic](https://sandboxinnovate.com/diagnostic): A 3-minute AI-readiness assessment — no sign-up needed to see the score by dimension and the recommended next steps.
 - [Contact](https://sandboxinnovate.com/contact): Book a 30-minute call.
 

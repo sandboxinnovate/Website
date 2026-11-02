@@ -1,0 +1,37 @@
+---
+/** Home: three blog posts (featured first), before the FAQ. Hidden when there are no posts. */
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import PostCard from '@/components/blog/PostCard.astro';
+import { BLOG } from '@/i18n/blog';
+import { HOME } from '@/i18n/home';
+import { blogIndexHref, getPosts } from '@/lib/blog';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const H = BLOG.home;
+const posts = (await getPosts(lang, { featuredFirst: true })).slice(0, 3);
+---
+{posts.length > 0 && (
+  <section class="fn section-y" id="field-notes" aria-labelledby="fn-title">
+    <div class="container-x">
+      <div class="fn__head">
+        <SectionHeading id="fn-title" index={HOME.fieldNotes.index} eyebrow={H.eyebrow[lang]} title={H.title[lang]} lede={H.lede[lang]} />
+        <a class="fn__link" href={blogIndexHref(lang)} data-reveal>{H.all[lang]}<Icon name="arrow-up-right" size={16} /></a>
+      </div>
+      <div class:list={['fn__grid', `fn__grid--${posts.length}`]}>
+        {posts.map((p, i) => <PostCard post={p} lang={lang} style={`--reveal-delay:${i * 110}`} />)}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .fn__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(36px, 5vw, 56px); }
+  .fn__link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 12.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--color-flame-400); padding-bottom: 6px; border-bottom: 1px solid rgb(245 131 39 / .4); }
+  .fn__link:hover { color: var(--color-bone); border-color: var(--color-bone); }
+  .fn__grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .fn__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .fn__grid--3 { grid-template-columns: repeat(3, 1fr); } }
+</style>

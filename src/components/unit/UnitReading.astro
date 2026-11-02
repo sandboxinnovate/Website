@@ -1,0 +1,44 @@
+---
+/** Unit pages: up to three blog posts of this unit ("Related reading"). Hidden when the unit has none. */
+import Icon from '@/components/ui/Icon.astro';
+import PostCard from '@/components/blog/PostCard.astro';
+import { BLOG } from '@/i18n/blog';
+import { blogIndexHref, postsByUnit } from '@/lib/blog';
+import type { UnitSlug } from '@/data/site';
+import type { Lang } from '@/i18n';
+
+interface Props { lang: Lang; slug: UnitSlug }
+const { lang, slug } = Astro.props;
+const C = BLOG.unit;
+const posts = await postsByUnit(lang, slug, 3);
+---
+{posts.length > 0 && (
+  <section class="urd" aria-labelledby="urd-title">
+    <div class="container-x">
+      <div class="urd__head">
+        <div class="urd__titles">
+          <span class="mono-label urd__eb">{C.eyebrow[lang]}</span>
+          <h2 id="urd-title" class="urd__title" set:html={C.title[lang]} />
+        </div>
+        <a href={`${blogIndexHref(lang)}#${slug}`} class="urd__all">{C.all[lang]}<Icon name="arrow-up-right" size={15} /></a>
+      </div>
+      <div class:list={['urd__grid', `urd__grid--${posts.length}`]}>
+        {posts.map((p, i) => <PostCard post={p} lang={lang} style={`--reveal-delay:${i * 90}`} />)}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .urd { padding-block: clamp(64px, 9vw, 120px) 0; }
+  .urd__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 28px; }
+  .urd__titles { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .urd__eb { color: var(--color-flame-400); }
+  .urd__title { font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -.04em; }
+  .urd__title :global(em) { font-style: normal; color: var(--color-smoke); }
+  .urd__all { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-family: var(--font-display); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--color-mist); }
+  .urd__all:hover { color: var(--color-flame-400); }
+  .urd__grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .urd__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .urd__grid--3 { grid-template-columns: repeat(3, 1fr); } }
+</style>

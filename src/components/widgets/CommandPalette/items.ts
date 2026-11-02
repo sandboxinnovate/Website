@@ -2,7 +2,7 @@ import { localize, type Lang } from '@/i18n';
 import { SITE, UNITS, type IconName } from '@/data/site';
 import { CASES } from '@/i18n/work';
 
-export type GroupId = 'recent' | 'answers' | 'pages' | 'sections' | 'cases' | 'actions' | 'fallback';
+export type GroupId = 'recent' | 'answers' | 'pages' | 'sections' | 'cases' | 'posts' | 'actions' | 'fallback';
 export type ItemIcon = IconName | 'home' | 'copy' | 'hash' | 'clock';
 
 export type Run =
@@ -51,6 +51,7 @@ const PAGES: PageDef[] = [
   { id: 'home', path: '/', label: both('Home', 'Inicio'), hint: both('What we do, interactive demos and how we work', 'Qué hacemos, demos interactivas y cómo trabajamos'), icon: 'home', kw: 'home start index inicio portada' },
   { id: 'diagnostic', path: '/diagnostic', label: both('AI Diagnostic', 'Diagnóstico de IA'), hint: both('Your readiness score in 3 minutes', 'Tu puntaje de preparación en 3 minutos'), icon: 'chart', kw: 'diagnostic readiness score assessment quiz test diagnostico evaluacion puntaje' },
   { id: 'work', path: '/work', label: both('Work', 'Casos'), hint: both('Selected projects', 'Proyectos seleccionados'), icon: 'layers', kw: 'work cases case studies projects portfolio casos proyectos portafolio' },
+  { id: 'blog', path: '/blog/', label: both('Blog', 'Blog'), hint: both('Field notes on applied AI', 'Notas de campo sobre IA aplicada'), icon: 'layers', kw: 'blog articles article posts guides notes field notes newsletter articulos articulo guias notas' },
   { id: 'about', path: '/about', label: both('About', 'Nosotros'), hint: both('Who we are and how we work', 'Quiénes somos y cómo trabajamos'), icon: 'spark', kw: 'about team company who story nosotros equipo empresa quienes' },
   { id: 'contact', path: '/contact', label: both('Contact', 'Contacto'), hint: both('Tell us what you need', 'Cuéntanos qué necesitas'), icon: 'mail', kw: 'contact talk call email form contacto hablar llamada formulario' },
 ];
@@ -165,7 +166,10 @@ const ANSWERS: AnswerDef[] = [
 
 const words = (s: string) => s.split(/\s+/).filter(Boolean);
 
-export function buildItems(lang: Lang): Item[] {
+/** A blog post from /blog/index.json (src/pages/blog/index.json.ts). */
+export interface PostRef { lang: Lang; href: string; title: string; dek: string; unit: string; tags: string[] }
+
+export function buildItems(lang: Lang, posts: PostRef[] = []): Item[] {
   const other: Lang = lang === 'en' ? 'es' : 'en';
   const items: Item[] = [];
 
@@ -214,6 +218,19 @@ export function buildItems(lang: Lang): Item[] {
       icon: 'layers',
       keywords: [c.id, ...c.tags.en, ...c.tags.es, c.title[other], 'case', 'caso', 'work', 'casos'],
       run: { kind: 'go', href: localize(lang, `/work#case-${c.id}`) },
+    });
+  }
+
+  // Blog posts (this language): found by search only, like case studies.
+  for (const p of posts.filter((x) => x.lang === lang)) {
+    items.push({
+      id: `post:${p.href}`,
+      group: 'posts',
+      label: p.title,
+      hint: p.dek,
+      icon: 'chat',
+      keywords: [...p.tags.flatMap(words), p.unit, 'blog', 'article', 'articulo', 'guide', 'guia'],
+      run: { kind: 'go', href: p.href },
     });
   }
 

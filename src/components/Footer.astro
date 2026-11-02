@@ -12,6 +12,7 @@ const year = new Date().getFullYear();
 const company = [
   { href: localize(lang, '/about'), label: t(UI.nav.about) },
   { href: localize(lang, '/work'), label: t(UI.nav.work) },
+  { href: localize(lang, '/blog/'), label: t(UI.nav.blog) },
   { href: localize(lang, '/#method'), label: t(UI.nav.method) },
   { href: localize(lang, '/diagnostic'), label: t(UI.nav.diagnostic) },
   { href: localize(lang, '/contact'), label: t(UI.nav.contact) },
@@ -55,7 +56,7 @@ const company = [
         <input type="text" name="company_fax" tabindex="-1" autocomplete="off" aria-hidden="true" class="ft__hp" />
         <button type="submit" aria-label={t(UI.footer.newsletterCta)}><Icon name="arrow-right" size={18} /></button>
       </form>
-      <p id="ft-email-msg" class="ft__news-err" role="alert" hidden></p>
+      <p id="ft-email-msg" class="ft__news-err" data-newsletter-err role="alert" hidden></p>
       <p class="ft__news-ok" data-newsletter-ok role="status" tabindex="-1" hidden>{t(UI.footer.newsletterOk)}</p>
       <p class="ft__news-legal">{t(UI.footer.newsletterLegal)}<a href={localize(lang, '/privacy')}>{t(UI.footer.privacy)}</a></p>
       <div class="ft__contact">
@@ -75,12 +76,14 @@ const company = [
 
 <script>
   import { submitLead, isValidEmail } from '@/lib/leads';
+  // Every newsletter form on the page (footer, blog). Each sits in a box with its own [data-newsletter-err] and
+  // [data-newsletter-ok] elements; `data-source` tells the lead which form it came from (default: footer).
   document.querySelectorAll<HTMLFormElement>('[data-newsletter]').forEach((form) => {
     const input = form.querySelector<HTMLInputElement>('input[type="email"]')!;
     const hp = form.querySelector<HTMLInputElement>('input[name="company_fax"]');
     const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
     const box = form.parentElement!;
-    const err = box.querySelector<HTMLElement>('.ft__news-err')!;
+    const err = box.querySelector<HTMLElement>('[data-newsletter-err]')!;
     const ok = box.querySelector<HTMLElement>('[data-newsletter-ok]')!;
     const showErr = (msg: string) => { err.textContent = msg; err.hidden = false; };
     input.addEventListener('input', () => { if (input.getAttribute('aria-invalid') && isValidEmail(input.value)) { input.removeAttribute('aria-invalid'); err.hidden = true; } });
@@ -98,7 +101,7 @@ const company = [
       err.hidden = true;
       button.disabled = true;
       form.setAttribute('aria-busy', 'true');
-      const res = await submitLead({ kind: 'newsletter', email: input.value.trim(), lang: (form.dataset.lang as 'en' | 'es') ?? 'en', source: 'footer' });
+      const res = await submitLead({ kind: 'newsletter', email: input.value.trim(), lang: (form.dataset.lang as 'en' | 'es') ?? 'en', source: form.dataset.source || 'footer' });
       form.removeAttribute('aria-busy');
       if (!res.ok) {
         button.disabled = false;

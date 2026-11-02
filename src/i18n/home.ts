@@ -191,8 +191,11 @@ export const HOME = {
     } as L10n<string[]>,
   },
 
+  /** Blog section ("Field notes"); copy lives in src/i18n/blog.ts. */
+  fieldNotes: { index: '09' },
+
   faq: {
-    index: '09',
+    index: '10',
     eyebrow: { en: 'FAQ', es: 'Preguntas frecuentes' } as S,
     title: { en: 'Straight <em>answers</em>', es: 'Respuestas <em>directas</em>' } as S,
     items: [

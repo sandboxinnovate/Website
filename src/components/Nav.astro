@@ -5,19 +5,27 @@ import { UI } from '@/i18n/ui';
 import { localize, switchLang, LANG_META, type Lang } from '@/i18n';
 import { UNITS } from '@/data/site';
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+interface Props {
+  lang: Lang;
+  /** EN/ES switch target when the other language's URL differs (blog posts); default: same path. */
+  langHref?: string;
+}
+const { lang, langHref } = Astro.props;
 const t = <T,>(o: Record<Lang, T>) => o[lang];
 // No trailing slash, so switchLang yields '/es/contact' rather than '/es/contact/'.
 const path = Astro.url.pathname.replace(/(.)\/$/, '$1');
 const other: Lang = lang === 'en' ? 'es' : 'en';
+const switchHref = langHref ?? switchLang(path, other);
 
 const links = [
   { key: 'method', href: localize(lang, '/#method'), label: t(UI.nav.method) },
   { key: 'work', href: localize(lang, '/work'), label: t(UI.nav.work) },
+  { key: 'blog', href: localize(lang, '/blog/'), label: t(UI.nav.blog) },
   { key: 'about', href: localize(lang, '/about'), label: t(UI.nav.about) },
 ];
-const isActive = (href: string) => !href.includes('#') && path.replace(/\/$/, '') === href.replace(/\/$/, '');
+const blogRoot = localize(lang, '/blog');
+const isActive = (href: string) =>
+  !href.includes('#') && (path.replace(/\/$/, '') === href.replace(/\/$/, '') || (href.replace(/\/$/, '') === blogRoot && path.startsWith(`${blogRoot}/`)));
 const servicesActive = path.includes('/services/');
 ---
 <header class="nav" data-nav>
@@ -54,7 +62,8 @@ const servicesActive = path.includes('/services/');
           </a>
         </div>
       </div>
-      {links.map((l) => (
+      {/* Method lives in the mobile menu, the footer and the palette: the desktop bar keeps room for Blog in both languages. */}
+      {links.filter((l) => l.key !== 'method').map((l) => (
         <a href={l.href} class:list={['nav__link', isActive(l.href) && 'is-active']}>{l.label}</a>
       ))}
       <a href={localize(lang, '/diagnostic')} class:list={['nav__link nav__link--accent', isActive(localize(lang, '/diagnostic')) && 'is-active']}>
@@ -67,7 +76,7 @@ const servicesActive = path.includes('/services/');
         <Icon name="search" size={16} />
         <span class="kbd nav__kbd" data-cmdk-hint aria-hidden="true">⌘K</span>
       </button>
-      <a class="nav__lang" href={switchLang(path, other)} hreflang={other} aria-label={`EN / ES — ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
+      <a class="nav__lang" href={switchHref} hreflang={other} data-exact={langHref ? '' : undefined} aria-label={`EN / ES — ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
         <span class:list={[lang === 'en' && 'is-on']}>EN</span><span class="nav__lang-sep">/</span><span class:list={[lang === 'es' && 'is-on']}>ES</span>
       </a>
       <a href={localize(lang, '/contact')} class="btn btn-primary btn-sm nav__cta">
@@ -114,7 +123,7 @@ const servicesActive = path.includes('/services/');
         <a href={localize(lang, '/contact')} class="btn btn-primary">
           <span>{t(UI.nav.cta)}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
         </a>
-        <a class="nav__lang" href={switchLang(path, other)} hreflang={other} aria-label={`EN / ES — ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
+        <a class="nav__lang" href={switchHref} hreflang={other} data-exact={langHref ? '' : undefined} aria-label={`EN / ES — ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
           <span class:list={[lang === 'en' && 'is-on']}>EN</span><span class="nav__lang-sep">/</span><span class:list={[lang === 'es' && 'is-on']}>ES</span>
         </a>
       </div>
@@ -237,7 +246,8 @@ const servicesActive = path.includes('/services/');
   }, true);
 
   // Language switch keeps the query string and hash (?service=…, #case-…).
-  nav.querySelectorAll<HTMLAnchorElement>('a.nav__lang').forEach((a) =>
+  // (Not on pages whose translation lives at a different URL, like blog posts: their anchors differ.)
+  nav.querySelectorAll<HTMLAnchorElement>('a.nav__lang:not([data-exact])').forEach((a) =>
     a.addEventListener('click', () => { a.href = a.getAttribute('href')!.split(/[?#]/)[0] + location.search + location.hash; }),
   );
   // Show Ctrl+K instead of ⌘K off Apple platforms

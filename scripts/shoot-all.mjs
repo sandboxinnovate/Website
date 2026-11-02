@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Screenshot every route (desktop 1440 + mobile 390) as JPG, scrolling first so reveals fire.
+ * Screenshot every route, blog posts included (desktop 1440 + mobile 390) as JPG, scrolling first so reveals fire.
  *   node scripts/shoot-all.mjs http://127.0.0.1:4321 qa/site [--only=/,/es/]
  * Prints console errors per page and checks for horizontal overflow.
  */
@@ -13,8 +13,16 @@ const { chromium } = pw;
 
 const [base = 'http://127.0.0.1:4321', outDir = 'qa/site', ...flags] = process.argv.slice(2);
 const units = ['brains', 'consulting', 'growth', 'academy', 'products', 'partners'];
-let routes = ['/', '/diagnostic', '/contact', '/about', '/work', ...units.map((u) => `/services/${u}`), '/404'];
+let routes = ['/', '/diagnostic', '/contact', '/about', '/work', '/blog/', ...units.map((u) => `/services/${u}`), '/404'];
 routes = [...routes, ...routes.filter((r) => r !== '/404').map((r) => (r === '/' ? '/es/' : `/es${r}`))];
+// Blog posts: every Markdown file in src/content/blog/{en,es} (files starting with "_" are drafts).
+for (const lang of ['en', 'es']) {
+  const dir = new URL(`../src/content/blog/${lang}/`, import.meta.url);
+  if (!fs.existsSync(dir)) continue;
+  for (const f of fs.readdirSync(dir).sort()) {
+    if (f.endsWith('.md') && !f.startsWith('_')) routes.push(`${lang === 'es' ? '/es' : ''}/blog/${f.replace(/\.md$/, '')}/`);
+  }
+}
 const only = flags.find((f) => f.startsWith('--only='));
 if (only) routes = only.slice(7).split(',');
 

@@ -8,6 +8,7 @@ export const UI = {
     method: { en: 'Method', es: 'Método' },
     work: { en: 'Work', es: 'Casos' },
     about: { en: 'About', es: 'Nosotros' },
+    blog: { en: 'Blog', es: 'Blog' },
     diagnostic: { en: 'AI Diagnostic', es: 'Diagnóstico de IA' },
     contact: { en: 'Contact', es: 'Contacto' },
     cta: { en: 'Book a call', es: 'Agendar una llamada' },

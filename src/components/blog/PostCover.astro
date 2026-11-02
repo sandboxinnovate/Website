@@ -1,0 +1,44 @@
+---
+/**
+ * Generated cover art for a post (src/lib/cover.ts): deterministic per translationKey, themed by unit.
+ * Decorative (aria-hidden). Fills its container; the container (or `ratio`) sets the aspect ratio.
+ *   <PostCover seed={post.data.translationKey} unit={post.data.unit} variant="card" />
+ */
+import { coverMarkup, coverUid, plate } from '@/lib/cover';
+import { unitBySlug, type UnitSlug } from '@/data/site';
+
+interface Props {
+  seed: string;
+  unit: UnitSlug;
+  /** hero: post page · lead: index lead story · card: lists · thumb: small rows */
+  variant?: 'hero' | 'lead' | 'card' | 'thumb';
+  /** CSS aspect-ratio (default 16 / 9). */
+  ratio?: string;
+  class?: string;
+}
+const { seed, unit, variant = 'card', ratio = '16 / 9', class: cls = '' } = Astro.props;
+const u = unitBySlug(unit)!;
+const markup = coverMarkup({ seed, unit, uid: coverUid(seed) });
+---
+<div class:list={['pcv', `pcv--${variant}`, `pcv--${unit}`, cls]} style={`--pcv-ratio:${ratio}`} aria-hidden="true">
+  <svg class="pcv__svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" focusable="false" set:html={markup} />
+  <span class="pcv__code">[{u.code}] {u.name.en}</span>
+  {variant !== 'thumb' && <span class="pcv__plate">{plate(seed)}</span>}
+</div>
+
+<style>
+  .pcv { position: relative; width: 100%; aspect-ratio: var(--pcv-ratio); overflow: hidden; border-radius: inherit; background: #0b0a0a; isolation: isolate; }
+  .pcv__svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: transform 1.2s var(--ease-out-expo); }
+  .pcv__svg :global(.cv-label) { font-family: var(--font-mono); }
+  .pcv--card .pcv__svg :global(.cv-label), .pcv--thumb .pcv__svg :global(.cv-label) { display: none; }
+  .pcv::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06); }
+  .pcv__code, .pcv__plate { position: absolute; z-index: 1; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
+  .pcv__code { left: 14px; top: 14px; padding: 6px 9px; border-radius: 99px; color: var(--color-flame-400); background: rgb(10 10 10 / .62); border: 1px solid rgb(245 131 39 / .28); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .pcv__plate { right: 16px; bottom: 14px; color: rgb(244 239 233 / .38); }
+  .pcv--hero .pcv__code, .pcv--lead .pcv__code { left: clamp(14px, 2vw, 24px); top: clamp(14px, 2vw, 24px); font-size: 11.5px; padding: 7px 11px; }
+  .pcv--hero .pcv__plate, .pcv--lead .pcv__plate { right: clamp(16px, 2vw, 26px); bottom: clamp(14px, 2vw, 22px); font-size: 11px; }
+  .pcv--thumb .pcv__code { left: 8px; top: 8px; font-size: 9.5px; padding: 5px 7px; }
+  /* Hover zoom when the cover sits inside a card ([data-card], a stretched-link card). */
+  :global([data-card]:hover) .pcv__svg { transform: scale(1.035); }
+  @media (prefers-reduced-motion: reduce) { .pcv__svg { transition: none; } :global([data-card]:hover) .pcv__svg { transform: none; } }
+</style>

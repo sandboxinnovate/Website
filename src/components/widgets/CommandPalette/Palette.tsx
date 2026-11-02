@@ -3,7 +3,7 @@ import { switchLang, type Lang } from '@/i18n';
 import { SITE } from '@/data/site';
 import { ICONS } from '@/components/ui/icons';
 import { COPY } from './copy';
-import { buildItems, type ItemIcon } from './items';
+import { buildItems, type ItemIcon, type PostRef } from './items';
 import { fallback, prepare, search, type Group, type Row } from './search';
 import './palette.css';
 
@@ -115,7 +115,17 @@ function Highlight({ text, indices }: { text: string; indices: number[] }) {
 export default function Palette({ lang, open, initialQuery = '', onClose, returnFocus }: PaletteProps) {
   const t = COPY[lang];
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
-  const prepared = useMemo(() => prepare(buildItems(lang)), [lang]);
+  // Blog posts load lazily from the static search index; the palette works without them.
+  const [posts, setPosts] = useState<PostRef[]>([]);
+  useEffect(() => {
+    let alive = true;
+    fetch('/blog/index.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { posts?: PostRef[] } | null) => { if (alive && Array.isArray(d?.posts)) setPosts(d.posts); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, []);
+  const prepared = useMemo(() => prepare(buildItems(lang, posts)), [lang, posts]);
 
   const [mounted, setMounted] = useState(open);
   const [closing, setClosing] = useState(false);
