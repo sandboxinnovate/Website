@@ -2,11 +2,13 @@
 /**
  * Explainer video for a unit page: framed 16:9 poster with a large play button and a duration chip.
  * Nothing loads until the visitor presses play (preload="none", lazy poster); it then plays inline with
- * native controls. Never autoplays. Silent videos: the on-screen text carries the story, and the
- * transcript below makes the same content available to screen readers and search engines.
+ * native controls, with sound (the press is a user gesture, so unmuted playback is allowed). Never autoplays.
+ * Narrated videos: the voice-over explains, the on-screen text carries the story on its own, an optional
+ * captions track mirrors the voice, and the transcript below gives the narration to screen readers and search.
  *
- * Files (rendered by video/render.mjs --publish) in public/video/:
- *   <unit>-<lang>.webm, <unit>-<lang>.mp4, <unit>-<lang>-poster.jpg (1920w), <unit>-<lang>-poster-960.jpg
+ * Files in public/video/ (picture from video/render.mjs --publish, voice from video/voice/mux.mjs --publish):
+ *   <unit>-<lang>.webm, <unit>-<lang>.mp4, <unit>-<lang>.vtt (captions),
+ *   <unit>-<lang>-poster.jpg (1920w), <unit>-<lang>-poster-960.jpg
  *
  * <UnitVideo unit="brains" lang={lang} title="How a Brains agent works" duration="0:52" transcript={text} />
  */
@@ -20,7 +22,7 @@ interface Props {
   title: string;
   /** Duration label shown on the chip, e.g. "0:52". */
   duration: string;
-  /** Plain-text transcript of everything shown on screen. Blank lines split paragraphs. */
+  /** Plain-text transcript of the narration. Blank lines split paragraphs. */
   transcript?: string | string[];
   /** Optional ISO date; when set, a schema.org VideoObject is emitted. */
   uploadDate?: string;
@@ -38,8 +40,8 @@ const q = version ? `?v=${encodeURIComponent(version)}` : '';
 const src = (suffix: string) => `${base}${suffix}${q}`;
 const id = `uv-${unit}-${lang}`;
 const T = {
-  en: { play: 'Play video', watch: 'Watch', mute: 'No sound needed', read: 'Read the transcript', minutes: 'Duration' },
-  es: { play: 'Reproducir video', watch: 'Ver', mute: 'No necesita sonido', read: 'Leer la transcripción', minutes: 'Duración' },
+  en: { play: 'Play video', watch: 'Watch', sound: 'With narration', captions: 'English', read: 'Read the transcript', minutes: 'Duration' },
+  es: { play: 'Reproducir video', watch: 'Ver', sound: 'Con narración', captions: 'Español', read: 'Leer la transcripción', minutes: 'Duración' },
 }[lang];
 
 const paragraphs = (Array.isArray(transcript) ? transcript : (transcript ?? '').split(/\n\s*\n/))
@@ -91,7 +93,6 @@ const videoLd = uploadDate
         class="uv__video"
         preload="none"
         playsinline
-        muted
         controls
         hidden
         poster={src('-poster.jpg')}
@@ -99,13 +100,14 @@ const videoLd = uploadDate
       >
         <source src={src('.webm')} type="video/webm" />
         <source src={src('.mp4')} type="video/mp4" />
+        <track kind="captions" srclang={lang} label={T.captions} src={src('.vtt')} />
       </video>
     </div>
   </div>
 
   <figcaption class="uv__cap">
     <span class="uv__title">{title}</span>
-    <span class="uv__meta mono-label"><span class="sr-only">{T.minutes}: </span>{duration} · {T.mute}</span>
+    <span class="uv__meta mono-label"><span class="sr-only">{T.minutes}: </span>{duration} · {T.sound}</span>
   </figcaption>
 
   {paragraphs.length > 0 && (
@@ -135,6 +137,8 @@ const videoLd = uploadDate
       video.hidden = false;
       root.classList.add('is-playing');
       video.focus({ preventScroll: true });
+      // Narrated: play with sound. The click is a user gesture, so browsers allow unmuted playback.
+      video.muted = false;
       const p = video.play();
       // If playback is blocked or fails, the native controls stay visible so the visitor can retry.
       if (p && typeof p.catch === 'function') p.catch(() => {});

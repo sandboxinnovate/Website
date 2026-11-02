@@ -2,7 +2,8 @@
  * Explainer videos shown on the six unit pages (src/views/Unit.astro → UnitVideo).
  *
  * Titles, durations and transcripts come from videos.json, which `node video/site-data.mjs` writes
- * from the renderer's video/out/<unit>-<lang>.json files. The one-line descriptions below are written
+ * from the renderer's video/out/<unit>-<lang>.json files. Transcripts are the spoken narration from
+ * video/voice/<unit>.json. The one-line descriptions below are written
  * by hand for the VideoObject structured data. Media files live in public/video/.
  */
 import type { UnitSlug } from '@/data/site';
@@ -17,13 +18,16 @@ export interface UnitVideoData {
   durationLabel: string;
   /** Seconds into the video where the poster frame is taken. */
   poster: number;
-  /** Plain text; blank lines split paragraphs. */
+  /** Spoken narration as plain text; blank lines split paragraphs. */
   transcript: string;
   description: string;
 }
 
-/** Date the current renders went live (VideoObject.uploadDate). Update when the videos are re-rendered. */
-export const VIDEO_UPLOAD_DATE = '2026-11-02';
+/**
+ * Date the current files went live (VideoObject.uploadDate). It is also the ?v= cache-busting token on every
+ * media URL (files are cached for a year), so bump it whenever the videos are re-rendered or re-voiced.
+ */
+export const VIDEO_UPLOAD_DATE = '2026-11-03';
 
 const DESCRIPTIONS: Record<UnitSlug, Record<Lang, string>> = {
   brains: {

@@ -26,8 +26,8 @@ export const UNIT_COMMON = {
     eyebrow: { en: 'Video overview · {d}', es: 'Resumen en video · {d}' },
     title: { en: 'How it works, <em>in about a minute</em>', es: 'Cómo funciona, <em>en poco más de un minuto</em>' },
     lede: {
-      en: 'No sound needed. Everything shown on screen is also in the transcript below the player.',
-      es: 'No necesita sonido. Todo lo que aparece en pantalla también está en la transcripción debajo del video.',
+      en: 'With narration. Captions and a full transcript of the voice-over are available below the player.',
+      es: 'Con narración. Tiene subtítulos y la transcripción completa de la voz debajo del video.',
     },
   },
 

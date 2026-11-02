@@ -1,7 +1,8 @@
 # Sandbox explainer videos
 
-Silent (no voice-over) 1920x1080 explainers, one per unit and language, rendered deterministically from
-HTML + GSAP. On-screen text carries the story, so every video must work muted on the website.
+1920x1080 explainers, one per unit and language, rendered deterministically from HTML + GSAP, then narrated
+with an offline voice-over (see "Voice-over" below and `voice/README.md`). The renderer outputs silent video;
+on-screen text still carries the story, so every video must also work muted.
 This folder is not part of the Astro build.
 
 ```
@@ -152,8 +153,10 @@ CSS classes you can use directly in `h()`: `mono`, `mono--sm`, `lede`, `card`, `
 
 ## Putting a video on a page
 
-1. `node video/render.mjs <unit> en --publish` and the same for `es` (copies into `public/video/`).
-2. Use `src/components/unit/UnitVideo.astro`:
+1. `node video/render.mjs <unit> en --publish` and the same for `es` (copies the silent picture into `public/video/`).
+2. Put the voice back on: `node video/voice/mux.mjs <unit> <en|es> --publish` (see "Voice-over" below).
+   Re-rendering with `--publish` always replaces the voiced file with a silent one.
+3. Use `src/components/unit/UnitVideo.astro`:
 
 ```astro
 <UnitVideo unit="brains" lang={lang} title="How a Brains agent works" duration="0:52" transcript={transcriptText} />
@@ -163,4 +166,44 @@ Pick a poster moment (`tl.addLabel('poster', t)`) with a finished, readable UI s
 center: the player puts its play button and duration chip in the middle of the poster. The renderer hides
 the progress hairline on posters.
 
-It expects `/video/<unit>-<lang>.webm`, `.mp4`, `-poster.jpg` and `-poster-960.jpg`.
+It expects `/video/<unit>-<lang>.webm`, `.mp4`, `.vtt`, `-poster.jpg` and `-poster-960.jpg`.
+
+## Voice-over
+
+Every published video has a narration track. Full details (script format, pronunciation map, timing rules,
+speaking rates) are in [`voice/README.md`](voice/README.md).
+
+**Voices.** Kokoro-82M via `kokoro-onnx`, fully offline, Apache-2.0 (fine for commercial use). Venv:
+`/home/user/tts/venv`; model files `/home/user/tts/kokoro-v1.0.onnx` and `/home/user/tts/voices-v1.0.bin`.
+
+| Language | Voice | Kokoro `lang` |
+|---|---|---|
+| English | `af_heart` | `en-us` |
+| Spanish | `ef_dora` | `es-419` (neutral Latin American: seseo, yeísmo) |
+
+**Never use `lang="es"`.** It gives Castilian pronunciation (the "th" sound for c and z), which does not fit
+the site's neutral Latin American Spanish. `synth.py` already passes `es-419`; keep it that way.
+
+**Pipeline** (one unit and language at a time; 4 CPUs):
+
+```bash
+. /home/user/tts/venv/bin/activate
+# 1. edit the narration in video/voice/<unit>.json (both languages; "at" = seconds into the video)
+python video/voice/synth.py <unit> <en|es>            # 2. voice track + captions + timing report (exit 1 on ERROR)
+python video/voice/synth.py <unit> <en|es> --check    # 3. whisper transcription, word error rate per line
+node video/voice/mux.mjs <unit> <en|es> --publish     # 4. mux onto the silent picture, copy mp4/webm/vtt to public/video/
+node video/site-data.mjs --no-copy                    # 5. transcripts in src/data/videos.json = the narration
+```
+
+Then bump `VIDEO_UPLOAD_DATE` in `src/data/videos.ts`. It is the `?v=` token on every media URL, and
+`/video/*` is cached for a year, so without a bump visitors keep the old files.
+
+Narration rules: no product names other than the site's, no prices, no invented facts or results, timelines
+only as the site states them, no em or en dashes, numbers written the way they are spoken ("three to five
+weeks", "de tres a cinco semanas"), Spanish with "tú". Say the on-screen text in other words or add the why;
+do not read it verbatim. `synth.py` enforces part of this (dashes, currency, clichés, voseo).
+
+The player (`src/components/unit/UnitVideo.astro`) plays with sound after the visitor presses play (never
+autoplays), offers the `.vtt` as an optional captions track (off by default), and shows the narration as the
+transcript under the video. `node video/site-data.mjs` never copies silent mp4/webm over a narrated unit's
+voiced files; posters are still copied.

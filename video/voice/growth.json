@@ -1,0 +1,97 @@
+{
+  "unit": "growth",
+  "voices": {
+    "en": "af_heart",
+    "es": "ef_dora"
+  },
+  "pronounce": {
+    "en": {},
+    "es": {}
+  },
+  "lines": {
+    "en": [
+      {
+        "scene": "hook",
+        "at": 0.5,
+        "text": "When your buyers ask AI who to hire, does your name come up? Right now, it's probably recommending someone else."
+      },
+      {
+        "scene": "promise",
+        "at": 8.6,
+        "text": "We make your brand the answer. Four engines working together, in one brand voice, with one report."
+      },
+      {
+        "scene": "step1-measure",
+        "at": 16.5,
+        "text": "First, we track the questions your buyers actually ask. Then we find out why AI points to someone else."
+      },
+      {
+        "scene": "step2-content",
+        "at": 25.5,
+        "text": "Next, we turn what your experts know into content in your voice. Nothing goes out until an editor signs off."
+      },
+      {
+        "scene": "step3-test-and-reach",
+        "at": 34.5,
+        "text": "We test new ads every week and keep what works. Each outbound email is researched first, and nothing sends without your approval."
+      },
+      {
+        "scene": "step4-report",
+        "at": 43.4,
+        "text": "Every month, you'll see what moved and what didn't. No one can promise citations, so we show you the work and the next fix."
+      },
+      {
+        "scene": "how-we-run-it",
+        "at": 51.6,
+        "text": "Your team stays in charge of strategy and approvals. The first pieces usually go out in weeks three to five."
+      },
+      {
+        "scene": "cta",
+        "at": 58.5,
+        "text": "Want to see where you stand? Book a call."
+      }
+    ],
+    "es": [
+      {
+        "scene": "hook",
+        "at": 0.5,
+        "text": "Cuando tus clientes le preguntan a la IA a quién contratar, ¿aparece tu nombre? Hoy, seguramente recomienda a otro."
+      },
+      {
+        "scene": "promise",
+        "at": 8.6,
+        "text": "Hacemos que tu marca sea la respuesta. Cuatro motores juntos, con una sola voz y un solo reporte."
+      },
+      {
+        "scene": "step1-measure",
+        "at": 16.5,
+        "text": "Primero, medimos las preguntas reales de tus clientes. Y descubrimos por qué la IA recomienda a otros."
+      },
+      {
+        "scene": "step2-content",
+        "at": 25.5,
+        "text": "Después, convertimos lo que saben tus expertos en artículos y publicaciones con tu voz. Nada sale sin que lo apruebe un editor."
+      },
+      {
+        "scene": "step3-test-and-reach",
+        "at": 34.5,
+        "text": "Cada semana probamos anuncios nuevos y dejamos los que funcionan. Cada correo se investiga primero, y tú lo apruebas antes del envío."
+      },
+      {
+        "scene": "step4-report",
+        "at": 43.4,
+        "text": "Cada mes ves qué se movió y qué no. Nadie puede prometer citas, así que te mostramos cada ajuste."
+      },
+      {
+        "scene": "how-we-run-it",
+        "at": 51.6,
+        "text": "Tu equipo sigue al mando y aprueba todo. Las primeras piezas salen entre la semana tres y la cinco."
+      },
+      {
+        "scene": "cta",
+        "at": 58.5,
+        "text": "¿Quieres ver dónde estás hoy? Agenda una llamada."
+      }
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "unit": "partners",
+  "voices": {
+    "en": "af_heart",
+    "es": "ef_dora"
+  },
+  "pronounce": {
+    "en": {},
+    "es": {
+      "partners": "pártners"
+    }
+  },
+  "lines": {
+    "en": [
+      {
+        "scene": "hook",
+        "at": 0.5,
+        "text": "Your clients keep asking what you're doing with AI. And you don't have the engineers to build it."
+      },
+      {
+        "scene": "promise",
+        "at": 8.6,
+        "text": "So sell it under your own name. We design it, build it and run it, quietly, behind you."
+      },
+      {
+        "scene": "step1-qualify",
+        "at": 16.5,
+        "text": "First, one or two calls. We learn about your clients and what they're asking for, and pick the model that fits."
+      },
+      {
+        "scene": "step2-package",
+        "at": 24.6,
+        "text": "Then, over one to two weeks, we put the agreement in writing and prepare a sales kit with your logo on it."
+      },
+      {
+        "scene": "step3-deliver",
+        "at": 33.5,
+        "text": "Next, we build your client's system under your brand and on your domain. Your team is part of every review."
+      },
+      {
+        "scene": "step4-grow",
+        "at": 43.5,
+        "text": "After launch, we keep it running. Your client sees only your brand, and the relationship stays yours, in writing."
+      },
+      {
+        "scene": "three-models",
+        "at": 51.6,
+        "text": "Fully white label, delivered together, or a simple referral. You decide how much we show."
+      },
+      {
+        "scene": "cta",
+        "at": 58.5,
+        "text": "Got an AI request on your desk? Book a partner call."
+      }
+    ],
+    "es": [
+      {
+        "scene": "hook",
+        "at": 0.5,
+        "text": "Tus clientes ya te preguntan qué vas a hacer con IA. Y no tienes ingenieros para construirlo."
+      },
+      {
+        "scene": "promise",
+        "at": 8.6,
+        "text": "Vende IA con tu propia marca. Nosotros la diseñamos, la construimos y la operamos detrás de ti."
+      },
+      {
+        "scene": "step1-qualify",
+        "at": 16.5,
+        "text": "Primero, una o dos llamadas. Conocemos a tus clientes y lo que te piden, y elegimos el modelo que encaja."
+      },
+      {
+        "scene": "step2-package",
+        "at": 24.6,
+        "text": "Luego, en una o dos semanas, firmamos el acuerdo y preparamos un kit de venta con tu logo."
+      },
+      {
+        "scene": "step3-deliver",
+        "at": 33.5,
+        "text": "Después construimos el sistema de tu cliente con tu marca y en tu dominio. Tu equipo participa en cada revisión."
+      },
+      {
+        "scene": "step4-grow",
+        "at": 43.5,
+        "text": "Tras el lanzamiento, nosotros lo operamos. Tu cliente solo ve tu marca, y la relación sigue siendo tuya, por escrito."
+      },
+      {
+        "scene": "three-models",
+        "at": 51.6,
+        "text": "Marca blanca, entrega conjunta o un simple referido. Tú decides cuánto nos mostramos."
+      },
+      {
+        "scene": "cta",
+        "at": 58.5,
+        "text": "¿Tienes un pedido de IA sobre la mesa? Agenda una llamada de partners."
+      }
+    ]
+  }
+}

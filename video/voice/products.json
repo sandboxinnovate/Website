@@ -1,0 +1,97 @@
+{
+  "unit": "products",
+  "voices": {
+    "en": "af_heart",
+    "es": "ef_dora"
+  },
+  "pronounce": {
+    "en": {},
+    "es": {}
+  },
+  "lines": {
+    "en": [
+      {
+        "scene": "hook",
+        "at": 0.5,
+        "text": "You don't need a huge custom AI project to start. But a generic assistant won't know how your industry works."
+      },
+      {
+        "scene": "promise",
+        "at": 8.6,
+        "text": "So you start from a brain made for your industry. The agents are ready. We set them up on your data."
+      },
+      {
+        "scene": "step1-pick",
+        "at": 16.6,
+        "text": "First, one call to pick your package and check the fit. If it's not right for you, we'll say so."
+      },
+      {
+        "scene": "step2-adapt",
+        "at": 24.6,
+        "text": "Then we spend a few days adapting it. Your services, your tone, and when to hand things to a person."
+      },
+      {
+        "scene": "step3-pilot",
+        "at": 32.6,
+        "text": "Next comes a pilot on real cases. Say a buyer writes late on a Saturday. The agent answers, asks two questions, and holds a Monday showing. Your team sees every conversation."
+      },
+      {
+        "scene": "step4-run",
+        "at": 44.6,
+        "text": "Once it works, we host it and keep it running. Updates and support come with your subscription."
+      },
+      {
+        "scene": "stays-and-grows",
+        "at": 52.5,
+        "text": "Your team keeps the final say. And if you outgrow it, it becomes a custom brain."
+      },
+      {
+        "scene": "cta",
+        "at": 58.6,
+        "text": "Want in? Request early access at sandboxinnovate.com."
+      }
+    ],
+    "es": [
+      {
+        "scene": "hook",
+        "at": 0.5,
+        "text": "Para empezar, no necesitas un gran proyecto de IA a medida. Pero un asistente genérico no entiende tu industria."
+      },
+      {
+        "scene": "promise",
+        "at": 8.6,
+        "text": "Por eso partes de un brain pensado para tu industria, con los agentes listos y configurados con tus datos."
+      },
+      {
+        "scene": "step1-pick",
+        "at": 16.6,
+        "text": "Primero, una llamada para elegir tu paquete y ver si encaja. Si no es para ti, te lo decimos."
+      },
+      {
+        "scene": "step2-adapt",
+        "at": 24.6,
+        "text": "Después, en unos días, lo adaptamos. Tus servicios, tu tono, y cuándo pasarle el caso a una persona."
+      },
+      {
+        "scene": "step3-pilot",
+        "at": 32.6,
+        "text": "Luego, un piloto con casos reales. Un comprador escribe un sábado de noche, y el agente responde, lo califica y reserva una visita el lunes. Tu equipo lo ve todo."
+      },
+      {
+        "scene": "step4-run",
+        "at": 44.6,
+        "text": "Cuando funciona, lo alojamos y lo mantenemos en marcha. Las actualizaciones y el soporte van en la suscripción."
+      },
+      {
+        "scene": "stays-and-grows",
+        "at": 52.5,
+        "text": "Tu equipo tiene la última palabra. Y si te queda chico, pasa a ser un brain a medida."
+      },
+      {
+        "scene": "cta",
+        "at": 58.6,
+        "text": "Solicita tu acceso anticipado en sandboxinnovate.com."
+      }
+    ]
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "unit": "consulting",
+  "voices": {
+    "en": "af_heart",
+    "es": "ef_dora"
+  },
+  "pronounce": {
+    "en": {},
+    "es": {
+      "Head of AI": "jed of éi ái"
+    }
+  },
+  "lines": {
+    "en": [
+      {
+        "scene": "hook-ideas",
+        "at": 0.5,
+        "text": "Everyone has ideas for AI. Few teams know which ones are worth doing."
+      },
+      {
+        "scene": "pains",
+        "at": 7.0,
+        "text": "What's missing isn't ideas. It's a plan, an owner, and people to do the work."
+      },
+      {
+        "scene": "what-we-do",
+        "at": 14.3,
+        "text": "We find where AI pays off in your business, and then we make it happen."
+      },
+      {
+        "scene": "step1-interview-map",
+        "at": 20.0,
+        "text": "In week one, we talk to your teams and see where the hours really go. Like orders that get typed in by hand."
+      },
+      {
+        "scene": "step2-prioritize",
+        "at": 28.1,
+        "text": "Over the next two weeks, every idea gets ranked, so you know what to do first and what can wait."
+      },
+      {
+        "scene": "roadmap",
+        "at": 36.2,
+        "text": "The result is a ninety day roadmap, simple enough for your leadership to read and approve."
+      },
+      {
+        "scene": "step3-implement",
+        "at": 43.3,
+        "text": "Then we put it to work. We automate two or three processes end to end, and train your team to run them."
+      },
+      {
+        "scene": "step4-lead",
+        "at": 52.0,
+        "text": "After that, we can stay on as your Head of AI, a few days a month."
+      },
+      {
+        "scene": "close",
+        "at": 58.4,
+        "text": "Start with a clear picture. Book a call at sandboxinnovate.com."
+      }
+    ],
+    "es": [
+      {
+        "scene": "hook-ideas",
+        "at": 0.5,
+        "text": "Todos tienen ideas de IA. Pocos saben cuáles valen la pena."
+      },
+      {
+        "scene": "pains",
+        "at": 7.0,
+        "text": "Lo que falta no son ideas. Es un plan, alguien a cargo y manos para hacerlo."
+      },
+      {
+        "scene": "what-we-do",
+        "at": 14.3,
+        "text": "Encontramos dónde la IA rinde de verdad en tu negocio, y lo hacemos realidad."
+      },
+      {
+        "scene": "step1-interview-map",
+        "at": 20.0,
+        "text": "En la primera semana hablamos con tus equipos y vemos a dónde se va el tiempo. Como pedidos que se cargan a mano."
+      },
+      {
+        "scene": "step2-prioritize",
+        "at": 28.1,
+        "text": "En las dos semanas siguientes, ordenamos cada idea para que sepas qué hacer primero y qué puede esperar."
+      },
+      {
+        "scene": "roadmap",
+        "at": 36.2,
+        "text": "El resultado es una hoja de ruta a noventa días que tu dirección puede leer y aprobar."
+      },
+      {
+        "scene": "step3-implement",
+        "at": 43.3,
+        "text": "Después lo ponemos en marcha. Automatizamos dos o tres procesos de punta a punta y capacitamos a tu equipo."
+      },
+      {
+        "scene": "step4-lead",
+        "at": 52.0,
+        "text": "Luego podemos seguir como tu Head of AI, unos días al mes."
+      },
+      {
+        "scene": "close",
+        "at": 58.4,
+        "text": "Empieza con un panorama claro. Agenda una llamada."
+      }
+    ]
+  }
+}

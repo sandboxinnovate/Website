@@ -38,6 +38,22 @@ VOICES = '/home/user/tts/voices-v1.0.bin'
 LANG_CODE = {'en': 'en-us', 'es': 'es-419'}   # never plain "es" (Castilian)
 DEFAULT_VOICE = {'en': 'af_heart', 'es': 'ef_dora'}
 
+# Built-in readings (TTS input only; captions keep the written form). Measured with Kokoro v1.0 +
+# faster-whisper, see README. A unit JSON "pronounce" map is merged on top (same key wins);
+# map a key to itself to switch a default off.
+DEFAULT_PRONOUNCE = {
+    'en': {
+        'sandboxinnovate.com': 'sandbox innovate dot com',
+    },
+    'es': {
+        'brain': 'bréin', 'brains': 'bréins', 'Brain': 'Bréin', 'Brains': 'Bréins',
+        'Sandbox': 'Sándbox',
+        'leads': 'lids', 'lead': 'lid',
+        'tickets': 'tíkets', 'ticket': 'tíket',
+        'sandboxinnovate.com': 'sándbox innóveit punto com',
+    },
+}
+
 MAX_SPEED = 1.10
 SPEED_STEPS = [1.0, 1.03, 1.06, 1.08, 1.10]
 GAP_BEFORE_NEXT = 0.25      # a line must end this long before the next line's "at"
@@ -345,7 +361,7 @@ def main():
     spec = json.load(open(spec_path, encoding='utf8'))
     unit = spec.get('unit') or args.name
     voice = (spec.get('voices') or {}).get(lang, DEFAULT_VOICE[lang])
-    pron = (spec.get('pronounce') or {}).get(lang, {})
+    pron = {**DEFAULT_PRONOUNCE[lang], **(spec.get('pronounce') or {}).get(lang, {})}
     lines = sorted(spec['lines'][lang], key=lambda l: float(l['at']))
     dur = video_duration(unit, lang)
     sb = load_storyboard(unit)
@@ -426,7 +442,7 @@ def main():
     with open(base_out + '.vtt', 'w', encoding='utf8') as f:
         f.write('WEBVTT\n\n')
         for k, (a, b, c) in enumerate(cues, 1):
-            b = min(b + 0.15, cues[k][0] if k < len(cues) else dur)  # small hold, never overlapping the next cue
+            b = max(a + 0.3, min(b + 0.15, cues[k][0] if k < len(cues) else dur))  # small hold, no overlap
             f.write(f'{k}\n{fmt_ts(a)} --> {fmt_ts(b)}\n' + '\n'.join(wrap_caption(c)) + '\n\n')
 
     total_words = sum(r['words'] for r in out_lines)

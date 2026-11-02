@@ -1,0 +1,27 @@
+{
+  "unit": "brains",
+  "voices": { "en": "af_heart", "es": "ef_dora" },
+  "pronounce": { "en": {}, "es": {} },
+  "lines": {
+    "en": [
+      { "scene": "hook", "at": 0.5, "text": "How often does your team stop to hunt for an answer? It's usually in someone's head, or a file nobody can find." },
+      { "scene": "promise", "at": 8.6, "text": "We build a brain that knows your business, and agents that use it to get real work done." },
+      { "scene": "step1-connect", "at": 16.6, "text": "First, we connect the tools you already use. Nobody sees anything they can't see today." },
+      { "scene": "step2-ask", "at": 25.0, "text": "Then your team just asks. Every answer points to its source, and when the brain doesn't know, it says so." },
+      { "scene": "step3-act", "at": 33.6, "text": "Agents take it further. They read the request, check the brain, and do the work right inside your tools." },
+      { "scene": "step4-approve", "at": 42.8, "text": "Anything sensitive waits for a person. One click to approve, and every step is logged for review." },
+      { "scene": "how-we-run-it", "at": 51.6, "text": "We start with one process. Your first agent is usually live in three to five weeks." },
+      { "scene": "cta", "at": 58.6, "text": "Tell us one process, and we'll sketch the agent. Book a call." }
+    ],
+    "es": [
+      { "scene": "hook", "at": 0.5, "text": "¿Tu equipo pierde tiempo buscando respuestas? Casi siempre están en la cabeza de alguien, o en un archivo perdido." },
+      { "scene": "promise", "at": 8.6, "text": "Construimos un brain que conoce tu negocio, y agentes que lo usan para hacer trabajo real." },
+      { "scene": "step1-connect", "at": 16.6, "text": "Primero, conectamos las herramientas que ya usas. Nadie ve nada que hoy no pueda ver." },
+      { "scene": "step2-ask", "at": 25.0, "text": "Después, tu equipo solo pregunta. Cada respuesta muestra su fuente, y si el brain no sabe, lo dice." },
+      { "scene": "step3-act", "at": 33.6, "text": "Los agentes van más allá. Leen el pedido, consultan el brain y hacen el trabajo en tus herramientas." },
+      { "scene": "step4-approve", "at": 42.8, "text": "Lo sensible espera a una persona. Se aprueba con un clic, y cada paso queda registrado." },
+      { "scene": "how-we-run-it", "at": 51.6, "text": "Empezamos por un proceso. El primer agente suele estar en producción en tres a cinco semanas." },
+      { "scene": "cta", "at": 58.6, "text": "Cuéntanos un proceso y te dibujamos el agente. Agenda una llamada." }
+    ]
+  }
+}
