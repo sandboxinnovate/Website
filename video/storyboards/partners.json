@@ -1,0 +1,132 @@
+{
+  "unit": "partners",
+  "durationSec": 64,
+  "posterSec": 12.5,
+  "heroMockup": "White-label handoff: one client-facing product window that starts as a Sandbox build (dashed outline, staging URL) and, as a hatched 'your brand applied' band sweeps across it, takes the agency's placeholder logo, accent and domain; framed by the agency's own inbox at the start and a 'who does what' ownership board (from the PartnersFlow widget) at the end. No other unit uses the brand-swap or the ownership board.",
+  "sourceOfClaims": "src/i18n/units/partners.ts (hero, pains, offers, method, faq, cta), src/components/unit/PartnersFlow/copy.ts (stages, owners, 'Your client sees'), src/components/unit/visuals/copy.ts (partners handoff labels: builds & runs, your brand applied, sells & owns the client, sees one brand; packets agent, brain, report), and the blog post src/content/blog/en/white-label-ai-for-agencies.md (the client question 'So what are we doing with AI?', assistant with a site launch, AI search visibility). Timelines used exactly as written: Qualify 1-2 calls, Package 1-2 weeks, Deliver per project, Grow ongoing; White-label 3-10 weeks per project, Co-delivery per project, Referral ongoing. The agency is always the literal placeholder 'Your Agency' / 'Tu Agencia' and its domain 'youragency.com' / 'tuagencia.com'; client senders are initials only. Inbox times and section numbers are illustrative UI states. No prices, no rates, no partner percentages.",
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 8,
+      "visual": "Dark warm stage, HUD chrome visible ([06] PARTNERS top left, small wordmark). Left two thirds (x 120 to 1180, y 200 to 760): the agency's own inbox (win, title 'Inbox · Your Agency' / 'Bandeja · Tu Agencia', no badge) built with inbox({rows}), four rows fading up 0.25 s apart from 0.4 s. Senders are initials in circles with a generic role, no company names: 'R.M. · Client, retail' subject 'Quarterly review: so what are we doing with AI?'; 'J.P. · Client, clinic' subject 'Can the new site come with an assistant?'; 'A.L. · Client, B2B' subject 'Do we show up when people ask ChatGPT?'; 'C.S. · Client, hotel' subject 'Another firm pitched us an AI assistant'. ES subjects: 'Revisión trimestral: ¿y qué hacemos con IA?', '¿El sitio nuevo puede venir con un asistente?', '¿Aparecemos cuando la gente le pregunta a ChatGPT?', 'Otra firma nos ofreció un asistente de IA'. Times right aligned (09:12, 10:40, 11:05, 14:31, illustrative). From 2.0 s inbox.highlight steps down rows 1 to 4 (0.5 s each) and each gets a small warn tag 'AI request' / 'Pedido de IA'. Right third (x 1260 to 1800): headline size md, left aligned, line 1 at 1.6 s, line 2 at 4.2 s. Hold to 7.4 s, everything fades out power2.in 7.4 to 8.0 s.",
+      "textEn": [
+        "Your clients are asking for AI.",
+        "You don't have the team to build it."
+      ],
+      "textEs": [
+        "Tus clientes te piden IA.",
+        "No tienes el equipo para construirla."
+      ]
+    },
+    {
+      "id": "promise",
+      "start": 8,
+      "end": 16,
+      "visual": "Title card left (x 120 to 960): eyebrow '[06] PARTNERS' at 8.2 s, headline size lg two lines, line 1 at 8.4 s, line 2 in <em> (flame gradient) at 9.4 s; lede 28 px fades up at 11.0 s. Right (x 1140 to 1800, y 250 to 830): the two-brand handoff from the hero visual, rebuilt flat with flow({nodes,edges}): left node 'Sandbox' with sub 'builds & runs' (dashed border, dimmed), three small packet chips 'agent', 'brain', 'report' (ES 'agente', 'brain', 'reporte') travel right along three hairline edges (drawEdge 10.0, 10.3, 10.6 s), pass through a narrow vertical hatched band labeled 'your brand applied' (ES 'se aplica tu marca') where their outline turns from flame to bone, and land on node 'Your Agency' with sub 'sells & owns the client' (solid, bone). A last edge reaches a small node 'Your client' with sub 'sees one brand' (ES 'Tu cliente' / 've una sola marca') at 12.0 s. The space between title and diagram stays empty so the frame center is quiet: poster at 12.5 s. Hold to 15.4 s, swap out.",
+      "textEn": [
+        "Sell AI under your brand.",
+        "We build it behind you.",
+        "You keep the client. We build and run it."
+      ],
+      "textEs": [
+        "Vende IA con tu marca.",
+        "Nosotros la construimos.",
+        "El cliente es tuyo. Nosotros construimos y operamos."
+      ]
+    },
+    {
+      "id": "step1-qualify",
+      "start": 16,
+      "end": 24,
+      "visual": "Step header top left (y 160): mono '01' in flame plus step caption size sm. Center-right (x 760 to 1800, y 250 to 820): a light paper document window (win paper:true, title 'Partner call · notes' / 'Llamada de partners · notas') with docPage blocks: h 'Your Agency' / 'Tu Agencia'; p 'Clients asking for: <mark>an assistant with every website</mark>' (ES 'Los clientes piden: <mark>un asistente con cada sitio web</mark>'); p 'Team: account leads, no engineers' (ES 'Equipo: líderes de cuenta, sin ingenieros'); p 'First opportunity: <mark>one client, one process</mark>' (ES 'Primera oportunidad: <mark>un cliente, un proceso</mark>'). Marks sweep in at 17.6, 19.6 s. Left column (x 120 to 680, y 420 to 760): three stacked model chips like the PartnersFlow tabs, '01 White-label · Your brand, our build', '02 Co-delivery · One team, openly', '03 Referral · You introduce, we deliver' (ES 'Marca blanca · Tu marca, nuestra construcción', 'Entrega conjunta · Un solo equipo, a la vista', 'Referidos · Tú presentas, nosotros entregamos'); at 20.6 s the White-label chip gets the selected flame border and a small ok chip 'Model that fits' / 'Modelo que encaja'. Caption line 1 at 16.4 s, line 2 at 19.8 s. Hold to 23.4 s.",
+      "textEn": [
+        "01  Qualify: 1-2 calls",
+        "We agree on the model that fits."
+      ],
+      "textEs": [
+        "01  Calificar: 1-2 llamadas",
+        "Acordamos el modelo que encaja."
+      ]
+    },
+    {
+      "id": "step2-package",
+      "start": 24,
+      "end": 33,
+      "visual": "Step header '02'. Three cards laid out in a loose row (y 260 to 800), entering left to right with fadeUp 0.35 s apart from 24.6 s. Card A (x 120 to 640) 'Partner agreement' / 'Acuerdo de partners': a lessons({items}) checklist with three rows checked one by one at 26.2, 26.8, 27.4 s: 'Client relationship stays with you', 'No direct contact with your clients', 'Your brand on every deliverable' (ES 'La relación con el cliente es tuya', 'Sin contacto directo con tus clientes', 'Tu marca en cada entregable'). Card B (x 700 to 1220) 'Brand kit' / 'Kit de marca': a placeholder logo block reading 'Your Agency' / 'Tu Agencia' in display type, three color swatches (bone, ink, a muted green that is clearly not Sandbox orange), a font sample 'Aa'. Card C (x 1280 to 1800) 'Sales kit' / 'Kit de venta': a proposal cover thumbnail with the 'Your Agency' logo, title 'AI assistant for your website' (ES 'Asistente de IA para tu sitio web') and a one-pager thumbnail under it. No Sandbox logo on cards B or C. Caption line 1 at 24.4 s, line 2 at 28.0 s. Hold to 32.4 s.",
+      "textEn": [
+        "02  Package: 1-2 weeks",
+        "Agreement, brand kit and sales materials."
+      ],
+      "textEs": [
+        "02  Empaquetar: 1-2 semanas",
+        "Acuerdo, kit de marca y materiales de venta."
+      ]
+    },
+    {
+      "id": "step3-deliver",
+      "start": 33,
+      "end": 43,
+      "visual": "Hero beat. Step header '03'. Large product window centered-right (x 640 to 1800, y 220 to 820): win with title 'Website assistant' / 'Asistente del sitio web', url 'staging.build' and a mono badge 'Sandbox build' / 'Build de Sandbox'; dashed outline, accent in Sandbox flame, small cube mark in the header. Inside: a chat({messages}) with one visitor question and one assistant answer already shown ('Do you deliver on weekends?' / 'Yes, Saturdays until 2 pm. Want me to check your area?'; ES '¿Hacen entregas los fines de semana?' / 'Sí, los sábados hasta las 14 h. ¿Reviso si llegamos a tu zona?'). At 35.6 s a narrow vertical hatched band labeled 'your brand applied' sweeps left to right across the window over 1.0 s (transform only); behind it the outline turns solid, the accent swaps from flame to the agency's muted green, the header logo becomes 'Your Agency', the url retypes to 'ai.youragency.com' / 'ai.tuagencia.com' (typeText) and the badge becomes 'Live' / 'En marcha'. At 38.4 s an approval card slides in at the left (x 120 to 600, y 400 to 800): flag 'Launch review' / 'Revisión de lanzamiento', title 'Ready for your client' / 'Listo para tu cliente', fields Brand: Your Agency; Domain: ai.youragency.com; Docs: your template; Support: behind your team (ES Marca: Tu Agencia; Dominio: ai.tuagencia.com; Documentación: tu plantilla; Soporte: detrás de tu equipo). Cursor enters at 39.4 s, clicks Approve at 40.6 s, card resolves to 'Approved by your project lead' / 'Aprobado por tu líder de proyecto'. Caption line 1 at 33.4 s, line 2 at 38.8 s. Hold to 42.4 s.",
+      "textEn": [
+        "03  Deliver under your brand and domain",
+        "Your team is in every review."
+      ],
+      "textEs": [
+        "03  Entregamos con tu marca y tu dominio",
+        "Tu equipo está en cada revisión."
+      ]
+    },
+    {
+      "id": "step4-grow",
+      "start": 43,
+      "end": 51,
+      "visual": "Step header '04'. The 'who does what' board from the PartnersFlow widget (x 120 to 1200, y 240 to 820): mono column heads 'Stage' and two lanes 'Your agency' (bone) and 'Sandbox' (flame), with five rows fading up 0.2 s apart from 43.6 s: 'Client relationship', 'Selling & proposal', 'Build & operation', 'Brand on deliverables', 'First-line support' (ES 'Relación con el cliente', 'Venta y propuesta', 'Construcción y operación', 'Marca en los entregables', 'Soporte de primera línea'). Owner markers slide into their lane one at a time from 44.6 s (expo.out, 0.6 s): Your agency, Your agency, Sandbox, Your agency, Your agency (white-label owners from copy.ts). Right panel (x 1280 to 1800): an outlined flame box 'Your client sees' / 'Tu cliente ve' with value 'Your brand only' / 'Solo tu marca' at 46.8 s, then two chips under it 'Operation & support' and 'Quarterly review' (ES 'Operación y soporte', 'Revisión trimestral') at 47.6 s. Caption line 1 at 43.4 s, line 2 at 47.2 s. Hold to 50.4 s.",
+      "textEn": [
+        "04  We run the systems behind you.",
+        "The client stays yours. In writing."
+      ],
+      "textEs": [
+        "04  Operamos los sistemas detrás de ti.",
+        "El cliente sigue siendo tuyo. Por escrito."
+      ]
+    },
+    {
+      "id": "three-models",
+      "start": 51,
+      "end": 58,
+      "visual": "Headline size sm, left, at 51.3 s (line 1). Below (y 420 to 820) three equal cards (cols 4 each) popIn 0.25 s apart from 52.0 s, each with mono index, name, one line and a mono fact row 'Timeline': '01 White-label · Your client only sees you · 3-10 weeks per project'; '02 Co-delivery · We join your team, openly · Per project'; '03 Referral · You introduce, we deliver · Ongoing' (ES '01 Marca blanca · Tu cliente solo te ve a ti · 3-10 semanas por proyecto'; '02 Entrega conjunta · Nos sumamos a tu equipo, a la vista · Por proyecto'; '03 Referidos · Tú presentas, nosotros entregamos · Continuo'). Line 2 at 54.2 s as a smaller lede under the headline. White-label card keeps a faint flame border to tie back to the story. Hold to 57.4 s, hud.chrome false at 57.6 s.",
+      "textEn": [
+        "Three ways to partner.",
+        "You choose how visible we are."
+      ],
+      "textEs": [
+        "Tres formas de asociarte.",
+        "Tú eliges qué tan visibles somos."
+      ]
+    },
+    {
+      "id": "cta",
+      "start": 58,
+      "end": 64,
+      "visual": "ctaCard({lang, button}) centered: small Sandbox wordmark above, headline from the unit CTA, line 1 at 58.3 s, line 2 in <em> flame gradient at 59.1 s; primary button 'Book a partner call' / 'Agendar una llamada de partners' pops in at 60.0 s (tiny press scale only); url 'sandboxinnovate.com' in mono below at 60.4 s. Hold static to 64 s. No HUD.",
+      "textEn": [
+        "Bring us",
+        "your next AI request.",
+        "Book a partner call",
+        "sandboxinnovate.com"
+      ],
+      "textEs": [
+        "Tráenos",
+        "tu próximo pedido de IA.",
+        "Agendar una llamada de partners",
+        "sandboxinnovate.com"
+      ]
+    }
+  ],
+  "endCard": {
+    "en": { "title": "Bring us <em>your next AI request.</em>", "button": "Book a partner call", "url": "sandboxinnovate.com" },
+    "es": { "title": "Tráenos <em>tu próximo pedido de IA.</em>", "button": "Agendar una llamada de partners", "url": "sandboxinnovate.com" }
+  },
+  "meta": { "title": { "en": "How partnering with Sandbox works", "es": "Cómo funciona ser partner de Sandbox" } }
+}

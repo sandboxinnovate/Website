@@ -1,0 +1,146 @@
+{
+  "unit": "brains",
+  "durationSec": 64,
+  "posterSec": 12.5,
+  "heroMockup": "Team chat assistant answering from company knowledge with a source chip, fed by a stack of connected sources (CRM, Inbox, Docs, Calendar, Team chat), ending in an approval card a person clicks. No other unit uses the chat + sources + approval combination.",
+  "sourceOfClaims": "src/i18n/units/brains.ts (hero, pains, offers, demo.notes, method, faq, cta) and src/components/unit/visuals/copy.ts (brains layers, sources, agents). Timelines used: first agent live 3-5 weeks; Discover 1-2 weeks, Design 1 week, Build 2-8 weeks, Operate ongoing. All numbers inside mock UIs (order number, section numbers) are illustrative UI states, never claims.",
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 8,
+      "visual": "Dark warm stage, HUD chrome visible ([01] BRAINS top left, small wordmark). Centered-left at x 120 to 1100, y 230 to 760: a team chat window (win, title '# operations', no badge) showing one user message typed in by typeText at 0.6 s: 'Where are the return terms for wholesale accounts?' (ES: '¿Dónde están las condiciones de devolución para mayoristas?'). Below it, at 2.2 s and 3.0 s, two short replies from teammates fade up (initials only, no names): 'Ask M., she knows' and 'I think it's in a shared folder somewhere' (ES: 'Pregúntale a M., ella sabe' / 'Creo que está en alguna carpeta compartida'). To the right (x 1180 to 1800), a loose column of 6 document cards (docPage-style thumbnails, titles like 'Returns_v3_FINAL', 'Wholesale terms (old)', 'Policies 2024 copy') slightly rotated 1 to 2 degrees, fading in staggered from 1.0 s, conveying scattered documents. Headline lines (size md, left aligned, bottom area y 800 to 930) appear line by line: line 1 at 2.0 s, line 2 at 4.4 s, hold to 7.4 s. Exit: everything fades out with power2.in at 7.4 to 8.0 s.",
+      "textEn": [
+        "The answers live in three people's heads",
+        "and a hundred documents nobody can find."
+      ],
+      "textEs": [
+        "Las respuestas viven en tres cabezas",
+        "y en cien documentos que nadie encuentra."
+      ]
+    },
+    {
+      "id": "promise",
+      "start": 8,
+      "end": 16,
+      "visual": "Title card, left aligned (x 120 to 1000): eyebrow '[01] BRAINS' at 8.2 s, headline size lg in two lines, line 1 at 8.4 s, line 2 (wrapped in <em>, flame gradient) at 9.4 s. Sub line (lede, 28 px) fades up at 11.0 s. On the right (x 1180 to 1800, y 260 to 820) a three-layer stack drawn as flat cards, built bottom to top: 'Sources · your tools' (with five small chips CRM, Inbox, Docs, Calendar, Team chat), then 'Brain · remembers', then 'Agents · act' (chips Sales, Support, Ops, HR), each layer fading up 0.35 s apart from 10.0 s, thin hairline connectors between them. No glow effects, no brain imagery: the word 'Brain' is just a label on a card. The gap between title and stack keeps the frame center quiet: poster at 12.5 s. Hold until 15.4 s, then swap to next layer.",
+      "textEn": [
+        "One brain for your company.",
+        "An agent for every process.",
+        "Built on your data, tools and rules."
+      ],
+      "textEs": [
+        "Un brain para tu empresa.",
+        "Un agente para cada proceso.",
+        "Sobre tus datos, herramientas y reglas."
+      ]
+    },
+    {
+      "id": "step1-connect",
+      "start": 16,
+      "end": 24,
+      "visual": "Step header top left (y 160): mono '01' in flame plus step headline size sm. A window 'brain / sources' (win, w 1100, centered x 410 to 1510, y 300 to 820) lists five connection rows, each with icon, name and a status chip: Docs & wiki (icon doc), Inbox (mail), CRM (db), Calendar (calendar), Team chat (chat). Rows fade up staggered from 16.8 s; at 18.0 s to 19.6 s each status chip flips from 'connecting' (muted) to 'synced' (chip--ok) one after another via typeText. At 20.0 s a right-hand column 'Who can see what' appears: three role rows (Sales, Support, HR) with lock icons and small permission chips ('Same access as today'), highlighting one at 21.0 s. Second caption line at 20.4 s. Hold to 23.4 s, fade out.",
+      "textEn": [
+        "01  Connect the tools you already use",
+        "Same permissions your team has today."
+      ],
+      "textEs": [
+        "01  Conecta las herramientas que ya usas",
+        "Con los mismos permisos que tu equipo tiene hoy."
+      ]
+    },
+    {
+      "id": "step2-ask",
+      "start": 24,
+      "end": 33,
+      "visual": "Step header '02' top left. Same team chat window from the hook returns (continuity: '# operations'), now x 120 to 1180. The user question from the hook is re-asked at 24.6 s (typeText). Agent reply (agentIcon = small Sandbox cube, not a robot) reveals at 26.0 s with a short typing indicator: 'Wholesale returns are accepted within the window set in section 3, with the original invoice. Damaged items go to a person.' (ES: 'Las devoluciones mayoristas se aceptan dentro del plazo de la sección 3, con la factura original. Los productos dañados pasan a una persona.'). Meta chips under the reply: 'Source: Returns policy §3' (flame) and 'Confidence: high' (ok). At 27.4 s a docPage (paper window) slides in on the right (x 1240 to 1800) showing the policy document with the matching sentence highlighted via .mark. At 29.4 s a second, shorter exchange reveals: user 'Can we extend it for one key account?' agent 'I don't know. That decision isn't in the policy. I'll ask the owner.' (ES: '¿Podemos extenderlo para un cliente clave?' / 'No lo sé. Esa decisión no está en la política. Le pregunto al responsable.'). Captions: line 1 at 26.4 s, line 2 at 29.6 s. Hold to 32.4 s.",
+      "textEn": [
+        "02  Ask, and get answers with sources",
+        "And a clear “I don't know” when it isn't sure."
+      ],
+      "textEs": [
+        "02  Pregunta y recibe respuestas con fuentes",
+        "Y un “no lo sé” claro cuando no está seguro."
+      ]
+    },
+    {
+      "id": "step3-act",
+      "start": 33,
+      "end": 42,
+      "visual": "Step header '03'. Left: inbox window (x 120 to 820, y 280 to 820) with four rows (initials only, subjects: 'Portal inquiry: 2-bedroom, north area', 'Ticket: order arrived damaged', 'Question about invoice', 'Weekly report request'; times are plain clock labels). Row 1 highlights at 33.8 s. Right: a horizontal flow (x 900 to 1800, y 300 to 800) with nodes Read request (icon inbox) -> Check the brain (book) -> Qualify against your criteria (target) -> Update CRM (db) -> Draft reply (pen). Nodes appear by order from 34.4 s, edges drawn one by one 0.5 s apart, a pulse travels along them. At 38.6 s the inbox row tag changes to 'Qualified · logged in CRM' (chip--ok) and row 2 gets tag 'Waiting approval' (chip--flame), which sets up the next step. Captions: line 1 at 34.2 s, line 2 at 37.4 s. Hold to 41.4 s.",
+      "textEn": [
+        "03  Agents do the work in your tools",
+        "Qualify leads, resolve tickets, update the CRM."
+      ],
+      "textEs": [
+        "03  Los agentes trabajan en tus herramientas",
+        "Califican leads, resuelven tickets, actualizan el CRM."
+      ],
+      "_textEsNote": "ES line 2 is 7 words; keep it on one line at caption size 40 px (approx 1100 px wide)."
+    },
+    {
+      "id": "step4-approve",
+      "start": 42,
+      "end": 51,
+      "visual": "Step header '04'. Center-right: approval card (x 760 to 1480, y 270 to 760) with flag 'Needs approval', title 'Refund above your limit' (ES 'Reembolso sobre tu límite'), fields: Order -> '#10482' (illustrative), Reason -> 'Arrived damaged, photo attached', Policy -> 'Returns policy §2', Proposed -> 'Full refund + apology email'. No amounts or currency anywhere. Buttons Approve / Reject. Card enters at 42.6 s. Cursor (cursor) enters from bottom right at 44.6 s, moves to Approve over 0.9 s, clicks at 46.0 s, card resolves to 'Approved by the support lead' state (ok chip). At 46.8 s a compact run log panel slides up on the left (x 120 to 700), mono 18 px, 4 lines appearing one by one: 'read ticket · order found', 'source: returns policy §2', 'approval: support lead', 'refund issued · customer notified'. Captions: line 1 at 43.2 s, line 2 at 47.0 s. Hold to 50.4 s.",
+      "textEn": [
+        "04  A person approves what matters",
+        "Every step logged for your team to review."
+      ],
+      "textEs": [
+        "04  Una persona aprueba lo importante",
+        "Cada paso queda registrado para revisarlo."
+      ]
+    },
+    {
+      "id": "how-we-run-it",
+      "start": 51,
+      "end": 58,
+      "visual": "Headline size sm, left, at 51.4 s: line 1. Below, a horizontal steps component (steps, x 120 to 1800, y 480) with four items and their timelines from the method copy: Discover 1-2 weeks, Design 1 week, Build 2-8 weeks, Operate ongoing (ES: Descubrir 1-2 semanas, Diseñar 1 semana, Construir 2-8 semanas, Operar continuo). Steps light up with .go one by one at 52.2, 52.9, 53.6, 54.3 s. Under 'Operate' a small chip 'Monthly report' (ES 'Reporte mensual'). Line 2 appears at 54.8 s as a fact row in mono label + value style like the hero facts ('First agent live' / '3 to 5 weeks'). Hold to 57.4 s, then HUD chrome hides (hud.chrome false) at 57.6 s.",
+      "textEn": [
+        "From one process to a running system.",
+        "First agent live in 3 to 5 weeks."
+      ],
+      "textEs": [
+        "De un proceso a un sistema en marcha.",
+        "Primer agente en producción en 3 a 5 semanas."
+      ]
+    },
+    {
+      "id": "cta",
+      "start": 58,
+      "end": 64,
+      "visual": "ctaCard({lang}) centered: headline from the unit CTA, second line in <em> flame gradient, appears line by line at 58.3 s and 59.1 s; primary button 'Book a call' / 'Agendar una llamada' pops in at 60.0 s (tiny press scale only); url 'sandboxinnovate.com' in mono below at 60.4 s; Sandbox wordmark small above. Hold static to 64 s. No HUD.",
+      "textEn": [
+        "Tell us one process.",
+        "We'll sketch the agent.",
+        "Book a call",
+        "sandboxinnovate.com"
+      ],
+      "textEs": [
+        "Cuéntanos un proceso.",
+        "Te dibujamos el agente.",
+        "Agendar una llamada",
+        "sandboxinnovate.com"
+      ]
+    }
+  ],
+  "endCard": {
+    "en": {
+      "title": "Tell us one process. <em>We'll sketch the agent.</em>",
+      "button": "Book a call",
+      "url": "sandboxinnovate.com"
+    },
+    "es": {
+      "title": "Cuéntanos un proceso. <em>Te dibujamos el agente.</em>",
+      "button": "Agendar una llamada",
+      "url": "sandboxinnovate.com"
+    }
+  },
+  "meta": {
+    "title": {
+      "en": "How a Sandbox brain works",
+      "es": "Cómo funciona un brain de Sandbox"
+    }
+  }
+}

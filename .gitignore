@@ -6,3 +6,6 @@ dist/
 .DS_Store
 qa/
 entrega/
+# video renders: intermediates, previews and frame grabs (finals are copied to public/video/)
+video/out/
+video/**/frames/

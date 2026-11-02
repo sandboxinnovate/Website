@@ -1,0 +1,95 @@
+{
+  "unit": "consulting",
+  "hud": { "ix": "02", "unit": "Consulting" },
+  "durationSec": 66,
+  "poster": 39.5,
+  "posterNote": "Roadmap Gantt fully drawn with the Today marker and the Roadmap milestone; place the Gantt so the chart's center falls on empty lane space between rows 3 and 4 (play button goes there).",
+  "sourceCopy": "src/i18n/units/consulting.ts (hero, pains, offers, method, cases.Distribution), src/components/unit/visuals/copy.ts (consulting roadmap rows)",
+  "signatureVisual": "audit map -> ranked opportunities -> 90-day roadmap (Gantt) -> automation in production -> monthly Head of AI review. No chat window and no approval card as hero (those belong to Brains).",
+  "scenes": [
+    {
+      "id": "hook-ideas",
+      "start": 0,
+      "end": 6.5,
+      "visual": "Background from lib.setup with glow low-right. HUD chrome visible from 0.2 s. Right half (x 980 to 1800, y 190 to 900): a win({title:'ai-ideas.txt', badge:'unsorted'}) holding a plain list of 9 idea rows in body font 26 px, each with a small mono index [01]..[09] and a muted gray dot, no ranking: 'Chatbot for the website', 'Summarize contracts', 'Read order emails', 'Draft the weekly report', 'Triage support tickets', 'Write proposals faster', 'Translate the help center', 'Clean the CRM', 'Forecast demand' (ES: 'Chatbot para el sitio web', 'Resumir contratos', 'Leer pedidos por correo', 'Redactar el reporte semanal', 'Clasificar tickets de soporte', 'Escribir propuestas más rápido', 'Traducir el centro de ayuda', 'Limpiar el CRM', 'Pronosticar demanda'). Rows fade up with 0.12 s stagger from 0.4 s; the list keeps scrolling slowly upward by 120 px over the scene (power1.inOut), with a bottom fade mask so it reads as a much longer list. Left column (x 120, y 330): headline sm/md left aligned, line 1 in at 0.9 s, line 2 in at 2.6 s (by:'line'). Restrained: no shake, no flashing.",
+      "textEn": ["Fifty AI ideas.", "No way to tell which ones matter."],
+      "textEs": ["Cincuenta ideas de IA.", "Ninguna forma de saber cuáles importan."]
+    },
+    {
+      "id": "pains",
+      "start": 6.5,
+      "end": 13.5,
+      "visual": "The idea window slides right and dims to 35 % opacity (power2.in, 0.6 s) and stays as texture. Left column: headline md 'Plenty of AI ideas. <em>No plan.</em>' (No plan. in flame gradient) enters at 6.9 s. Below it at 9.2 s three small cards (class card, 520 px wide, body 24 px, a mono label in --smoke on top) fade up with 0.25 s stagger, each a symptom from the pains copy: 'Personal accounts, no rules' / 'A pilot that died after the demo' / 'A strategy nobody owns' (ES: 'Cuentas personales, sin reglas' / 'Un piloto que murió después de la demo' / 'Una estrategia sin responsable'). Mono labels: 'TOOLS', 'PILOTS', 'OWNERSHIP' (ES: 'HERRAMIENTAS', 'PILOTOS', 'RESPONSABLE'). Lede line (caption size 32 px, --mist) enters at 10.3 s under the headline, above the cards.",
+      "textEn": ["Plenty of AI ideas. No plan.", "Short on a plan, an owner and hands.", "Personal accounts, no rules", "A pilot that died after the demo", "A strategy nobody owns"],
+      "textEs": ["Muchas ideas de IA. Ningún plan.", "Falta un plan, un responsable y manos.", "Cuentas personales, sin reglas", "Un piloto que murió después de la demo", "Una estrategia sin responsable"]
+    },
+    {
+      "id": "what-we-do",
+      "start": 13.5,
+      "end": 19.5,
+      "visual": "Everything clears (fadeOut 0.5 s). Centered titleCard with eyebrow [02] CONSULTING, headline lg 'Find where AI pays off.<br><em>Then make it happen.</em>' in by line at 14.0 s. At 16.4 s a thin row of three mono pills appears under it, joined by short hairline arrows, left to right: 'AUDIT 2-3 WK' -> 'SPRINT 4-8 WK' -> 'HEAD OF AI MONTHLY' (ES: 'AUDITORÍA 2-3 SEM' -> 'SPRINT 4-8 SEM' -> 'HEAD OF AI MENSUAL'), pills popIn with 0.2 s stagger, arrows drawn by scaleX. This pill row becomes the persistent lib.steps tracker in the next scene: at 19.0 s it shrinks and moves to the top (y 160) as steps({items: Interview / Prioritize / Implement / Lead}) with sub labels Week 1 / Weeks 2-3 / Weeks 4-11 / Ongoing (ES: Entrevistar / Priorizar / Implementar / Liderar; Semana 1 / Semanas 2-3 / Semanas 4-11 / Continuo).",
+      "textEn": ["Find where AI pays off.", "Then make it happen.", "Audit 2-3 wk", "Sprint 4-8 wk", "Head of AI monthly"],
+      "textEs": ["Encuentra dónde rinde la IA.", "Y hazlo realidad.", "Auditoría 2-3 sem", "Sprint 4-8 sem", "Head of AI mensual"]
+    },
+    {
+      "id": "step1-interview-map",
+      "start": 19.5,
+      "end": 27.5,
+      "visual": "Steps tracker at top (y 160 to 220, x 120 to 1800), steps.go(0) at 19.6 s highlights 'Interview / Week 1'. Left (x 120 to 640, y 280 to 900): a paper docPage window 'interview-notes / ops' (ES 'notas-entrevista / operaciones') with kicker 'Interview 4 of 9' (ES 'Entrevista 4 de 9'), title 'Order desk' (ES 'Mesa de pedidos') and three short note lines: 'Orders arrive by email and spreadsheet.' / '<mark>Every order is typed into the ERP by hand.</mark>' / 'Exceptions are handled by whoever sees them.' (ES: 'Los pedidos llegan por correo y hoja de cálculo.' / '<mark>Cada pedido se carga a mano en el ERP.</mark>' / 'Las excepciones las resuelve quien las ve.'); mark(tl, 22.4, 0) sweeps the flame highlighter over the middle line. Right (x 720 to 1800): win({title:'process-map', badge:'draft'}) with a lib.flow drawn left to right: nodes 'Customer email' (icon mail), 'Spreadsheet' (icon doc), 'Order desk' (icon users, kind human), 'ERP' (icon db), 'Invoice' (icon box) (ES 'Correo del cliente', 'Hoja de cálculo', 'Mesa de pedidos', 'ERP', 'Factura'). flow.in at 20.4 s with 0.25 s gap, edges drawn at 21.6 to 22.6 s, then at 23.0 s focus('desk') and a small chip--flame tag appears under the Order desk node: 'Retyped by hand' (ES 'Se carga a mano'). Caption lower third (y about 900, kicker mono 'WEEK 1' / 'SEMANA 1') in at 23.6 s.",
+      "textEn": ["Week 1: interviews across teams.", "We map how work actually flows."],
+      "textEs": ["Semana 1: entrevistas con los equipos.", "Mapeamos cómo fluye de verdad el trabajo."]
+    },
+    {
+      "id": "step2-prioritize",
+      "start": 27.5,
+      "end": 35.5,
+      "visual": "steps.go(1) at 27.6 s ('Prioritize / Weeks 2-3'). Notes and map swap out (swap 0.6 s). Center-left (x 120 to 1240, y 270 to 860): win({title:'opportunities / ranked', badge:'9 reviewed'}) containing a real table: columns '#', 'Opportunity', 'Return', 'Effort', 'Risk', 'Status' (ES '#', 'Oportunidad', 'Retorno', 'Esfuerzo', 'Riesgo', 'Estado') in mono 17 px headers, rows body 24 px. Return/Effort/Risk shown as three-segment pill meters with word labels High/Med/Low (ES Alto/Medio/Bajo), no percentages or money. Rows first appear unsorted (same items as the hook list, 6 visible), then at 29.6 s they reorder by translateY (expo.out 0.9 s, one movement) into ranked order: 1 'Read order emails into the ERP', 2 'Draft the weekly report', 3 'Triage support tickets', 4 'Summarize contracts', 5 'Chatbot for the website', 6 'Forecast demand' (ES 1 'Cargar pedidos del correo al ERP', 2 'Redactar el reporte semanal', 3 'Clasificar tickets de soporte', 4 'Resumir contratos', 5 'Chatbot para el sitio web', 6 'Pronosticar demanda'). At 31.4 s the Status cell of rows 1 to 3 gets chip--flame 'Scoped' (ES 'Definido') with 0.2 s stagger, rows 4 to 6 dim to --smoke with chip 'Later' (ES 'Después'). Right column (x 1300 to 1800): text lines stacked, each fadeUp when due: line 1 at 28.0 s, line 2 at 30.2 s, line 3 at 32.0 s. Mock values are labelled as the window's example state; the table carries a small mono note 'example' at bottom right (ES 'ejemplo').",
+      "textEn": ["Weeks 2 to 3: every idea, ranked.", "By return, effort and risk.", "The first three projects scoped."],
+      "textEs": ["Semanas 2 a 3: cada idea, priorizada.", "Por retorno, esfuerzo y riesgo.", "Los tres primeros proyectos, definidos."]
+    },
+    {
+      "id": "roadmap",
+      "start": 35.5,
+      "end": 42.5,
+      "visual": "Signature frame of this unit. The top three scoped rows fly up and collapse into the first lanes of a Gantt (one movement, 0.8 s). Window win({title:'roadmap / 90 days', badge:'readout'}) (ES 'hoja de ruta / 90 días', badge 'presentación') spans x 120 to 1800, y 260 to 820, built with h() using the site's ConsultingVisual look: 12 week columns 'W1..W12' (ES 'S1..S12') in mono 16 px over faint vertical gridlines; phase bands on top: 'Audit' (sun/amber), 'Sprint' (flame), 'Ongoing' (outlined, dashed) (ES 'Auditoría', 'Sprint', 'Continuo'). Lanes with labels on the left (body 22 px): 'Interviews', 'Process map', 'Ranked opportunities', 'Tools + usage policy', 'Automate: order intake', 'Automate: weekly report', 'Team training', 'Head of AI, monthly' (ES exactly as in visuals/copy.ts: 'Entrevistas', 'Mapa de procesos', 'Oportunidades priorizadas', 'Herramientas + política', 'Automatizar: pedidos', 'Automatizar: reporte', 'Capacitación del equipo', 'Head of AI, mensual'). Bars grow left to right with scaleX in sequence 36.0 to 38.6 s (0.18 s stagger), audit bars fully filled, sprint bars outlined, the 'Team training' bar dashed as sessions, the Head of AI bar open-ended with a right fade. At 38.8 s the diamond milestone 'Roadmap' (ES 'Hoja de ruta') pops in at end of W3 and a vertical flame hairline marker 'Today, W3' (ES 'Hoy, S3') drops in. Poster at 39.5 s. Caption lower third in at 37.2 s.",
+      "textEn": ["A 90-day roadmap", "your leadership can read."],
+      "textEs": ["Una hoja de ruta a 90 días", "que tu dirección puede leer."]
+    },
+    {
+      "id": "step3-implement",
+      "start": 42.5,
+      "end": 51.5,
+      "visual": "steps.go(2) at 42.6 s ('Implement'). The Gantt's 'Automate: order intake' lane highlights then the roadmap swaps to production. Left (x 120 to 1080, y 270 to 880): win({title:'orders inbox', badge:'live'}) (ES 'pedidos', badge 'en marcha') with lib.inbox of 4 rows, generic senders shown only as initials and role-like names ('Purchasing, North branch', 'Buyer, retail account', 'Purchasing, East branch', 'Ops, wholesale account'; ES 'Compras, sucursal Norte', 'Comprador, cuenta minorista', 'Compras, sucursal Este', 'Operaciones, cuenta mayorista'), subjects 'PO attached', 'Reorder, same as last month', 'Order sheet for next week', 'Urgent: quantities changed' (ES 'Adjunto orden de compra', 'Repetir pedido del mes pasado', 'Planilla de pedido para la próxima semana', 'Urgente: cambiaron las cantidades'). From 44.0 s each row is highlighted in turn (0.7 s apart) and tagged chip--ok 'Read · validated · in ERP' (ES 'Leído · validado · en ERP'); row 4 instead gets chip--flame 'Exception → to a person' (ES 'Excepción → a una persona') at 46.9 s and a small user avatar slides in next to it. Right column (x 1160 to 1800): a vertical stack of three compact cards that check in one by one (lessons-style rows with a check icon) at 47.6, 48.2, 48.8 s: 'Approved tools and access', 'AI usage policy and data rules', 'Role-based training' (ES 'Herramientas aprobadas y accesos', 'Política de uso de IA y reglas de datos', 'Capacitación por rol'), then a fourth row with mono label 'BEFORE / AFTER' and text 'Measured against the baseline' (ES 'ANTES / DESPUÉS', 'Medido contra la línea base'), no numbers. Caption lower third: kicker 'IMPLEMENTATION SPRINT · 4-8 WEEKS' (ES 'SPRINT DE IMPLEMENTACIÓN · 4-8 SEMANAS'), lines in at 43.2 s and 46.0 s.",
+      "textEn": ["Then we roll it out:", "2 or 3 processes automated end to end.", "Exceptions go to a person.", "Approved tools and access", "AI usage policy and data rules", "Role-based training", "Measured against the baseline"],
+      "textEs": ["Después lo implementamos:", "2 o 3 procesos automatizados de punta a punta.", "Las excepciones pasan a una persona.", "Herramientas aprobadas y accesos", "Política de uso de IA y reglas de datos", "Capacitación por rol", "Medido contra la línea base"]
+    },
+    {
+      "id": "step4-lead",
+      "start": 51.5,
+      "end": 58,
+      "visual": "steps.go(3) at 51.6 s ('Lead / Ongoing'). Inbox and checklist swap out. Center-right (x 760 to 1800, y 280 to 860): paper-style win({title:'monthly review', paper:true}) (ES 'revisión mensual') shaped like an agenda: kicker mono 'HEAD OF AI · MONTHLY' (ES 'HEAD OF AI · MENSUAL'), and lib.lessons rows with when-labels as agenda slots: 'Roadmap and priorities', 'Vendor and tool evaluation', 'Active AI projects', 'Policy and risk updates', 'Office hours for the team', and a last row 'Quarterly report to leadership' with a calendar icon (ES 'Hoja de ruta y prioridades', 'Evaluación de proveedores y herramientas', 'Proyectos de IA activos', 'Actualización de políticas y riesgos', 'Horario de consultas para el equipo', 'Reporte trimestral a la dirección'). check(tl, at, i) ticks rows 0 to 4 from 53.0 s at 0.45 s intervals; the quarterly row stays open with chip 'Next' (ES 'Próximo'). Left column (x 120 to 680): headline sm two lines in at 52.0 s and 54.4 s.",
+      "textEn": ["Then, as your fractional Head of AI.", "Each step leaves something you can use."],
+      "textEs": ["Después, como tu Head of AI fraccional.", "Cada paso deja algo que puedes usar."]
+    },
+    {
+      "id": "close",
+      "start": 58,
+      "end": 62,
+      "visual": "Steps tracker and review fade out. Centered headline lg 'Start with <em>a clear picture.</em>' (ES 'Empieza con <em>una foto clara.</em>') in by word at 58.3 s; under it at 59.4 s a mono line in --mist. Hold until 61.6 s, then hud.chrome(tl, 61.6, false).",
+      "textEn": ["Start with a clear picture.", "Audit, implement, lead."],
+      "textEs": ["Empieza con una foto clara.", "Auditar, implementar, liderar."]
+    },
+    {
+      "id": "cta",
+      "start": 62,
+      "end": 66,
+      "visual": "lib.ctaCard({lang}) in at 62.0 s: wordmark, button 'Book a call' / 'Agendar una llamada', url sandboxinnovate.com. Static hold to the end; only the background drift continues.",
+      "textEn": ["Book a call", "sandboxinnovate.com"],
+      "textEs": ["Agendar una llamada", "sandboxinnovate.com"]
+    }
+  ],
+  "endCard": {
+    "en": { "title": "Start with a clear picture.", "button": "Book a call", "url": "sandboxinnovate.com" },
+    "es": { "title": "Empieza con una foto clara.", "button": "Agendar una llamada", "url": "sandboxinnovate.com" }
+  }
+}

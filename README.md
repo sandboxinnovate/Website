@@ -61,6 +61,7 @@ Each payload also carries the page it was sent from, the referrer, the visitor's
 | Interactive widgets | `src/components/widgets/<Name>/` (each has its own `copy.ts`) |
 | Logo (vector reconstruction of the brand cube) | `src/components/ui/Logo.astro`, `public/favicon.svg` |
 | SEO: sitemap, robots, AI-crawler summary | auto `sitemap-index.xml`, `public/robots.txt`, `/llms.txt` (`src/pages/llms.txt.ts` + `src/data/llms.txt`) |
+| Unit explainer videos | `public/video/` (files), `src/data/videos.ts` + `videos.json` (titles, transcripts), `video/` (sources; see **Explainer videos**) |
 | Cache headers for Netlify / Cloudflare Pages | `public/_headers` |
 
 ## Editing copy
@@ -120,6 +121,18 @@ Body: no H1; 1 to 3 intro paragraphs, then `## ` sections (`###` allowed). GFM t
 | RSS / AI-crawler summary / palette search index | `/rss.xml`, `/es/rss.xml`, `/llms.txt` (base text in `src/data/llms.txt`), `/blog/index.json` |
 
 Posts also appear on the home page (“Field notes”, featured first), on their unit's service page (“Related reading”), in the ⌘K palette and in the sitemap (with hreflang pairs from `translationKey`). `node scripts/shoot-all.mjs` screenshots every post.
+
+## Explainer videos
+
+Each service page has a silent explainer of about a minute, in English and Spanish, right after the hero (`src/components/unit/UnitOverview.astro` → `UnitVideo.astro`). Nothing loads until the visitor presses play; the transcript sits under the player and the page emits a schema.org `VideoObject`.
+
+The videos are code: every scene is a GSAP timeline in `video/scenes/<unit>.js`, rendered frame by frame with Playwright and encoded with ffmpeg (toolkit and rules in `video/README.md`, storyboards in `video/storyboards/`). To change one:
+
+1. Edit `video/scenes/<unit>.js` (the copy check refuses dashes, prices, client names and the banned phrases).
+2. Look at frames: `node video/frames.mjs <unit> <en|es> all --scale 0.5` (PNGs in `video/out/frames/`).
+3. Render: `node video/render.mjs <unit> en` and `node video/render.mjs <unit> es` (about 6 to 8 minutes each; writes mp4, webm, two posters and a `.json` to `video/out/`, which is not committed).
+4. Put it on the site: `node video/site-data.mjs` copies the finals to `public/video/` and rewrites `src/data/videos.json` (title, duration, transcript). Copying the four files by hand also works if the duration and transcript did not change.
+5. Bump `VIDEO_UPLOAD_DATE` in `src/data/videos.ts`. `/video/*` is cached for a year, and that date is also the `?v=` cache buster on every media URL.
 
 ## House rules
 
