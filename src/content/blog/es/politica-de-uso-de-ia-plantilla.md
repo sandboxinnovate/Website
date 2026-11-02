@@ -109,7 +109,7 @@ dice qué herramientas, qué datos y qué revisiones. Si algo no está cubierto,
 pregúntale al responsable.
 
 2. HERRAMIENTAS Y CUENTAS APROBADAS
-- Aprobadas: [Herramienta A – cuenta de la empresa], [Herramienta B – cuenta
+- Aprobadas: [Herramienta A, cuenta de la empresa], [Herramienta B, cuenta
   de la empresa], [...]
 - Los datos de trabajo van SOLO a herramientas aprobadas con cuenta de la empresa.
 - Cuentas personales de IA: solo información pública (verde).
@@ -117,11 +117,11 @@ pregúntale al responsable.
   conectados al correo, drive, calendario o llamadas de la empresa sin aprobación.
 
 3. SEMÁFORO DE DATOS
-VERDE    – Cualquier herramienta aprobada. Ejemplos: [contenido publicado,
+VERDE:     Cualquier herramienta aprobada. Ejemplos: [contenido publicado,
            investigación pública].
-AMARILLO – Solo cuentas de la empresa; quita nombres y datos que no hagan
+AMARILLO:  Solo cuentas de la empresa; quita nombres y datos que no hagan
            falta. Ejemplos: [documentos internos, minutas, borradores].
-ROJO     – No va en herramientas de IA de uso general. Ejemplos: [material
+ROJO:      No va en herramientas de IA de uso general. Ejemplos: [material
            de clientes bajo NDA, datos personales de clientes o empleados,
            contraseñas, cifras financieras no publicadas].
 Si tienes dudas, trátalo como el color siguiente.

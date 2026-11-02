@@ -27,7 +27,7 @@ ${p.data.tags.map((t) => `      <category>${x(t)}</category>`).join('\n')}
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${x(`${BLOG.name[lang]} — Sandbox`)}</title>
+    <title>${x(`${BLOG.name[lang]} | Sandbox`)}</title>
     <link>${abs(blogIndexHref(lang))}</link>
     <atom:link href="${abs(rssHref(lang))}" rel="self" type="application/rss+xml" />
     <description>${x(BLOG.seo.description[lang])}</description>

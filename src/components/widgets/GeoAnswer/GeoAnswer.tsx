@@ -116,7 +116,7 @@ function AnswerText({ tk, sources, shown, active, streaming, sourceWord, hot, on
 /* ------------------------------------------------------------------ */
 
 /**
- * "Be the answer" — an illustrative, Sandbox-styled AI answer panel.
+ * "Be the answer": an illustrative, Sandbox-styled AI answer panel.
  * A question types itself, the answer streams in token by token with citation chips,
  * and a Before / After toggle shows the visitor's brand absent vs. recommended and cited as [1].
  */

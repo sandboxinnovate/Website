@@ -1,14 +1,14 @@
-# Sandbox — website
+# Sandbox website
 
 Marketing site for Sandbox (sandboxinnovate.com): AI systems, consulting, growth, academy, products and partners.
 Bilingual (English at `/`, Spanish at `/es/`), static, fast, and built to be edited by a small team.
 
 ## Stack
 
-- **Astro 7** — static pages, zero JavaScript by default.
-- **React 19 islands** — only the interactive widgets ship JS, and most hydrate when scrolled into view.
-- **Tailwind CSS v4** — design tokens live in `src/styles/global.css` (`@theme`).
-- Fonts are self-hosted: **Unbounded** (display), **Satoshi** (body, from Fontshare — free for commercial use), **JetBrains Mono** (system labels).
+- **Astro 7**: static pages, zero JavaScript by default.
+- **React 19 islands**: only the interactive widgets ship JS, and most hydrate when scrolled into view.
+- **Tailwind CSS v4**: design tokens live in `src/styles/global.css` (`@theme`).
+- Fonts are self-hosted: **Unbounded** (display), **Satoshi** (body, from Fontshare, free for commercial use), **JetBrains Mono** (system labels).
 - No CMS, no tracking, no third-party scripts.
 
 ## Run it
@@ -75,29 +75,29 @@ title: { en: 'Straight <em>answers</em>', es: 'Respuestas <em>directas</em>' }
 
 ## Blog
 
-“Field notes on applied AI” / “Notas de campo sobre IA aplicada” — `/blog/` and `/es/blog/`.
+“Field notes on applied AI” / “Notas de campo sobre IA aplicada”, at `/blog/` and `/es/blog/`.
 
 **Add a post:** write `src/content/blog/en/<en-slug>.md` and its Spanish pair `src/content/blog/es/<es-slug>.md` (plain Markdown, no MDX). Files starting with `_` are ignored (drafts). The two versions are paired by `translationKey` (= the EN slug); a post without its pair still builds, and the EN/ES switch falls back to the other language's blog index.
 
 ```yaml
 ---
-title: "What a company brain is (and what it isn't)"   # 20–75 chars, sentence case (the H1)
-description: "…"                                         # 110–170 chars (meta description)
-dek: "…"                                                 # 40–240 chars (subtitle)
+title: "What a company brain is (and what it isn't)"   # 20-75 chars, sentence case (the H1)
+description: "…"                                         # 110-170 chars (meta description)
+dek: "…"                                                 # 40-240 chars (subtitle)
 date: 2026-11-02
 lang: en                                                 # must match the folder
 translationKey: what-is-a-company-brain
 unit: brains                                             # brains | consulting | growth | academy | products | partners
-tags: ["agents", "knowledge base"]                       # 2–4, lowercase
+tags: ["agents", "knowledge base"]                       # 2-4, lowercase
 readingMinutes: 8                                        # ≈ words / 220
-takeaways: ["…", "…", "…"]                               # 3–5 → "Key takeaways" box
-faq: [{ q: "…", a: "…" }]                                # optional, 2–4 → accordion + FAQPage JSON-LD
+takeaways: ["…", "…", "…"]                               # 3-5 → "Key takeaways" box
+faq: [{ q: "…", a: "…" }]                                # optional, 2-4 → accordion + FAQPage JSON-LD
 featured: true                                           # optional → lead story on the index / home
 author: sandbox
 ---
 ```
 
-Body: no H1; 1–3 intro paragraphs, then `## ` sections (`###` allowed). GFM tables, lists, fenced code blocks (rendered with a Copy button) and callouts written as `> **Example:** …`, `> **Note:** …`, `> **Rule of thumb:** …` (ES: `Ejemplo`, `Nota`, `Regla práctica`). Internal links are root-relative with a trailing slash (`/services/brains/`, `/es/blog/<es-slug>/`, `/#roi`).
+Body: no H1; 1 to 3 intro paragraphs, then `## ` sections (`###` allowed). GFM tables, lists, fenced code blocks (rendered with a Copy button) and callouts written as `> **Example:** …`, `> **Note:** …`, `> **Rule of thumb:** …` (ES: `Ejemplo`, `Nota`, `Regla práctica`). Internal links are root-relative with a trailing slash (`/services/brains/`, `/es/blog/<es-slug>/`, `/#roi`).
 
 **Add a cover photo:** every post gets a real photo, shared by its EN and ES versions.
 1. Pick a landscape photo on Unsplash whose page says **“Free to use under the Unsplash License”**. Never Unsplash+ (premium) photos, never AI-generated or 3D-rendered images, no brand logos, no readable personal data. Prefer warm or dark photos; the grade below handles the rest.
@@ -107,7 +107,7 @@ Body: no H1; 1–3 intro paragraphs, then `## ` sections (`###` allowed). GFM ta
 
 `PostCover.astro` serves AVIF/WebP at responsive widths and applies one brand grade to every photo (slight desaturation, warm flame wash, bottom vignette) so the covers read as one series; the OG image uses the same crop and grade. The post page credits the photographer under the hero (“Photo: Name / Unsplash”). The Unsplash License does not require it, but it is good practice. A post without a cover gets a plain dark panel and the default OG image, and `check-posts.mjs` warns about it.
 
-**Check before committing:** `node scripts/check-posts.mjs [translationKey]` — 0 errors required; read every warning. The build also validates the frontmatter (`src/content.config.ts`) and fails on an invalid post.
+**Check before committing:** `node scripts/check-posts.mjs [translationKey]`: 0 errors required; read every warning. The build also validates the frontmatter (`src/content.config.ts`) and fails on an invalid post.
 
 | What | Where |
 | --- | --- |
@@ -123,11 +123,12 @@ Posts also appear on the home page (“Field notes”, featured first), on their
 
 ## House rules
 
-- No prices or fee ranges anywhere on the site — pricing is discussed in meetings and depends on the market.
+- No prices or fee ranges anywhere on the site. Pricing is discussed in meetings and depends on the market.
+- No em dashes (U+2014) or en dashes (U+2013) anywhere in site copy, code comments or meta text: they read as AI-written. Use a period, comma, colon or parentheses; write ranges as "3 to 5" in prose and "3-5" in labels. `scripts/check-posts.mjs` fails a post that contains one.
 - Interactive demos are labelled as simulations; numbers in case studies come from real client work only.
 - Do not mention client projects or client software by name without written permission.
 
-## Before launch — checklist
+## Before launch: checklist
 
 - [ ] Set `PUBLIC_LEADS_ENDPOINT` and send a test lead from every form (and make sure `PUBLIC_LEADS_PREVIEW` is **not** set on the live build).
 - [ ] Review the privacy policy (`src/i18n/privacy.ts`) with counsel and update its date if it changes.

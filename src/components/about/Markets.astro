@@ -9,7 +9,7 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const m = ABOUT.markets;
 
-/* ---- Working-hours ruler (9:00–18:00 local, drawn on a 24 h UTC axis) ----
+/* ---- Working-hours ruler (9:00 to 18:00 local, drawn on a 24 h UTC axis) ----
    Computed at build time for the initial render; the script recomputes it in the browser
    so daylight-saving changes and the "now" marker are always right. */
 function offsetHours(tz: string, at: Date): number {
@@ -81,7 +81,7 @@ const zoneData = JSON.stringify(zones.map((z) => ({ id: z.id, tz: z.tz })));
           ))}
         </div>
         <div class="mk__legend" aria-hidden="true">
-          <span><i class="mk__sw mk__sw--band"></i>9:00–18:00</span>
+          <span><i class="mk__sw mk__sw--band"></i>9:00-18:00</span>
           <span><i class="mk__sw mk__sw--ov"></i>{m.overlapLabel[lang]}</span>
           <span class="mk__legend-note">{m.hoursNote[lang]}</span>
         </div>
@@ -199,7 +199,7 @@ const zoneData = JSON.stringify(zones.map((z) => ({ id: z.id, tz: z.tz })));
   .mk__legend-note { flex-basis: 100%; }
   @media (min-width: 1024px) { .mk__legend-note { flex-basis: auto; margin-left: auto; } }
 
-  /* Facts — a quiet three-column list, not three boxed cards */
+  /* Facts: a quiet three-column list, not three boxed cards */
   .mk__facts { display: grid; gap: 0; margin-top: clamp(40px, 5vw, 64px); }
   @media (min-width: 860px) { .mk__facts { grid-template-columns: repeat(3, 1fr); gap: 40px; } }
   .mk__fact { display: grid; grid-template-columns: 28px 1fr; gap: 10px 14px; align-items: center; padding: 22px 0 26px; border-top: 1px solid var(--line); }

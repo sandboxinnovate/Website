@@ -1,4 +1,4 @@
-# Sandbox — sandboxinnovate.com
+# Sandbox | sandboxinnovate.com
 User-agent: *
 Allow: /
 

@@ -1,5 +1,5 @@
 /* =====================================================================
-   GeoAnswer — "Be the answer": an illustrative, Sandbox-styled AI answer
+   GeoAnswer ("Be the answer"): an illustrative, Sandbox-styled AI answer
    Everything is scoped under .ga. Local tokens mirror the site tokens.
    Layout switches on the widget's own width (container queries):
      < 560px   everything stacked

@@ -124,7 +124,7 @@ const en: DiagnosticCopy = {
       text: 'How is AI showing up in your company today?',
       help: 'Think about everyday work, not plans.',
       options: [
-        'Hardly at all — nobody uses it for work yet',
+        'Hardly at all, nobody uses it for work yet',
         'A few people use AI assistants on their own',
         'Several teams use AI tools with shared habits',
         'AI already runs inside at least one core process',
@@ -134,7 +134,7 @@ const en: DiagnosticCopy = {
       text: 'Who owns AI at the leadership level?',
       help: 'Pilots without an owner rarely make it to production.',
       options: [
-        'No one — it hasn’t come up',
+        'No one, it hasn’t come up',
         'It comes up often, but nobody owns it',
         'One leader owns it, without a written plan',
         'A named owner, a roadmap and goals we track',
@@ -152,7 +152,7 @@ const en: DiagnosticCopy = {
     },
     q04: {
       text: 'How reliable is your customer and operating data?',
-      help: 'CRM, orders, tickets, finance — whatever runs the business.',
+      help: 'CRM, orders, tickets, finance: whatever runs the business.',
       options: [
         'Spreadsheets and copies that don’t match',
         'There’s a CRM, but records are incomplete',
@@ -164,7 +164,7 @@ const en: DiagnosticCopy = {
       text: 'How are your core processes documented?',
       help: 'Sales, delivery, support, onboarding, reporting.',
       options: [
-        'They aren’t — everyone does it their way',
+        'They aren’t, everyone does it their way',
         'A few checklists; the rest is habit',
         'Key processes are written down and followed',
         'Documented, measured and reviewed regularly',
@@ -174,7 +174,7 @@ const en: DiagnosticCopy = {
       text: 'How much of your repetitive work is automated?',
       help: 'Data entry, follow-ups, hand-offs between tools and teams.',
       options: [
-        'Almost none — it’s all manual',
+        'Almost none, it’s all manual',
         'Some templates and simple rules',
         'Several workflows run between our tools',
         'Most hand-offs are automated and monitored',
@@ -194,7 +194,7 @@ const en: DiagnosticCopy = {
       text: 'Are there clear rules for using AI at work?',
       help: 'What data can go where, which tools are approved, who reviews the output.',
       options: [
-        'No — everyone decides on their own',
+        'No, everyone decides on their own',
         'Informal advice, nothing written',
         'A written policy on data and approved tools',
         'Policy, training and a place to share use cases',
@@ -204,7 +204,7 @@ const en: DiagnosticCopy = {
       text: 'How connected are your core tools?',
       help: 'CRM, inbox, docs, calendar, spreadsheets, team chat.',
       options: [
-        'Not at all — we copy and paste between them',
+        'Not at all, we copy and paste between them',
         'A few built-in integrations',
         'Most are connected and sync on their own',
         'Connected through APIs, with someone maintaining them',
@@ -224,11 +224,11 @@ const en: DiagnosticCopy = {
   levels: {
     explorer: {
       name: 'Explorer',
-      text: 'AI is still more idea than practice in your company — and that’s a fine place to start. The risk right now isn’t falling behind on tools; it’s scattered experiments with no owner and no data to build on. Pick one process that costs real hours, give it an owner, and get your knowledge into one place before you buy anything.',
+      text: 'AI is still more idea than practice in your company, and that’s a fine place to start. The risk right now isn’t falling behind on tools; it’s scattered experiments with no owner and no data to build on. Pick one process that costs real hours, give it an owner, and get your knowledge into one place before you buy anything.',
     },
     builder: {
       name: 'Builder',
-      text: 'There’s real momentum: people use AI and some foundations exist, but it depends on individuals, not systems. This is the stage where a clear roadmap pays off most — decide which two or three processes matter, clean up the data they rely on, and set simple rules so usage can grow safely.',
+      text: 'There’s real momentum: people use AI and some foundations exist, but it depends on individuals, not systems. This is the stage where a clear roadmap pays off most: decide which two or three processes matter, clean up the data they rely on, and set simple rules so usage can grow safely.',
     },
     operator: {
       name: 'Operator',
@@ -236,29 +236,29 @@ const en: DiagnosticCopy = {
     },
     native: {
       name: 'AI-native',
-      text: 'You run like an AI-native company: clear owners, clean data, documented processes and a team that builds. The work now is compounding — more processes automated each quarter, systems you can reuse, and growth driven by AI. Protect the habits that got you here.',
+      text: 'You run like an AI-native company: clear owners, clean data, documented processes and a team that builds. The work now is compounding: more processes automated each quarter, systems you can reuse, and growth driven by AI. Protect the habits that got you here.',
     },
   },
   moves: {
     diagnostic: {
       title: 'Map where AI pays off',
-      body: 'A 2–3 week AI Opportunity Audit: interviews, a process map and opportunities ranked by return, ending in a roadmap you can act on.',
+      body: 'A 2 to 3 week AI Opportunity Audit: interviews, a process map and opportunities ranked by return, ending in a roadmap you can act on.',
     },
     headOfAi: {
       title: 'Give AI a senior owner',
-      body: 'A fractional Head of AI keeps the roadmap moving month to month — priorities, vendors, rollouts — without a full-time hire.',
+      body: 'A fractional Head of AI keeps the roadmap moving month to month (priorities, vendors, rollouts) without a full-time hire.',
     },
     knowledge: {
       title: 'Put your know-how in one place',
-      body: 'Turn docs, FAQs and process notes into a living knowledge base — the foundation every assistant and agent will read from.',
+      body: 'Turn docs, FAQs and process notes into a living knowledge base, the foundation every assistant and agent will read from.',
     },
     brain: {
       title: 'Build your company brain',
       body: 'Your data is ready for it: an assistant that answers with sources, and agents that act on what it knows.',
     },
     sprint: {
-      title: 'Automate your first 2–3 processes',
-      body: 'A 4–8 week Implementation Sprint: document the hand-offs that eat the most hours, automate them and train the people who run them.',
+      title: 'Automate your first 2 or 3 processes',
+      body: 'A 4 to 8 week Implementation Sprint: document the hand-offs that eat the most hours, automate them and train the people who run them.',
     },
     agents: {
       title: 'Put agents on your busiest process',
@@ -274,7 +274,7 @@ const en: DiagnosticCopy = {
     },
     connect: {
       title: 'Connect your core tools',
-      body: 'Link CRM, inbox, docs and calendar so AI can read and act across them — not just inside one tab.',
+      body: 'Link CRM, inbox, docs and calendar so AI can read and act across them, not just inside one tab.',
     },
     packaged: {
       title: 'Start from an industry brain',
@@ -295,10 +295,10 @@ const en: DiagnosticCopy = {
   keys: { select: 'select', next: 'continue', back: 'back' },
   restart: 'Start over',
   resumed: 'Picked up where you left off.',
-  handoff: 'First answer saved — you’re on question 2.',
+  handoff: 'First answer saved. You’re on question 2.',
   progressLabel: 'Diagnostic progress',
   liveProfile: 'Live profile',
-  liveNote: 'Builds as you answer. Scored in your browser — nothing is sent.',
+  liveNote: 'Builds as you answer. Scored in your browser. Nothing is sent.',
   state: { done: 'done', current: 'now', todo: 'next' },
   announceQuestion: (i, n, dim, q) => `Question ${i} of ${n}, ${dim}: ${q}`,
   optionsLabel: 'Answers',
@@ -362,7 +362,7 @@ const en: DiagnosticCopy = {
     meta: '10 questions · 3 min',
     illustrative: 'Illustrative profiles',
     sampleAria: 'Animated radar cycling through four illustrative readiness profiles: Explorer, Builder, Operator and AI-native.',
-    prompt: 'Answer to start — 9 more to go.',
+    prompt: 'Answer to start. 9 more to go.',
     open: 'Open the diagnostic',
     opening: 'Opening the diagnostic',
     scoreUnit: '/100',
@@ -384,7 +384,7 @@ const es: DiagnosticCopy = {
       text: '¿Cómo está presente la IA hoy en tu empresa?',
       help: 'Piensa en el trabajo de todos los días, no en planes.',
       options: [
-        'Casi nada — nadie la usa todavía para trabajar',
+        'Casi nada, nadie la usa todavía para trabajar',
         'Algunas personas usan asistentes de IA por su cuenta',
         'Varios equipos usan herramientas de IA con prácticas compartidas',
         'La IA ya opera dentro de al menos un proceso clave',
@@ -394,7 +394,7 @@ const es: DiagnosticCopy = {
       text: '¿Quién se hace cargo de la IA en la dirección?',
       help: 'Los pilotos sin un responsable rara vez llegan a producción.',
       options: [
-        'Nadie — no ha sido tema',
+        'Nadie, no ha sido tema',
         'Se habla seguido, pero nadie se hace cargo',
         'Un líder se encarga, sin un plan por escrito',
         'Un responsable, una hoja de ruta y metas que medimos',
@@ -412,7 +412,7 @@ const es: DiagnosticCopy = {
     },
     q04: {
       text: '¿Qué tan confiables son tus datos de clientes y de operación?',
-      help: 'CRM, pedidos, tickets, finanzas — lo que mueve el negocio.',
+      help: 'CRM, pedidos, tickets, finanzas: lo que mueve el negocio.',
       options: [
         'Hojas de cálculo y copias que no coinciden',
         'Hay un CRM, pero los registros están incompletos',
@@ -424,7 +424,7 @@ const es: DiagnosticCopy = {
       text: '¿Cómo están documentados tus procesos clave?',
       help: 'Ventas, entrega, soporte, onboarding, reportes.',
       options: [
-        'No lo están — cada quien lo hace a su manera',
+        'No lo están, cada quien lo hace a su manera',
         'Algunas listas de pasos; el resto es costumbre',
         'Los procesos clave están escritos y se siguen',
         'Documentados, medidos y revisados con frecuencia',
@@ -434,7 +434,7 @@ const es: DiagnosticCopy = {
       text: '¿Cuánto de tu trabajo repetitivo está automatizado?',
       help: 'Carga de datos, seguimientos, traspasos entre herramientas y equipos.',
       options: [
-        'Casi nada — todo es manual',
+        'Casi nada, todo es manual',
         'Algunas plantillas y reglas simples',
         'Varios flujos corren entre nuestras herramientas',
         'La mayoría de los traspasos está automatizada y monitoreada',
@@ -454,7 +454,7 @@ const es: DiagnosticCopy = {
       text: '¿Hay reglas claras para usar IA en el trabajo?',
       help: 'Qué datos se pueden usar, qué herramientas están aprobadas, quién revisa los resultados.',
       options: [
-        'No — cada quien decide por su cuenta',
+        'No, cada quien decide por su cuenta',
         'Consejos informales, nada por escrito',
         'Una política escrita sobre datos y herramientas aprobadas',
         'Política, capacitación y un espacio para compartir casos de uso',
@@ -464,7 +464,7 @@ const es: DiagnosticCopy = {
       text: '¿Qué tan conectadas están tus herramientas principales?',
       help: 'CRM, correo, documentos, calendario, hojas de cálculo, chat del equipo.',
       options: [
-        'Nada — copiamos y pegamos entre ellas',
+        'Nada, copiamos y pegamos entre ellas',
         'Algunas integraciones que ya vienen incluidas',
         'La mayoría está conectada y se sincroniza sola',
         'Conectadas por API, con alguien que las mantiene',
@@ -555,10 +555,10 @@ const es: DiagnosticCopy = {
   keys: { select: 'elegir', next: 'continuar', back: 'atrás' },
   restart: 'Empezar de nuevo',
   resumed: 'Retomamos donde lo dejaste.',
-  handoff: 'Guardamos tu primera respuesta — sigues en la pregunta 2.',
+  handoff: 'Guardamos tu primera respuesta. Sigues en la pregunta 2.',
   progressLabel: 'Avance del diagnóstico',
   liveProfile: 'Perfil en vivo',
-  liveNote: 'Se arma mientras respondes. Se calcula en tu navegador — no se envía nada.',
+  liveNote: 'Se arma mientras respondes. Se calcula en tu navegador. No se envía nada.',
   state: { done: 'listo', current: 'ahora', todo: 'luego' },
   announceQuestion: (i, n, dim, q) => `Pregunta ${i} de ${n}, ${dim}: ${q}`,
   optionsLabel: 'Respuestas',
@@ -622,7 +622,7 @@ const es: DiagnosticCopy = {
     meta: '10 preguntas · 3 min',
     illustrative: 'Perfiles ilustrativos',
     sampleAria: 'Radar animado que recorre cuatro perfiles ilustrativos de preparación: Explorador, Constructor, Operador y Nativo en IA.',
-    prompt: 'Responde para empezar — quedan 9.',
+    prompt: 'Responde para empezar. Quedan 9.',
     open: 'Abrir el diagnóstico',
     opening: 'Abriendo el diagnóstico',
     scoreUnit: '/100',

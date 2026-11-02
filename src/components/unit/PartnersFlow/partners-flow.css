@@ -1,4 +1,4 @@
-/* Partners "who does what" board — prefix pf- */
+/* Partners "who does what" board (prefix pf-) */
 .pf {
   container-type: inline-size;
   position: relative; border-radius: var(--radius-card); overflow: hidden;

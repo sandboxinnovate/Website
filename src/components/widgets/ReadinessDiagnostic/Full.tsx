@@ -23,7 +23,7 @@ import Ico from './Ico';
 
 interface Props {
   lang: Lang;
-  /** Lab / QA: render the results for these answers (0–3 each); not persisted. */
+  /** Lab / QA: render the results for these answers (0-3 each); not persisted. */
   demoAnswers?: number[];
   /** Persist progress in sessionStorage (default true). */
   persist?: boolean;
@@ -102,7 +102,7 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
         n = 'resumed';
       }
     } catch {
-      /* URL / history unavailable — ignore */
+      /* URL / history unavailable: ignore */
     }
     if (s) {
       setSt(s);
@@ -165,7 +165,7 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  /* ---------- keyboard: 1–4 select, Enter / → continue, ← back ---------- */
+  /* ---------- keyboard: 1-4 select, Enter / → continue, ← back ---------- */
   useEffect(() => {
     if (st.phase !== 'questions') return;
     const onKey = (e: KeyboardEvent) => {
@@ -358,7 +358,7 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
                 </button>
                 <p className="rd-keys" aria-hidden="true">
                   <span>
-                    <kbd>1</kbd>–<kbd>4</kbd> {t.keys.select}
+                    <kbd>1</kbd>-<kbd>4</kbd> {t.keys.select}
                   </span>
                   <span>
                     <kbd>↵</kbd> {t.keys.next}
@@ -398,7 +398,7 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
                       <span className="rd-aside__bar" aria-hidden="true">
                         <i style={{ transform: `scaleX(${(v ?? 0) / 100})` }} />
                       </span>
-                      <span className="rd-aside__val">{v === null ? '—' : v}</span>
+                      <span className="rd-aside__val">{v === null ? '-' : v}</span>
                     </li>
                   );
                 })}

@@ -114,7 +114,7 @@ The key point: providers separate crawlers by purpose. Blocking training doesn't
 | OpenAI | OAI-SearchBot | GPTBot | ChatGPT-User |
 | Anthropic | Claude-SearchBot | ClaudeBot | Claude-User |
 | Perplexity | PerplexityBot | (not used for training) | Perplexity-User |
-| Google | Googlebot (Search, AI Overviews, AI Mode) | Google-Extended (a robots.txt token) | — |
+| Google | Googlebot (Search, AI Overviews, AI Mode) | Google-Extended (a robots.txt token) | - |
 
 Per [OpenAI's documentation](https://developers.openai.com/api/docs/bots), sites that block OAI-SearchBot won't be shown in ChatGPT search answers (they can still appear as plain navigational links), while disallowing GPTBot signals that content shouldn't be used for training. [Anthropic](https://support.claude.com/en/articles/8896518) documents the same split, and Perplexity says PerplexityBot isn't used to crawl content for training foundation models. User-triggered fetchers are different: OpenAI and Perplexity both note that robots.txt may not apply when a person asks the assistant to open a page. Google states that [Google-Extended](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers) does not affect inclusion or ranking in Google Search; it governs use of your content for Gemini models and grounding outside Search.
 

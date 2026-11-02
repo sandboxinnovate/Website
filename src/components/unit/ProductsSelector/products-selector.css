@@ -1,4 +1,4 @@
-/* Products industry selector — prefix px- */
+/* Products industry selector (prefix px-) */
 .px {
   container-type: inline-size;
   position: relative; border-radius: var(--radius-card); overflow: hidden;

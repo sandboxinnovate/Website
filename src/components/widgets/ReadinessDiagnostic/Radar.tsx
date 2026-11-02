@@ -11,13 +11,13 @@ const GEO: Record<Size, { w: number; h: number; cx: number; cy: number; r: numbe
 };
 
 interface Props {
-  /** 0–100 per axis; null = not answered yet (axis drawn dashed, no vertex). */
+  /** 0-100 per axis; null = not answered yet (axis drawn dashed, no vertex). */
   values: (number | null)[];
   labels: string[];
   size?: Size;
   /** Show the numeric value under each label (lg only). */
   showValues?: boolean;
-  /** Dashed reference ring at this value (0–100). */
+  /** Dashed reference ring at this value (0-100). */
   threshold?: number | null;
   /** Highlight one axis (the dimension being answered). */
   activeIndex?: number | null;
@@ -151,7 +151,7 @@ export default function Radar({
             </text>
             {withValue && (
               <text x={x} y={nameY + g.value + 3} textAnchor={anchor} className="rd-radar__value">
-                {v === null ? '—' : Math.round((anim[i] ?? 0) * 100)}
+                {v === null ? '-' : Math.round((anim[i] ?? 0) * 100)}
               </text>
             )}
           </g>

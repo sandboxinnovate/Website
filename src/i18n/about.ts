@@ -23,7 +23,7 @@ export const ABOUT = {
       es: 'Primero hicimos el experimento con <em>nosotros mismos</em>.',
     } as S,
     lede: {
-      en: 'Sandbox started as a digital marketing agency. Putting AI into our own work changed how we operate — so now we design, build and run it for other businesses.',
+      en: 'Sandbox started as a digital marketing agency. Putting AI into our own work changed how we operate, so now we design, build and run it for other businesses.',
       es: 'Sandbox nació como una agencia de marketing digital. Incorporar IA a nuestro propio trabajo cambió cómo operamos, y ahora la diseñamos, construimos y operamos para otras empresas.',
     } as S,
     /** The "config diff" under the headline: an old value gets replaced by a new one. */
@@ -54,8 +54,8 @@ export const ABOUT = {
         tag: { en: 'Marketing agency', es: 'Agencia de marketing' } as S,
         title: { en: 'We built websites and campaigns', es: 'Hacíamos sitios web y campañas' } as S,
         body: {
-          en: 'Websites, SEO, content and paid media for brands and growing businesses. Years of client work taught us how businesses actually win and keep customers — and how much of a team’s week goes to repetitive work.',
-          es: 'Sitios web, SEO, contenido y publicidad pagada para marcas y empresas en crecimiento. Años de trabajo con clientes nos enseñaron cómo las empresas consiguen y retienen clientes de verdad — y cuánto de la semana de un equipo se va en trabajo repetitivo.',
+          en: 'Websites, SEO, content and paid media for brands and growing businesses. Years of client work taught us how businesses actually win and keep customers, and how much of a team’s week goes to repetitive work.',
+          es: 'Sitios web, SEO, contenido y publicidad pagada para marcas y empresas en crecimiento. Años de trabajo con clientes nos enseñaron cómo las empresas consiguen y retienen clientes de verdad, y cuánto de la semana de un equipo se va en trabajo repetitivo.',
         } as S,
         notes: { en: ['Web', 'SEO', 'Content', 'Ads'], es: ['Web', 'SEO', 'Contenido', 'Anuncios'] } as L10n<string[]>,
       },
@@ -63,8 +63,8 @@ export const ABOUT = {
         tag: { en: 'AI in our own workflow', es: 'IA en nuestro propio flujo' } as S,
         title: { en: 'We put AI to work on our own desk', es: 'Pusimos la IA a trabajar en nuestro escritorio' } as S,
         body: {
-          en: 'Research, first drafts, reporting, QA. We rebuilt our own delivery around AI before offering it to anyone — keeping what saved real hours and dropping what only looked good in a demo.',
-          es: 'Investigación, primeros borradores, reportes, control de calidad. Rediseñamos nuestra propia operación con IA antes de ofrecérsela a nadie — nos quedamos con lo que ahorraba horas reales y descartamos lo que solo se veía bien en una demo.',
+          en: 'Research, first drafts, reporting, QA. We rebuilt our own delivery around AI before offering it to anyone. We kept what saved real hours and dropped what only looked good in a demo.',
+          es: 'Investigación, primeros borradores, reportes, control de calidad. Rediseñamos nuestra propia operación con IA antes de ofrecérsela a nadie. Nos quedamos con lo que ahorraba horas reales y descartamos lo que solo se veía bien en una demo.',
         } as S,
         notes: { en: ['Research', 'Drafts', 'Reports', 'QA'], es: ['Investigación', 'Borradores', 'Reportes', 'QA'] } as L10n<string[]>,
       },
@@ -72,8 +72,8 @@ export const ABOUT = {
         tag: { en: 'Building AI systems for clients', es: 'Sistemas de IA para clientes' } as S,
         title: { en: 'Clients asked for the same thing', es: 'Los clientes pidieron lo mismo' } as S,
         body: {
-          en: 'Once clients saw how we worked, they wanted it inside their own companies. We started building brains and agents connected to their documents, CRM and inbox — with people approving the steps that matter.',
-          es: 'Cuando los clientes vieron cómo trabajábamos, lo quisieron dentro de sus empresas. Empezamos a construir brains y agentes conectados a sus documentos, CRM y bandeja de entrada — con personas aprobando los pasos importantes.',
+          en: 'Once clients saw how we worked, they wanted it inside their own companies. We started building brains and agents connected to their documents, CRM and inbox, with people approving the steps that matter.',
+          es: 'Cuando los clientes vieron cómo trabajábamos, lo quisieron dentro de sus empresas. Empezamos a construir brains y agentes conectados a sus documentos, CRM y bandeja de entrada, con personas aprobando los pasos importantes.',
         } as S,
         notes: { en: ['Brains', 'Agents', 'Integrations'], es: ['Brains', 'Agentes', 'Integraciones'] } as L10n<string[]>,
       },
@@ -81,8 +81,8 @@ export const ABOUT = {
         tag: { en: 'AI company', es: 'Empresa de IA' } as S,
         title: { en: 'Today: six ways to put AI to work', es: 'Hoy: seis formas de poner la IA a trabajar' } as S,
         body: {
-          en: 'Custom systems, consulting, AI-native growth, training, packaged products and white-label for partners. Marketing is still part of what we do — it is now one of six units, and it runs on the same systems we build for clients.',
-          es: 'Sistemas a medida, consultoría, growth nativo en IA, formación, productos empaquetados y marca blanca para partners. El marketing sigue siendo parte de lo que hacemos — ahora es una de seis unidades y funciona con los mismos sistemas que construimos para clientes.',
+          en: 'Custom systems, consulting, AI-native growth, training, packaged products and white-label for partners. Marketing is still part of what we do. It is now one of six units, and it runs on the same systems we build for clients.',
+          es: 'Sistemas a medida, consultoría, growth nativo en IA, formación, productos empaquetados y marca blanca para partners. El marketing sigue siendo parte de lo que hacemos. Ahora es una de seis unidades y funciona con los mismos sistemas que construimos para clientes.',
         } as S,
         notes: { en: ['6 units', 'One method'], es: ['6 unidades', 'Un método'] } as L10n<string[]>,
       },
@@ -117,7 +117,7 @@ export const ABOUT = {
       {
         title: { en: 'Systems over tools', es: 'Sistemas, no herramientas' } as S,
         body: {
-          en: 'A new app rarely changes a business. A process redesigned around AI — with data, owners and guardrails — does.',
+          en: 'A new app rarely changes a business. A process redesigned around AI (with data, owners and guardrails) does.',
           es: 'Una app nueva casi nunca cambia un negocio. Un proceso rediseñado con IA (con datos, responsables y límites claros) sí.',
         } as S,
       },
@@ -145,8 +145,8 @@ export const ABOUT = {
       {
         title: { en: 'You own what we build', es: 'Lo que construimos es tuyo' } as S,
         body: {
-          en: 'Your data, your prompts, your documentation. Your team can see what the system did and why — no black boxes.',
-          es: 'Tus datos, tus prompts, tu documentación. Tu equipo puede ver qué hizo el sistema y por qué — sin cajas negras.',
+          en: 'Your data, your prompts, your documentation. Your team can see what the system did and why. No black boxes.',
+          es: 'Tus datos, tus prompts, tu documentación. Tu equipo puede ver qué hizo el sistema y por qué. Sin cajas negras.',
         } as S,
       },
     ],
@@ -157,12 +157,12 @@ export const ABOUT = {
     eyebrow: { en: 'How we work', es: 'Cómo trabajamos' } as S,
     title: { en: 'One team, three <em>markets</em>', es: 'Un equipo, tres <em>mercados</em>' } as S,
     lede: {
-      en: 'Headquartered in Albuquerque, New Mexico. Remote-first, working with companies in the United States, Europe and Latin America — in English or Spanish.',
-      es: 'Con base en Albuquerque, Nuevo México. Trabajamos de forma remota con empresas de Estados Unidos, Europa y Latinoamérica — en inglés o en español.',
+      en: 'Headquartered in Albuquerque, New Mexico. Remote-first, working with companies in the United States, Europe and Latin America, in English or Spanish.',
+      es: 'Con base en Albuquerque, Nuevo México. Trabajamos de forma remota con empresas de Estados Unidos, Europa y Latinoamérica, en inglés o en español.',
     } as S,
     clockLabel: { en: 'Local time right now', es: 'Hora local ahora' } as S,
     overlapLabel: { en: 'Shared working hours', es: 'Horario compartido' } as S,
-    hoursNote: { en: 'Bars show 9:00–18:00 local, on a UTC ruler.', es: 'Las barras muestran 9:00–18:00 hora local, sobre una regla en UTC.' } as S,
+    hoursNote: { en: 'Bars show 9:00 to 18:00 local, on a UTC ruler.', es: 'Las barras muestran de 9:00 a 18:00 hora local, sobre una regla en UTC.' } as S,
     nowLabel: { en: 'now', es: 'ahora' } as S,
     zones: [
       { id: 'us', tz: 'America/Denver', name: { en: 'United States', es: 'Estados Unidos' } as S, note: { en: 'Mountain Time · HQ', es: 'Hora de la Montaña · base' } as S },
@@ -182,16 +182,16 @@ export const ABOUT = {
         icon: 'chat',
         title: { en: 'Bilingual by default', es: 'Bilingües por defecto' } as S,
         body: {
-          en: 'Workshops, documentation and the systems themselves in English or Spanish — or both, for teams that work across borders.',
-          es: 'Talleres, documentación y los propios sistemas en inglés o en español — o en ambos, para equipos que trabajan entre países.',
+          en: 'Workshops, documentation and the systems themselves in English or Spanish, or both, for teams that work across borders.',
+          es: 'Talleres, documentación y los propios sistemas en inglés o en español, o en ambos, para equipos que trabajan entre países.',
         } as S,
       },
       {
         icon: 'shield',
         title: { en: 'Local rules, local context', es: 'Reglas y contexto locales' } as S,
         body: {
-          en: 'Data handling, usage policies and tone of voice adapted to each market — not one template copied across three continents.',
-          es: 'Manejo de datos, políticas de uso y tono de voz adaptados a cada mercado — no una plantilla copiada en tres continentes.',
+          en: 'Data handling, usage policies and tone of voice adapted to each market, not one template copied across three continents.',
+          es: 'Manejo de datos, políticas de uso y tono de voz adaptados a cada mercado, no una plantilla copiada en tres continentes.',
         } as S,
       },
     ],

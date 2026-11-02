@@ -40,7 +40,7 @@ const abs = (p: string) => new URL(p, SITE.url).href;
 const altPaths: Partial<Record<Lang, string>> = alternates ?? Object.fromEntries(LANGS.map((l) => [l, localize(l, neutralPath)]));
 const canonical = abs(altPaths[lang] ?? localize(lang, neutralPath));
 const xDefault = altPaths.en ?? altPaths[lang];
-const fullTitle = title.includes('Sandbox') ? title : `${title} — Sandbox`;
+const fullTitle = title.includes('Sandbox') ? title : `${title} | Sandbox`;
 const ogAlt = ogImageAlt ?? (lang === 'es' ? 'Sandbox: sistemas de IA, consultoría y growth' : 'Sandbox: AI systems, consulting and growth');
 
 // Mobile conversion bar: every indexable page except the two conversion pages themselves.
@@ -115,7 +115,7 @@ const org = {
     <meta name="theme-color" content="#0a0a0a" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="alternate" type="application/rss+xml" title={`${BLOG.name[lang]} — Sandbox`} href={localize(lang, '/rss.xml')} />
+    <link rel="alternate" type="application/rss+xml" title={`${BLOG.name[lang]} | Sandbox`} href={localize(lang, '/rss.xml')} />
 
     <link rel="preload" href={unboundedWoff2} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />

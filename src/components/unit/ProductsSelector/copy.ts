@@ -36,7 +36,7 @@ export const COPY: L10n<ProductsCopy> = {
     cta: (i) => `Request early access · ${i}`,
     industries: [
       {
-        id: 'real-estate', code: 'RE', name: 'Real estate', pilot: '2–3 weeks',
+        id: 'real-estate', code: 'RE', name: 'Real estate', pilot: '2-3 weeks',
         agents: [
           { name: 'Inquiry responder', does: 'Answers portal and website inquiries in minutes, day or night.' },
           { name: 'Lead qualifier', does: 'Asks about area, timing and property type, then scores and routes the lead.' },
@@ -48,7 +48,7 @@ export const COPY: L10n<ProductsCopy> = {
         stays: ['Pricing advice and negotiation', 'The showings themselves', 'Final say on every listing'],
       },
       {
-        id: 'clinics', code: 'CL', name: 'Clinics', pilot: '3–4 weeks',
+        id: 'clinics', code: 'CL', name: 'Clinics', pilot: '3-4 weeks',
         agents: [
           { name: 'Booking assistant', does: 'Books, moves and cancels appointments by message.' },
           { name: 'Reminder agent', does: 'Sends reminders and prep instructions before each visit.' },
@@ -60,7 +60,7 @@ export const COPY: L10n<ProductsCopy> = {
         stays: ['Every clinical question', 'Diagnosis and treatment', 'Exceptions to your policies'],
       },
       {
-        id: 'professional-services', code: 'PS', name: 'Professional services', pilot: '3–4 weeks',
+        id: 'professional-services', code: 'PS', name: 'Professional services', pilot: '3-4 weeks',
         agents: [
           { name: 'Intake agent', does: 'Collects client details and documents, and flags what is missing.' },
           { name: 'Knowledge assistant', does: 'Finds precedents, templates and past work, with sources.' },
@@ -72,7 +72,7 @@ export const COPY: L10n<ProductsCopy> = {
         stays: ['Advice to clients', 'Review and sign-off on every document', 'Fees and engagement terms'],
       },
       {
-        id: 'e-commerce', code: 'EC', name: 'E-commerce', pilot: '2–3 weeks',
+        id: 'e-commerce', code: 'EC', name: 'E-commerce', pilot: '2-3 weeks',
         agents: [
           { name: 'Order support', does: 'Handles order status, returns and exchanges end to end.' },
           { name: 'Product advisor', does: 'Recommends products from your catalog based on what the shopper needs.' },
@@ -84,7 +84,7 @@ export const COPY: L10n<ProductsCopy> = {
         stays: ['Refunds above your limit', 'Supplier and pricing decisions', 'Brand and promotion calls'],
       },
       {
-        id: 'hospitality', code: 'HO', name: 'Hospitality', pilot: '2–3 weeks',
+        id: 'hospitality', code: 'HO', name: 'Hospitality', pilot: '2-3 weeks',
         agents: [
           { name: 'Guest messaging', does: 'Answers guests in their own language, day and night.' },
           { name: 'Reservations', does: 'Handles booking requests, changes and cancellations within your rules.' },
@@ -109,7 +109,7 @@ export const COPY: L10n<ProductsCopy> = {
     cta: (i) => `Solicitar acceso anticipado · ${i}`,
     industries: [
       {
-        id: 'real-estate', code: 'IN', name: 'Inmobiliarias', pilot: '2–3 semanas',
+        id: 'real-estate', code: 'IN', name: 'Inmobiliarias', pilot: '2-3 semanas',
         agents: [
           { name: 'Respuesta a consultas', does: 'Responde consultas de portales y del sitio web en minutos, a cualquier hora.' },
           { name: 'Calificador de leads', does: 'Pregunta por zona, plazo y tipo de propiedad, y luego califica y deriva el lead.' },
@@ -121,7 +121,7 @@ export const COPY: L10n<ProductsCopy> = {
         stays: ['Asesoría de precio y negociación', 'Las visitas en sí', 'La última palabra en cada ficha'],
       },
       {
-        id: 'clinics', code: 'CL', name: 'Clínicas', pilot: '3–4 semanas',
+        id: 'clinics', code: 'CL', name: 'Clínicas', pilot: '3-4 semanas',
         agents: [
           { name: 'Asistente de citas', does: 'Reserva, cambia y cancela citas por mensaje.' },
           { name: 'Recordatorios', does: 'Envía recordatorios e indicaciones antes de cada consulta.' },
@@ -133,7 +133,7 @@ export const COPY: L10n<ProductsCopy> = {
         stays: ['Toda pregunta clínica', 'Diagnóstico y tratamiento', 'Excepciones a tus políticas'],
       },
       {
-        id: 'professional-services', code: 'SP', name: 'Servicios profesionales', pilot: '3–4 semanas',
+        id: 'professional-services', code: 'SP', name: 'Servicios profesionales', pilot: '3-4 semanas',
         agents: [
           { name: 'Admisión de clientes', does: 'Reúne datos y documentos del cliente y marca lo que falta.' },
           { name: 'Asistente de conocimiento', does: 'Encuentra antecedentes, plantillas y trabajos anteriores, con fuentes.' },
@@ -145,7 +145,7 @@ export const COPY: L10n<ProductsCopy> = {
         stays: ['El asesoramiento a clientes', 'Revisión y firma de cada documento', 'Honorarios y condiciones'],
       },
       {
-        id: 'e-commerce', code: 'EC', name: 'E-commerce', pilot: '2–3 semanas',
+        id: 'e-commerce', code: 'EC', name: 'E-commerce', pilot: '2-3 semanas',
         agents: [
           { name: 'Soporte de pedidos', does: 'Resuelve estado de pedidos, devoluciones y cambios de punta a punta.' },
           { name: 'Asesor de productos', does: 'Recomienda productos de tu catálogo según lo que necesita cada cliente.' },
@@ -157,7 +157,7 @@ export const COPY: L10n<ProductsCopy> = {
         stays: ['Reembolsos sobre tu límite', 'Decisiones de proveedores y precios', 'Marca y promociones'],
       },
       {
-        id: 'hospitality', code: 'HO', name: 'Hotelería', pilot: '2–3 semanas',
+        id: 'hospitality', code: 'HO', name: 'Hotelería', pilot: '2-3 semanas',
         agents: [
           { name: 'Mensajería con huéspedes', does: 'Responde a cada huésped en su idioma, a cualquier hora.' },
           { name: 'Reservas', does: 'Gestiona solicitudes, cambios y cancelaciones dentro de tus reglas.' },

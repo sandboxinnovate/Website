@@ -1,5 +1,5 @@
 /**
- * /llms.txt — the AI-crawler summary. The hand-written part lives in src/data/llms.txt;
+ * /llms.txt: the AI-crawler summary. The hand-written part lives in src/data/llms.txt;
  * the blog section is generated from the posts (English first, then Spanish).
  */
 import base from '@/data/llms.txt?raw';

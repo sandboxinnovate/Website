@@ -15,7 +15,7 @@ takeaways:
   - "A company brain has four layers: knowledge with sources and permissions, agents with one job each, the tools they act through, and human approval with a full log."
   - "Chat seats help individuals and automation tools follow fixed rules. A brain works from your own data and acts inside a process, with people approving what matters."
   - "A brain should show each person exactly what they can see today, which also exposes the oversharing you didn't know you had."
-  - "Start with one agent on one process that has volume and an owner. A first agent is typically live in 3–5 weeks, and each one after it reuses what the first built."
+  - "Start with one agent on one process that has volume and an owner. A first agent is typically live in 3 to 5 weeks, and each one after it reuses what the first built."
   - "The model is replaceable. Your knowledge, rules, test cases and logs are the asset, so build to switch models without rebuilding."
 faq:
   - q: "Is a company brain the same as training an AI model on our data?"
@@ -130,7 +130,7 @@ The tempting plan is to connect everything first and decide what to do with it l
 
 The first agent tells you which knowledge matters. A lead-qualification agent needs your ideal customer profile, service areas, qualification rules and the sales calendar, not the 2019 marketing archive. You clean and connect what the process uses, not the whole drive. Trust builds the same way: after a few weeks of reviewing one agent's drafts, your team knows where it is strong and where it needs a hand.
 
-You also get a number fast. With our Single Agent build, a first agent is typically live in 3–5 weeks, measured against a metric agreed at the start. A full Company Brain, with the shared assistant and agents for two or three processes, takes 6–10 weeks. Still choosing the process? Read [how to choose the first process to hand to an AI agent](/blog/choosing-your-first-ai-agent/).
+You also get a number fast. With our Single Agent build, a first agent is typically live in 3 to 5 weeks, measured against a metric agreed at the start. A full Company Brain, with the shared assistant and agents for two or three processes, takes 6 to 10 weeks. Still choosing the process? Read [how to choose the first process to hand to an AI agent](/blog/choosing-your-first-ai-agent/).
 
 Each agent after the first is usually faster to build. Lead response first, then support triage reusing the product documentation, then a weekly report reusing the CRM connection: each one borrows the knowledge, connections and approval patterns the last one put in place. That is how one agent grows into a company brain without a big-bang project.
 

@@ -11,18 +11,18 @@ export const BRAINS: L10n<UnitCopy> = {
     hero: {
       title: 'One brain for your company. <em>An agent for every process.</em>',
       lede:
-        'We build AI systems around your data, your tools and the way your team actually works: a living knowledge base that answers with sources, and agents that qualify leads, resolve tickets and close the loop in your CRM — with a person approving what matters.',
+        'We build AI systems around your data, your tools and the way your team actually works: a living knowledge base that answers with sources, and agents that qualify leads, resolve tickets and close the loop in your CRM, with a person approving what matters.',
       primary: 'Book a call',
       secondary: { label: 'Watch an agent run', href: '#demo' },
       facts: [
-        { k: 'First agent live', v: '3–5 weeks' },
+        { k: 'First agent live', v: '3-5 weeks' },
         { k: 'Connects to', v: 'CRM · Inbox · Knowledge base · Team chat' },
         { k: 'Human in the loop', v: 'Approval on every sensitive action' },
       ],
     },
     pains: {
       title: 'Where the work <em>gets stuck</em>',
-      lede: 'These are the problems that usually start the conversation — and what changes once the work runs through a brain.',
+      lede: 'These are the problems that usually start the conversation, and what changes once the work runs through a brain.',
       items: [
         {
           pain: 'The answers live in three people’s heads and a hundred documents nobody can find.',
@@ -52,27 +52,27 @@ export const BRAINS: L10n<UnitCopy> = {
           what: 'One agent for one process, with a clear owner and a clear finish line: qualifying inbound leads, answering support tickets, preparing the weekly report.',
           includes: [
             'Process mapping with the people who do the work',
-            'Connections to 2–3 of your tools',
+            'Connections to 2 or 3 of your tools',
             'Guardrails, approvals and escalation to a person',
             'Dashboard with every run, step and decision',
             'Handover, documentation and 30 days of tuning',
           ],
-          timeline: '3–5 weeks',
+          timeline: '3-5 weeks',
           bestFor: 'Teams that want proof on one painful process before going wider.',
         },
         {
           name: 'Company Brain',
-          what: 'A living knowledge base built from your documents, conversations and systems, plus an assistant your team can ask — and that can act: draft, file, update, notify.',
+          what: 'A living knowledge base built from your documents, conversations and systems, plus an assistant your team can ask, which can also act: draft, file, update, notify.',
           includes: [
             'Ingestion of docs, wikis, inbox and CRM history',
             'Permissions that mirror who can see what today',
             'Assistant in your team chat and on the web',
             'Answers with sources and a confidence level',
-            'Agents for 2–3 processes on top of the brain',
+            'Agents for 2 or 3 processes on top of the brain',
             'Sync that keeps the knowledge current',
           ],
-          timeline: '6–10 weeks',
-          bestFor: 'Companies of 20–500 people where knowledge is scattered and the same questions come up every day.',
+          timeline: '6-10 weeks',
+          bestFor: 'Companies of 20 to 500 people where knowledge is scattered and the same questions come up every day.',
         },
         {
           name: 'Custom Platform',
@@ -85,7 +85,7 @@ export const BRAINS: L10n<UnitCopy> = {
             'Deployment in your cloud or ours',
             'Ongoing operation and roadmap',
           ],
-          timeline: '10–16 weeks to first release',
+          timeline: '10-16 weeks to first release',
           bestFor: 'Operations where AI becomes core infrastructure, with compliance and scale requirements.',
         },
       ],
@@ -108,7 +108,7 @@ export const BRAINS: L10n<UnitCopy> = {
       steps: [
         {
           name: 'Discover',
-          time: '1–2 weeks',
+          time: '1-2 weeks',
           body: 'We sit with the people who do the work, map the process step by step and audit the data and tools it touches.',
           out: ['Process map', 'Data & access audit', 'Success criteria'],
         },
@@ -120,7 +120,7 @@ export const BRAINS: L10n<UnitCopy> = {
         },
         {
           name: 'Build',
-          time: '2–8 weeks',
+          time: '2-8 weeks',
           body: 'We build in short cycles against real cases from your business and test with your team until the answers hold up.',
           out: ['Working agent', 'Evaluation set', 'Team walkthrough'],
         },
@@ -137,7 +137,7 @@ export const BRAINS: L10n<UnitCopy> = {
       points: [
         'Setup: discovery, design, build and launch',
         'Ongoing: hosting, model usage, monitoring and improvements',
-        'Scoped after a discovery call — no fixed packages',
+        'Scoped after a discovery call, no fixed packages',
         'Tailored to your market and scope',
       ],
       shape: ['Build', 'Run & improve, monthly'],
@@ -200,7 +200,7 @@ export const BRAINS: L10n<UnitCopy> = {
       },
       {
         q: 'What happens when the AI is not sure?',
-        a: 'It says so. Each agent has rules for what it can do alone, what needs approval and when to hand off to a person. Sensitive actions — changing records, issuing refunds, writing to certain customers — go through an approval step you define.',
+        a: 'It says so. Each agent has rules for what it can do alone, what needs approval and when to hand off to a person. Sensitive actions (changing records, issuing refunds, writing to certain customers) go through an approval step you define.',
       },
       {
         q: 'Do we need a technical team?',
@@ -234,7 +234,7 @@ export const BRAINS: L10n<UnitCopy> = {
       primary: 'Agendar una llamada',
       secondary: { label: 'Ver un agente en acción', href: '#demo' },
       facts: [
-        { k: 'Primer agente en producción', v: '3–5 semanas' },
+        { k: 'Primer agente en producción', v: '3-5 semanas' },
         { k: 'Se conecta a', v: 'CRM · Correo · Base de conocimiento · Chat del equipo' },
         { k: 'Control humano', v: 'Aprobación en cada acción sensible' },
       ],
@@ -271,12 +271,12 @@ export const BRAINS: L10n<UnitCopy> = {
           what: 'Un agente para un proceso, con un responsable y un objetivo claros: calificar leads entrantes, responder tickets de soporte, preparar el reporte semanal.',
           includes: [
             'Mapeo del proceso con quienes lo hacen hoy',
-            'Conexión con 2–3 de tus herramientas',
+            'Conexión con 2 o 3 de tus herramientas',
             'Límites, aprobaciones y derivación a una persona',
             'Panel con cada ejecución, paso y decisión',
             'Entrega, documentación y 30 días de ajustes',
           ],
-          timeline: '3–5 semanas',
+          timeline: '3-5 semanas',
           bestFor: 'Equipos que quieren una prueba concreta en un proceso crítico antes de escalar.',
         },
         {
@@ -287,10 +287,10 @@ export const BRAINS: L10n<UnitCopy> = {
             'Permisos que replican quién ve qué hoy',
             'Asistente en el chat del equipo y en la web',
             'Respuestas con fuentes y nivel de confianza',
-            'Agentes para 2–3 procesos sobre el brain',
+            'Agentes para 2 o 3 procesos sobre el brain',
             'Sincronización que mantiene el conocimiento al día',
           ],
-          timeline: '6–10 semanas',
+          timeline: '6-10 semanas',
           bestFor: 'Empresas de 20 a 500 personas con el conocimiento disperso y las mismas preguntas todos los días.',
         },
         {
@@ -304,7 +304,7 @@ export const BRAINS: L10n<UnitCopy> = {
             'Despliegue en tu nube o en la nuestra',
             'Operación continua y hoja de ruta',
           ],
-          timeline: '10–16 semanas a la primera versión',
+          timeline: '10-16 semanas a la primera versión',
           bestFor: 'Operaciones donde la IA pasa a ser infraestructura central, con requisitos de cumplimiento y escala.',
         },
       ],
@@ -327,7 +327,7 @@ export const BRAINS: L10n<UnitCopy> = {
       steps: [
         {
           name: 'Descubrir',
-          time: '1–2 semanas',
+          time: '1-2 semanas',
           body: 'Nos sentamos con quienes hacen el trabajo, mapeamos el proceso paso a paso y auditamos los datos y las herramientas que toca.',
           out: ['Mapa del proceso', 'Auditoría de datos y accesos', 'Criterios de éxito'],
         },
@@ -339,7 +339,7 @@ export const BRAINS: L10n<UnitCopy> = {
         },
         {
           name: 'Construir',
-          time: '2–8 semanas',
+          time: '2-8 semanas',
           body: 'Construimos en ciclos cortos con casos reales de tu negocio y probamos con tu equipo hasta que las respuestas se sostienen.',
           out: ['Agente funcionando', 'Conjunto de pruebas', 'Recorrido con el equipo'],
         },

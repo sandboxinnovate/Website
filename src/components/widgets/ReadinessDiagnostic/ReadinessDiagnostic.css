@@ -1,5 +1,5 @@
 /* ==================================================================
-   AI Readiness Diagnostic — widget styles (namespaced .rd-*)
+   AI Readiness Diagnostic: widget styles (namespaced .rd-*)
    Tokens fall back to literal values: Tailwind v4 only emits the theme
    variables that are used elsewhere, so we never rely on them existing.
    ================================================================== */
@@ -97,7 +97,7 @@
 }
 
 /* ------------------------------------------------------------------
-   FULL — shell
+   FULL: shell
 ------------------------------------------------------------------- */
 .rd-full {
   position: relative;

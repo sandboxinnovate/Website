@@ -1,5 +1,5 @@
 /**
- * HeroBrain renderer — Canvas 2D, no dependencies.
+ * HeroBrain renderer: Canvas 2D, no dependencies.
  *
  * Draws the node graph from geometry.ts as a slowly swaying, breathing 3D network in the shape of
  * the Sandbox cube: hairline links, an ember core, light pulses hopping across links (agents at
@@ -116,7 +116,7 @@ function radialSprite(stops: ReadonlyArray<readonly [number, string]>, size = 64
   return c;
 }
 
-/** Node count for a container: denser on big screens, ~120–170 on phones. */
+/** Node count for a container: denser on big screens, ~120-170 on phones. */
 function nodeTarget(w: number, h: number): number {
   const s = Math.min(w, h);
   let t = 40 + (s * s) / 1600;
@@ -754,7 +754,7 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
     const edges = g.edges;
     const introGlow = introOn ? clamp01((introT - 0.2) / 1.6) : 1;
 
-    // ember core — sits behind the "Y" junction of the mark
+    // ember core, sits behind the "Y" junction of the mark
     {
       const ccx = sx[g.core] - parX * 0.5;
       const ccy = sy[g.core] - parY * 0.5;
@@ -1124,7 +1124,7 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
     waveAge = 3;
     coreFlash = 0.35;
     project();
-    // two labels, fully typed, mid-hold — placed against the final pose
+    // two labels, fully typed, mid-hold, placed against the final pose
     for (const l of labels) l.on = false;
     let placed = 0;
     for (let tries = 0; tries < 400 && placed < 2; tries++) {

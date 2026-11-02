@@ -136,10 +136,10 @@ Esta es la forma que usaríamos con un primer equipo. Supone un arranque de medi
 
 | Semana | Foco | Entregable |
 |---|---|---|
-| 0 (preparación) | Encuesta de roles, juntar 3–5 tareas reales por rol, confirmar reglas de uso | Inventario de tareas, herramientas aprobadas y reglas de datos |
-| 1 | Arranque práctico sobre tareas reales; elegir al referente | 5–8 entradas en la biblioteca, un asistente configurado |
+| 0 (preparación) | Encuesta de roles, juntar 3-5 tareas reales por rol, confirmar reglas de uso | Inventario de tareas, herramientas aprobadas y reglas de datos |
+| 1 | Arranque práctico sobre tareas reales; elegir al referente | 5-8 entradas en la biblioteca, un asistente configurado |
 | 2 | Práctica sobre trabajo real; primer ciclo de compartir y revisar | Entradas corregidas, primera lista de revisión |
-| 3 | Sumar las siguientes tareas más frecuentes; el jefe muestra su uso en la reunión del equipo | Biblioteca con 10–15 entradas, lista por tipo de entregable |
+| 3 | Sumar las siguientes tareas más frecuentes; el jefe muestra su uso en la reunión del equipo | Biblioteca con 10-15 entradas, lista por tipo de entregable |
 | 4 | Revisar datos de adopción y muestra de calidad; decidir el siguiente paso | Reporte de adopción de una página, lista de tareas que pasaron a la IA |
 
 La semana 4 suele revelar algo más grande: una tarea tan repetitiva y bien definida que no debería hacerse con un asistente, sino entregarse a un agente. Ese es otro proyecto, y [elegir el primer proceso para un agente](/es/blog/como-elegir-tu-primer-agente-de-ia/) tiene sus propias reglas.

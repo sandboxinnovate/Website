@@ -41,7 +41,7 @@ function Sentence({ segs }: { segs: Seg[] }) {
 }
 
 /**
- * "What could AI give back to your team?" — a transparent estimator.
+ * "What could AI give back to your team?": a transparent estimator.
  * Four inputs → hours given back, value of that time (the client's own cost), FTE equivalent,
  * a 12-month cumulative curve with a rollout ramp, and a dot matrix of reclaimed time.
  * Never shows Sandbox prices: the only money on screen is what the team's time costs today.

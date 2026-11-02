@@ -1,5 +1,5 @@
 /**
- * Lead capture — one function every form on the site uses.
+ * Lead capture: one function every form on the site uses.
  *
  * Configure where leads go with an environment variable at build time:
  *   PUBLIC_LEADS_ENDPOINT=https://…   (any endpoint that accepts a JSON POST:

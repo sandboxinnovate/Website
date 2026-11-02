@@ -17,7 +17,7 @@ export interface Hit {
   indices: number[];
 }
 
-const BOUNDARY = /[\s\-/·.,:;!?¿¡()"'“”‘’—–&+]/;
+const BOUNDARY = /[\s\-/·.,:;!?¿¡()"'“”‘’\u2014\u2013&+]/;
 
 export function fold(text: string): Folded {
   let s = '';

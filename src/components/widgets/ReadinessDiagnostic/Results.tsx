@@ -90,7 +90,7 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
                 <span className="rd-ladder__bar" />
                 <span className="rd-ladder__name">{t.levels[l.id].name}</span>
                 <span className="rd-ladder__range">
-                  {l.min}–{l.max}
+                  {l.min}-{l.max}
                 </span>
               </li>
             ))}

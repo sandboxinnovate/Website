@@ -89,7 +89,7 @@ Then add a short style block the model receives with every draft:
 ```text
 VOICE
 - Write like a senior operator explaining to a peer. Direct, calm, specific.
-- Short paragraphs (1–4 sentences). Vary sentence length.
+- Short paragraphs (1 to 4 sentences). Vary sentence length.
 - Take a position and give the reason.
 
 CLAIMS
@@ -139,7 +139,7 @@ Imagine a 40-person accounting firm. The marketing lead books 30 minutes with a 
 | 7. Partner reads and signs off | **[human]** partner | Approval |
 | 8. Cut four LinkedIn posts from the other answers | AI drafts, **[human]** edits | Four posts in the partner's voice |
 | 9. Write the newsletter section linking the article | AI drafts, **[human]** edits | One newsletter block |
-| 10. Pick three 45–60 second clips from the recording | AI suggests, **[human]** chooses | Three short clips with captions |
+| 10. Pick three 45-60 second clips from the recording | AI suggests, **[human]** chooses | Three short clips with captions |
 
 In this example, the partner spends about 30 minutes talking and 15 reading. The marketing lead spends a few hours on selection and editing rather than days on writing. The model does what it's good at: transcription, structure, first drafts and reformatting. Every claim in every piece traces back to something the partner said on the recording.
 

@@ -53,7 +53,7 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
     }
     const email = vals.email.trim();
     if (trap) {
-      // bot filled the hidden field — pretend success, send nothing
+      // bot filled the hidden field: pretend success, send nothing
       onSent(email);
       return;
     }
@@ -207,7 +207,7 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
           </div>
         </fieldset>
 
-        {/* honeypot — hidden from people and assistive tech */}
+        {/* honeypot, hidden from people and assistive tech */}
         <div className="rd-hp" aria-hidden="true">
           <label>
             Website

@@ -3,7 +3,7 @@
 @import "@fontsource-variable/jetbrains-mono";
 
 /* ------------------------------------------------------------------
-   Satoshi (Fontshare, free for commercial use) — self-hosted
+   Satoshi (Fontshare, free for commercial use), self-hosted
 ------------------------------------------------------------------- */
 @font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-300.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
 @font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
@@ -16,7 +16,7 @@
    Use as Tailwind utilities: bg-ink-950, text-flame-500, font-display…
 ------------------------------------------------------------------- */
 @theme static {
-  /* Surfaces — near-black with a warm undertone (brand #0A0A0A / #242020) */
+  /* Surfaces: near-black with a warm undertone (brand #0A0A0A / #242020) */
   --color-ink-950: #0a0a0a;   /* page background */
   --color-ink-925: #0d0c0c;
   --color-ink-900: #111010;
@@ -32,7 +32,7 @@
   --color-mist: #b8b0aa;      /* secondary text */
   --color-smoke: #968d87;     /* tertiary / captions */
 
-  /* Flame — the brand orange family */
+  /* Flame: the brand orange family */
   --color-flame-100: #ffe3cc;
   --color-flame-200: #ffc49a;
   --color-flame-300: #ffa066;
@@ -118,7 +118,7 @@ body {
 /* ------------------------------------------------------------------
    Type helpers
 ------------------------------------------------------------------- */
-/* H1 tier A (Home, About, Work, 404) — same scale as .hero__title */
+/* H1 tier A (Home, About, Work, 404): same scale as .hero__title */
 @utility display-xl { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.5rem, 5.7vw, 5.6rem); line-height: .98; letter-spacing: -0.05em; }
 @utility display-lg { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.1rem, 4.6vw, 4rem); line-height: 1.02; letter-spacing: -0.04em; }
 @utility display-md { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.08; letter-spacing: -0.035em; }
@@ -130,7 +130,7 @@ body {
    Components (shared across the site)
 ------------------------------------------------------------------- */
 
-/* Eyebrow tag — the small pill above section titles */
+/* Eyebrow tag: the small pill above section titles */
 .eyebrow {
   display: inline-flex; align-items: center; gap: .55em;
   padding: .42em .9em .42em .75em; border-radius: 999px;
@@ -191,13 +191,13 @@ body {
 .glow-ember { position: absolute; pointer-events: none; border-radius: 50%; filter: blur(60px); opacity: .55;
   background: radial-gradient(closest-side, rgb(217 76 0 / .9), rgb(217 76 0 / .35) 45%, transparent 75%); }
 
-/* Film grain overlay — breaks the "flat digital" look */
+/* Film grain overlay: breaks the "flat digital" look */
 .grain::after {
   content: ""; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: .055;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Scroll reveal — add data-reveal to any element; Base.astro wires the observer.
+/* Scroll reveal: add data-reveal to any element; Base.astro wires the observer.
    Elements are visible by default; JS opts them into the animation (no-JS safe). */
 .js [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease-out-expo), transform 1.1s var(--ease-out-expo); transition-delay: calc(var(--reveal-delay, 0) * 1ms); }
 .js [data-reveal].is-in { opacity: 1; transform: none; }
@@ -216,7 +216,7 @@ body {
 [data-offscreen] *, [data-offscreen] *::before, [data-offscreen] *::after { animation-play-state: paused !important; }
 
 /* ------------------------------------------------------------------
-   Mobile conversion bar (Base.astro) — appears under 720px after the hero CTAs
+   Mobile conversion bar (Base.astro): appears under 720px after the hero CTAs
    scroll away, hides near closing CTAs, the footer, the menu and dialogs.
 ------------------------------------------------------------------- */
 .mcta {

@@ -65,10 +65,10 @@ export const COPY = {
       ph: { name: 'Jordan Rivera', email: 'you@company.com', company: 'Company name', role: 'e.g. COO, Head of Sales', website: 'company.com' },
       choose: 'Choose…',
       sizes: [
-        ['1-10', '1–10 people'],
-        ['11-50', '11–50 people'],
-        ['51-200', '51–200 people'],
-        ['201-1000', '201–1,000 people'],
+        ['1-10', '1-10 people'],
+        ['11-50', '11-50 people'],
+        ['51-200', '51-200 people'],
+        ['201-1000', '201-1,000 people'],
         ['1000+', 'More than 1,000'],
       ] as [string, string][],
       regions: [
@@ -204,10 +204,10 @@ export const COPY = {
       ph: { name: 'Camila Rojas', email: 'tu@empresa.com', company: 'Nombre de la empresa', role: 'Ej.: gerente de operaciones', website: 'empresa.com' },
       choose: 'Elige…',
       sizes: [
-        ['1-10', '1–10 personas'],
-        ['11-50', '11–50 personas'],
-        ['51-200', '51–200 personas'],
-        ['201-1000', '201–1000 personas'],
+        ['1-10', '1-10 personas'],
+        ['11-50', '11-50 personas'],
+        ['51-200', '51-200 personas'],
+        ['201-1000', '201-1000 personas'],
         ['1000+', 'Más de 1000'],
       ] as [string, string][],
       regions: [

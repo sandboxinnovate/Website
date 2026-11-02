@@ -135,7 +135,7 @@ export function saveDraft(s: Stored): void {
   try {
     sessionStorage.setItem(KEY, JSON.stringify(s));
   } catch {
-    /* storage blocked — the form still works */
+    /* storage blocked; the form still works */
   }
 }
 

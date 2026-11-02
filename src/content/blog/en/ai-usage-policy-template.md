@@ -108,17 +108,17 @@ We want everyone to use AI to do better work, faster. This page says which
 tools, which data and which checks. If something isn't covered, ask the owner.
 
 2. APPROVED TOOLS AND ACCOUNTS
-- Approved: [Tool A – company account], [Tool B – company account], [...]
+- Approved: [Tool A, company account], [Tool B, company account], [...]
 - Work data goes ONLY into approved tools on company accounts.
 - Personal AI accounts: public (green) information only.
 - No AI add-ons, browser extensions or meeting note-takers connected to
   company email, drive, calendar or calls without approval.
 
 3. DATA TRAFFIC LIGHT
-GREEN  – Any approved tool. Examples: [published content, public research].
-YELLOW – Company accounts only; remove names/details you don't need.
+GREEN:   Any approved tool. Examples: [published content, public research].
+YELLOW:  Company accounts only; remove names/details you don't need.
          Examples: [internal docs, meeting notes, proposal drafts].
-RED    – Not in general AI tools. Examples: [client material under NDA,
+RED:     Not in general AI tools. Examples: [client material under NDA,
          customer/employee personal data, passwords, unannounced financials].
 When unsure, treat it as the next color up.
 

@@ -11,7 +11,7 @@ export interface UnitOffer {
   what: string;
   /** What's included (checklist). */
   includes: string[];
-  /** Typical timeline in words/weeks — never prices. */
+  /** Typical timeline in words/weeks, never prices. */
   timeline: string;
   bestFor: string;
   /** Optional status pill, e.g. "Early access". */
@@ -43,7 +43,7 @@ export interface UnitCopy {
     primary: string;
     /** Secondary contextual CTA. `href` is a language-neutral path ("/diagnostic") or an in-page anchor ("#demo"). */
     secondary: { label: string; href: string };
-    /** "At a glance" facts under the hero. Timelines and formats only — no metrics. */
+    /** "At a glance" facts under the hero. Timelines and formats only, no metrics. */
     facts: { k: string; v: string }[];
   };
   pains: { title: string; lede: string; items: { pain: string; outcome: string }[] };
