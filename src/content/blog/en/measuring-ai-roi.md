@@ -58,7 +58,7 @@ For most processes, five measures are enough:
 | Measure | How to get it | Why it matters |
 | --- | --- | --- |
 | Volume per week | Tickets, emails, orders, quotes from the system of record | Savings scale with volume; low volume caps the return |
-| Time per item | A two-week time sample from 3–5 people, or system timestamps | The unit of saving |
+| Time per item | A two-week time sample from 3-5 people, or system timestamps | The unit of saving |
 | Response or cycle time | Timestamps: received to answered, requested to delivered | Often the outcome customers actually feel |
 | Error or rework rate | Corrections, credit notes, reopened tickets, returns | The cost side of quality |
 | Where the time goes today | A short interview: what would you do with an extra day a week? | Tells you in advance where returned hours could go |

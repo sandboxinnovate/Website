@@ -655,8 +655,8 @@ export default function ContactFlow({ lang, initialService }: Props) {
       );
     }
 
-    // step 3 — review
-    const lbl = (list: [string, string][], v: string) => list.find(([k]) => k === v)?.[1] ?? '—';
+    // step 3: review
+    const lbl = (list: [string, string][], v: string) => list.find(([k]) => k === v)?.[1] ?? '-';
     const tl = t.s3.timelines.find(([k]) => k === draft.timeline);
     const site = draft.website.trim() && isValidWebsite(draft.website) ? draft.website.trim().replace(/^https?:\/\//i, '') : '';
     return (
@@ -734,7 +734,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
             <dl className="cf-dl">
               <div>
                 <dt>{t.s4.timeline}</dt>
-                <dd>{tl ? tl[1] : '—'}</dd>
+                <dd>{tl ? tl[1] : '-'}</dd>
               </div>
               {draft.source && (
                 <div>
@@ -849,7 +849,7 @@ export default function ContactFlow({ lang, initialService }: Props) {
           </div>
         </div>
 
-        {/* honeypot — hidden from people and assistive tech */}
+        {/* honeypot: hidden from people and assistive tech */}
         <div className="cf-hp" aria-hidden="true">
           <label>
             Leave this empty

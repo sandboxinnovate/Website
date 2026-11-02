@@ -6,17 +6,17 @@ export const CONSULTING: L10n<UnitCopy> = {
     seo: {
       title: 'AI consulting and fractional Head of AI',
       description:
-        'Find where AI pays off in your business and make it happen: a 2–3 week AI Opportunity Audit, a 4–8 week Implementation Sprint and a Fractional Head of AI.',
+        'Find where AI pays off in your business and make it happen: a 2 to 3 week AI Opportunity Audit, a 4 to 8 week Implementation Sprint and a Fractional Head of AI.',
     },
     hero: {
       title: 'Find where AI pays off. <em>Then make it happen.</em>',
       lede:
-        'We interview your team, map how work actually flows and rank every AI opportunity by return and effort. Then we roll it out — tools, usage policies, automations and training — and stay on as your Head of AI if you need one.',
+        'We interview your team, map how work actually flows and rank every AI opportunity by return and effort. Then we roll it out (tools, usage policies, automations and training) and stay on as your Head of AI if you need one.',
       primary: 'Book a call',
       secondary: { label: 'Take the 3-min AI diagnostic', href: '/diagnostic' },
       facts: [
-        { k: 'Opportunity Audit', v: '2–3 weeks' },
-        { k: 'Implementation Sprint', v: '4–8 weeks' },
+        { k: 'Opportunity Audit', v: '2-3 weeks' },
+        { k: 'Implementation Sprint', v: '4-8 weeks' },
         { k: 'Then', v: 'Monthly, as your Head of AI' },
       ],
     },
@@ -49,16 +49,16 @@ export const CONSULTING: L10n<UnitCopy> = {
       items: [
         {
           name: 'AI Opportunity Audit',
-          what: 'A fixed-scope assessment of where AI can save time, cut costs or grow revenue in your business — and what it would take to get there.',
+          what: 'A fixed-scope assessment of where AI can save time, cut costs or grow revenue in your business, and what it would take to get there.',
           includes: [
-            'Interviews with leadership and 6–12 team members',
+            'Interviews with leadership and 6 to 12 team members',
             'Map of your key processes and the tools behind them',
             'Opportunities ranked by return, effort and risk',
             'Data readiness and security review',
             '90-day roadmap with the first three projects scoped',
             'Readout session with your leadership team',
           ],
-          timeline: '2–3 weeks',
+          timeline: '2-3 weeks',
           bestFor: 'Companies that know AI matters but not where to start, or that need a plan before committing resources.',
         },
         {
@@ -67,12 +67,12 @@ export const CONSULTING: L10n<UnitCopy> = {
           includes: [
             'Tool selection, setup and access management',
             'AI usage policy and data guidelines',
-            '2–3 processes automated end to end',
+            '2 or 3 processes automated end to end',
             'Role-based training sessions',
             'Before-and-after metrics for each process',
             'Handover playbook for your team',
           ],
-          timeline: '4–8 weeks',
+          timeline: '4-8 weeks',
           bestFor: 'Teams with a clear priority list that need hands to execute it.',
         },
         {
@@ -94,7 +94,7 @@ export const CONSULTING: L10n<UnitCopy> = {
     demo: {
       eyebrow: 'Self-assessment',
       title: 'How ready is your company <em>for AI?</em>',
-      lede: 'Ten questions, three minutes. You get a readiness profile across strategy, data, processes, people and tools — the same dimensions we use to open an audit.',
+      lede: 'Ten questions, three minutes. You get a readiness profile across strategy, data, processes, people and tools. These are the same dimensions we use to open an audit.',
       notesTitle: 'What the full audit adds',
       notes: [
         'Interviews with your team, not just a questionnaire',
@@ -116,13 +116,13 @@ export const CONSULTING: L10n<UnitCopy> = {
         },
         {
           name: 'Prioritize',
-          time: 'Weeks 2–3',
+          time: 'Weeks 2-3',
           body: 'We size each opportunity by return, effort and risk and turn the best ones into a sequenced 90-day roadmap.',
           out: ['Ranked opportunities', '90-day roadmap'],
         },
         {
           name: 'Implement',
-          time: 'Weeks 4–11',
+          time: 'Weeks 4-11',
           body: 'The implementation sprint: tools, policies, automations and training, shipped in two-week cycles and measured against the baseline.',
           out: ['Automated processes', 'AI usage policy', 'Trained team'],
         },
@@ -188,15 +188,15 @@ export const CONSULTING: L10n<UnitCopy> = {
       },
       {
         q: 'Do we have to continue with the sprint after the audit?',
-        a: 'No. The roadmap is yours. You can execute it with your own team, with another partner or with us — and we can support your team as Head of AI while they do it.',
+        a: 'No. The roadmap is yours. You can execute it with your own team, with another partner or with us. We can also support your team as Head of AI while they do it.',
       },
       {
         q: 'Who from our team needs to be involved?',
-        a: 'One leader who backs the project, one owner per area we review, and 6–12 people for interviews of about 45 minutes each. We work around your calendar.',
+        a: 'One leader who backs the project, one owner per area we review, and 6 to 12 people for interviews of about 45 minutes each. We work around your calendar.',
       },
       {
         q: 'How is this different from a strategy deck?',
-        a: 'We stay through implementation. Opportunities are sized against the effort and data you actually have, and the sprint ends with automated processes running and a trained team — not slides.',
+        a: 'We stay through implementation. Opportunities are sized against the effort and data you actually have, and the sprint ends with automated processes running and a trained team, not slides.',
       },
       {
         q: 'Which AI tools do you recommend?',
@@ -221,7 +221,7 @@ export const CONSULTING: L10n<UnitCopy> = {
     seo: {
       title: 'Consultoría de IA y Head of AI fraccional',
       description:
-        'Encuentra dónde rinde la IA en tu negocio: auditoría de oportunidades de 2–3 semanas, sprint de implementación de 4–8 semanas y Head of AI fraccional.',
+        'Encuentra dónde rinde la IA en tu negocio: auditoría de oportunidades de 2 a 3 semanas, sprint de implementación de 4 a 8 semanas y Head of AI fraccional.',
     },
     hero: {
       title: 'Encuentra dónde rinde la IA. <em>Y hazlo realidad.</em>',
@@ -230,8 +230,8 @@ export const CONSULTING: L10n<UnitCopy> = {
       primary: 'Agendar una llamada',
       secondary: { label: 'Hacer el diagnóstico (3 min)', href: '/diagnostic' },
       facts: [
-        { k: 'Auditoría de oportunidades', v: '2–3 semanas' },
-        { k: 'Sprint de implementación', v: '4–8 semanas' },
+        { k: 'Auditoría de oportunidades', v: '2-3 semanas' },
+        { k: 'Sprint de implementación', v: '4-8 semanas' },
         { k: 'Después', v: 'Mensual, como tu Head of AI' },
       ],
     },
@@ -266,14 +266,14 @@ export const CONSULTING: L10n<UnitCopy> = {
           name: 'Auditoría de oportunidades de IA',
           what: 'Una evaluación de alcance cerrado sobre dónde la IA puede ahorrar tiempo, reducir costos o aumentar ingresos en tu negocio, y qué se necesita para lograrlo.',
           includes: [
-            'Entrevistas con la dirección y 6–12 personas del equipo',
+            'Entrevistas con la dirección y 6 a 12 personas del equipo',
             'Mapa de tus procesos clave y las herramientas detrás',
             'Oportunidades ordenadas por retorno, esfuerzo y riesgo',
             'Revisión de preparación de datos y seguridad',
             'Hoja de ruta a 90 días con los tres primeros proyectos definidos',
             'Sesión de presentación con tu equipo directivo',
           ],
-          timeline: '2–3 semanas',
+          timeline: '2-3 semanas',
           bestFor: 'Empresas que saben que la IA importa pero no por dónde empezar, o que necesitan un plan antes de comprometer recursos.',
         },
         {
@@ -282,12 +282,12 @@ export const CONSULTING: L10n<UnitCopy> = {
           includes: [
             'Selección, configuración y gestión de accesos',
             'Política de uso de IA y lineamientos de datos',
-            '2–3 procesos automatizados de punta a punta',
+            '2 o 3 procesos automatizados de punta a punta',
             'Sesiones de capacitación por rol',
             'Métricas de antes y después por proceso',
             'Manual de traspaso para tu equipo',
           ],
-          timeline: '4–8 semanas',
+          timeline: '4-8 semanas',
           bestFor: 'Equipos con prioridades claras que necesitan manos para ejecutarlas.',
         },
         {
@@ -331,13 +331,13 @@ export const CONSULTING: L10n<UnitCopy> = {
         },
         {
           name: 'Priorizar',
-          time: 'Semanas 2–3',
+          time: 'Semanas 2-3',
           body: 'Dimensionamos cada oportunidad por retorno, esfuerzo y riesgo, y convertimos las mejores en una hoja de ruta a 90 días.',
           out: ['Oportunidades priorizadas', 'Hoja de ruta a 90 días'],
         },
         {
           name: 'Implementar',
-          time: 'Semanas 4–11',
+          time: 'Semanas 4-11',
           body: 'El sprint de implementación: herramientas, políticas, automatizaciones y capacitación, entregadas en ciclos de dos semanas y medidas contra la línea base.',
           out: ['Procesos automatizados', 'Política de uso de IA', 'Equipo capacitado'],
         },

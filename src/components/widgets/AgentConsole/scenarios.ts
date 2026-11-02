@@ -220,7 +220,7 @@ export const SCENARIOS: ScenarioDef[] = [
           { t: 80, k: 'call', fn: 'kb.search', args: l('q: "duplicate charge refund"', 'q: "reembolso cobro duplicado"'), code: 200, ms: 241 },
           { t: 620, k: 'call', fn: 'billing.invoices', args: 'patient: "P-1187", days: 30', code: 200, ms: 377 },
           { t: 1380, k: 'think', text: l(
-            'Two identical charges on Oct 14. Policy: duplicates are refunded in 3–5 business days.',
+            'Two identical charges on Oct 14. Policy: duplicates are refunded in 3 to 5 business days.',
             'Dos cargos idénticos el 14 de octubre. Política: los duplicados se reembolsan en 3 a 5 días hábiles.',
           ) },
         ],
@@ -249,7 +249,7 @@ export const SCENARIOS: ScenarioDef[] = [
           title: l('Send billing reply to Carla Reyes', 'Enviar respuesta de cobro a Carla Reyes'),
           policy: l('policy: billing → human review · confidence 0.93', 'política: cobros → revisión humana · confianza 0,93'),
           excerpt: l(
-            'You’re right — your Oct 14 cleaning was charged twice [1]. We’ve flagged the duplicate for a refund…',
+            'You’re right, your Oct 14 cleaning was charged twice [1]. We’ve flagged the duplicate for a refund…',
             'Tienes razón: la limpieza del 14 de octubre se cobró dos veces [1]. Ya marcamos el cargo duplicado para reembolso…',
           ),
           approver: l('front-desk lead', 'la coordinadora de recepción'),
@@ -283,7 +283,7 @@ export const SCENARIOS: ScenarioDef[] = [
         meta: 'carla.reyes@mail.co',
         subject: l('Re: Charged twice?', 'Re: ¿Me cobraron dos veces?'),
         body: l(
-          'Hi Carla,\n\nYou’re right — your Oct 14 cleaning was charged twice [1]. We’ve flagged the duplicate for a refund, which usually lands in 3–5 business days [2].\n\nNothing to do on your side. If you don’t see it by Oct 23, just reply here.\n\nLumen Dental · Front desk\n\n[1] Invoice INV-20931  [2] Billing policy §4.2',
+          'Hi Carla,\n\nYou’re right, your Oct 14 cleaning was charged twice [1]. We’ve flagged the duplicate for a refund, which usually lands in 3 to 5 business days [2].\n\nNothing to do on your side. If you don’t see it by Oct 23, just reply here.\n\nLumen Dental · Front desk\n\n[1] Invoice INV-20931  [2] Billing policy §4.2',
           'Hola, Carla:\n\nTienes razón: la limpieza del 14 de octubre se cobró dos veces [1]. Ya marcamos el cargo duplicado para reembolso, que suele llegar en 3 a 5 días hábiles [2].\n\nNo tienes que hacer nada. Si no lo ves antes del 23 de octubre, responde a este correo.\n\nLumen Dental · Recepción\n\n[1] Factura INV-20931  [2] Política de cobros §4.2',
         ),
       },
@@ -479,7 +479,7 @@ export const SCENARIOS: ScenarioDef[] = [
         id: 'schedule', kind: 'action', icon: 'calendar', dur: 1700,
         label: l('Schedule', 'Programar'),
         tool: 'calendar.schedule',
-        result: l('Mon–Fri · 09:00', 'lun–vie · 09:00'),
+        result: l('Mon-Fri · 09:00', 'lun-vie · 09:00'),
         logs: [
           { t: 80, k: 'call', fn: 'cms.create_draft', args: 'type: "blog"', code: 201, ms: 260 },
           { t: 520, k: 'call', fn: 'social.schedule', args: l('posts: 5, from: "Mon 09:00"', 'posts: 5, from: "lun 09:00"'), code: 200, ms: 330 },

@@ -90,15 +90,15 @@ export const BLOG = {
     brains: {
       title: { en: 'Have a process an agent <em>could take over?</em>', es: '¿Tienes un proceso que un agente <em>podría asumir?</em>' } as S,
       body: {
-        en: 'Tell us the process and its numbers. A first agent is typically live in 3–5 weeks, with a person approving the steps that matter.',
-        es: 'Cuéntanos el proceso y sus números. Un primer agente suele estar funcionando en 3–5 semanas, con una persona que aprueba los pasos importantes.',
+        en: 'Tell us the process and its numbers. A first agent is typically live in 3 to 5 weeks, with a person approving the steps that matter.',
+        es: 'Cuéntanos el proceso y sus números. Un primer agente suele estar funcionando en un plazo de 3 a 5 semanas, con una persona que aprueba los pasos importantes.',
       } as S,
     },
     consulting: {
       title: { en: 'Not sure where AI <em>pays off first?</em>', es: '¿No sabes dónde rinde <em>primero la IA?</em>' } as S,
       body: {
-        en: 'The AI Opportunity Audit maps your processes in 2–3 weeks and ranks the opportunities by return, with a roadmap your team can act on.',
-        es: 'La Auditoría de oportunidades de IA mapea tus procesos en 2–3 semanas y ordena las oportunidades por retorno, con una hoja de ruta que tu equipo puede ejecutar.',
+        en: 'The AI Opportunity Audit maps your processes in 2 to 3 weeks and ranks the opportunities by return, with a roadmap your team can act on.',
+        es: 'La Auditoría de oportunidades de IA mapea tus procesos en 2 a 3 semanas y ordena las oportunidades por retorno, con una hoja de ruta que tu equipo puede ejecutar.',
       } as S,
     },
     growth: {

@@ -88,7 +88,7 @@ export const COPY: Record<Lang, RoiCopy> = {
     tip: {
       label: 'What is realistic?',
       title: 'What is realistic',
-      body: 'For a first-year estimate, use 30–50%. Go above 60% only when the process follows clear rules and its data already lives in your tools.',
+      body: 'For a first-year estimate, use 30 to 50%. Go above 60% only when the process follows clear rules and its data already lives in your tools.',
     },
     outputsTitle: 'What comes back',
     outputsMeta: 'per year · at full pace',
@@ -102,7 +102,7 @@ export const COPY: Record<Lang, RoiCopy> = {
       { b: `${a.automation}%` },
       ' of it to AI gives back about ',
       { b: `${a.hoursBack} hours a year` },
-      ` — ${a.fteText}, worth `,
+      `: ${a.fteText}, worth `,
       { b: a.value },
       ' at what that time costs you today.',
     ],
@@ -178,7 +178,7 @@ export const COPY: Record<Lang, RoiCopy> = {
       { b: `${a.automation}%` },
       ', recuperas cerca de ',
       { b: `${a.hoursBack} horas al año` },
-      ` — ${a.fteText}, que hoy te cuestan `,
+      `: ${a.fteText}, que hoy te cuestan `,
       { b: a.value },
       '.',
     ],
@@ -207,7 +207,7 @@ export const COPY: Record<Lang, RoiCopy> = {
   },
 };
 
-/** "the time of 2.3 full-time people" — handles tiny totals, < 1 and ≈ 1. */
+/** "the time of 2.3 full-time people": handles tiny totals, < 1 and ≈ 1. */
 export function fteText(lang: Lang, fte: number, formatted: string): string {
   if (fte < 0.05) return lang === 'es' ? 'una pequeña parte de un puesto de tiempo completo' : 'a small slice of one full-time role';
   if (lang === 'es') {

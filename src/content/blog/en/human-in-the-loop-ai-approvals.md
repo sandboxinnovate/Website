@@ -98,7 +98,7 @@ Policy:    Returns & refunds v3, section 2: "Damaged on arrival: full refund,
 Checks:    Delivered 2 days ago: yes · Within 30-day window: yes · Below approver limit: yes
 Proposed:  Refund full item amount to original payment method
 Reply:     "Sorry about the blender. We've refunded the full amount to your card;
-           you'll see it in 3–5 business days. No need to send it back."
+           you'll see it in 3 to 5 business days. No need to send it back."
 Why asked: Refunds are tier 2 until this task is promoted.
 
 [ Approve ]   [ Edit ]   [ Reject: wrong policy · needs more info · other ]
@@ -140,6 +140,6 @@ Watch for one quiet failure: an approval rate of 100% with an average review tim
 
 Pick one process and write three things before anyone builds: the never-automate list, the name of the approver and their backup, and the tier for every step. Start everything that only reads at tier 4 and everything that writes, sends or spends at tier 2. Agree on the promotion bar in advance, so the decision to give the agent more room is a check against numbers rather than a debate.
 
-This is the Design step of how we build [brains and agents](/services/brains/): we define what the agent decides alone, what it asks about and what it never touches, and you approve that blueprint before we write code. A first agent is typically live in 3–5 weeks, with approvals in place from day one. If you want the bigger picture first, read [what a company brain is](/blog/what-is-a-company-brain/).
+This is the Design step of how we build [brains and agents](/services/brains/): we define what the agent decides alone, what it asks about and what it never touches, and you approve that blueprint before we write code. A first agent is typically live in 3 to 5 weeks, with approvals in place from day one. If you want the bigger picture first, read [what a company brain is](/blog/what-is-a-company-brain/).
 
 If there's a process you'd hand over tomorrow if you could trust it, [tell us which one](/contact/) and we'll sketch where the approvals would go.

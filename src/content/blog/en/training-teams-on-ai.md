@@ -136,10 +136,10 @@ Here's the shape we'd use for a first team. It assumes a half-day kickoff and ab
 
 | Week | Focus | Output |
 |---|---|---|
-| 0 (prep) | Survey roles, collect 3–5 real tasks per role, confirm usage rules | Task inventory, approved tools and data rules |
-| 1 | Hands-on kickoff on real tasks; pick a champion | 5–8 prompt library entries, one configured assistant |
+| 0 (prep) | Survey roles, collect 3-5 real tasks per role, confirm usage rules | Task inventory, approved tools and data rules |
+| 1 | Hands-on kickoff on real tasks; pick a champion | 5-8 prompt library entries, one configured assistant |
 | 2 | Practice on live work; first share-and-review cycle | Revised entries, first review checklist |
-| 3 | Extend to the next most frequent tasks; manager demo in team meeting | Library at 10–15 entries, checklist per output type |
+| 3 | Extend to the next most frequent tasks; manager demo in team meeting | Library at 10-15 entries, checklist per output type |
 | 4 | Review adoption data and quality sample; decide what's next | One-page adoption report, list of tasks moved to AI |
 
 Week 4 often reveals something bigger: a task so repetitive and well-defined that it shouldn't be done with an assistant at all, but handed to an agent. That's a different project, and [choosing the first process for an agent](/blog/choosing-your-first-ai-agent/) has its own rules.

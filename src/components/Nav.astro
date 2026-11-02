@@ -76,7 +76,7 @@ const servicesActive = path.includes('/services/');
         <Icon name="search" size={16} />
         <span class="kbd nav__kbd" data-cmdk-hint aria-hidden="true">⌘K</span>
       </button>
-      <a class="nav__lang" href={switchHref} hreflang={other} data-exact={langHref ? '' : undefined} aria-label={`EN / ES — ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
+      <a class="nav__lang" href={switchHref} hreflang={other} data-exact={langHref ? '' : undefined} aria-label={`EN / ES. ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
         <span class:list={[lang === 'en' && 'is-on']}>EN</span><span class="nav__lang-sep">/</span><span class:list={[lang === 'es' && 'is-on']}>ES</span>
       </a>
       <a href={localize(lang, '/contact')} class="btn btn-primary btn-sm nav__cta">
@@ -123,7 +123,7 @@ const servicesActive = path.includes('/services/');
         <a href={localize(lang, '/contact')} class="btn btn-primary">
           <span>{t(UI.nav.cta)}</span><span class="btn-chip"><Icon name="arrow-up-right" size={16} stroke={1.8} /></span>
         </a>
-        <a class="nav__lang" href={switchHref} hreflang={other} data-exact={langHref ? '' : undefined} aria-label={`EN / ES — ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
+        <a class="nav__lang" href={switchHref} hreflang={other} data-exact={langHref ? '' : undefined} aria-label={`EN / ES. ${t(UI.nav.language)}: ${LANG_META[other].label}`}>
           <span class:list={[lang === 'en' && 'is-on']}>EN</span><span class="nav__lang-sep">/</span><span class:list={[lang === 'es' && 'is-on']}>ES</span>
         </a>
       </div>

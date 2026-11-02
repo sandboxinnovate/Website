@@ -26,7 +26,7 @@ type Status = 'ready' | 'running' | 'paused' | 'awaiting' | 'done';
 
 /**
  * "Watch a brain work": a simulated orchestration console. Four fictional workflows run step
- * by step — graph on one side, live log on the other — with a human approval gate, controls,
+ * by step (graph on one side, live log on the other), with a human approval gate, controls,
  * and a final outcome card. Autoplays when visible, pauses offscreen and in background tabs.
  */
 export default function AgentConsole({ lang, initialScenario, compact = false, className = '' }: Props) {

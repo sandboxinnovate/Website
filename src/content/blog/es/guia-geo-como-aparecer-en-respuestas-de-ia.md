@@ -114,7 +114,7 @@ La clave: los proveedores separan sus rastreadores por propósito. Bloquear el e
 | OpenAI | OAI-SearchBot | GPTBot | ChatGPT-User |
 | Anthropic | Claude-SearchBot | ClaudeBot | Claude-User |
 | Perplexity | PerplexityBot | (no se usa para entrenamiento) | Perplexity-User |
-| Google | Googlebot (Búsqueda, AI Overviews, Modo IA) | Google-Extended (un token de robots.txt) | — |
+| Google | Googlebot (Búsqueda, AI Overviews, Modo IA) | Google-Extended (un token de robots.txt) | - |
 
 Según la [documentación de OpenAI](https://developers.openai.com/api/docs/bots), los sitios que bloquean OAI-SearchBot no se muestran en las respuestas de búsqueda de ChatGPT (aunque pueden seguir apareciendo como simples enlaces de navegación), mientras que bloquear GPTBot indica que el contenido no debe usarse para entrenamiento. [Anthropic](https://support.claude.com/es/articles/8896518) documenta la misma separación, y Perplexity aclara que PerplexityBot no rastrea contenido para entrenar modelos fundacionales. Las visitas que pide un usuario son otra cosa: OpenAI y Perplexity aclaran que robots.txt puede no aplicar cuando una persona le pide al asistente abrir una página. Google indica que [Google-Extended](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers?hl=es) no afecta la inclusión ni el posicionamiento en la Búsqueda de Google; controla el uso de tu contenido para los modelos Gemini y para fundamentar respuestas fuera de la Búsqueda.
 

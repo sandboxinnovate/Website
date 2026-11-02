@@ -88,7 +88,7 @@ export const HOME = {
       {
         n: '01', key: 'discover',
         name: { en: 'Discover', es: 'Descubrir' } as S,
-        time: { en: '1–2 weeks', es: '1–2 semanas' } as S,
+        time: { en: '1-2 weeks', es: '1-2 semanas' } as S,
         body: {
           en: 'We map how work actually happens (interviews, tools, data, bottlenecks) and rank every opportunity by impact and effort.',
           es: 'Mapeamos cómo se trabaja de verdad (entrevistas, herramientas, datos, cuellos de botella) y ordenamos cada oportunidad por impacto y esfuerzo.',
@@ -108,7 +108,7 @@ export const HOME = {
       {
         n: '03', key: 'build',
         name: { en: 'Build', es: 'Construir' } as S,
-        time: { en: '2–8 weeks', es: '2–8 semanas' } as S,
+        time: { en: '2-8 weeks', es: '2-8 semanas' } as S,
         body: {
           en: 'Short sprints with working software every week, connected to your tools and tested on your real cases before anyone relies on it.',
           es: 'Sprints cortos con software funcionando cada semana, conectado a tus herramientas y probado con tus casos reales antes de que alguien dependa de él.',
@@ -237,8 +237,8 @@ export const HOME = {
       {
         q: { en: 'How long until we see results?', es: '¿En cuánto tiempo vemos resultados?' } as S,
         a: {
-          en: 'An AI Opportunity Audit takes 2–3 weeks. A first agent is usually live in 3–5 weeks. Company-wide brains roll out in phases, with something useful in production from the first month.',
-          es: 'Una auditoría de oportunidades de IA toma 2–3 semanas. Un primer agente suele estar funcionando en 3–5 semanas. Los brains para toda la empresa se implementan por fases, con algo útil en producción desde el primer mes.',
+          en: 'An AI Opportunity Audit takes 2 to 3 weeks. A first agent is usually live in 3 to 5 weeks. Company-wide brains roll out in phases, with something useful in production from the first month.',
+          es: 'Una auditoría de oportunidades de IA toma de 2 a 3 semanas. Un primer agente suele estar funcionando en un plazo de 3 a 5 semanas. Los brains para toda la empresa se implementan por fases, con algo útil en producción desde el primer mes.',
         } as S,
       },
       {
@@ -251,15 +251,15 @@ export const HOME = {
       {
         q: { en: 'Do you work in English and Spanish?', es: '¿Trabajan en inglés y en español?' } as S,
         a: {
-          en: 'Yes. We work with companies in the United States, Europe and Latin America, in English and Spanish — and the systems we build can work in both.',
-          es: 'Sí. Trabajamos con empresas de Estados Unidos, Europa y Latinoamérica, en inglés y en español — y los sistemas que construimos pueden funcionar en ambos idiomas.',
+          en: 'Yes. We work with companies in the United States, Europe and Latin America, in English and Spanish, and the systems we build can work in both.',
+          es: 'Sí. Trabajamos con empresas de Estados Unidos, Europa y Latinoamérica, en inglés y en español, y los sistemas que construimos pueden funcionar en ambos idiomas.',
         } as S,
       },
       {
         q: { en: 'We’re an agency. Can we offer your systems to our clients?', es: 'Somos una agencia. ¿Podemos ofrecer sus sistemas a nuestros clientes?' } as S,
         a: {
-          en: 'Yes — that’s our Partners program. We build and maintain white-label systems that you deliver under your brand, or we co-deliver with your team.',
-          es: 'Sí — para eso existe nuestro programa Partners. Construimos y mantenemos sistemas marca blanca que entregas con tu marca, o los entregamos junto a tu equipo.',
+          en: 'Yes, that’s our Partners program. We build and maintain white-label systems that you deliver under your brand, or we co-deliver with your team.',
+          es: 'Sí, para eso existe nuestro programa Partners. Construimos y mantenemos sistemas marca blanca que entregas con tu marca, o los entregamos junto a tu equipo.',
         } as S,
       },
     ],

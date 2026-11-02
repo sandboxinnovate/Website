@@ -1,5 +1,5 @@
 /**
- * RoiCalculator — the arithmetic, kept apart from the UI so it is easy to audit.
+ * RoiCalculator: the arithmetic, kept apart from the UI so it is easy to audit.
  *
  * hours given back / year = people × hours per week × working weeks × automation share
  * value / year            = hours given back × loaded hourly cost (the client's own cost, never a Sandbox price)
@@ -21,7 +21,7 @@ export interface Inputs {
   people: number;
   hours: number; // per person per week
   rate: number; // loaded cost per hour, in the chosen currency
-  automation: number; // 0–100
+  automation: number; // 0-100
 }
 
 export interface Result {
@@ -143,7 +143,7 @@ export function clamp(v: number, a: number, b: number): number {
   return Math.min(b, Math.max(a, v));
 }
 
-/** Parse a typed value ("1,200", "45.5", "€40") — returns null when there is no number in it. */
+/** Parse a typed value ("1,200", "45.5", "€40"); returns null when there is no number in it. */
 export function parseTyped(raw: string): number | null {
   const digits = raw.replace(/[^\d.,-]/g, '').replace(/,/g, '');
   if (!digits) return null;

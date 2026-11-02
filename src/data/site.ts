@@ -51,8 +51,8 @@ export const UNITS: UnitMeta[] = [
     name: { en: 'Growth', es: 'Growth' },
     tagline: { en: 'AI-native marketing', es: 'Marketing nativo en IA' },
     summary: {
-      en: 'Content, ads, outbound and visibility inside AI answers — marketing engineered with AI.',
-      es: 'Contenido, anuncios, prospección y visibilidad dentro de las respuestas de IA — marketing diseñado con IA.',
+      en: 'Marketing engineered with AI: content, ads, outbound and visibility inside AI answers.',
+      es: 'Marketing diseñado con IA: contenido, anuncios, prospección y visibilidad dentro de las respuestas de IA.',
     },
   },
   {
@@ -86,7 +86,7 @@ export const UNITS: UnitMeta[] = [
 
 export const unitBySlug = (slug: string) => UNITS.find((u) => u.slug === slug);
 
-/** Company numbers taken from the current site — confirm before launch. */
+/** Company numbers taken from the current site (confirm before launch). */
 export const STATS: { value: string; label: L10n<string> }[] = [
   { value: '15+', label: { en: 'Years in business', es: 'Años de trayectoria' } },
   { value: '200+', label: { en: 'Projects shipped', es: 'Proyectos entregados' } },

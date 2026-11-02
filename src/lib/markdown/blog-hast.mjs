@@ -3,7 +3,7 @@
  *
  * - h2/h3: stable ASCII ids (accents folded: "¿Qué es?" -> "que-es") and a sibling anchor link
  *   (<div class="h-wrap"><h2 id>…</h2><a class="h-anchor" href="#id">…</a></div>), so the heading
- *   text — and the TOC Astro collects from it — stays clean.
+ *   text (and the TOC Astro collects from it) stays clean.
  * - tables: wrapped in a horizontally scrollable, focusable region.
  * - blockquotes that open with a bold label ("> **Example:** …") become callouts:
  *   class="callout callout--example|note|rule|other" + data-label.

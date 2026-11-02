@@ -7,7 +7,7 @@ import type { PaletteProps } from './Palette';
  *
  * This root stays tiny: it only listens for ⌘K / Ctrl+K and the `sbx:cmdk` window event
  * and renders nothing until the first open. The panel itself (UI, search, styles) is a
- * separate chunk loaded on demand — and warmed up when a pointer heads for a trigger.
+ * separate chunk loaded on demand, and warmed up when a pointer heads for a trigger.
  *
  *   window.dispatchEvent(new CustomEvent('sbx:cmdk', { detail: { open: true, query: 'pricing' } }))
  *   detail.open === false closes it; detail.toggle === true toggles it.
@@ -35,7 +35,7 @@ export default function CommandPalette({ lang }: { lang: Lang }) {
       load()
         .then((m) => setPanel(() => m.default))
         .catch(() => {
-          // chunk failed (offline?) — reset so the next attempt retries
+          // chunk failed (offline?): reset so the next attempt retries
           chunk = null;
           openRef.current = false;
           setOpen(false);

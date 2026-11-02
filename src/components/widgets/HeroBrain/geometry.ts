@@ -124,7 +124,7 @@ function solidAt(lx: number, ly: number, margin: number): boolean {
   for (const h of HOLES) {
     const d = distToPoly(lx, ly, h);
     if (inPoly(lx, ly, h)) {
-      // inside a cut-out — tolerated only when hugging its outline (rim nodes sit exactly on it)
+      // inside a cut-out: tolerated only when hugging its outline (rim nodes sit exactly on it)
       if (d > 0.9) return false;
     } else if (d < margin) {
       return false;
@@ -148,7 +148,7 @@ const HEX_AREA = ((3 * S3) / 2) * 44 * 44;
 const SOLID_FRACTION = 1 - HOLES.reduce((s, h) => s + polyArea(h), 0) / HEX_AREA;
 
 /* ------------------------------------------------------------------
-   Seeded RNG — the layout is identical on every load
+   Seeded RNG: the layout is identical on every load
 ------------------------------------------------------------------- */
 export function mulberry32(seed: number): () => number {
   let s = seed >>> 0;
@@ -185,7 +185,7 @@ export function buildBrain(target: number, seed = 20261101): BrainGraph {
   const nInner = Math.round(target * 0.1);
   const nFace = Math.max(20, target - nEdge - nRim - nBack - nInner - 9);
 
-  // Typical spacing on the visible, solid surface — drives min distances and link lengths.
+  // Typical spacing on the visible, solid surface; drives min distances and link lengths.
   const surface = 12 * SOLID_FRACTION;
   const spacing = Math.sqrt(surface / (nFace + nRim + nEdge * 0.6));
 
@@ -224,10 +224,10 @@ export function buildBrain(target: number, seed = 20261101): BrainGraph {
     return true;
   };
 
-  // 0 — the core
+  // 0: the core
   push({ x: 0, y: 0, z: 0, kind: K_CORE, size: 2.6, hub: false });
 
-  // 1 — corners. The far corner (-1,-1,-1) hides behind the core at rest.
+  // 1: corners. The far corner (-1,-1,-1) hides behind the core at rest.
   const corners: Vec3[] = [];
   const cornerIdx: number[] = [];
   for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [-1, 1]) corners.push([x, y, z]);
@@ -239,7 +239,7 @@ export function buildBrain(target: number, seed = 20261101): BrainGraph {
   /** Ordered node chains drawn as continuous structural lines. */
   const chains: { nodes: number[]; closed: boolean }[] = [];
 
-  // 2 — cube edges: the nine visible ones draw the hexagon and the "Y".
+  // 2. Cube edges: the nine visible ones draw the hexagon and the "Y".
   const cubeEdges: [number, number][] = [];
   for (let i = 0; i < 8; i++)
     for (let j = i + 1; j < 8; j++) {
@@ -269,7 +269,7 @@ export function buildBrain(target: number, seed = 20261101): BrainGraph {
     if (!back) chains.push({ nodes: chain, closed: false });
   }
 
-  // 3 — rims: trace the three cut-outs so the mark reads crisply.
+  // 3. Rims: trace the three cut-outs so the mark reads crisply.
   const perim = HOLES.reduce((s, h) => s + h.reduce((acc, p, i) => {
     const q = h[(i + 1) % h.length];
     return acc + Math.hypot(q[0] - p[0], q[1] - p[1]);
@@ -293,7 +293,7 @@ export function buildBrain(target: number, seed = 20261101): BrainGraph {
     if (loop.length > 2) chains.push({ nodes: loop, closed: true });
   }
 
-  // 4 — face fill: blue-noise darts on the solid part of the three visible faces.
+  // 4. Face fill: blue-noise darts on the solid part of the three visible faces.
   const dFace = spacing * 0.82;
   let placed = 0;
   for (let tries = 0; tries < nFace * 60 && placed < nFace; tries++) {
@@ -311,7 +311,7 @@ export function buildBrain(target: number, seed = 20261101): BrainGraph {
     placed++;
   }
 
-  // 5 — hidden faces: sparse, and only where they don't fill the cut-outs at rest.
+  // 5. Hidden faces: sparse, and only where they don't fill the cut-outs at rest.
   const dBack = spacing * 1.7;
   placed = 0;
   for (let tries = 0; tries < nBack * 80 && placed < nBack; tries++) {
@@ -326,7 +326,7 @@ export function buildBrain(target: number, seed = 20261101): BrainGraph {
     placed++;
   }
 
-  // 6 — interior cloud around the core (also stencilled, so the cut-outs stay clean).
+  // 6: interior cloud around the core (also stencilled, so the cut-outs stay clean).
   const dInner = spacing * 0.95;
   placed = 0;
   for (let tries = 0; tries < nInner * 80 && placed < nInner; tries++) {

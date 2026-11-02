@@ -1,6 +1,6 @@
 import { useEffect, useState, type KeyboardEvent, type RefObject } from 'react';
 
-/** True while the element is on screen and the tab is visible — used to pause CSS loops. */
+/** True while the element is on screen and the tab is visible. Used to pause CSS loops. */
 export function useActive(ref: RefObject<HTMLElement | null>): boolean {
   const [inView, setInView] = useState(true);
   const [visible, setVisible] = useState(true);

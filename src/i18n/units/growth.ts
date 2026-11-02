@@ -16,7 +16,7 @@ export const GROWTH: L10n<UnitCopy> = {
       secondary: { label: 'See how AI answers', href: '#demo' },
       facts: [
         { k: 'Channels', v: 'AI answers · Search · Paid social · Email' },
-        { k: 'First outputs', v: 'Weeks 3–5' },
+        { k: 'First outputs', v: 'Weeks 3-5' },
         { k: 'Brand voice', v: 'Trained on your material, approved by you' },
       ],
     },
@@ -49,7 +49,7 @@ export const GROWTH: L10n<UnitCopy> = {
       items: [
         {
           name: 'AI Content Engine',
-          what: 'A system that turns your team’s expertise into articles, social posts, newsletters and video scripts in your brand’s voice — researched, drafted and ready for approval every week.',
+          what: 'A system that turns your team’s expertise into articles, social posts, newsletters and video scripts in your brand’s voice: researched, drafted and ready for approval every week.',
           includes: [
             'Brand voice model trained on your best material',
             'Editorial calendar tied to search and AI demand',
@@ -57,7 +57,7 @@ export const GROWTH: L10n<UnitCopy> = {
             'Human editing and approval workflow',
             'Performance report by piece and topic',
           ],
-          timeline: '2–4 weeks to set up, then ongoing',
+          timeline: '2-4 weeks to set up, then ongoing',
           bestFor: 'Brands with real expertise and no time to publish it.',
         },
         {
@@ -70,7 +70,7 @@ export const GROWTH: L10n<UnitCopy> = {
             'Content and source plan to earn citations',
             'Monthly visibility tracking',
           ],
-          timeline: '3–4 weeks to baseline, then monthly',
+          timeline: '3-4 weeks to baseline, then monthly',
           bestFor: 'Companies whose buyers research with AI before they ever reach the website.',
         },
         {
@@ -88,7 +88,7 @@ export const GROWTH: L10n<UnitCopy> = {
         },
         {
           name: 'Personalized Outbound',
-          what: 'Prospecting that researches each account, writes a message for that person and runs the sequence from your inbox — with your team approving before anything goes out.',
+          what: 'Prospecting that researches each account, writes a message for that person and runs the sequence from your inbox, with your team approving before anything goes out.',
           includes: [
             'Ideal customer profile and account lists',
             'Research agent per account and contact',
@@ -96,7 +96,7 @@ export const GROWTH: L10n<UnitCopy> = {
             'Deliverability setup and domain care',
             'Replies routed to your CRM',
           ],
-          timeline: '3–4 weeks to first sends',
+          timeline: '3-4 weeks to first sends',
           bestFor: 'B2B teams selling high-value deals to a defined list of accounts.',
         },
       ],
@@ -124,7 +124,7 @@ export const GROWTH: L10n<UnitCopy> = {
         },
         {
           name: 'Launch',
-          time: '2–3 weeks',
+          time: '2-3 weeks',
           body: 'We set up the engines, connect your ads manager, CRM and inbox, and ship the first batch of content and tests.',
           out: ['Engines live', 'First outputs'],
         },
@@ -186,7 +186,7 @@ export const GROWTH: L10n<UnitCopy> = {
     faq: [
       {
         q: 'What is generative engine optimization (GEO)?',
-        a: 'It is the work of making your brand appear — and be cited — inside the answers AI assistants give. It overlaps with SEO but adds new work: tracking questions instead of keywords, earning mentions on the sources assistants trust and structuring content so it can be quoted.',
+        a: 'It is the work of making your brand appear (and be cited) inside the answers AI assistants give. It overlaps with SEO but adds new work: tracking questions instead of keywords, earning mentions on the sources assistants trust and structuring content so it can be quoted.',
       },
       {
         q: 'Can you guarantee we’ll be cited by AI assistants?',
@@ -215,7 +215,7 @@ export const GROWTH: L10n<UnitCopy> = {
     ],
     cta: {
       title: 'See where you stand <em>in AI answers.</em>',
-      lede: 'Book a call and we’ll look together at how AI assistants answer your buyers’ questions today — and what it would take to change that.',
+      lede: 'Book a call and we’ll look together at how AI assistants answer your buyers’ questions today, and what it would take to change that.',
     },
   },
 
@@ -233,7 +233,7 @@ export const GROWTH: L10n<UnitCopy> = {
       secondary: { label: 'Ver cómo responde la IA', href: '#demo' },
       facts: [
         { k: 'Canales', v: 'Respuestas de IA · Búsqueda · Anuncios en redes · Email' },
-        { k: 'Primeras piezas', v: 'Semanas 3–5' },
+        { k: 'Primeras piezas', v: 'Semanas 3-5' },
         { k: 'Voz de marca', v: 'Entrenada con tu material, aprobada por ti' },
       ],
     },
@@ -274,7 +274,7 @@ export const GROWTH: L10n<UnitCopy> = {
             'Flujo de edición y aprobación humana',
             'Reporte de rendimiento por pieza y tema',
           ],
-          timeline: '2–4 semanas de puesta en marcha, luego continuo',
+          timeline: '2-4 semanas de puesta en marcha, luego continuo',
           bestFor: 'Marcas con conocimiento real y sin tiempo para publicarlo.',
         },
         {
@@ -287,7 +287,7 @@ export const GROWTH: L10n<UnitCopy> = {
             'Plan de contenido y fuentes para ganar citas',
             'Seguimiento mensual de visibilidad',
           ],
-          timeline: '3–4 semanas a la línea base, luego mensual',
+          timeline: '3-4 semanas a la línea base, luego mensual',
           bestFor: 'Empresas cuyos clientes investigan con IA antes de llegar a su sitio.',
         },
         {
@@ -313,7 +313,7 @@ export const GROWTH: L10n<UnitCopy> = {
             'Configuración de entregabilidad y cuidado de dominios',
             'Respuestas derivadas a tu CRM',
           ],
-          timeline: '3–4 semanas a los primeros envíos',
+          timeline: '3-4 semanas a los primeros envíos',
           bestFor: 'Equipos B2B que venden contratos de alto valor a una lista definida de cuentas.',
         },
       ],
@@ -341,7 +341,7 @@ export const GROWTH: L10n<UnitCopy> = {
         },
         {
           name: 'Lanzar',
-          time: '2–3 semanas',
+          time: '2-3 semanas',
           body: 'Configuramos los motores, conectamos tu administrador de anuncios, tu CRM y tu correo, y entregamos la primera tanda de contenido y tests.',
           out: ['Motores activos', 'Primeras piezas'],
         },

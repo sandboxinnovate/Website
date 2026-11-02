@@ -89,8 +89,8 @@ const ANSWERS: AnswerDef[] = [
     id: 'timeline',
     q: both('How long until we see results?', '¿En cuánto tiempo vemos resultados?'),
     a: both(
-      'An AI Opportunity Audit takes 2–3 weeks. A first agent is usually live in 3–5 weeks. Company-wide brains roll out in phases, with something useful in production from the first month.',
-      'Una auditoría de oportunidades de IA toma 2–3 semanas. Un primer agente suele estar funcionando en 3–5 semanas. Los brains para toda la empresa se implementan por fases, con algo útil en producción desde el primer mes.',
+      'An AI Opportunity Audit takes 2 to 3 weeks. A first agent is usually live in 3 to 5 weeks. Company-wide brains roll out in phases, with something useful in production from the first month.',
+      'Una auditoría de oportunidades de IA toma de 2 a 3 semanas. Un primer agente suele estar funcionando en un plazo de 3 a 5 semanas. Los brains para toda la empresa se implementan por fases, con algo útil en producción desde el primer mes.',
     ),
     cta: both('Take the AI diagnostic', 'Hacer el diagnóstico de IA'),
     path: '/diagnostic',
@@ -100,7 +100,7 @@ const ANSWERS: AnswerDef[] = [
     id: 'brain',
     q: both('What exactly is an AI brain?', '¿Qué es exactamente un brain de IA?'),
     a: both(
-      'A system that knows your company — documents, processes, clients — answers your team with sources and acts across your tools. People approve the steps that matter.',
+      'A system that knows your company (documents, processes, clients), answers your team with sources and acts across your tools. People approve the steps that matter.',
       'Un sistema que conoce tu empresa (documentos, procesos, clientes), responde a tu equipo citando fuentes y actúa en tus herramientas. Las personas aprueban los pasos importantes.',
     ),
     cta: both('See Brains', 'Ver Brains'),

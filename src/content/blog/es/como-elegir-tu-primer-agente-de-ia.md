@@ -1,6 +1,6 @@
 ---
 title: "Cómo elegir el primer proceso para delegar a un agente de IA"
-description: "Cómo elegir tu primer agente de IA: cinco criterios del 1 al 5, dos filtros, un ejemplo con seis procesos, señales de alerta y qué debe estar listo en 3–5 semanas."
+description: "Cómo elegir tu primer agente de IA: cinco criterios del 1 al 5, dos filtros, un ejemplo con seis procesos, señales de alerta y qué debe estar listo en 3 a 5 semanas."
 dek: "Tu primer agente se convierte en el veredicto del equipo sobre la IA. Puntúa a los candidatos con cinco criterios, aplica dos filtros y elige el proceso que pueda demostrar resultados en cinco semanas."
 date: 2026-11-02
 lang: es
@@ -16,7 +16,7 @@ takeaways:
   - "Usa el riesgo y la medición como filtros: un proceso con menos de 3 en cualquiera de los dos no es un primer agente, sin importar su total."
   - "En nuestro ejemplo hipotético de una empresa de 40 personas gana la calificación de leads entrantes: frecuente, basada en reglas, con errores recuperables y una métrica que el CRM ya registra."
   - "El filtrado de CV es una mala primera opción. Las herramientas de contratación son de alto riesgo según la Ley de IA de la UE, exigen auditorías de sesgo en Nueva York, y un rechazo injusto pasa inadvertido."
-  - "Un primer agente está terminado cuando tiene un responsable, una métrica con línea base, aprobaciones por escrito y un registro de cada ejecución. Eso suele tomar 3–5 semanas."
+  - "Un primer agente está terminado cuando tiene un responsable, una métrica con línea base, aprobaciones por escrito y un registro de cada ejecución. Eso suele tomar 3 a 5 semanas."
 faq:
   - q: "¿Cuántos procesos conviene puntuar antes de elegir?"
     a: "Los suficientes para tener una elección real, normalmente entre ocho y quince. Pregúntales a quienes hacen el trabajo, no solo a los gerentes: saben qué tareas se repiten, cuáles se caen en los días de más carga y dónde están realmente los datos. Cuando el grupo puntúa en conjunto los dos primeros, el resto avanza rápido. Guarda la lista completa, porque los que quedan atrás son tu hoja de ruta para el segundo y el tercer agente."
@@ -111,13 +111,13 @@ Si alguna se cumple, resuélvela primero o elige otro proceso.
 - **El resultado depende de un acceso que no tienes.** Si sacar los datos de un sistema requiere negociar con un proveedor, empieza esa gestión en paralelo y construye primero otra cosa.
 - **Solo funciona si el agente lo hace todo.** Si el plan no tolera que una persona apruebe los resultados durante las primeras semanas, el plan está mal.
 
-## Qué significa "terminado" en 3–5 semanas
+## Qué significa "terminado" en 3 a 5 semanas
 
-Un primer agente suele estar en producción en 3–5 semanas. "En producción" necesita una definición, o el proyecto se convierte en un piloto eterno. Así se vería el ejemplo de calificación de leads:
+Un primer agente suele estar en producción en 3 a 5 semanas. "En producción" necesita una definición, o el proyecto se convierte en un piloto eterno. Así se vería el ejemplo de calificación de leads:
 
 - **Semana 1:** mapear el proceso con la coordinadora, escribir las reglas en una página, juntar 40 consultas pasadas como casos de prueba y conectar WhatsApp, el correo, el CRM y el calendario.
 - **Semana 2:** escribir la especificación: qué activa al agente, qué decide solo (acusar recibo, pedir datos faltantes, clasificar), qué consulta (cualquier cosa fuera de la zona de servicio) y qué no hace nunca (dar precios, prometer fechas de instalación).
-- **Semanas 3–4:** construir y probar con los casos pasados, y después correrlo en modo sombra: el agente redacta cada respuesta y la coordinadora decide qué se envía.
+- **Semanas 3 y 4:** construir y probar con los casos pasados, y después correrlo en modo sombra: el agente redacta cada respuesta y la coordinadora decide qué se envía.
 - **Semana 5:** en producción, con todas las respuestas salientes aprobadas al principio. Cada tipo de respuesta sale sola cuando el registro muestra que se aprobó sin cambios durante unas semanas.
 
 La definición de terminado que le exigimos a cualquier primer agente:
@@ -134,7 +134,7 @@ La definición de terminado que le exigimos a cualquier primer agente:
 Reúne durante una hora a la persona responsable y a dos de quienes hacen el trabajo. Arma con ellos una lista de todos los procesos lo bastante repetitivos como para fastidiar a alguien y puntúa cada uno:
 
 ```text
-MATRIZ PARA ELEGIR EL PRIMER AGENTE  (1–5, 5 = mejor)
+MATRIZ PARA ELEGIR EL PRIMER AGENTE  (1-5, 5 = mejor)
 
 Proceso:
 Responsable (un solo nombre):

@@ -58,7 +58,7 @@ Para la mayoría de los procesos, cinco medidas alcanzan:
 | Medida | Cómo obtenerla | Por qué importa |
 | --- | --- | --- |
 | Volumen por semana | Tickets, correos, mensajes de WhatsApp, pedidos, cotizaciones del sistema | El ahorro crece con el volumen; poco volumen limita el retorno |
-| Tiempo por caso | Una muestra de dos semanas con 3–5 personas, o las marcas de tiempo del sistema | La unidad de ahorro |
+| Tiempo por caso | Una muestra de dos semanas con 3-5 personas, o las marcas de tiempo del sistema | La unidad de ahorro |
 | Tiempo de respuesta o de ciclo | Marcas de tiempo: recibido a respondido, solicitado a entregado | Muchas veces es lo que el cliente realmente nota |
 | Tasa de errores o retrabajo | Correcciones, notas de crédito, tickets reabiertos, devoluciones | El costo de la calidad |
 | Adónde se va el tiempo hoy | Una entrevista corta: ¿qué harías con un día extra a la semana? | Te dice de antemano adónde podrían ir las horas liberadas |

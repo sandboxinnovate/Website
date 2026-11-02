@@ -11,7 +11,7 @@ export const ACADEMY: L10n<UnitCopy> = {
     hero: {
       title: 'Learn AI on <em>your own work.</em>',
       lede:
-        'Hands-on workshops and programs where people bring real tasks — a report, a proposal, a full inbox — and leave with them done and a workflow they can repeat. Designed by a team that uses AI in its own work every day.',
+        'Hands-on workshops and programs where people bring real tasks (a report, a proposal, a full inbox) and leave with them done and a workflow they can repeat. Designed by a team that uses AI in its own work every day.',
       primary: 'Book a call',
       secondary: { label: 'Explore the curriculum', href: '#demo' },
       facts: [
@@ -70,7 +70,7 @@ export const ACADEMY: L10n<UnitCopy> = {
             'Framework to choose and justify AI projects',
             'Final session: your company’s 90-day AI plan',
           ],
-          timeline: '4–6 weeks',
+          timeline: '4-6 weeks',
           bestFor: 'Leadership teams that need to make AI decisions with confidence.',
         },
         {
@@ -83,7 +83,7 @@ export const ACADEMY: L10n<UnitCopy> = {
             'Internal playbook and recorded material',
             'Adoption tracking for leadership',
           ],
-          timeline: '6–12 weeks',
+          timeline: '6-12 weeks',
           bestFor: 'Companies rolling out AI tools to every employee.',
         },
       ],
@@ -91,7 +91,7 @@ export const ACADEMY: L10n<UnitCopy> = {
     demo: {
       eyebrow: 'Sample curriculum',
       title: 'Pick a role. <em>See what they’ll learn.</em>',
-      lede: 'Every program is adapted to your team. This is how a typical four-module track looks for each role — and the lab each module ends with.',
+      lede: 'Every program is adapted to your team. This is how a typical four-module track looks for each role, plus the lab each module ends with.',
     },
     method: {
       title: 'Built on your tasks, <em>not on slides</em>',
@@ -105,7 +105,7 @@ export const ACADEMY: L10n<UnitCopy> = {
         },
         {
           name: 'Tailor',
-          time: '1–2 weeks',
+          time: '1-2 weeks',
           body: 'We build the exercises from your real tasks and documents, and adapt the rules to your AI policy.',
           out: ['Custom curriculum', 'Exercise kit'],
         },
@@ -270,7 +270,7 @@ export const ACADEMY: L10n<UnitCopy> = {
             'Marco para elegir y justificar proyectos de IA',
             'Sesión final: el plan de IA a 90 días de tu empresa',
           ],
-          timeline: '4–6 semanas',
+          timeline: '4-6 semanas',
           bestFor: 'Equipos directivos que necesitan tomar decisiones sobre IA con seguridad.',
         },
         {
@@ -283,7 +283,7 @@ export const ACADEMY: L10n<UnitCopy> = {
             'Manual interno y material grabado',
             'Seguimiento de adopción para la dirección',
           ],
-          timeline: '6–12 semanas',
+          timeline: '6-12 semanas',
           bestFor: 'Empresas que están desplegando herramientas de IA para todo el personal.',
         },
       ],
@@ -305,7 +305,7 @@ export const ACADEMY: L10n<UnitCopy> = {
         },
         {
           name: 'Adaptar',
-          time: '1–2 semanas',
+          time: '1-2 semanas',
           body: 'Armamos los ejercicios con tus tareas y documentos reales, y adaptamos las reglas a tu política de IA.',
           out: ['Programa a medida', 'Kit de ejercicios'],
         },

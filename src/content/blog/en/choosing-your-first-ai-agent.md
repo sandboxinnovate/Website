@@ -1,6 +1,6 @@
 ---
 title: "How to choose the first process to hand to an AI agent"
-description: "A scorecard for choosing your first AI agent: five criteria scored 1–5, two gates, a worked example with six candidate processes, red flags and what done looks like."
+description: "A scorecard for choosing your first AI agent: five criteria scored 1 to 5, two gates, a worked example with six candidate processes, red flags and what done looks like."
 dek: "Your first agent becomes the team's verdict on AI. Score the candidates on five criteria, apply two gates and pick the process that can prove itself in five weeks."
 date: 2026-11-02
 lang: en
@@ -12,11 +12,11 @@ tags:
   - ai strategy
 readingMinutes: 9
 takeaways:
-  - "Score each candidate process 1–5 on volume, rules vs judgment, data access, risk and reversibility, and how measurable the outcome is."
+  - "Score each candidate process 1 to 5 on volume, rules vs judgment, data access, risk and reversibility, and how measurable the outcome is."
   - "Treat risk and measurability as gates: a process below 3 on either is not a first agent, whatever its total."
   - "In our hypothetical 40-person example, inbound lead qualification wins: frequent, rule-based, recoverable mistakes and a metric the CRM already tracks."
   - "CV screening is a poor first pick. Hiring tools are high-risk under the EU AI Act and need bias audits in New York City, and an unfair rejection goes unnoticed."
-  - "A first agent is done when it has one owner, one metric with a baseline, written approvals and a log of every run. That typically takes 3–5 weeks."
+  - "A first agent is done when it has one owner, one metric with a baseline, written approvals and a log of every run. That typically takes 3 to 5 weeks."
 faq:
   - q: "How many processes should we score before choosing?"
     a: "Enough to have a real choice, usually eight to fifteen. Ask the people who do the work, not only managers: they know which tasks repeat, which ones get dropped on busy days and where the data actually lives. Once the group has scored the first two together, the rest go quickly. Keep the full list, because the runners-up become your roadmap for agents two and three."
@@ -111,13 +111,13 @@ If any of these is true, fix it first or pick another process.
 - **The win depends on access you don't have.** If getting data out of a system needs a vendor negotiation, start that in parallel and choose something else to build first.
 - **It only works if the agent does everything.** If the plan can't tolerate a person approving outputs for the first weeks, the plan is wrong.
 
-## What done looks like in 3–5 weeks
+## What done looks like in 3 to 5 weeks
 
-A first agent is typically live in 3–5 weeks. "Live" needs a definition, or the project drifts into an endless pilot. Here is how the lead-qualification example would run:
+A first agent is typically live in 3 to 5 weeks. "Live" needs a definition, or the project drifts into an endless pilot. Here is how the lead-qualification example would run:
 
 - **Week 1:** map the process with the coordinator, write the rules on one page, collect 40 past inquiries as test cases, connect the inbox, CRM and calendar.
 - **Week 2:** write the spec: what triggers the agent, what it decides alone (acknowledge, ask for missing details, classify), what it asks about (anything outside the service area) and what it never does (quote prices, promise install dates).
-- **Weeks 3–4:** build and test against the past cases, then run in shadow mode: the agent drafts every reply, the coordinator decides what goes out.
+- **Weeks 3 and 4:** build and test against the past cases, then run in shadow mode: the agent drafts every reply, the coordinator decides what goes out.
 - **Week 5:** live, with every outbound reply approved at first. Each reply type goes out on its own once the log shows it approved unchanged for a few weeks.
 
 The definition of done we hold any first agent to:
@@ -134,7 +134,7 @@ The definition of done we hold any first agent to:
 Put the owner and two people who do the work in a room for an hour. List every process repetitive enough to annoy someone, and score each one:
 
 ```text
-FIRST AGENT SCORECARD  (1–5, 5 = better)
+FIRST AGENT SCORECARD  (1-5, 5 = better)
 
 Process:
 Owner (one name):

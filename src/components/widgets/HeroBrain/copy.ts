@@ -5,7 +5,7 @@ export interface HeroBrainCopy {
   description: string;
   /**
    * Operation names flashed next to active nodes. They read as job identifiers inside a running
-   * system, so they stay in code-style English in both languages — the way they would in real logs.
+   * system, so they stay in code-style English in both languages, the way they would in real logs.
    */
   ops: readonly string[];
 }

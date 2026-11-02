@@ -53,7 +53,7 @@ export function tokenize(blocks: Block[], brand: string): Tokenized {
 /** Delay before the next token: a little longer after punctuation and at block edges. */
 export function tokenDelay(tok: Tok | undefined, blockEdge: boolean): number {
   let d = 26 + Math.random() * 34;
-  if (tok?.k === 'w' && /[.:;,—]\s*$/.test(tok.text)) d += 70;
+  if (tok?.k === 'w' && /[.:;,\u2014]\s*$/.test(tok.text)) d += 70;
   if (tok?.k === 'cite') d += 40;
   if (blockEdge) d += 120;
   return d;

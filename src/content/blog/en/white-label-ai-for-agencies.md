@@ -94,7 +94,7 @@ Review:       30 days after launch, against the baseline.
 
 Notice what isn't there: a promise of "40% more bookings". You don't control the client's sales team, their offer or their market. You do control whether the system answers fast, accurately and within its rules, and whether you measured where things started. Promise the measurement, not the result.
 
-On timing: a white-label build typically runs 3–10 weeks per project, depending on scope, and a single agent like this one is usually live in 3–5 weeks. Start the baseline measurement the week you sign, so it runs in parallel with the build instead of delaying launch.
+On timing: a white-label build typically runs 3 to 10 weeks per project, depending on scope, and a single agent like this one is usually live in 3 to 5 weeks. Start the baseline measurement the week you sign, so it runs in parallel with the build instead of delaying launch.
 
 Price it the way it behaves: a setup fee for the build and an ongoing fee for operation, because the system needs care every month. You set your own price to the client. Selling it as a one-off project is how agencies end up supporting a system for free.
 

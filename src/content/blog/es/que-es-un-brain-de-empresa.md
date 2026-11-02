@@ -15,7 +15,7 @@ takeaways:
   - "Un brain de empresa tiene cuatro capas: conocimiento con fuentes y permisos, agentes con una sola tarea cada uno, las herramientas con las que actúan y aprobación humana con registro completo."
   - "Las licencias de chat ayudan a cada persona y las herramientas de automatización siguen reglas fijas. Un brain trabaja con tus propios datos y actúa dentro de un proceso, con personas que aprueban lo importante."
   - "Un brain debe mostrarle a cada persona exactamente lo que ya puede ver hoy, y eso también deja al descubierto los archivos compartidos de más que no sabías que tenías."
-  - "Empieza con un agente en un proceso con volumen y un responsable. Un primer agente suele estar en producción en 3–5 semanas, y cada uno de los siguientes reutiliza lo que construyó el primero."
+  - "Empieza con un agente en un proceso con volumen y un responsable. Un primer agente suele estar en producción en 3 a 5 semanas, y cada uno de los siguientes reutiliza lo que construyó el primero."
   - "El modelo es reemplazable. Tu conocimiento, tus reglas, tus casos de prueba y tus registros son el activo, así que diseña el sistema para cambiar de modelo sin rehacer todo."
 faq:
   - q: "¿Un brain de empresa es lo mismo que entrenar un modelo de IA con nuestros datos?"
@@ -130,7 +130,7 @@ El plan tentador es conectar todo primero y decidir después qué hacer con eso.
 
 El primer agente te dice qué conocimiento importa. Un agente que califica leads necesita tu perfil de cliente ideal, las zonas que atiendes, tus reglas de calificación y la agenda del equipo comercial, no el material de marketing de 2019. Ordenas y conectas lo que usa el proceso, no toda la carpeta compartida. La confianza se construye igual: después de unas semanas revisando los borradores de un agente, tu equipo sabe dónde es fuerte y dónde necesita una mano.
 
-Además, tienes un número rápido. Con nuestro Agente único, un primer agente suele estar en producción en 3–5 semanas, medido contra una métrica acordada al inicio. Un Brain de empresa completo, con el asistente compartido y agentes para dos o tres procesos, toma 6–10 semanas. ¿Todavía estás eligiendo el proceso? Lee [cómo elegir el primer proceso para un agente de IA](/es/blog/como-elegir-tu-primer-agente-de-ia/).
+Además, tienes un número rápido. Con nuestro Agente único, un primer agente suele estar en producción en 3 a 5 semanas, medido contra una métrica acordada al inicio. Un Brain de empresa completo, con el asistente compartido y agentes para dos o tres procesos, toma 6 a 10 semanas. ¿Todavía estás eligiendo el proceso? Lee [cómo elegir el primer proceso para un agente de IA](/es/blog/como-elegir-tu-primer-agente-de-ia/).
 
 Cada agente después del primero suele construirse más rápido. Primero, respuesta a leads; después, clasificación de soporte, que reutiliza la documentación de producto; más adelante, un reporte semanal que reutiliza la conexión con el CRM. Cada uno toma prestados el conocimiento, las conexiones y los patrones de aprobación que dejó el anterior. Así crece un solo agente hasta convertirse en un brain de empresa, sin un proyecto gigante de una sola vez.
 

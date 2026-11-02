@@ -1,5 +1,5 @@
 /* =====================================================================
-   AgentConsole — simulated orchestration console
+   AgentConsole: simulated orchestration console
    Everything is scoped under .ac. Local tokens mirror the site tokens
    (with literal fallbacks so the widget never depends on emitted vars).
    Layout switches on the console's own width (container queries):

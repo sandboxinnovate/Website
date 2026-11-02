@@ -236,7 +236,7 @@ const unitLabel = (slug: string) => { const u = unitBySlug(slug); return u ? `${
       });
     });
 
-    // Deep links (#case-<id>) — on load, on hash change, and from the index in the page header.
+    // Deep links (#case-<id>): on load, on hash change, and from the index in the page header.
     const fromHash = () => {
       const m = location.hash.match(/^#case-(.+)$/);
       if (!m || !dialogs.has(m[1]) || current === m[1]) return;

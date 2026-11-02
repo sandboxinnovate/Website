@@ -57,7 +57,7 @@ export const UNIT_COMMON = {
 
   cta: {
     diagnostic: { en: 'Take the AI diagnostic', es: 'Hacer el diagnóstico de IA' },
-    meta: { en: 'US · Europe · Latin America — in English and Spanish', es: 'EE. UU. · Europa · Latinoamérica — en inglés y español' },
+    meta: { en: 'US · Europe · Latin America, in English and Spanish', es: 'EE. UU. · Europa · Latinoamérica, en inglés y español' },
   },
 
   illustrative: { en: 'Illustrative', es: 'Ilustrativo' },

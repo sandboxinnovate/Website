@@ -1,6 +1,6 @@
 ---
 /**
- * 404 — "signal lost". Rendered twice: src/pages/404.astro (EN) and src/pages/es/404.astro (ES).
+ * 404: "signal lost". Rendered twice: src/pages/404.astro (EN) and src/pages/es/404.astro (ES).
  * Netlify serves the Spanish one for missing /es/ paths (public/_redirects). Hosts that only know
  * /404.html get the English page, whose inline script sends /es/ URLs to /es/404/ before paint,
  * so nav, footer and palette are Spanish too. The requested path is kept for the "last seen" readout.
@@ -17,7 +17,7 @@ const COPY = {
     title: 'Signal lost (404)',
     status: 'ERR_ROUTE_NOT_FOUND',
     h1: 'Signal lost.',
-    body: 'Nothing is wired to this address. We checked the sitemap, the redirects and the archive — no answer.',
+    body: 'Nothing is wired to this address. We checked the sitemap, the redirects and the archive. No answer.',
     cmd1: 'sandbox resolve',
     l1: 'searching sitemap', r1: '0 matches',
     l2: 'checking redirects', r2: 'none',
@@ -35,7 +35,7 @@ const COPY = {
     title: 'Se perdió la señal (404)',
     status: 'ERR_ROUTE_NOT_FOUND',
     h1: 'Se perdió la señal.',
-    body: 'No hay nada conectado a esta dirección. Revisamos el mapa del sitio, las redirecciones y el archivo — sin respuesta.',
+    body: 'No hay nada conectado a esta dirección. Revisamos el mapa del sitio, las redirecciones y el archivo. Sin respuesta.',
     cmd1: 'sandbox resolve',
     l1: 'buscando en el sitemap', r1: '0 coincidencias',
     l2: 'revisando redirecciones', r2: 'ninguna',
@@ -128,7 +128,7 @@ const trace = pts.join(' ');
         <div class="nf__read">
           <div class="nf__read-row">
             <span>{COPY[lang].scope.amp} <b>0.00</b></span>
-            <span>{COPY[lang].scope.freq} <b>—</b></span>
+            <span>{COPY[lang].scope.freq} <b>-</b></span>
             <span class="nf__read-last">{COPY[lang].scope.last} <b data-path>/…</b></span>
           </div>
         </div>

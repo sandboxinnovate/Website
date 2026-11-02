@@ -1,6 +1,6 @@
 import type { L10n } from '@/i18n';
 
-/** Labels drawn inside the six hero visuals (decorative, aria-hidden — the page copy carries the meaning). */
+/** Labels drawn inside the six hero visuals (decorative, aria-hidden; the page copy carries the meaning). */
 export const VISUAL_COPY = {
   en: {
     illustrative: 'Illustrative',
@@ -76,11 +76,11 @@ export const VISUAL_COPY = {
       file: 'products / industries',
       early: 'Early access',
       industries: [
-        { code: 'RE', name: 'Real estate', pilot: '2–3 wks to pilot' },
-        { code: 'CL', name: 'Clinics', pilot: '3–4 wks to pilot' },
-        { code: 'PS', name: 'Professional services', pilot: '3–4 wks to pilot' },
-        { code: 'EC', name: 'E-commerce', pilot: '2–3 wks to pilot' },
-        { code: 'HO', name: 'Hospitality', pilot: '2–3 wks to pilot' },
+        { code: 'RE', name: 'Real estate', pilot: '2-3 wks to pilot' },
+        { code: 'CL', name: 'Clinics', pilot: '3-4 wks to pilot' },
+        { code: 'PS', name: 'Professional services', pilot: '3-4 wks to pilot' },
+        { code: 'EC', name: 'E-commerce', pilot: '2-3 wks to pilot' },
+        { code: 'HO', name: 'Hospitality', pilot: '2-3 wks to pilot' },
       ],
     },
     partners: {
@@ -169,11 +169,11 @@ export const VISUAL_COPY = {
       file: 'productos / industrias',
       early: 'Acceso anticipado',
       industries: [
-        { code: 'IN', name: 'Inmobiliarias', pilot: '2–3 sem. al piloto' },
-        { code: 'CL', name: 'Clínicas', pilot: '3–4 sem. al piloto' },
-        { code: 'SP', name: 'Servicios profesionales', pilot: '3–4 sem. al piloto' },
-        { code: 'EC', name: 'E-commerce', pilot: '2–3 sem. al piloto' },
-        { code: 'HO', name: 'Hotelería', pilot: '2–3 sem. al piloto' },
+        { code: 'IN', name: 'Inmobiliarias', pilot: '2-3 sem. al piloto' },
+        { code: 'CL', name: 'Clínicas', pilot: '3-4 sem. al piloto' },
+        { code: 'SP', name: 'Servicios profesionales', pilot: '3-4 sem. al piloto' },
+        { code: 'EC', name: 'E-commerce', pilot: '2-3 sem. al piloto' },
+        { code: 'HO', name: 'Hotelería', pilot: '2-3 sem. al piloto' },
       ],
     },
     partners: {

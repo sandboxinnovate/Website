@@ -1,11 +1,11 @@
 /**
- * AI Readiness Diagnostic — the scoring model.
+ * AI Readiness Diagnostic: the scoring model.
  * Pure, deterministic functions: the same answers always produce the same score, level and moves.
  *
  *  - 10 questions, 2 per dimension, 4 ordered options each (0 = least mature … 3 = most mature).
  *  - Dimension score = points / max points × 100 (0, 17, 33, 50, 67, 83 or 100).
  *  - Overall = 80% average of the five dimensions + 20% the weakest one, because the weakest
- *    dimension is what usually stalls a rollout. Rounded to an integer 0–100.
+ *    dimension is what usually stalls a rollout. Rounded to an integer 0-100.
  *  - Level thresholds: Explorer < 30 ≤ Builder < 55 ≤ Operator < 80 ≤ AI-native.
  *  - Moves: one per weakest dimension (3); the "build on it" variant only from 67 up,
  *    otherwise the "foundations" variant;
@@ -163,7 +163,7 @@ export function evaluate(a: Answers): Result {
   return { dims, score, level, levelId: LEVELS[level].id, ranked: rankDims(dims), moves: pickMoves(dims, score), runId: runId(a) };
 }
 
-/** Short deterministic id for a set of answers (FNV-1a) — shown as a "run" reference. */
+/** Short deterministic id for a set of answers (FNV-1a), shown as a "run" reference. */
 export function runId(a: Answers): string {
   let h = 0x811c9dc5;
   const s = a.map((v) => (v === null ? '-' : String(v))).join('');
@@ -175,7 +175,7 @@ export function runId(a: Answers): string {
 }
 
 /* ------------------------------------------------------------------
-   Illustrative archetypes (teaser only — not client data)
+   Illustrative archetypes (teaser only, not client data)
 ------------------------------------------------------------------- */
 export const ARCHETYPES: { level: LevelId; dims: number[] }[] = [
   { level: 'explorer', dims: [17, 33, 17, 33, 0] },
@@ -193,7 +193,7 @@ export function archetypeScore(dims: number[]): number {
    Session persistence (sessionStorage; never throws)
 ------------------------------------------------------------------- */
 export const STORAGE_KEY = 'sbx:diagnostic:v1';
-/** Query param the teaser uses to hand over the first answer (1–4). */
+/** Query param the teaser uses to hand over the first answer (1-4). */
 export const HANDOFF_PARAM = 'q1';
 
 export interface Saved {
@@ -223,7 +223,7 @@ export function saveState(s: Saved) {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(s));
   } catch {
-    /* storage unavailable (private mode, quota) — the widget still works in memory */
+    /* storage unavailable (private mode, quota): the widget still works in memory */
   }
 }
 

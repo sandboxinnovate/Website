@@ -18,8 +18,8 @@ export const UI = {
     language: { en: 'Language', es: 'Idioma' },
     allServices: { en: 'All services', es: 'Todos los servicios' },
     servicesIntro: {
-      en: 'Six ways we put AI to work — from a single agent to an AI-native company.',
-      es: 'Seis formas de poner la IA a trabajar — desde un solo agente hasta una empresa nativa en IA.',
+      en: 'Six ways we put AI to work, from a single agent to an AI-native company.',
+      es: 'Seis formas de poner la IA a trabajar, desde un solo agente hasta una empresa nativa en IA.',
     },
   },
   cta: {

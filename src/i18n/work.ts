@@ -301,7 +301,7 @@ export const CASES: CaseStudy[] = [
     tags: { en: ['SEO', 'Content', 'Links'], es: ['SEO', 'Contenido', 'Enlaces'] },
     title: { en: 'SEO for a landscaping business', es: 'SEO para una empresa de paisajismo' },
     dek: {
-      en: 'A full SEO program — technical, content and links — for a landscaping company.',
+      en: 'A full SEO program (technical, content and links) for a landscaping company.',
       es: 'Un programa completo de SEO (técnico, contenido y enlaces) para una empresa de paisajismo.',
     },
     client: { en: 'Landscaping business', es: 'Empresa de paisajismo' },

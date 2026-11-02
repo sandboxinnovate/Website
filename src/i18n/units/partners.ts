@@ -57,7 +57,7 @@ export const PARTNERS: L10n<UnitCopy> = {
             'Ongoing operation and support behind your team',
             'Partner terms designed for resale',
           ],
-          timeline: '3–10 weeks per project',
+          timeline: '3-10 weeks per project',
           bestFor: 'Marketing and digital agencies with an established client base.',
         },
         {
@@ -91,7 +91,7 @@ export const PARTNERS: L10n<UnitCopy> = {
     demo: {
       eyebrow: 'How it works',
       title: 'Who does what, <em>model by model</em>',
-      lede: 'Pick a partnership model to see who owns each stage of a client project — and what your client sees.',
+      lede: 'Pick a partnership model to see who owns each stage of a client project, and what your client sees.',
     },
     method: {
       title: 'From first call <em>to first client live</em>',
@@ -99,13 +99,13 @@ export const PARTNERS: L10n<UnitCopy> = {
       steps: [
         {
           name: 'Qualify',
-          time: '1–2 calls',
+          time: '1-2 calls',
           body: 'We learn about your agency, your clients and the AI requests you are getting, and agree on the model that fits.',
           out: ['Partnership model', 'First opportunity'],
         },
         {
           name: 'Package',
-          time: '1–2 weeks',
+          time: '1-2 weeks',
           body: 'Partner agreement, brand kit, sales materials and the first client opportunity scoped together.',
           out: ['Agreement', 'Branded sales kit'],
         },
@@ -124,7 +124,7 @@ export const PARTNERS: L10n<UnitCopy> = {
       ],
     },
     pricing: {
-      body: 'Partners work on partner terms and set their own price to the client. Each project still follows our model — setup plus ongoing operation — scoped with you after discovery and adjusted to your market.',
+      body: 'Partners work on partner terms and set their own price to the client. Each project still follows our model (setup plus ongoing operation), scoped with you after discovery and adjusted to your market.',
       points: [
         'You set the price to your client',
         'Setup plus ongoing operation, per project',
@@ -257,7 +257,7 @@ export const PARTNERS: L10n<UnitCopy> = {
             'Operación y soporte continuos detrás de tu equipo',
             'Condiciones de partner pensadas para reventa',
           ],
-          timeline: '3–10 semanas por proyecto',
+          timeline: '3-10 semanas por proyecto',
           bestFor: 'Agencias de marketing y digitales con una cartera de clientes establecida.',
         },
         {
@@ -299,13 +299,13 @@ export const PARTNERS: L10n<UnitCopy> = {
       steps: [
         {
           name: 'Calificar',
-          time: '1–2 llamadas',
+          time: '1-2 llamadas',
           body: 'Conocemos tu agencia, tus clientes y los pedidos de IA que estás recibiendo, y acordamos el modelo que encaja.',
           out: ['Modelo de alianza', 'Primera oportunidad'],
         },
         {
           name: 'Empaquetar',
-          time: '1–2 semanas',
+          time: '1-2 semanas',
           body: 'Acuerdo de partners, kit de marca, materiales de venta y la primera oportunidad con alcance definido en conjunto.',
           out: ['Acuerdo', 'Kit de venta con tu marca'],
         },

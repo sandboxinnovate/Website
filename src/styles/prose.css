@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------
-   Blog prose — rendered Markdown inside .prose (src/views/Post.astro).
+   Blog prose: rendered Markdown inside .prose (src/views/Post.astro).
    Structure added by src/lib/markdown/blog-hast.mjs:
      .h-wrap > h2|h3 + a.h-anchor · .table-wrap > table · blockquote.callout--{example|note|rule|other}
      .code-block > pre.astro-code + .code-block__bar

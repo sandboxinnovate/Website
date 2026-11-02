@@ -25,7 +25,7 @@ interface Props {
 
 type Pt = [number, number];
 
-/** Monotone cubic (Fritsch–Carlson) through points — no overshoot on a cumulative curve. */
+/** Monotone cubic (Fritsch-Carlson) through points, no overshoot on a cumulative curve. */
 function monotonePath(pts: Pt[]): string {
   const n = pts.length;
   if (n < 2) return '';
@@ -178,7 +178,7 @@ export default function Chart({ lang, t, cur, cumulative, fullPace, yMax, yMaxTa
             </g>
           ))}
 
-          {/* rollout shading: months 1–3 */}
+          {/* rollout shading: months 1-3 */}
           <rect x={x(0)} y={pad.t} width={x(3) - x(0)} height={ih} className="roi-chart__rampzone" />
           <line x1={x(3)} x2={x(3)} y1={pad.t} y2={y(0)} className="roi-chart__rampedge" />
           <text x={x(0) + 8} y={pad.t + 13} className="roi-chart__ramplab">
@@ -186,7 +186,7 @@ export default function Chart({ lang, t, cur, cumulative, fullPace, yMax, yMaxTa
           </text>
 
           <g clipPath={`url(#${ids}-clip)`}>
-            {/* full pace — dashed reference */}
+            {/* full pace (dashed reference) */}
             <line x1={x(0)} y1={y(0)} x2={x(12)} y2={y(fullEnd)} className="roi-chart__full" />
             <path d={area} fill={`url(#${ids}-area)`} />
             <path d={line} stroke={`url(#${ids}-line)`} strokeWidth="5" fill="none" opacity="0.35" filter={`url(#${ids}-glow)`} />

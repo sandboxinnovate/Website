@@ -1,7 +1,7 @@
 /**
  * Content collections (Astro content layer).
  *
- * blog — "Field notes on applied AI": src/content/blog/{en,es}/<slug>.md
+ * blog ("Field notes on applied AI"): src/content/blog/{en,es}/<slug>.md
  *   - Files whose name starts with "_" are ignored (drafts, templates).
  *   - The EN and ES versions of a post are paired by `translationKey` (= the EN slug).
  *   - The schema mirrors the contract checked by `node scripts/check-posts.mjs` (see README → Blog).
@@ -16,7 +16,7 @@ const blog = defineCollection({
   loader: glob({
     base: './src/content/blog',
     pattern: ['{en,es}/*.md', '!**/_*'],
-    // "en/what-is-a-company-brain" — the language folder plus the file slug, untouched.
+    // "en/what-is-a-company-brain": the language folder plus the file slug, untouched.
     generateId: ({ entry }) => entry.replace(/\.md$/, ''),
   }),
   schema: z.object({
@@ -33,7 +33,7 @@ const blog = defineCollection({
       .max(4),
     readingMinutes: z.number().int().min(1).max(30),
     takeaways: z.array(z.string().min(1)).min(3).max(5),
-    // The contract asks for 2–4 items; the checker tolerates 5, so the build does too.
+    // The contract asks for 2 to 4 items; the checker tolerates 5, so the build does too.
     faq: z.array(z.object({ q: z.string().min(1), a: z.string().min(1) })).min(2).max(5).optional(),
     featured: z.boolean().default(false),
     author: z.literal('sandbox'),

@@ -1,6 +1,6 @@
 # Sandbox
 
-> Sandbox (Sandbox Innovate LLC) designs, builds and runs AI for businesses — and uses it in its own work first. Based in Albuquerque, New Mexico; works remotely with companies in the United States, Europe and Latin America, in English and Spanish.
+> Sandbox (Sandbox Innovate LLC) designs, builds and runs AI for businesses, and uses it in its own work first. Based in Albuquerque, New Mexico; works remotely with companies in the United States, Europe and Latin America, in English and Spanish.
 
 Sandbox started as a digital marketing agency. Using AI in its own marketing work changed how the company operates; today it builds AI systems, advises on AI adoption, runs AI-native marketing and trains teams. 15+ years in business, 200+ projects shipped, 150+ clients served.
 
@@ -8,19 +8,19 @@ Pricing is not published: it depends on scope and market and is discussed on a c
 
 ## Services
 
-- [Brains](https://sandboxinnovate.com/services/brains): Custom AI systems — a company "brain" (living knowledge base plus an assistant that answers and acts) and agents per process (sales, support, operations, HR), internal copilots and integrations. People approve the steps that matter.
-- [Consulting](https://sandboxinnovate.com/services/consulting): AI Opportunity Audit (2–3 weeks: interviews, process map, opportunities ranked by ROI, roadmap), Implementation Sprint (4–8 weeks: tools, usage policies, 2–3 automated processes, training) and a monthly Fractional Head of AI.
-- [Growth](https://sandboxinnovate.com/services/growth): AI-native marketing — a content engine in the brand's voice, visibility inside AI-generated answers (generative engine optimization), AI-generated and tested ad creative, and personalized email and outbound at scale.
+- [Brains](https://sandboxinnovate.com/services/brains): Custom AI systems: a company "brain" (living knowledge base plus an assistant that answers and acts) and agents per process (sales, support, operations, HR), internal copilots and integrations. People approve the steps that matter.
+- [Consulting](https://sandboxinnovate.com/services/consulting): AI Opportunity Audit (2 to 3 weeks: interviews, process map, opportunities ranked by ROI, roadmap), Implementation Sprint (4 to 8 weeks: tools, usage policies, 2 or 3 automated processes, training) and a monthly Fractional Head of AI.
+- [Growth](https://sandboxinnovate.com/services/growth): AI-native marketing: a content engine in the brand's voice, visibility inside AI-generated answers (generative engine optimization), AI-generated and tested ad creative, and personalized email and outbound at scale.
 - [Academy](https://sandboxinnovate.com/services/academy): Hands-on AI workshops for teams, multi-week programs for leaders, and a free monthly newsletter.
 - [Products](https://sandboxinnovate.com/services/products): AI brains packaged by industry, offered as a subscription. Currently in early access.
-- [Partners](https://sandboxinnovate.com/services/partners): White-label program — agencies and consultancies resell Sandbox-built AI systems under their own brand.
+- [Partners](https://sandboxinnovate.com/services/partners): White-label program: agencies and consultancies resell Sandbox-built AI systems under their own brand.
 
 ## Company
 
 - [About](https://sandboxinnovate.com/about): How Sandbox went from marketing agency to AI company, its principles and how it works across markets.
 - [Work](https://sandboxinnovate.com/work): Client case studies with results, and the reference architecture of a Sandbox brain.
-- [Blog](https://sandboxinnovate.com/blog/): Field notes on applied AI — practical articles on AI agents, company brains, AI ROI, training and visibility in AI answers (English and Spanish).
-- [AI Diagnostic](https://sandboxinnovate.com/diagnostic): A 3-minute AI-readiness assessment — no sign-up needed to see the score by dimension and the recommended next steps.
+- [Blog](https://sandboxinnovate.com/blog/): Field notes on applied AI: practical articles on AI agents, company brains, AI ROI, training and visibility in AI answers (English and Spanish).
+- [AI Diagnostic](https://sandboxinnovate.com/diagnostic): A 3-minute AI-readiness assessment. No sign-up needed to see the score by dimension and the recommended next steps.
 - [Contact](https://sandboxinnovate.com/contact): Book a 30-minute call.
 
 ## Languages

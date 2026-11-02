@@ -7,7 +7,7 @@
  * - --viewport-only: capture only the first screen.
  * - --video=MS: also records a webm of the first screen for MS milliseconds (<outPrefix>-desktop.webm).
  * - --scroll: scrolls the page slowly before the screenshot so scroll-triggered elements appear.
- * - Prints console errors, page errors and failed requests — fix all of them.
+ * - Prints console errors, page errors and failed requests; fix all of them.
  */
 import { createRequire } from 'node:module';
 // Use the machine's preinstalled Playwright (matches the bundled Chromium); fall back to a local install.

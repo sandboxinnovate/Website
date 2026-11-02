@@ -1,5 +1,5 @@
 /* =====================================================================
-   RoiCalculator — "What could AI give back to your team?"
+   RoiCalculator: "What could AI give back to your team?"
    Everything is scoped under .roi. Local tokens mirror the site tokens
    (with literal fallbacks so the widget never depends on emitted vars).
    Layout switches on the widget's own width (container queries):
