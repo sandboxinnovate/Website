@@ -1,44 +1,112 @@
 ---
 /**
- * Generated cover art for a post (src/lib/cover.ts): deterministic per translationKey, themed by unit.
- * Decorative (aria-hidden). Fills its container; the container (or `ratio`) sets the aspect ratio.
+ * Cover photo for a post (src/data/blog-covers.ts), shared by the EN and ES versions (keyed by translationKey).
+ * Rendered as a <picture> built with astro:assets getImage() (AVIF, WebP and a JPEG fallback at responsive widths
+ * per variant, each format at its own quality), cropped with
+ * object-fit: cover at the photo's focal point and given one consistent brand grade (slight desaturation, warm
+ * flame tint, bottom vignette) so every cover reads as part of the same series on the dark page.
+ * Fills its container; the container (or `ratio`) sets the aspect ratio.
  *   <PostCover seed={post.data.translationKey} unit={post.data.unit} variant="card" />
+ * Alt text: the hero gets the real description (in `lang`, or Astro.currentLocale); cards and thumbnails sit
+ * inside a link that already carries the title, so their image is decorative (alt="").
+ * A post without an entry in BLOG_COVERS gets a plain branded panel (and a warning from scripts/check-posts.mjs).
  */
-import { coverMarkup, coverUid, plate } from '@/lib/cover';
+import { getImage } from 'astro:assets';
 import { unitBySlug, type UnitSlug } from '@/data/site';
+import { coverFor } from '@/data/blog-covers';
+import type { Lang } from '@/i18n';
 
+type Variant = 'hero' | 'lead' | 'card' | 'thumb';
 interface Props {
   seed: string;
   unit: UnitSlug;
   /** hero: post page · lead: index lead story · card: lists · thumb: small rows */
-  variant?: 'hero' | 'lead' | 'card' | 'thumb';
+  variant?: Variant;
   /** CSS aspect-ratio (default 16 / 9). */
   ratio?: string;
+  /** Language of the alt text (hero only). Defaults to the current locale. */
+  lang?: Lang;
   class?: string;
 }
-const { seed, unit, variant = 'card', ratio = '16 / 9', class: cls = '' } = Astro.props;
+const { seed, unit, variant = 'card', ratio = '16 / 9', lang: langProp, class: cls = '' } = Astro.props;
+const lang: Lang = langProp ?? (Astro.currentLocale === 'es' ? 'es' : 'en');
 const u = unitBySlug(unit)!;
-const markup = coverMarkup({ seed, unit, uid: coverUid(seed) });
+const cover = coverFor(seed);
+const hero = variant === 'hero';
+
+// Rendered widths: the hero spans the content column (max 1200px); the lead story ~780px at most;
+// cards ~400px in 3-column grids (full width on phones); thumbs 280px (64px on phones).
+// Width lists overlap on purpose so the build encodes each size once.
+const SIZES: Record<Variant, { widths: number[]; sizes: string }> = {
+  hero: { widths: [640, 960, 1280, 1600, 2000], sizes: '(min-width: 1280px) 1200px, calc(100vw - 2 * clamp(16px, 4vw, 40px))' },
+  lead: { widths: [480, 640, 960, 1280], sizes: '(min-width: 1280px) 540px, (min-width: 1080px) 780px, (min-width: 760px) 46vw, calc(100vw - 32px)' },
+  card: { widths: [480, 640, 960], sizes: '(min-width: 1080px) 400px, (min-width: 760px) 48vw, calc(100vw - 32px)' },
+  thumb: { widths: [160, 320, 480, 640], sizes: '(min-width: 1080px) 280px, (min-width: 860px) 220px, 64px' },
+};
+const s = SIZES[variant];
+// Per-format quality: AVIF and WebP look the same at lower numbers; JPEG is only for very old browsers,
+// so it gets fewer widths. Same settings for every variant, so shared widths are encoded once.
+const sources = cover
+  ? await Promise.all([
+      getImage({ src: cover.image, widths: s.widths, format: 'avif', quality: 50 }),
+      getImage({ src: cover.image, widths: s.widths, format: 'webp', quality: 68 }),
+      getImage({ src: cover.image, widths: s.widths.filter((w) => w <= 1280), format: 'jpg', quality: 70 }),
+    ])
+  : null;
 ---
-<div class:list={['pcv', `pcv--${variant}`, `pcv--${unit}`, cls]} style={`--pcv-ratio:${ratio}`} aria-hidden="true">
-  <svg class="pcv__svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" focusable="false" set:html={markup} />
-  <span class="pcv__code">[{u.code}] {u.name.en}</span>
-  {variant !== 'thumb' && <span class="pcv__plate">{plate(seed)}</span>}
+<div
+  class:list={['pcv', `pcv--${variant}`, `pcv--${unit}`, !cover && 'pcv--empty', cls]}
+  style={`--pcv-ratio:${ratio};${cover ? `--pcv-pos:${cover.focal}` : ''}`}
+  aria-hidden={hero && cover ? undefined : 'true'}
+>
+  {cover && sources && (
+    <picture class="pcv__pic">
+      <source type="image/avif" srcset={sources[0].srcSet.attribute} sizes={s.sizes} />
+      <source type="image/webp" srcset={sources[1].srcSet.attribute} sizes={s.sizes} />
+      <img
+        class="pcv__img"
+        src={sources[2].src}
+        srcset={sources[2].srcSet.attribute}
+        sizes={s.sizes}
+        width={cover.image.width}
+        height={cover.image.height}
+        alt={hero ? cover.alt[lang] : ''}
+        loading={hero ? 'eager' : 'lazy'}
+        decoding={hero ? 'sync' : 'async'}
+        fetchpriority={hero ? 'high' : 'auto'}
+      />
+    </picture>
+  )}
+  <span class="pcv__grade" aria-hidden="true"></span>
+  <span class="pcv__code" aria-hidden="true">[{u.code}] {u.name.en}</span>
 </div>
 
 <style>
-  .pcv { position: relative; width: 100%; aspect-ratio: var(--pcv-ratio); overflow: hidden; border-radius: inherit; background: #0b0a0a; isolation: isolate; }
-  .pcv__svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: transform 1.2s var(--ease-out-expo); }
-  .pcv__svg :global(.cv-label) { font-family: var(--font-mono); }
-  .pcv--card .pcv__svg :global(.cv-label), .pcv--thumb .pcv__svg :global(.cv-label) { display: none; }
-  .pcv::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06); }
-  .pcv__code, .pcv__plate { position: absolute; z-index: 1; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
-  .pcv__code { left: 14px; top: 14px; padding: 6px 9px; border-radius: 99px; color: var(--color-flame-400); background: rgb(10 10 10 / .62); border: 1px solid rgb(245 131 39 / .28); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-  .pcv__plate { right: 16px; bottom: 14px; color: rgb(244 239 233 / .38); }
+  .pcv { position: relative; width: 100%; aspect-ratio: var(--pcv-ratio); overflow: hidden; border-radius: inherit; background: #120f0d; isolation: isolate; }
+  .pcv__pic { position: absolute; inset: 0; display: block; }
+  .pcv__img {
+    position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+    object-fit: cover; object-position: var(--pcv-pos, 50% 50%);
+    /* brand grade, part 1: a touch less colour and light so bright photos sit on the near-black page */
+    filter: saturate(.86) contrast(1.04) brightness(.9);
+    transition: transform 1.2s var(--ease-out-expo);
+  }
+  /* brand grade, part 2: warm flame wash (soft-light) + bottom/edge vignette */
+  .pcv__grade { position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
+    background:
+      linear-gradient(180deg, rgb(10 9 8 / 0) 45%, rgb(10 9 8 / .5) 100%),
+      radial-gradient(120% 90% at 50% 40%, rgb(10 9 8 / 0) 55%, rgb(10 9 8 / .42) 100%),
+      linear-gradient(135deg, rgb(214 88 5 / .1), rgb(245 131 39 / .03) 55%, rgb(20 14 10 / .12)); }
+  .pcv__grade::before { content: ''; position: absolute; inset: 0; background: rgb(245 131 39 / .12); mix-blend-mode: soft-light; }
+  .pcv--empty .pcv__grade { background: radial-gradient(120% 120% at 30% 20%, #2a1a10, #161414 45%, #0b0a0a); }
+  .pcv::after { content: ''; position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06); }
+  .pcv__code { position: absolute; z-index: 3; left: 14px; top: 14px; padding: 6px 9px; border-radius: 99px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; line-height: 1; white-space: nowrap;
+    color: var(--color-flame-400); background: rgb(10 10 10 / .74); border: 1px solid rgb(245 131 39 / .32);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .pcv--hero .pcv__code, .pcv--lead .pcv__code { left: clamp(14px, 2vw, 24px); top: clamp(14px, 2vw, 24px); font-size: 11.5px; padding: 7px 11px; }
-  .pcv--hero .pcv__plate, .pcv--lead .pcv__plate { right: clamp(16px, 2vw, 26px); bottom: clamp(14px, 2vw, 22px); font-size: 11px; }
   .pcv--thumb .pcv__code { left: 8px; top: 8px; font-size: 9.5px; padding: 5px 7px; }
   /* Hover zoom when the cover sits inside a card ([data-card], a stretched-link card). */
-  :global([data-card]:hover) .pcv__svg { transform: scale(1.035); }
-  @media (prefers-reduced-motion: reduce) { .pcv__svg { transition: none; } :global([data-card]:hover) .pcv__svg { transform: none; } }
+  :global([data-card]:hover) .pcv :global(.pcv__img) { transform: scale(1.035); }
+  @media (prefers-reduced-motion: reduce) { .pcv :global(.pcv__img) { transition: none; } :global([data-card]:hover) .pcv :global(.pcv__img) { transform: none; } }
 </style>

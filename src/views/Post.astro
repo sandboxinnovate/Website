@@ -20,6 +20,7 @@ import {
   blogIndexHref, countWords, findTranslation, formatDate, isoDate, postHref, readingMinutes, relatedPosts, unitOf, type Post,
 } from '@/lib/blog';
 import { ogImagePath } from '@/lib/og';
+import { coverFor } from '@/data/blog-covers';
 
 interface Props { lang: Lang; post: Post }
 const { lang, post } = Astro.props;
@@ -43,6 +44,7 @@ const langHref = translation ? postHref(translation) : blogIndexHref(other);
 const minutes = readingMinutes(post);
 const published = isoDate(d.date);
 const og = ogImagePath(d.translationKey);
+const cover = coverFor(d.translationKey);
 const unitHref = localize(lang, `/services/${unit.slug}/`);
 const cta = BLOG.cta[unit.slug];
 const longTitle = d.title.length > 54;
@@ -103,7 +105,7 @@ const tocItems = [
   langHref={langHref}
   ogType="article"
   ogImage={og}
-  ogImageAlt={d.title}
+  ogImageAlt={cover ? cover.alt[lang] : d.title}
   article={{ published, section: unit.name[lang], tags: d.tags }}
 >
   <div class="prog" aria-hidden="true"><span class="prog__bar" data-progress></span></div>
@@ -134,7 +136,14 @@ const tocItems = [
         </div>
       </div>
       <div class="container-x">
-        <PostCover seed={d.translationKey} unit={d.unit} variant="hero" ratio="21 / 9" class="ph__cover" />
+        <figure class="ph__fig">
+          <PostCover seed={d.translationKey} unit={d.unit} variant="hero" ratio="21 / 9" lang={lang} class="ph__cover" />
+          {cover && (
+            <figcaption class="ph__credit">
+              {lang === 'es' ? 'Foto' : 'Photo'}: <a href={cover.credit.url} rel="noopener">{cover.credit.name}</a> / <a href={cover.credit.photoPage} rel="noopener">Unsplash</a>
+            </figcaption>
+          )}
+        </figure>
       </div>
     </header>
 
@@ -386,6 +395,10 @@ const tocItems = [
   .ph__by span { color: var(--color-bone); }
   .ph :global(.ph__cover) { margin-top: clamp(36px, 5vw, 56px); border-radius: var(--radius-xl2); box-shadow: 0 40px 80px -40px rgb(0 0 0 / .9); }
   @media (max-width: 719px) { .ph :global(.ph__cover) { --pcv-ratio: 16 / 10 !important; border-radius: 18px; } }
+  .ph__fig { margin: 0; }
+  .ph__credit { margin-top: 12px; text-align: right; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--color-smoke); }
+  .ph__credit a { color: inherit; text-decoration: underline; text-decoration-color: rgb(150 141 135 / .45); text-underline-offset: 3px; transition: color .2s, text-decoration-color .2s; }
+  .ph__credit a:hover { color: var(--color-flame-400); text-decoration-color: currentColor; }
 
   /* ---------- body layout ---------- */
   .post { --rail: 220px; --rail-gap: 56px; }

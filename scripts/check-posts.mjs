@@ -14,6 +14,7 @@ const DIR = path.join(ROOT, 'src/content/blog');
 const UNITS = ['brains', 'consulting', 'growth', 'academy', 'products', 'partners'];
 const STATIC = ['/', '/diagnostic/', '/contact/', '/about/', '/work/', '/privacy/', '/blog/', ...UNITS.map((u) => `/services/${u}/`)];
 const only = process.argv[2];
+const COVERS = fs.existsSync(path.join(ROOT, 'src/data/blog-covers.ts')) ? fs.readFileSync(path.join(ROOT, 'src/data/blog-covers.ts'), 'utf8') : '';
 
 const BANNED = {
   en: [/\bdelv(e|ing)\b/i, /\bunlock(s|ing)?\b/i, /\bunleash/i, /\bseamless(ly)?\b/i, /\bgame[- ]chang/i, /\brevolutioni[sz]e/i, /\bsupercharg/i, /\bempower/i, /\bharness(ing)? the\b/i, /\belevate\b/i, /\bcutting[- ]edge\b/i, /\bnext[- ]level\b/i, /fast[- ]paced world/i, /ever[- ]evolving/i, /\bin conclusion\b/i, /let'?s dive in/i, /\btapestry\b/i, /\btestament to\b/i, /\blandscape of\b/i, /navigate the complexit/i],
@@ -72,6 +73,11 @@ for (const p of posts) {
   if (fm.faq !== undefined) req('faq', Array.isArray(fm.faq) && fm.faq.length >= 2 && fm.faq.length <= 5 && fm.faq.every((x) => x && typeof x.q === 'string' && typeof x.a === 'string'), 'must be 2–5 {q, a}');
   req('author', fm.author === 'sandbox', "must be 'sandbox'");
   if (lang === 'en') req('translationKey', fm.translationKey === p.slug, 'must equal the EN file slug');
+  if (lang === 'en' && typeof fm.translationKey === 'string') {
+    const hasFile = fs.existsSync(path.join(ROOT, 'src/assets/blog', `${fm.translationKey}.jpg`));
+    const hasEntry = new RegExp(`['"]${fm.translationKey}['"]\\s*:`).test(COVERS);
+    if (!hasFile || !hasEntry) warns.push(`${file}: no cover photo (${!hasFile ? `src/assets/blog/${fm.translationKey}.jpg missing` : ''}${!hasFile && !hasEntry ? '; ' : ''}${!hasEntry ? 'no entry in src/data/blog-covers.ts' : ''}); a plain panel and the default OG image are used`);
+  }
 
   const pair = posts.find((x) => x.lang !== lang && x.fm.translationKey === fm.translationKey);
   if (!pair) errors.push(`${file}: no ${lang === 'en' ? 'es' : 'en'} version with translationKey "${fm.translationKey}"`);

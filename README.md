@@ -99,6 +99,14 @@ author: sandbox
 
 Body: no H1; 1–3 intro paragraphs, then `## ` sections (`###` allowed). GFM tables, lists, fenced code blocks (rendered with a Copy button) and callouts written as `> **Example:** …`, `> **Note:** …`, `> **Rule of thumb:** …` (ES: `Ejemplo`, `Nota`, `Regla práctica`). Internal links are root-relative with a trailing slash (`/services/brains/`, `/es/blog/<es-slug>/`, `/#roi`).
 
+**Add a cover photo:** every post gets a real photo, shared by its EN and ES versions.
+1. Pick a landscape photo on Unsplash whose page says **“Free to use under the Unsplash License”**. Never Unsplash+ (premium) photos, never AI-generated or 3D-rendered images, no brand logos, no readable personal data. Prefer warm or dark photos; the grade below handles the rest.
+2. Download it from `images.unsplash.com` at 2400px: `curl -s -o src/assets/blog/<translationKey>.jpg "https://images.unsplash.com/photo-…?w=2400&q=82&fm=jpg"`.
+3. Add an entry to `src/data/blog-covers.ts`: the imported image, `alt` in EN and ES (describe what is in the photo), `focal` (CSS `object-position`, e.g. `"45% 60%"`, so the subject stays in frame at 21:9, 16:10 and 4:3) and `credit` (photographer name, profile URL, photo page).
+4. Check the post page, the index (lead, card and thumbnail crops) and `/og/blog/<translationKey>.jpg` after `npm run build`.
+
+`PostCover.astro` serves AVIF/WebP at responsive widths and applies one brand grade to every photo (slight desaturation, warm flame wash, bottom vignette) so the covers read as one series; the OG image uses the same crop and grade. The post page credits the photographer under the hero (“Photo: Name / Unsplash”). The Unsplash License does not require it, but it is good practice. A post without a cover gets a plain dark panel and the default OG image, and `check-posts.mjs` warns about it.
+
 **Check before committing:** `node scripts/check-posts.mjs [translationKey]` — 0 errors required; read every warning. The build also validates the frontmatter (`src/content.config.ts`) and fails on an invalid post.
 
 | What | Where |
@@ -106,8 +114,8 @@ Body: no H1; 1–3 intro paragraphs, then `## ` sections (`###` allowed). GFM ta
 | Schema / helpers (sorting, translations, related posts) | `src/content.config.ts`, `src/lib/blog.ts` |
 | Index and post templates | `src/views/Blog.astro`, `src/views/Post.astro`, prose styles in `src/styles/prose.css` |
 | Markdown extras (heading anchors, callouts, scrollable tables, code Copy) | `src/lib/markdown/blog-hast.mjs` (registered in `astro.config.mjs`) |
-| Generated cover art (seeded by `translationKey`, themed by unit) | `src/lib/cover.ts`, `src/components/blog/PostCover.astro` |
-| Per-post OG images (built from the cover, sharp) | `src/pages/og/blog/[key].png.ts` |
+| Cover photos (one per `translationKey`, shared by EN and ES) | images in `src/assets/blog/<translationKey>.jpg`, alt text, focal point and credit in `src/data/blog-covers.ts`, rendered by `src/components/blog/PostCover.astro` |
+| Per-post OG images (1200×630 JPEG cropped from the cover photo, sharp) | `src/pages/og/blog/[key].jpg.ts` |
 | Copy (EN/ES), unit CTAs | `src/i18n/blog.ts` |
 | RSS / AI-crawler summary / palette search index | `/rss.xml`, `/es/rss.xml`, `/llms.txt` (base text in `src/data/llms.txt`), `/blog/index.json` |
 
