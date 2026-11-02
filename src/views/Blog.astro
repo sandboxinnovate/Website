@@ -331,6 +331,7 @@ const breadcrumbLd = {
   .bl__rows:not([data-filter]) > .row[data-top] { display: none; }
   .row__n { display: none; }
   .row :global(.row__cover) { grid-area: cover; border-radius: 12px; }
+  @media (max-width: 859px) { .row :global(.row__cover .pcv__code) { display: none; } }
   .row__body { display: contents; }
   .row__meta { grid-area: meta; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-smoke); }
   .row__unit { color: var(--color-flame-400); }
