@@ -9,9 +9,9 @@ export const BRAINS: L10n<UnitCopy> = {
         'Custom AI systems by Sandbox: a company brain that knows your business and agents for sales, support, ops and HR, connected to the tools you already use.',
     },
     hero: {
-      title: 'One brain for your company. <em>An agent for every process.</em>',
+      title: 'An AI assistant that knows your company. <em>And does the repetitive work.</em>',
       lede:
-        'We build AI systems around your data, your tools and the way your team actually works: a living knowledge base that answers with sources, and agents that qualify leads, resolve tickets and close the loop in your CRM, with a person approving what matters.',
+        'We call it a brain: an AI assistant connected to your documents and tools. It answers your team’s questions with sources, and it handles tasks like qualifying leads, resolving tickets and updating the CRM. A person approves anything sensitive.',
       primary: 'Book a call',
       secondary: { label: 'Watch an agent run', href: '#demo' },
       facts: [
@@ -228,9 +228,9 @@ export const BRAINS: L10n<UnitCopy> = {
         'Sistemas de IA a medida: un brain que conoce tu empresa y agentes para ventas, soporte, operaciones y RR. HH., conectados a las herramientas que ya usas.',
     },
     hero: {
-      title: 'Un brain para tu empresa. <em>Un agente para cada proceso.</em>',
+      title: 'Un asistente de IA que conoce tu empresa. <em>Y hace el trabajo repetitivo.</em>',
       lede:
-        'Construimos sistemas de IA sobre tus datos, tus herramientas y la forma real en que trabaja tu equipo: una base de conocimiento viva que responde con fuentes, y agentes que califican leads, resuelven tickets y cierran el ciclo en tu CRM, con una persona aprobando lo importante.',
+        'Lo llamamos brain: un asistente de IA conectado a tus documentos y herramientas. Responde las preguntas de tu equipo citando fuentes y se encarga de tareas como calificar leads, resolver tickets y actualizar el CRM. Una persona aprueba lo sensible.',
       primary: 'Agendar una llamada',
       secondary: { label: 'Ver un agente en acción', href: '#demo' },
       facts: [

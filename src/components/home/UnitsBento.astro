@@ -100,6 +100,7 @@ const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
             </div>
 
             <div class="ub__body">
+              <p class="ub__need">“{unit.need[lang]}”</p>
               <h3 class="ub__name">{unit.name[lang]}<span class="ub__tag">{unit.tagline[lang]}</span></h3>
               <p class="ub__sum" id={`ub-d-${unit.slug}`}>{unit.summary[lang]}</p>
               <span class="ub__more">{u.explore[lang]} <Icon name="arrow-up-right" size={16} /></span>
@@ -142,8 +143,9 @@ const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
     .ub__viz .viz-growth { height: 96px; }
   }
   .ub__body { display: flex; flex-direction: column; gap: 10px; }
-  .ub__name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; font-size: clamp(1.4rem, 2vw, 1.75rem); letter-spacing: -.03em; }
-  .ub__cell--brains .ub__name { font-size: clamp(1.7rem, 2.8vw, 2.4rem); }
+  .ub__need { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.35rem, 1.9vw, 1.7rem); line-height: 1.12; letter-spacing: -.025em; color: var(--color-bone); text-wrap: balance; }
+  .ub__cell--brains .ub__need { font-size: clamp(1.6rem, 2.6vw, 2.25rem); }
+  .ub__name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; font-size: 1.05rem; letter-spacing: -.01em; color: var(--color-mist); }
   .ub__tag { font-family: var(--font-mono); font-size: 11.5px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; color: var(--color-flame-400); }
   .ub__sum { color: var(--color-mist); font-size: 15.5px; max-width: 520px; }
   .ub__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-family: var(--font-display); font-size: 12px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }

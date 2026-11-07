@@ -15,18 +15,21 @@ export const HOME = {
   },
 
   hero: {
-    eyebrow: { en: 'AI systems · Consulting · Growth', es: 'Sistemas de IA · Consultoría · Growth' } as S,
-    titleA: { en: 'AI that knows', es: 'IA que conoce' } as S,
-    titleB: { en: 'your business', es: 'tu negocio' } as S,
-    titleC: { en: 'and does the work.', es: 'y hace el trabajo.' } as S,
+    eyebrow: { en: 'Applied AI for businesses', es: 'IA aplicada para empresas' } as S,
+    titleA: { en: 'We put AI to work', es: 'Ponemos la IA a hacer' } as S,
+    titleB: { en: 'on the repetitive work', es: 'el trabajo repetitivo' } as S,
+    titleC: { en: 'in your company.', es: 'de tu empresa.' } as S,
     lede: {
-      en: 'We design, build and run AI for companies across the US, Europe and Latin America: company brains that know your business, custom agents, hands-on consulting and AI-native marketing. We use it in our own work first.',
-      es: 'Diseñamos, construimos y operamos IA para empresas de Estados Unidos, Europa y Latinoamérica: brains (sistemas de IA que conocen tu empresa), agentes a medida, consultoría práctica y marketing nativo en IA. Primero la usamos en nuestro propio trabajo.',
+      en: 'We connect AI assistants to the tools you already use (email, CRM, documents) so they answer questions, build reports and update records. Your team reviews and approves what matters. The first one is usually live in 3 to 5 weeks.',
+      es: 'Conectamos asistentes de IA a las herramientas que ya usas (correo, CRM, documentos) para que respondan consultas, armen reportes y carguen datos. Tu equipo revisa y aprueba lo importante. El primero suele estar funcionando en 3 a 5 semanas.',
     } as S,
-    ctaPrimary: { en: 'Book a call', es: 'Agendar una llamada' } as S,
-    ctaSecondary: { en: 'Take the 3-min AI diagnostic', es: 'Hacer el diagnóstico (3 min)' } as S,
-    tickerLabel: { en: 'Typical jobs', es: 'Tareas típicas' } as S,
-    ticker: ['kb.search', 'lead.score', 'inbox.triage', 'report.weekly', 'crm.sync', 'content.draft', 'ads.variant', 'ticket.route'],
+    ctaPrimary: { en: 'Book a 30-minute call', es: 'Agendar una llamada de 30 minutos' } as S,
+    ctaSecondary: { en: 'See what we could automate (3 min)', es: 'Ver qué podemos automatizar (3 min)' } as S,
+    tickerLabel: { en: 'Typical tasks', es: 'Tareas típicas' } as S,
+    ticker: {
+      en: ['Answer questions', 'Qualify leads', 'Sort the inbox', 'Build the weekly report', 'Update the CRM', 'Draft content', 'Route tickets'],
+      es: ['Responder consultas', 'Calificar leads', 'Ordenar el correo', 'Armar el reporte semanal', 'Actualizar el CRM', 'Redactar contenido', 'Derivar tickets'],
+    } as L10n<string[]>,
     scroll: { en: 'Scroll', es: 'Scroll' } as S,
   },
 
@@ -56,10 +59,10 @@ export const HOME = {
   units: {
     index: '02',
     eyebrow: { en: 'What we do', es: 'Qué hacemos' } as S,
-    title: { en: 'Six ways we put <em>AI to work</em>', es: 'Seis formas de poner la <em>IA a trabajar</em>' } as S,
+    title: { en: 'What do you <em>need to solve?</em>', es: '¿Qué necesitas <em>resolver?</em>' } as S,
     lede: {
-      en: 'Start with an AI opportunity audit, a single agent or a team workshop. Grow into a company-wide brain. Every unit plugs into the next.',
-      es: 'Empieza con una auditoría de oportunidades de IA, un solo agente o un taller para tu equipo. Crece hasta un brain para toda la empresa. Cada unidad se conecta con la siguiente.',
+      en: 'Pick the line that sounds like you. Each one leads to the service built for it, and they work together when you need more than one.',
+      es: 'Elige la frase que más se parece a tu situación. Cada una lleva al servicio pensado para eso, y se combinan cuando necesitas más de uno.',
     } as S,
     explore: { en: 'Explore', es: 'Ver más' } as S,
     earlyAccess: { en: 'Early access', es: 'Acceso anticipado' } as S,
@@ -68,20 +71,20 @@ export const HOME = {
   console: {
     index: '03',
     eyebrow: { en: 'Interactive simulation', es: 'Simulación interactiva' } as S,
-    title: { en: 'Watch a brain <em>do the work</em>', es: 'Mira un brain <em>haciendo el trabajo</em>' } as S,
+    title: { en: 'Watch an AI assistant <em>handle a task end to end</em>', es: 'Mira cómo un asistente de IA <em>resuelve una tarea de principio a fin</em>' } as S,
     lede: {
-      en: 'A simulated run of the kind of systems we deploy: real steps, real tools, and a human approving what matters. Pick a workflow.',
-      es: 'Una simulación del tipo de sistemas que implementamos: pasos reales, herramientas reales y una persona que aprueba lo importante. Elige un flujo.',
+      en: 'It’s a simulation. Pick a task and watch each step, including the moment a person approves it.',
+      es: 'Es una simulación. Elige una tarea y mira cada paso, incluido el momento en que una persona aprueba.',
     } as S,
   },
 
   method: {
     index: '04',
     eyebrow: { en: 'Method', es: 'Método' } as S,
-    title: { en: 'From first call to <em>running system</em>', es: 'De la primera llamada a un <em>sistema funcionando</em>' } as S,
+    title: { en: 'How we <em>work</em>', es: 'Cómo <em>trabajamos</em>' } as S,
     lede: {
-      en: 'Four phases, fixed scope per phase, working software early. You always know what ships next and what it will change.',
-      es: 'Cuatro fases, alcance definido en cada una y software funcionando desde temprano. Siempre sabes qué se entrega después y qué va a cambiar.',
+      en: 'We understand your operation, design the solution, build and test it on your real cases, then keep it running and improving with you. You always know what comes next.',
+      es: 'Entendemos tu operación, diseñamos la solución, la construimos y probamos con tus casos reales, y después la mantenemos y mejoramos contigo. Siempre sabes qué viene después.',
     } as S,
     deliverables: { en: 'You get', es: 'Recibes' } as S,
     steps: [
@@ -135,10 +138,10 @@ export const HOME = {
   geo: {
     index: '05',
     eyebrow: { en: 'Growth · AI search', es: 'Growth · Búsqueda con IA' } as S,
-    title: { en: 'Be the answer, <em>not a link</em>', es: 'Sé la respuesta, <em>no un enlace</em>' } as S,
+    title: { en: 'Get recommended by <em>ChatGPT and Google</em>', es: 'Que ChatGPT y Google <em>te recomienden a ti</em>' } as S,
     lede: {
-      en: 'Your next client won’t scroll ten blue links. They’ll ask an AI assistant and act on what it recommends. We make sure that recommendation is you.',
-      es: 'Tu próximo cliente no va a revisar diez enlaces. Le va a preguntar a un asistente de IA y va a hacer lo que le recomiende. Nos encargamos de que esa recomendación seas tú.',
+      en: 'More and more buyers ask an AI assistant which company to hire. We work so your business shows up in those answers.',
+      es: 'Cada vez más clientes le preguntan a un asistente de IA a quién contratar. Trabajamos para que tu negocio aparezca en esas respuestas.',
     } as S,
     cta: { en: 'See Growth', es: 'Ver Growth' } as S,
   },
@@ -197,8 +200,15 @@ export const HOME = {
   faq: {
     index: '10',
     eyebrow: { en: 'FAQ', es: 'Preguntas frecuentes' } as S,
-    title: { en: 'Straight <em>answers</em>', es: 'Respuestas <em>directas</em>' } as S,
+    title: { en: 'Frequently asked <em>questions</em>', es: 'Preguntas <em>frecuentes</em>' } as S,
     items: [
+      {
+        q: { en: 'What does Sandbox do, in a few words?', es: '¿Qué hace Sandbox, en pocas palabras?' } as S,
+        a: {
+          en: 'Sandbox puts AI to work in your company: it takes repetitive tasks off your team, helps you win more clients and trains your people to use it. We call the AI assistant we build for each company a brain: it knows your business and works inside your tools.',
+          es: 'Sandbox pone la IA a trabajar en tu empresa: automatiza tareas repetitivas, te ayuda a conseguir más clientes y capacita a tu equipo para usarla. Al asistente de IA que construimos para cada empresa lo llamamos brain: conoce tu negocio y trabaja dentro de tus herramientas.',
+        } as S,
+      },
       {
         q: { en: 'What exactly is an “AI brain”?', es: '¿Qué es exactamente un “brain” de IA?' } as S,
         a: {
@@ -266,10 +276,10 @@ export const HOME = {
   },
 
   final: {
-    big: { en: 'Let’s build.', es: 'Construyamos.' } as S,
+    big: { en: 'What task would you hand off first?', es: '¿Qué tarea te gustaría sacarte de encima?' } as S,
     lede: {
-      en: 'Tell us what you want AI to do for your business. We’ll come back within one business day with a plan for the first call.',
-      es: 'Cuéntanos qué quieres que la IA haga por tu negocio. Te respondemos en un día hábil con un plan para la primera llamada.',
+      en: 'Tell us in a 30-minute call and we’ll tell you whether AI can do it, and how. We reply within one business day.',
+      es: 'Cuéntanos en una llamada de 30 minutos y te decimos si la IA puede hacerla y cómo. Te respondemos en un día hábil.',
     } as S,
   },
 };

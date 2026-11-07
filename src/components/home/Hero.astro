@@ -43,7 +43,7 @@ const t = <T,>(o: Record<Lang, T>) => o[lang];
       <span class="hero__ticker-dot"></span>
       <span class="mono-label">{t(h.tickerLabel)}</span>
       <span class="hero__ticker-track" data-ticker>
-        {h.ticker.map((w, i) => <span class:list={['hero__ticker-word', i === 0 && 'is-on']}>{w}</span>)}
+        {t(h.ticker).map((w, i) => <span class:list={['hero__ticker-word', i === 0 && 'is-on']}>{w}</span>)}
       </span>
     </div>
   </div>
@@ -94,15 +94,16 @@ const t = <T,>(o: Record<Lang, T>) => o[lang];
 
   .hero__inner { position: relative; display: flex; flex-direction: column; gap: 40px; padding-bottom: 48px; }
   .hero__copy { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; max-width: 920px; }
-  .hero__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.5rem, 5.7vw, 5.6rem); line-height: .98; letter-spacing: -.055em; }
+  .hero__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.3rem, 4.9vw, 4.8rem); line-height: .98; letter-spacing: -.05em; max-width: 13.5em; }
   .hero__line { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
   .hero__accent { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .04em; }
   .hero__lede { max-width: 560px; }
-  .hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; max-width: 100%; }
+  @media (max-width: 520px) { .hero__ctas { width: 100%; } .hero__ctas .btn { width: 100%; justify-content: space-between; height: auto; min-height: var(--btn-h); padding-block: 6px; font-size: 13px; } .hero__ctas .btn > span:first-child { white-space: normal; text-align: left; } }
 
   .hero__ticker { display: inline-flex; align-items: center; gap: 12px; align-self: flex-start; padding: 8px 16px 8px 12px; border-radius: 99px; border: 1px solid var(--line); background: rgb(10 10 10 / .5); backdrop-filter: blur(8px); }
   .hero__ticker-dot { width: 7px; height: 7px; border-radius: 9px; background: var(--color-flame-500); animation: var(--animate-pulse-dot); }
-  .hero__ticker-track { position: relative; display: inline-grid; margin-left: 2px; font-family: var(--font-mono); font-size: 12.5px; color: var(--color-bone); min-width: 15ch; }
+  .hero__ticker-track { position: relative; display: inline-grid; margin-left: 2px; font-family: var(--font-mono); font-size: 12.5px; color: var(--color-bone); min-width: 25ch; }
   .hero__ticker-word { grid-area: 1 / 1; opacity: 0; transform: translateY(8px); transition: opacity .5s var(--ease-out-expo), transform .6s var(--ease-out-expo); }
   .hero__ticker-word.is-on { opacity: 1; transform: none; }
 
