@@ -20,8 +20,6 @@ export interface UnitMeta {
   tagline: L10n<string>;
   /** One sentence used in menus and cards. */
   summary: L10n<string>;
-  /** The situation in the buyer's own words (home "What do you need to solve?" cards). */
-  need: L10n<string>;
 }
 
 export type IconName =
@@ -33,62 +31,56 @@ export const UNITS: UnitMeta[] = [
   {
     slug: 'brains', code: '01', icon: 'brain',
     name: { en: 'Brains', es: 'Brains' },
-    tagline: { en: 'Custom AI assistants & automations', es: 'Asistentes y automatizaciones a medida' },
+    tagline: { en: 'Custom AI systems', es: 'Sistemas de IA a medida' },
     summary: {
       en: 'AI assistants connected to your tools that answer questions from your documents, process requests, build reports and update the CRM. A person approves anything sensitive. We call it a brain.',
       es: 'Asistentes de IA conectados a tus herramientas que responden consultas con tus documentos, procesan pedidos, arman reportes y actualizan el CRM. Una persona aprueba lo sensible. Lo llamamos brain.',
     },
-    need: { en: 'My team loses hours to repetitive tasks.', es: 'Mi equipo pierde horas en tareas repetitivas.' },
   },
   {
     slug: 'consulting', code: '02', icon: 'compass',
     name: { en: 'Consulting', es: 'Consulting' },
-    tagline: { en: 'Where to start with AI', es: 'Por dónde empezar con IA' },
+    tagline: { en: 'AI strategy & implementation', es: 'Estrategia e implementación de IA' },
     summary: {
       en: 'We review your operation, find where AI saves the most time or money and put it in place. We can also be your Head of AI a few days a month.',
       es: 'Revisamos tu operación, encontramos dónde la IA ahorra más tiempo o dinero y la ponemos en marcha. También podemos ser tu responsable de IA algunos días al mes.',
     },
-    need: { en: 'I want to use AI but don’t know where to start.', es: 'Quiero usar IA pero no sé por dónde empezar.' },
   },
   {
     slug: 'growth', code: '03', icon: 'growth',
     name: { en: 'Growth', es: 'Growth' },
-    tagline: { en: 'Marketing with AI', es: 'Marketing con IA' },
+    tagline: { en: 'AI-native marketing', es: 'Marketing nativo en IA' },
     summary: {
       en: 'Content in your voice, ads we test every week, outbound, and presence in the answers of ChatGPT, Gemini and other AI assistants.',
       es: 'Contenido con tu voz, anuncios que probamos cada semana, prospección y presencia en las respuestas de ChatGPT, Gemini y otros asistentes de IA.',
     },
-    need: { en: 'I need more clients.', es: 'Necesito más clientes.' },
   },
   {
     slug: 'academy', code: '04', icon: 'academy',
     name: { en: 'Academy', es: 'Academy' },
-    tagline: { en: 'AI training for your team', es: 'Capacitación en IA para tu equipo' },
+    tagline: { en: 'AI training for teams', es: 'Formación en IA para equipos' },
     summary: {
       en: 'Hands-on workshops on your team’s real tasks, plus an AI usage policy people actually understand.',
       es: 'Talleres prácticos con las tareas reales de tu equipo, más una política de uso de IA que la gente entienda.',
     },
-    need: { en: 'My team doesn’t know how to use AI well.', es: 'Mi equipo no sabe usar bien la IA.' },
   },
   {
     slug: 'products', code: '05', icon: 'box',
     name: { en: 'Products', es: 'Products' },
-    tagline: { en: 'Ready-made AI by industry', es: 'Soluciones listas por industria' },
+    tagline: { en: 'Packaged AI by industry', es: 'IA empaquetada por industria' },
     summary: {
       en: 'AI assistants already designed for your industry, set up on your data and tools. Faster to pilot than a custom build. Now in early access.',
       es: 'Asistentes de IA ya diseñados para tu industria, configurados con tus datos y herramientas. Un piloto más rápido que un desarrollo a medida. En acceso anticipado.',
     },
-    need: { en: 'I want something ready-made for my industry.', es: 'Quiero algo listo para mi industria.' },
   },
   {
     slug: 'partners', code: '06', icon: 'handshake',
     name: { en: 'Partners', es: 'Partners' },
-    tagline: { en: 'AI under your brand, for agencies', es: 'IA con tu marca para agencias' },
+    tagline: { en: 'White-label AI for agencies', es: 'IA marca blanca para agencias' },
     summary: {
       en: 'We build and maintain the solutions; you deliver them under your brand, or we deliver them together.',
       es: 'Construimos y mantenemos las soluciones; tú las entregas con tu marca o las entregamos juntos.',
     },
-    need: { en: 'I’m an agency and my clients are asking for AI.', es: 'Soy agencia y mis clientes me piden IA.' },
   },
 ];
 

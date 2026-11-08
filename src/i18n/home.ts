@@ -59,10 +59,10 @@ export const HOME = {
   units: {
     index: '02',
     eyebrow: { en: 'What we do', es: 'Qué hacemos' } as S,
-    title: { en: 'What do you <em>need to solve?</em>', es: '¿Qué necesitas <em>resolver?</em>' } as S,
+    title: { en: 'Six ways we put <em>AI to work</em>', es: 'Seis formas de poner la <em>IA a trabajar</em>' } as S,
     lede: {
-      en: 'Pick the line that sounds like you. Each one leads to the service built for it, and they work together when you need more than one.',
-      es: 'Elige la frase que más se parece a tu situación. Cada una lleva al servicio pensado para eso, y se combinan cuando necesitas más de uno.',
+      en: 'Start with an AI opportunity audit, a single agent or a team workshop. Grow into a company-wide brain. Every unit plugs into the next.',
+      es: 'Empieza con una auditoría de oportunidades de IA, un solo agente o un taller para tu equipo. Crece hasta un brain para toda la empresa. Cada unidad se conecta con la siguiente.',
     } as S,
     explore: { en: 'Explore', es: 'Ver más' } as S,
     earlyAccess: { en: 'Early access', es: 'Acceso anticipado' } as S,
