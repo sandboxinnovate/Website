@@ -35,7 +35,7 @@ const json = (body, status = 200) =>
   Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 
 const str = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
-const noDash = (s) => s.replace(/\s*[—–]\s*/g, ', ');
+const noDash = (s) => s.replace(/\s*[\u2014\u2013]\s*/g, ', ');
 
 /** Recursively replaces em/en dashes in every string of the report. */
 function scrub(v) {
