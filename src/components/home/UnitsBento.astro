@@ -1,5 +1,7 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
+import ToolBadge from '@/components/ui/ToolBadge.astro';
+import type { ToolKey } from '@/components/ui/tool-icons';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { UNITS } from '@/data/site';
 import { HOME } from '@/i18n/home';
@@ -13,6 +15,21 @@ const modules = lang === 'en'
   ? ['Prompting that holds up', 'Agents for your role', 'Automating a workflow', 'AI policy & safety']
   : ['Prompts que funcionan', 'Agentes para tu rol', 'Automatizar un flujo', 'Política y seguridad de IA'];
 const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
+const domain = lang === 'en' ? 'yourbrand.com' : 'tumarca.com';
+/**
+ * Apps wired to the brain (positions in % of the visual). Left and right columns line up with the
+ * core; Website and Ads sit above and below it and only show on wider cards.
+ */
+const apps: { tool: ToolKey; x: number; y: number; side: 'l' | 'r' | 'c'; pulse?: number; wide?: boolean }[] = [
+  { tool: 'kb', x: 4, y: 17, side: 'l', pulse: 0 },
+  { tool: 'crm', x: 4, y: 50, side: 'l', pulse: 2.1 },
+  { tool: 'email', x: 4, y: 83, side: 'l' },
+  { tool: 'reports', x: 96, y: 17, side: 'r', pulse: 1.4 },
+  { tool: 'docs', x: 96, y: 50, side: 'r' },
+  { tool: 'chat', x: 96, y: 83, side: 'r', pulse: 0.7 },
+  { tool: 'web', x: 50, y: 6, side: 'c', wide: true },
+  { tool: 'ads', x: 50, y: 94, side: 'c', pulse: 2.8, wide: true },
+];
 ---
 <section class="ub section-y" id="services" aria-labelledby="ub-title">
   <div class="container-x">
@@ -31,25 +48,25 @@ const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
 
             <div class="ub__viz" aria-hidden="true">
               {unit.slug === 'brains' && (
-                <svg viewBox="0 0 420 220" class="viz-brains">
-                  <g class="viz-brains__edges">
-                    <path d="M210 110 L90 52" /><path d="M210 110 L96 172" /><path d="M210 110 L330 48" /><path d="M210 110 L338 168" />
-                    <path d="M210 110 L210 24" /><path d="M210 110 L214 198" /><path d="M90 52 L30 110" /><path d="M96 172 L30 110" />
-                    <path d="M330 48 L392 104" /><path d="M338 168 L392 104" />
-                  </g>
-                  <g class="viz-brains__pulses">
-                    <path d="M210 110 L90 52" style="--d:0s" /><path d="M210 110 L338 168" style="--d:.7s" />
-                    <path d="M210 110 L330 48" style="--d:1.4s" /><path d="M96 172 L30 110" style="--d:2.1s" />
-                    <path d="M210 110 L214 198" style="--d:2.8s" />
-                  </g>
-                  <g class="viz-brains__nodes">
-                    {[[90,52,'kb'],[96,172,'crm'],[330,48,'inbox'],[338,168,'reports'],[210,24,'docs'],[214,198,'chat'],[30,110,'web'],[392,104,'ads']].map(([x,y,l]) => (
-                      <g><circle cx={x} cy={y} r="5" /><text x={(x as number) + 10} y={(y as number) + 4}>{l}</text></g>
-                    ))}
-                  </g>
-                  <circle cx="210" cy="110" r="26" class="viz-brains__core-glow" />
-                  <circle cx="210" cy="110" r="11" class="viz-brains__core" />
-                </svg>
+                <div class="viz-brains">
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="viz-brains__wires">
+                    <g class="viz-brains__edges">
+                      {apps.map((a) => <path d={`M50 50 L${a.x} ${a.y}`} />)}
+                    </g>
+                    <g class="viz-brains__pulses">
+                      {apps.filter((a) => a.pulse !== undefined).map((a) => (
+                        <path d={`M50 50 L${a.x} ${a.y}`} pathLength="1" style={`--d:${a.pulse}s`} />
+                      ))}
+                    </g>
+                  </svg>
+                  <span class="viz-brains__core-glow"></span>
+                  <span class="viz-brains__core"></span>
+                  {apps.map((a) => (
+                    <span class:list={['viz-brains__app', `viz-brains__app--${a.side}`, a.wide && 'viz-brains__app--wide']} style={`--x:${a.x}%;--y:${a.y}%`}>
+                      <ToolBadge tool={a.tool} lang={lang} />
+                    </span>
+                  ))}
+                </div>
               )}
               {unit.slug === 'consulting' && (
                 <div class="viz-gantt">
@@ -68,7 +85,7 @@ const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
                     <path class="viz-growth__area" d="M0 100 C40 96 60 88 90 84 S150 70 180 52 S240 30 300 10 L300 110 L0 110Z" fill="url(#vg-fill)" />
                     <path class="viz-growth__line" d="M0 100 C40 96 60 88 90 84 S150 70 180 52 S240 30 300 10" pathLength="1" />
                   </svg>
-                  <span class="viz-growth__chip"><b>[1]</b> yourbrand.com</span>
+                  <span class="viz-growth__chip"><ToolBadge tool="ai" lang={lang} size="sm" label={domain} /></span>
                 </div>
               )}
               {unit.slug === 'academy' && (
@@ -138,7 +155,7 @@ const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
     .ub__card { padding: 20px; gap: 14px; }
     .ub__icon { width: 36px; height: 36px; border-radius: 10px; }
     .ub__viz { min-height: 96px; }
-    .ub__cell--brains .ub__viz { min-height: 164px; }
+    .ub__cell--brains .ub__viz { min-height: 200px; }
     .ub__viz .viz-growth { height: 96px; }
   }
   .ub__body { display: flex; flex-direction: column; gap: 10px; }
@@ -150,23 +167,35 @@ const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
   .ub__more :global(svg) { transition: transform .5s var(--ease-out-expo); }
   .ub__card:hover .ub__more :global(svg) { transform: translate(3px, -3px); }
 
-  /* --- Brains: knowledge graph --- */
-  .viz-brains { width: 100%; max-width: 560px; height: auto; overflow: visible; }
-  .ub__cell--brains .viz-brains { max-width: 100%; }
-  .viz-brains__edges path { stroke: rgb(255 255 255 / .12); stroke-width: 1; fill: none; }
-  .viz-brains__pulses path { stroke: var(--color-flame-400); stroke-width: 2; fill: none; stroke-linecap: round; stroke-dasharray: 14 400; stroke-dashoffset: 14; opacity: 0; }
+  /* --- Brains: apps wired to a central brain --- */
+  .viz-brains { position: relative; width: 100%; min-height: inherit; align-self: stretch; }
+  .viz-brains__wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .viz-brains__edges path { stroke: rgb(255 255 255 / .16); stroke-width: 1.2; fill: none; vector-effect: non-scaling-stroke; }
+  .viz-brains__pulses path { stroke: var(--color-flame-400); stroke-width: 2.5; fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke;
+    stroke-dasharray: .14 2; stroke-dashoffset: .14; opacity: 0; }
   :global(.is-in) .viz-brains__pulses path, :global(html:not(.js)) .viz-brains__pulses path { animation: vb-pulse 3.5s var(--d) infinite cubic-bezier(.4,0,.2,1); }
-  @keyframes vb-pulse { 0% { stroke-dashoffset: 14; opacity: 0; } 8% { opacity: 1; } 55% { stroke-dashoffset: -150; opacity: 1; } 60%, 100% { stroke-dashoffset: -150; opacity: 0; } }
-  .viz-brains__nodes circle { fill: var(--color-ink-950); stroke: rgb(255 255 255 / .45); stroke-width: 1.2; }
-  .viz-brains__nodes text { font-family: var(--font-mono); font-size: 10px; fill: var(--color-smoke); }
-  .viz-brains__core { fill: var(--color-flame-500); }
-  .viz-brains__core-glow { fill: rgb(245 131 39 / .18); stroke: rgb(245 131 39 / .4); animation: vb-breathe 3s ease-in-out infinite; transform-origin: 210px 110px; }
-  @keyframes vb-breathe { 50% { transform: scale(1.18); opacity: .6; } }
+  @keyframes vb-pulse { 0% { stroke-dashoffset: .14; opacity: 0; } 8% { opacity: 1; } 55% { stroke-dashoffset: -.9; opacity: 1; } 60%, 100% { stroke-dashoffset: -.9; opacity: 0; } }
+  .viz-brains__core, .viz-brains__core-glow { position: absolute; left: 50%; top: 50%; border-radius: 50%; transform: translate(-50%, -50%); }
+  .viz-brains__core { width: 26px; height: 26px; background: radial-gradient(circle at 40% 35%, #ffd9a8, var(--color-flame-500) 55%, var(--color-flame-700)); box-shadow: 0 0 24px rgb(245 131 39 / .6); }
+  .viz-brains__core-glow { width: 64px; height: 64px; background: rgb(245 131 39 / .16); border: 1px solid rgb(245 131 39 / .4); animation: vb-breathe 3s ease-in-out infinite; }
+  @keyframes vb-breathe { 50% { transform: translate(-50%, -50%) scale(1.18); opacity: .6; } }
+  .viz-brains__app { position: absolute; top: var(--y); display: inline-flex; padding: 5px 12px 5px 5px; border-radius: 12px; max-width: 64%;
+    background: var(--color-ink-900); border: 1px solid var(--line-strong); box-shadow: 0 8px 20px -10px rgb(0 0 0 / .8);
+    transform: translateY(-50%); transition: border-color .4s, transform .5s var(--ease-out-expo); }
+  .viz-brains__app--l { left: 0; }
+  .viz-brains__app--r { right: 0; }
+  .viz-brains__app--c { left: 50%; transform: translate(-50%, -50%); }
+  .ub__card:hover .viz-brains__app { border-color: rgb(245 131 39 / .35); }
+  /* Narrow cards: six apps in two columns; Website and Ads join from 560px up. */
+  .viz-brains__app--wide { display: none; }
+  @media (min-width: 560px) { .viz-brains__app--wide { display: inline-flex; } }
+  @media (max-width: 559px) { .viz-brains__edges path:nth-child(n+7) { display: none; } }
+  @media (max-width: 420px) { .viz-brains__app { padding-right: 9px; } .viz-brains__app :global(.tb__label) { font-size: 12px; } }
 
   /* --- Consulting: roadmap --- */
   .viz-gantt { width: 100%; display: flex; flex-direction: column; gap: 9px; }
-  .viz-gantt__row { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 12px; }
-  .viz-gantt__label { font-family: var(--font-mono); font-size: 11px; color: var(--color-smoke); text-transform: uppercase; letter-spacing: .06em; }
+  .viz-gantt__row { display: grid; grid-template-columns: 100px 1fr; align-items: center; gap: 12px; }
+  .viz-gantt__label { font-size: 13px; font-weight: 500; color: var(--color-mist); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .viz-gantt__lane { position: relative; height: 12px; border-radius: 99px; background: rgb(255 255 255 / .04); }
   .viz-gantt__bar { position: absolute; top: 0; bottom: 0; border-radius: 99px; left: calc(var(--k) * 22%); width: 30%; background: linear-gradient(90deg, var(--color-flame-600), var(--color-flame-400)); transform-origin: left; transform: scaleX(1); }
   .viz-gantt__row:last-child .viz-gantt__bar { width: 34%; background: repeating-linear-gradient(90deg, var(--color-flame-500) 0 8px, transparent 8px 12px); }
@@ -178,15 +207,14 @@ const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
   .viz-growth svg { width: 100%; height: 100%; overflow: visible; }
   .viz-growth__line { fill: none; stroke: var(--color-flame-400); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 1.6s var(--ease-out-expo) .3s; }
   :global(.js) .ub__cell:not(.is-in) .viz-growth__line { stroke-dashoffset: 1; }
-  .viz-growth__chip { position: absolute; right: 0; top: -6px; padding: 5px 10px; border-radius: 99px; font-family: var(--font-mono); font-size: 11px; color: var(--color-bone);
+  .viz-growth__chip { position: absolute; right: 0; top: -10px; display: inline-flex; padding: 4px 12px 4px 4px; border-radius: 99px; color: var(--color-bone);
     background: rgb(245 131 39 / .14); border: 1px solid rgb(245 131 39 / .45); transition: opacity .6s 1.4s, transform .8s var(--ease-out-expo) 1.4s; }
-  .viz-growth__chip b { color: var(--color-flame-400); font-weight: 600; }
   :global(.js) .ub__cell:not(.is-in) .viz-growth__chip { opacity: 0; transform: translateY(8px); }
 
   /* --- Academy: modules --- */
   .viz-mods { width: 100%; display: flex; flex-direction: column; gap: 10px; }
   .viz-mods li { display: grid; grid-template-columns: 22px 1fr 64px; align-items: center; gap: 10px; font-size: 13px; color: var(--color-mist); }
-  .viz-mods__n { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-smoke); }
+  .viz-mods__n { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font-size: 11.5px; font-weight: 600; color: var(--color-flame-400); background: rgb(245 131 39 / .1); }
   .viz-mods__name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .viz-mods__bar { height: 4px; border-radius: 9px; background: rgb(255 255 255 / .07); overflow: hidden; }
   .viz-mods__bar span { display: block; height: 100%; width: var(--p); background: var(--color-flame-500); border-radius: 9px; transition: width 1.2s var(--ease-out-expo); transition-delay: calc(var(--k) * 150ms + 300ms); }
@@ -198,11 +226,11 @@ const brandLabel = lang === 'en' ? 'Your agency' : 'Tu agencia';
     transform: translateY(calc(var(--k) * -14px)); transition: transform .9s var(--ease-out-expo); transition-delay: calc(var(--k) * 120ms + 200ms); }
   :global(.js) .ub__cell:not(.is-in) .viz-stack svg { transform: translateY(20px); }
   .ub__card:hover .viz-stack svg { transform: translateY(calc(var(--k) * -20px)); }
-  .viz-stack__pill { position: absolute; top: -46px; left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 4px 9px; border-radius: 99px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-flame-400); border: 1px dashed rgb(245 131 39 / .5); }
+  .viz-stack__pill { position: absolute; top: -46px; left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 4px 9px; border-radius: 99px; font-size: 12.5px; font-weight: 500; color: var(--color-flame-400); border: 1px dashed rgb(245 131 39 / .5); }
 
   /* --- Partners: handoff --- */
   .viz-hand { display: flex; align-items: center; width: 100%; gap: 0; }
-  .viz-hand__node { flex: none; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line-strong); font-family: var(--font-mono); font-size: 11.5px; color: var(--color-mist); background: var(--color-ink-900); }
+  .viz-hand__node { flex: none; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line-strong); font-size: 13.5px; font-weight: 500; color: var(--color-bone); background: var(--color-ink-900); }
   .viz-hand__node--sbx { border-color: rgb(245 131 39 / .5); color: var(--color-flame-400); }
   .viz-hand__wire { position: relative; flex: 1; height: 1px; background: repeating-linear-gradient(90deg, rgb(255 255 255 / .3) 0 4px, transparent 4px 8px); }
   /* Full-width track; the dot (::before) travels with transform (compositor-only), not `left`. */

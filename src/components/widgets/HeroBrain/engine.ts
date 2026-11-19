@@ -58,7 +58,7 @@ const EDGE_RGB = ['244,226,210', '255,128,56', '196,186,178', '255,190,120'];
 const EDGE_MAX = [0.2, 0.26, 0.08, 0.62];
 const EDGE_W = [0.75, 0.8, 0.6, 1.05];
 
-const FONT = '500 10.5px "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace';
+const FONT = '500 12px "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif';
 const INTERACTIVE = 'a,button,input,select,textarea,label,summary,[role="button"],[contenteditable="true"]';
 /** Labels never land on page copy or controls drawn over the canvas (pages can opt areas in with data-brain-avoid). */
 const OCCLUDERS = `h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,nav,.eyebrow,[data-brain-avoid],${INTERACTIVE}`;
@@ -513,7 +513,7 @@ export function createHeroBrain(canvas: HTMLCanvasElement, host: HTMLElement, op
     // never show the same job twice at once
     let op = ops[opIdx % ops.length];
     for (let k = 1; k < ops.length && labels.some((l) => l.on && l.op === op); k++) op = ops[(opIdx + k) % ops.length];
-    const ms = `${36 + Math.floor(rnd() * 420)}ms`;
+    const ms = '\u2713'; // a done tick instead of a technical timing
     ctx.font = FONT;
     const opW = ctx.measureText(op).width;
     const msW = ctx.measureText(ms).width;

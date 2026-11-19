@@ -3,7 +3,6 @@ import { FIELDS, clamp, fromPos, nudge, parseTyped, toPos, type FieldId } from '
 
 interface Props {
   field: FieldId;
-  index: string;
   label: string;
   hint?: string;
   value: number;
@@ -32,7 +31,7 @@ const pct = (t: number) => `${(t * 100).toFixed(3)}%`;
  * so they line up exactly with where the native thumb travels.
  */
 export default function RangeField({
-  field, index, label, hint, value, onChange, prefix, unit, valueText, aside, bandLabel, formatTick = String, formatValue = String,
+  field, label, hint, value, onChange, prefix, unit, valueText, aside, bandLabel, formatTick = String, formatValue = String,
 }: Props) {
   const spec = FIELDS[field];
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
@@ -93,7 +92,6 @@ export default function RangeField({
   return (
     <div className="roi-field" data-field={field}>
       <div className="roi-field__head">
-        <span className="roi-field__idx" aria-hidden="true">{index}</span>
         <div className="roi-field__labelwrap">
           <label className="roi-field__label" htmlFor={rangeId}>
             {label}
@@ -140,9 +138,6 @@ export default function RangeField({
             </span>
           )}
           <span className="roi-range__fill" />
-          {spec.minor.map((v) => (
-            <span key={`m${v}`} className="roi-range__tick" style={{ left: pct(toPos(spec, v)) }} />
-          ))}
           {spec.major.map((v) => (
             <span
               key={`M${v}`}
