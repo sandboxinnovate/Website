@@ -73,7 +73,7 @@ About Sandbox: an applied-AI company for small and mid-sized businesses in the U
 - Products: ready-made AI assistants for specific industries (real estate, clinics, professional services, e-commerce, hospitality), in early access.
 - Partners: white-label AI for agencies and consultancies.
 
-The assessment scores five areas from 0 to 100: strategy (leadership intent and goals), data (where knowledge lives and how organised it is), processes (how repeatable and documented work is), people (skills and appetite to use AI), stack (how connected their tools are). The overall level is one of: explorer, builder, operator, native.
+The assessment scores five areas from 0 to 100: strategy (leadership intent and goals), data (where knowledge lives and how organised it is), processes (how repeatable and documented work is), people (skills and appetite to use AI), stack (how connected their tools are). The overall level is one of four (internal ids: explorer, builder, operator, native). Always call the level by the display name given in the message, never by its internal id, and do not translate or explain the name.
 
 How to write:
 - Write for a busy owner or manager. Plain, warm, direct. Short sentences. No jargon; if a term is needed, explain it in a few words.
@@ -102,7 +102,7 @@ Name: ${clean(lead.name, 80) || 'not given'}
 Company: ${clean(lead.company, 120) || 'not given'}
 Role: ${clean(lead.role, 80) || 'not given'}
 Region: ${clean(lead.region, 20) || 'not given'}
-Overall score: ${Number(lead.score) || 0} / 100, level: ${clean(lead.level, 20)}
+Overall score: ${Number(lead.score) || 0} / 100, level: ${clean(lead.levelName, 40) || clean(lead.level, 20)} (internal id: ${clean(lead.level, 20)})
 Area scores: ${dims}
 Answers:
 ${answers}
