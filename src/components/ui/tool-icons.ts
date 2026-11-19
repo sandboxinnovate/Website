@@ -56,7 +56,7 @@ export const TOOL_ICONS: Record<ToolKey, ToolIcon> = {
     paths: '<rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M8 16.5v-4M12 16.5V8M16 16.5v-6"/>',
   },
   sheet: {
-    label: { en: 'Spreadsheet', es: 'Planilla' }, tint: 'mint',
+    label: { en: 'Spreadsheet', es: 'Hoja de cálculo' }, tint: 'mint',
     paths: '<rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9h17M3.5 14h17M9.5 4v16"/>',
   },
   phone: {
