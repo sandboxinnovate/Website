@@ -1,10 +1,24 @@
 /**
  * Minimal Upstash Redis REST client (Vercel Marketplace "Upstash for Redis" / former Vercel KV).
  * Env: KV_REST_API_URL + KV_REST_API_TOKEN (set automatically when the store is connected to the
- * project), or UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN.
+ * project, possibly with a custom prefix), or UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN.
  */
-const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+/**
+ * The Vercel integration adds the variables with an optional custom prefix, e.g.
+ * UPSTASH_REDIS_REST_KV_REST_API_URL. Accept any <prefix>KV_REST_API_URL / _TOKEN pair.
+ */
+function findCreds() {
+  const env = process.env;
+  if (env.KV_REST_API_URL && env.KV_REST_API_TOKEN) return [env.KV_REST_API_URL, env.KV_REST_API_TOKEN];
+  if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) return [env.UPSTASH_REDIS_REST_URL, env.UPSTASH_REDIS_REST_TOKEN];
+  for (const key of Object.keys(env)) {
+    if (!key.endsWith('KV_REST_API_URL')) continue;
+    const token = env[key.replace(/URL$/, 'TOKEN')];
+    if (env[key] && token) return [env[key], token];
+  }
+  return [undefined, undefined];
+}
+const [URL_, TOKEN] = findCreds();
 
 export const kvConfigured = () => Boolean(URL_ && TOKEN);
 
