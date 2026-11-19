@@ -3,10 +3,11 @@ import type { Lang } from '@/i18n';
 import type { ConsoleCopy } from './copy';
 import type { ScenarioDef } from './scenarios';
 import {
-  chipStates, clamp01, easeInOut, fmtSec, pad2, useFrame,
+  chipStates, clamp01, easeInOut, useFrame,
   type FrameRegistry, type NodeState, type Timeline,
 } from './engine';
 import Ico from './Ico';
+import StepTile, { toolName } from './StepTile';
 
 interface Box { x: number; y: number; w: number; h: number }
 interface Edge { d: string; x1: number; y1: number; x2: number; y2: number }
@@ -58,7 +59,7 @@ interface Props {
   onApprove: () => void;
 }
 
-export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, reg, resultFor, gateOpen, onApprove }: Props) {
+export default function Graph({ sc, tl, lang, ui, states, focus, cursor, reg, resultFor, gateOpen, onApprove }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLLIElement | null)[]>([]);
   const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -178,7 +179,6 @@ export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, 
           const st = states[i];
           const { row, col } = cell(i);
           const chips = step.chips ? chipStates(tl, i, step.chips.length, cursor) : null;
-          const dur = step.dur + (step.gate ? extra : 0);
           // Stacked layouts show Approve on the waiting card itself (CSS decides), so nobody has to find it in the log.
           const approveHere = st === 'gate' && gateOpen;
           return (
@@ -193,16 +193,15 @@ export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, 
               style={{ gridRow: row, gridColumn: col }}
             >
               <span className="ac-node__icon" aria-hidden="true">
-                <Ico name={step.icon} size={18} />
+                <StepTile tool={step.uses} lang={lang} size={38} />
                 <span className="ac-node__check"><Ico name="check" size={10} stroke={2.4} /></span>
               </span>
               <span className="ac-node__main">
                 <span className="ac-node__top">
-                  <span className="ac-node__idx">{pad2(i + 1)}</span>
-                  <span className="ac-node__kind">{ui.kinds[step.kind]}</span>
+                  <span className="ac-node__idx">{ui.stepNo(i + 1)}</span>
                   <span className="ac-node__state">
                     <span className="ac-dot" aria-hidden="true" />
-                    {st === 'done' ? fmtSec(dur, lang) : ui.node[st]}
+                    {ui.node[st]}
                   </span>
                 </span>
                 <span className="ac-node__label">{step.label[lang]}</span>
@@ -210,13 +209,13 @@ export default function Graph({ sc, tl, lang, ui, states, focus, cursor, extra, 
                   <span className="ac-node__chips">
                     {step.chips!.map((ch, j) => (
                       <span key={j} className="ac-chip" data-state={chips[j]}>
-                        <span className="ac-dot" aria-hidden="true" />
-                        {ch[lang]}
+                        <StepTile tool={ch.tool} lang={lang} size={16} />
+                        {ch.label[lang]}
                       </span>
                     ))}
                   </span>
                 ) : (
-                  <span className="ac-node__sub">{st === 'done' ? resultFor(i) : step.tool}</span>
+                  <span className="ac-node__sub">{st === 'done' ? resultFor(i) : toolName(step.uses, lang, ui.person)}</span>
                 )}
                 {approveHere && (
                   <button type="button" className="ac-approve ac-approve--node" onClick={onApprove}>

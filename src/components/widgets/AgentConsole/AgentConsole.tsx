@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import type { Lang } from '@/i18n';
 import { COPY } from './copy';
-import { SCENARIOS } from './scenarios';
+import { SCENARIOS, toolsOf } from './scenarios';
+import { ToolTile } from '@/components/ui/ToolBadge';
 import {
-  AUTO_APPROVE_MS, STATIC_GATE_WAIT, advance, atGate, buildTimeline, elapsedOf, fmtClock, fmtSec, freshEngine, nodeState,
+  AUTO_APPROVE_MS, STATIC_GATE_WAIT, advance, atGate, buildTimeline, elapsedOf, fmtClock, fmtSecs, freshEngine, nodeState,
   useFrame, viewKey, type EngineState, type FrameFn, type NodeState,
 } from './engine';
 import Graph from './Graph';
@@ -25,8 +26,8 @@ interface Props {
 type Status = 'ready' | 'running' | 'paused' | 'awaiting' | 'done';
 
 /**
- * "Watch a brain work": a simulated orchestration console. Four fictional workflows run step
- * by step (graph on one side, live log on the other), with a human approval gate, controls,
+ * "Watch an AI assistant work": a simulated product demo. Four fictional tasks run step
+ * by step (step cards on one side, a plain-language activity feed on the other), with a human approval gate, controls,
  * and a final outcome card. Autoplays when visible, pauses offscreen and in background tabs.
  */
 export default function AgentConsole({ lang, initialScenario, compact = false, className = '' }: Props) {
@@ -85,7 +86,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
         if (st === 'done' && prev[i] !== 'done') msg = u.announce.step(i + 1, states.length, s.steps[i].label[lg], resultText(i));
         if (st === 'gate' && prev[i] !== 'gate') msg = u.announce.gate(s.steps[i].gate!.title[lg]);
       });
-      if (states.every((x) => x === 'done') && !prev.every((x) => x === 'done')) msg = u.announce.done(fmtSec(elapsedOf(t, e), lg));
+      if (states.every((x) => x === 'done') && !prev.every((x) => x === 'done')) msg = u.announce.done(fmtSecs(elapsedOf(t, e), lg));
       if (msg && userActed.current) setAnnounce(msg);
     }
     prevStates.current = states;
@@ -282,11 +283,9 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
     return view.approved === 'you' ? ui.gate.resultYou : view.approved === 'auto' ? ui.gate.resultAuto : ui.gate.resultStatic;
   };
 
-  const [pathA, pathB] = sc.path[lang];
-  const runId = `run_${sc.hex}${String(runNo).padStart(2, '0')}`;
+  const tools = useMemo(() => toolsOf(sc), [sc]);
   const isPlaying = want && !runComplete;
   const panelId = `${uid}-panel`;
-  const doneSteps = states.filter((s) => s === 'done').length;
   const gateOpen = atGate(tl, view);
   const gateSecs = Math.max(1, Math.ceil((AUTO_APPROVE_MS - view.extra) / 1000));
   const shared = { sc, tl, lang, ui, states, focus, cursor: view.cursor, extra: view.extra, reg: hooks, resultFor, gateOpen, onApprove: approve };
@@ -304,12 +303,7 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
       <div className="ac-bar">
         <div className="ac-bar__l">
           <span className="ac-bar__mark" aria-hidden="true"><Ico name="brain" size={14} /></span>
-          <span className="ac-bar__path">
-            <span className="ac-bar__seg">{pathA}</span>
-            <span className="ac-bar__sep" aria-hidden="true">/</span>
-            <b>{pathB}</b>
-          </span>
-          <span className="ac-bar__run">{runId}</span>
+          <span className="ac-bar__path"><b>{sc.name[lang]}</b></span>
         </div>
         <div className="ac-bar__r">
           <span className="ac-sim">{ui.simulated}</span>
@@ -373,8 +367,8 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
       <div className="ac-body" role="tabpanel" id={panelId} aria-labelledby={`${uid}-tab-${sc.id}`}>
         <section className="ac-graph" aria-label={ui.workflow}>
           <div className="ac-graph__head">
-            <span>{ui.workflow} · {ui.steps(sc.steps.length)}</span>
-            <span className="ac-graph__trig"><Ico name="bolt" size={12} />{ui.trigger} · {sc.trigger[lang]}</span>
+            <span className="ac-graph__ttl">{ui.workflow} <span>· {ui.steps(sc.steps.length)}</span></span>
+            <span className="ac-graph__trig"><Ico name="bolt" size={13} /><span><b>{ui.trigger}</b> {sc.trigger[lang]}</span></span>
           </div>
           <Graph {...shared} />
           <Stepper {...shared} gateSecs={gateSecs} />
@@ -395,8 +389,10 @@ export default function AgentConsole({ lang, initialScenario, compact = false, c
       <div className="ac-foot">
         <span className="ac-foot__prog" ref={progRef} aria-hidden="true" />
         <span className="ac-foot__l">
-          <span className="ac-foot__ok"><span className="ac-dot" aria-hidden="true" />{ui.toolsConnected(sc.tools)}</span>
-          <span className="ac-foot__steps">{doneSteps}/{sc.steps.length}</span>
+          <span className="ac-foot__ok">{ui.worksWith}</span>
+          <span className="ac-foot__tools">
+            {tools.map((k) => <ToolTile key={k} tool={k} lang={lang} size={20} />)}
+          </span>
         </span>
         <span className="ac-foot__r">{ui.simulatedNote}</span>
       </div>

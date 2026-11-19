@@ -1,7 +1,6 @@
 import type { Lang } from '@/i18n';
-import type { StepKind } from './scenarios';
 
-/** Interface copy for the agent console. Scenario content lives in scenarios.ts. */
+/** Interface copy for the assistant demo. Scenario content lives in scenarios.ts. */
 export interface ConsoleCopy {
   region: string;
   simulated: string;
@@ -14,25 +13,28 @@ export interface ConsoleCopy {
   speedOpt: (s: number) => string;
   status: Record<'ready' | 'running' | 'paused' | 'awaiting' | 'done', string>;
   node: Record<'idle' | 'running' | 'gate' | 'done', string>;
-  kinds: Record<StepKind, string>;
+  /** Labels for the raw log under "technical details". */
   tags: Record<'event' | 'call' | 'think' | 'info' | 'warn' | 'done' | 'human', string>;
+  person: string;
+  stepNo: (i: number) => string;
   workflow: string;
   steps: (n: number) => string;
   trigger: string;
   graphLabel: string;
   legend: Record<'idle' | 'running' | 'done' | 'gate', string>;
   log: string;
-  events: (n: number) => string;
   live: string;
   waiting: string;
   stepShort: (i: number, n: number) => string;
-  toolsConnected: (n: number) => string;
+  worksWith: string;
+  tech: { show: string; hide: string; label: string };
   gate: {
     title: string;
+    why: string;
     approve: string;
     auto: (s: number) => string;
-    byYou: (t: string) => string;
-    byAuto: (t: string) => string;
+    byYou: string;
+    byAuto: string;
     byStatic: (who: string) => string;
     resultYou: string;
     resultAuto: string;
@@ -51,93 +53,97 @@ export interface ConsoleCopy {
 
 export const COPY: Record<Lang, ConsoleCopy> = {
   en: {
-    region: 'Agent console, simulated demo',
-    simulated: 'Simulated run',
-    simulatedNote: 'Illustrative data · fictional companies',
-    workflows: 'Workflows',
-    play: 'Play run',
-    pause: 'Pause run',
-    replay: 'Replay run',
+    region: 'AI assistant demo (simulation)',
+    simulated: 'Simulation',
+    simulatedNote: 'Illustrative data, fictional companies',
+    workflows: 'Example tasks',
+    play: 'Play',
+    pause: 'Pause',
+    replay: 'Start over',
     speed: 'Playback speed',
     speedOpt: (s) => `${s}× speed`,
-    status: { ready: 'Ready', running: 'Running', paused: 'Paused', awaiting: 'Awaiting approval', done: 'Completed' },
-    node: { idle: 'queued', running: 'running', gate: 'waiting', done: 'done' },
-    kinds: { trigger: 'trigger', tool: 'tool', model: 'model', human: 'human', action: 'action' },
-    tags: { event: 'event', call: 'call', think: 'think', info: 'info', warn: 'alert', done: 'done', human: 'human' },
-    workflow: 'Workflow',
+    status: { ready: 'Ready', running: 'Working', paused: 'Paused', awaiting: 'Waiting for your OK', done: 'Done' },
+    node: { idle: 'Up next', running: 'Working', gate: 'Needs your OK', done: 'Done' },
+    tags: { event: 'event', call: 'call', think: 'note', info: 'info', warn: 'alert', done: 'done', human: 'human' },
+    person: 'A person on your team',
+    stepNo: (i) => `Step ${i}`,
+    workflow: 'What the assistant does',
     steps: (n) => `${n} steps`,
-    trigger: 'Trigger',
-    graphLabel: 'Workflow steps',
-    legend: { idle: 'Queued', running: 'Running', done: 'Done', gate: 'Needs approval' },
-    log: 'Run log',
-    events: (n) => `${n} ${n === 1 ? 'event' : 'events'}`,
-    live: 'Playing',
-    waiting: 'Listening for the trigger…',
-    stepShort: (i, n) => `Step ${i}/${n}`,
-    toolsConnected: (n) => `${n} tools connected`,
+    trigger: 'Starts when',
+    graphLabel: 'Steps',
+    legend: { idle: 'Up next', running: 'Working', done: 'Done', gate: 'Waits for a person' },
+    log: 'What’s happening',
+    live: 'Live',
+    waiting: 'Waiting to start…',
+    stepShort: (i, n) => `Step ${i} of ${n}`,
+    worksWith: 'Works with',
+    tech: { show: 'Show technical details', hide: 'Hide technical details', label: 'Technical details' },
     gate: {
-      title: 'Approval required',
+      title: 'Needs your OK',
+      why: 'Why',
       approve: 'Approve',
-      auto: (s) => `Auto-approves in ${s}s · demo`,
-      byYou: (t) => `Approved by you after ${t}`,
-      byAuto: (t) => `No answer in ${t} · auto-approved for the demo`,
-      byStatic: (who) => `Approved by the ${who}`,
-      resultYou: 'Approved by you',
-      resultAuto: 'Auto-approved (demo)',
+      auto: (s) => `Demo only: approves by itself in ${s}s`,
+      byYou: 'You approved it. Sending now.',
+      byAuto: 'No click, so the demo approved it for you.',
+      byStatic: (who) => `Approved by the ${who}.`,
+      resultYou: 'You approved it',
+      resultAuto: 'Approved (demo)',
       resultStatic: 'Approved',
     },
-    outcome: 'Outcome',
+    outcome: 'Result',
     outcomeCta: 'Want this on one of your processes? Book a call',
     to: 'To',
     announce: {
       step: (i, n, label, result) => `Step ${i} of ${n} done: ${label}. ${result}.`,
-      gate: (title) => `Approval needed: ${title}. The Approve button is on the step and in the run log.`,
-      done: (t) => `Run completed in ${t}.`,
+      gate: (title) => `A person needs to approve: ${title} The Approve button is on the step and in the activity feed.`,
+      done: (t) => `Finished in ${t}.`,
     },
   },
   es: {
-    region: 'Consola de agentes, demo simulada',
+    region: 'Demo de asistente de IA (simulación)',
     simulated: 'Simulación',
-    simulatedNote: 'Datos ilustrativos · empresas ficticias',
-    workflows: 'Flujos de trabajo',
+    simulatedNote: 'Datos ilustrativos, empresas ficticias',
+    workflows: 'Tareas de ejemplo',
     play: 'Reproducir',
     pause: 'Pausar',
-    replay: 'Repetir desde el inicio',
+    replay: 'Empezar de nuevo',
     speed: 'Velocidad de reproducción',
     speedOpt: (s) => `Velocidad ${s}×`,
-    status: { ready: 'Listo', running: 'En curso', paused: 'En pausa', awaiting: 'Esperando aprobación', done: 'Completado' },
-    node: { idle: 'en cola', running: 'en curso', gate: 'esperando', done: 'listo' },
-    kinds: { trigger: 'disparador', tool: 'conector', model: 'modelo', human: 'humano', action: 'acción' },
-    tags: { event: 'evento', call: 'llamada', think: 'razona', info: 'info', warn: 'alerta', done: 'listo', human: 'humano' },
-    workflow: 'Flujo',
+    status: { ready: 'Listo', running: 'Trabajando', paused: 'En pausa', awaiting: 'Espera tu aprobación', done: 'Terminado' },
+    node: { idle: 'Pendiente', running: 'Trabajando', gate: 'Espera tu OK', done: 'Listo' },
+    tags: { event: 'evento', call: 'llamada', think: 'nota', info: 'info', warn: 'alerta', done: 'listo', human: 'humano' },
+    person: 'Una persona de tu equipo',
+    stepNo: (i) => `Paso ${i}`,
+    workflow: 'Lo que hace el asistente',
     steps: (n) => `${n} pasos`,
-    trigger: 'Disparador',
-    graphLabel: 'Pasos del flujo',
-    legend: { idle: 'En cola', running: 'En curso', done: 'Listo', gate: 'Requiere aprobación' },
-    log: 'Registro',
-    events: (n) => `${n} ${n === 1 ? 'evento' : 'eventos'}`,
-    live: 'Reproduciendo',
-    waiting: 'Esperando el disparador…',
-    stepShort: (i, n) => `Paso ${i}/${n}`,
-    toolsConnected: (n) => `${n} herramientas conectadas`,
+    trigger: 'Empieza cuando',
+    graphLabel: 'Pasos',
+    legend: { idle: 'Pendiente', running: 'Trabajando', done: 'Listo', gate: 'Espera a una persona' },
+    log: 'Lo que está pasando',
+    live: 'En vivo',
+    waiting: 'Esperando para empezar…',
+    stepShort: (i, n) => `Paso ${i} de ${n}`,
+    worksWith: 'Trabaja con',
+    tech: { show: 'Ver detalles técnicos', hide: 'Ocultar detalles técnicos', label: 'Detalles técnicos' },
     gate: {
-      title: 'Requiere aprobación',
+      title: 'Necesita tu aprobación',
+      why: 'Por qué',
       approve: 'Aprobar',
-      auto: (s) => `Se aprueba sola en ${s} s · demo`,
-      byYou: (t) => `Aprobado por ti en ${t}`,
-      byAuto: (t) => `Sin respuesta en ${t} · aprobado automáticamente para la demo`,
-      byStatic: (who) => `Aprobado por ${who}`,
-      resultYou: 'Aprobado por ti',
-      resultAuto: 'Aprobación automática',
+      auto: (s) => `Solo en la demo: se aprueba sola en ${s} s`,
+      byYou: 'Lo aprobaste. Enviando.',
+      byAuto: 'Nadie hizo clic, así que la demo lo aprobó por ti.',
+      byStatic: (who) => `Aprobado por ${who}.`,
+      resultYou: 'Lo aprobaste tú',
+      resultAuto: 'Aprobado (demo)',
       resultStatic: 'Aprobado',
     },
     outcome: 'Resultado',
-    outcomeCta: '¿Quieres esto en uno de tus procesos? Agendar una llamada',
+    outcomeCta: '¿Quieres esto en uno de tus procesos? Agenda una llamada',
     to: 'Para',
     announce: {
       step: (i, n, label, result) => `Paso ${i} de ${n} listo: ${label}. ${result}.`,
-      gate: (title) => `Se necesita aprobación: ${title}. El botón Aprobar está en el paso y en el registro.`,
-      done: (t) => `Ejecución completada en ${t}.`,
+      gate: (title) => `Una persona tiene que aprobar: ${title} El botón Aprobar está en el paso y en la actividad.`,
+      done: (t) => `Terminado en ${t}.`,
     },
   },
 };
