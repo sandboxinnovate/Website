@@ -48,6 +48,8 @@ BRAIN_LEADS_SECRET=<same value as LEADS_INTAKE_SECRET on the Brain>
 
 `BRAIN_LEADS_*` must **not** start with `PUBLIC_` (that would ship them to the browser). Full procedure: `infra/LEADS.md` in the `sandbox-brain` repo.
 
+**Domain:** production is served at https://sandboxinnovate.com (DNS at GoDaddy: apex A records and a `www` CNAME point to Vercel; `www` redirects to the apex). Google Workspace MX and the Resend records on `mail.sandboxinnovate.com` are separate and must stay. Old Framer URLs (`/contact-us`, `/case-studies/*`, `/services/seo`, ...) are 301-redirected in `vercel.json`.
+
 **AI readiness report** (`api/diagnostic-report.js`): when someone completes the diagnostic and sends the form, Claude (`claude-opus-5-5`, structured JSON output) writes a personalised report from their answers. The visitor sees a short preview on screen; the full report is emailed with a permanent link to `/diagnostic/report/?r=<id>` (EN) or `/es/diagnostic/report/?r=<id>` (ES), so a real email address is needed to read it. The lead, with the report link, is forwarded to the Brain like any other lead. Prompt and output schema: `api/_lib/report-prompt.js`; email template: `api/_lib/report-email.js`. Rate limits: 6 reports per visitor per hour, 3 per email per day.
 
 ```
