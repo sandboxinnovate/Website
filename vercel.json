@@ -52,5 +52,77 @@
     "api/diagnostic-report.js": {
       "maxDuration": 60
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/contact-us",
+      "destination": "/contact/",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us/",
+      "destination": "/contact/",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/services/",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/services/seo",
+      "destination": "/services/growth/",
+      "permanent": true
+    },
+    {
+      "source": "/services/seo/",
+      "destination": "/services/growth/",
+      "permanent": true
+    },
+    {
+      "source": "/case-studies",
+      "destination": "/work/",
+      "permanent": true
+    },
+    {
+      "source": "/case-studies/",
+      "destination": "/work/",
+      "permanent": true
+    },
+    {
+      "source": "/case-studies/:slug",
+      "destination": "/work/",
+      "permanent": true
+    },
+    {
+      "source": "/case-studies/:slug/",
+      "destination": "/work/",
+      "permanent": true
+    },
+    {
+      "source": "/review",
+      "destination": "/work/",
+      "permanent": true
+    },
+    {
+      "source": "/review/",
+      "destination": "/work/",
+      "permanent": true
+    },
+    {
+      "source": "/licensed-assets",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/licensed-assets/",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
 }
