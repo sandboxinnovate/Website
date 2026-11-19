@@ -54,7 +54,7 @@ export default function PartnersFlow({ lang }: { lang: Lang }) {
             className="pf-model"
             onClick={() => setSel(k)}
           >
-            <span className="pf-model__n">{String(k + 1).padStart(2, '0')}</span>
+            <span className="pf-model__n">{k + 1}</span>
             <span className="pf-model__name">{m.name}</span>
             <span className="pf-model__line">{m.line}</span>
           </button>
@@ -75,7 +75,7 @@ export default function PartnersFlow({ lang }: { lang: Lang }) {
               const o = model.owners[k];
               return (
                 <li key={s} className="pf-row">
-                  <span className="pf-stage"><span className="pf-stage__n">{String(k + 1).padStart(2, '0')}</span>{s}</span>
+                  <span className="pf-stage">{s}</span>
                   <span className="pf-track">
                     <span
                       className={`pf-mark pf-mark--${o}`}
@@ -99,14 +99,17 @@ export default function PartnersFlow({ lang }: { lang: Lang }) {
             <span className="pf-sees__v" key={`${model.id}-sees`}>{model.sees}</span>
           </div>
           <div className="pf-split">
-            <span className="pf-label">{t.youOwn(count('you'), t.stages.length)}</span>
+            <p className="pf-lead">
+              <span className="pf-lead__num">{t.leadNum(count('you'), t.stages.length)}</span>
+              <span className="pf-lead__t">{t.leadText}</span>
+            </p>
             <span className="pf-split__bar" aria-hidden="true">
               {model.owners.map((o, k) => <i key={k} className={`pf-seg pf-seg--${o}`} />)}
             </span>
             <span className="pf-legend">
-              <span><i className="pf-seg pf-seg--you" />{t.you} · {count('you')}</span>
-              <span><i className="pf-seg pf-seg--both" />{t.both} · {count('both')}</span>
-              <span><i className="pf-seg pf-seg--sbx" />{t.sbx} · {count('sbx')}</span>
+              <span><i className="pf-seg pf-seg--you" />{t.legend(t.you, count('you'))}</span>
+              <span><i className="pf-seg pf-seg--both" />{t.legend(t.both, count('both'))}</span>
+              <span><i className="pf-seg pf-seg--sbx" />{t.legend(t.sbx, count('sbx'))}</span>
             </span>
           </div>
           <a className="pf-cta" href={localize(lang, `/contact?service=partners&model=${model.id}`)}>

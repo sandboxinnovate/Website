@@ -22,8 +22,8 @@ interface Props {
 }
 
 /**
- * 270° instrument gauge. Track is split into the four maturity zones; the value arc
- * burns from ember to sun and the number counts up with it.
+ * Simple 270° score dial: a plain track split into the four levels, a value arc and the number
+ * in the middle ("Your score", 42, "out of 100"). No tick marks or scale numbers.
  */
 export default function Gauge({ score, level, label, unit, ariaLabel, instant = false }: Props) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
@@ -45,39 +45,6 @@ export default function Gauge({ score, level, label, unit, ariaLabel, instant = 
             <feGaussianBlur stdDeviation="7" />
           </filter>
         </defs>
-
-        {/* tick ring: every 2 points, major every 10, thresholds highlighted */}
-        {Array.from({ length: 51 }, (_, k) => {
-          const val = k * 2;
-          const major = val % 10 === 0;
-          const isThreshold = LEVELS.some((l) => l.min === val && val > 0);
-          const a = angleFor(val);
-          const r0 = R + 15;
-          const r1 = r0 + (major ? 7 : 3.5);
-          const [x0, y0] = polar(CX, CY, r0, a);
-          const [x1, y1] = polar(CX, CY, r1, a);
-          const lit = val <= v + 0.01 && v > 0;
-          return (
-            <line
-              key={k}
-              x1={x0}
-              y1={y0}
-              x2={x1}
-              y2={y1}
-              className="rd-gauge__tick"
-              data-major={major ? '' : undefined}
-              data-lit={lit ? '' : undefined}
-              data-threshold={isThreshold ? '' : undefined}
-            />
-          );
-        })}
-        {/* threshold ticks (30 / 55 / 80) drawn on top, slightly longer */}
-        {LEVELS.slice(1).map((l) => {
-          const a = angleFor(l.min);
-          const [x0, y0] = polar(CX, CY, R + 13, a);
-          const [x1, y1] = polar(CX, CY, R + 25, a);
-          return <line key={l.id} x1={x0} y1={y0} x2={x1} y2={y1} className="rd-gauge__mark" />;
-        })}
 
         {/* zone track */}
         {LEVELS.map((l, i) => {

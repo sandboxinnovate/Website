@@ -1,0 +1,40 @@
+---
+/**
+ * A business tool shown as brand marks plus its label (CRM -> HubSpot, Salesforce, GoHighLevel).
+ * Tools without example brands (website, phone, AI, forms) use a generic tinted icon.
+ * Same look as the React ToolBadge (both use tool-render.ts).
+ *   <ToolBadge tool="crm" lang={lang} />                brand marks + label
+ *   <ToolBadge tool="crm" lang={lang} label={false} />  main brand tile only (label for screen readers)
+ */
+import type { Lang } from '@/i18n';
+import { TOOL_ICONS, type ToolKey } from './tool-icons';
+import { brandNames, clusterSVG, tileSVG } from './tool-render';
+
+interface Props {
+  tool: ToolKey;
+  lang: Lang;
+  label?: boolean | string;
+  size?: 'sm' | 'md' | 'lg';
+  max?: number;
+  class?: string;
+}
+const { tool, lang, label = true, size = 'md', max = 3, class: cls = '' } = Astro.props;
+const px = { sm: 22, md: 28, lg: 36 }[size];
+const text = typeof label === 'string' ? label : TOOL_ICONS[tool].label[lang];
+const names = brandNames(tool);
+const svg = label === false
+  ? tileSVG(tool, { size: px, label: names ? `${text}: ${names}` : text })
+  : clusterSVG(tool, { size: px, max }).svg;
+---
+<span class:list={['tb', `tb--${size}`, cls]} title={names || undefined}>
+  <span class="tb__tile" set:html={svg} />
+  {label !== false && <span class="tb__label">{text}</span>}
+</span>
+
+<style>
+  .tb { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+  .tb__tile { display: inline-flex; flex: none; }
+  .tb__label { font-size: 13px; color: var(--color-bone); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tb--sm .tb__label { font-size: 12px; }
+  .tb--lg .tb__label { font-size: 14px; }
+</style>

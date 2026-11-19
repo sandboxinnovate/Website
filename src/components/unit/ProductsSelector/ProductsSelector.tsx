@@ -1,6 +1,9 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import { localize, type Lang } from '@/i18n';
 import { ICONS } from '@/components/ui/icons';
+import { ToolBadge } from '@/components/ui/ToolBadge';
+import type { ToolKey } from '@/components/ui/tool-icons';
+import { tileSVG } from '@/components/ui/tool-render';
 import { COPY } from './copy';
 import { tabKeys, useActive } from '../hooks';
 import './products-selector.css';
@@ -17,6 +20,11 @@ const nodePos = (i: number, n: number) => {
   const a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
   return { x: Math.round((CX + R * Math.cos(a)) * 10) / 10, y: Math.round((CY + R * Math.sin(a)) * 10) / 10 };
 };
+
+/** The shared tool tile (brand mark or generic icon) drawn inside the SVG diagram (decorative). */
+function SvgTile({ tool, x, y, size }: { tool: ToolKey; x: number; y: number; size: number }) {
+  return <g dangerouslySetInnerHTML={{ __html: tileSVG(tool, { size, x, y }) }} />;
+}
 
 function useReducedMotion() {
   const [r, setR] = useState(false);
@@ -79,7 +87,6 @@ export default function ProductsSelector({ lang }: { lang: Lang }) {
             className="px-tab"
             onClick={() => select(k)}
           >
-            <span className="px-tab__code">{it.code}</span>
             <span className="px-tab__name">{it.name}</span>
           </button>
         ))}
@@ -96,9 +103,10 @@ export default function ProductsSelector({ lang }: { lang: Lang }) {
             </defs>
             <circle cx={CX} cy={CY} r={R} className="px-orbit" />
             <circle cx={CX} cy={CY} r={R + 34} className="px-orbit px-orbit--outer" />
-            {ind.connects.map((_, k) => {
+            {ind.connects.map((c, k) => {
               const a = -Math.PI / 2 + Math.PI / ind.connects.length + (k * 2 * Math.PI) / ind.connects.length;
-              return <circle key={k} cx={CX + (R + 34) * Math.cos(a)} cy={CY + (R + 34) * Math.sin(a)} r="3.5" className="px-tool" />;
+              const x = Math.round((CX + (R + 34) * Math.cos(a)) * 10) / 10, y = Math.round((CY + (R + 34) * Math.sin(a)) * 10) / 10;
+              return <SvgTile key={c.tool + k} tool={c.tool} x={x - 15} y={y - 15} size={30} />;
             })}
             <circle cx={CX} cy={CY} r="86" fill={`url(#${uid}-hub)`} />
             {ind.agents.map((_, k) => {
@@ -111,14 +119,14 @@ export default function ProductsSelector({ lang }: { lang: Lang }) {
               );
             })}
             <circle cx={CX} cy={CY} r="44" className="px-hub" />
-            <text x={CX} y={CY - 2} textAnchor="middle" className="px-hub__code">{ind.code}</text>
-            <text x={CX} y={CY + 18} textAnchor="middle" className="px-hub__sub">brain</text>
+            <text x={CX} y={CY + 1} textAnchor="middle" className="px-hub__code">{t.hub}</text>
+            <text x={CX} y={CY + 19} textAnchor="middle" className="px-hub__sub">{t.agentsCount(n)}</text>
             {ind.agents.map((_, k) => {
               const p = nodePos(k, n);
               return (
                 <g key={k} className={`px-node${k === hot ? ' is-hot' : ''}`} style={{ '--k': k } as CSSProperties}>
                   <circle cx={p.x} cy={p.y} r="22" />
-                  <text x={p.x} y={p.y + 4} textAnchor="middle">{String(k + 1).padStart(2, '0')}</text>
+                  <text x={p.x} y={p.y + 5} textAnchor="middle">{k + 1}</text>
                 </g>
               );
             })}
@@ -139,7 +147,7 @@ export default function ProductsSelector({ lang }: { lang: Lang }) {
                 style={{ '--k': k } as CSSProperties}
                 onMouseEnter={() => { setHot(k); setPinned(true); }}
               >
-                <span className="px-agent__n">{String(k + 1).padStart(2, '0')}</span>
+                <span className="px-agent__n">{k + 1}</span>
                 <span className="px-agent__body">
                   <span className="px-agent__name">{a.name}</span>
                   <span className="px-agent__does">{a.does}</span>
@@ -152,7 +160,7 @@ export default function ProductsSelector({ lang }: { lang: Lang }) {
         <div className="px-meta">
           <div className="px-meta__col">
             <span className="px-label">{t.connectsLabel}</span>
-            <ul className="px-chips">{ind.connects.map((c) => <li key={c}>{c}</li>)}</ul>
+            <ul className="px-chips">{ind.connects.map((c) => <li key={c.label}><ToolBadge tool={c.tool} lang={lang} label={c.label} size={26} /></li>)}</ul>
           </div>
           <div className="px-meta__col">
             <span className="px-label">{t.staysLabel}</span>

@@ -5,6 +5,7 @@
  * which delivers to its client under one brand.
  */
 import VisualFrame from './VisualFrame.astro';
+import SvgToolTile from './SvgToolTile.astro';
 import { VISUAL_COPY } from './copy';
 import type { Lang } from '@/i18n';
 
@@ -13,11 +14,12 @@ const { lang } = Astro.props;
 const c = VISUAL_COPY[lang];
 const t = c.partners;
 
-const LANES = [150, 196, 242];
-const PW = 64; // packet width
+const LANES = [160, 208, 256];
+const SH = 34; // slot height
+const PK = 30; // moving packet size
 ---
-<VisualFrame file={t.file} label={c.illustrative} class="ptv">
-  <svg viewBox="0 0 560 430" class="ptv__svg">
+<VisualFrame title={t.title} label={c.illustrative} labelShort={c.illustrativeShort} class="ptv">
+  <svg viewBox="0 0 560 440" class="ptv__svg">
     <defs>
       <pattern id={`ptv-hatch-${lang}`} width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
         <line x1="0" y1="0" x2="0" y2="8" stroke="rgb(245 131 39 / .35)" stroke-width="1.2" />
@@ -30,98 +32,108 @@ const PW = 64; // packet width
 
     {/* Sandbox block (behind, dashed) */}
     <g class="ptv__sbx">
-      <rect x="14" y="92" width="172" height="196" rx="18" class="ptv__sbx-box" />
-      <text x="100" y="64" text-anchor="middle" class="ptv__top">{t.sbxSub}</text>
-      <text x="34" y="128" class="ptv__name ptv__name--dim">{t.sbx.toUpperCase()}</text>
+      <rect x="10" y="92" width="196" height="214" rx="18" class="ptv__sbx-box" />
+      <text x="26" y="124" class="ptv__name ptv__name--dim">{t.sbx}</text>
+      <text x="26" y="144" class="ptv__sub">{t.sbxSub}</text>
       {LANES.map((y, i) => (
         <g>
-          <rect x="34" y={y + 2} width="132" height="26" rx="8" class="ptv__slot" />
-          <text x="46" y={y + 19} class="ptv__slot-t">{t.packets[i]}</text>
+          <rect x="24" y={y} width="168" height={SH} rx="10" class="ptv__slot" />
+          <SvgToolTile tool={t.packets[i].tool} x={30} y={y + 5} size={24} />
+          <text x="62" y={y + 22} class="ptv__slot-t">{t.packets[i].label}</text>
         </g>
       ))}
     </g>
 
     {/* Wires */}
-    {LANES.map((y) => <path d={`M186 ${y + 15} L374 ${y + 15}`} class="ptv__wire" />)}
+    {LANES.map((y) => <path d={`M206 ${y + SH / 2} L340 ${y + SH / 2}`} class="ptv__wire" />)}
 
     {/* White-label layer */}
     <g class="ptv__layer">
-      <rect x="262" y="78" width="36" height="224" rx="10" fill={`url(#ptv-hatch-${lang})`} class="ptv__layer-box" />
-      <text x="280" y="64" text-anchor="middle" class="ptv__layer-t">{t.layer}</text>
-      <text x="460" y="64" text-anchor="middle" class="ptv__top ptv__top--you">{t.youSub}</text>
+      <rect x="258" y="100" width="30" height="206" rx="10" fill={`url(#ptv-hatch-${lang})`} class="ptv__layer-box" />
+      <text x="273" y="80" text-anchor="middle" class="ptv__layer-t">{t.layer}</text>
     </g>
 
-    {/* Packets */}
+    {/* Packets travelling from Sandbox to the agency */}
     {LANES.map((y, i) => (
       <g class="ptv__pkt" style={`--k:${i}`}>
-        <rect x="190" y={y + 4} width={PW} height="22" rx="7" class="ptv__pkt-box" />
-        <text x={190 + PW / 2} y={y + 19} text-anchor="middle" class="ptv__pkt-t">{t.packets[i]}</text>
+        <rect x="210" y={y + (SH - PK) / 2 - 2} width={PK + 4} height={PK + 4} rx="11" class="ptv__pkt-box" />
+        <SvgToolTile tool={t.packets[i].tool} x={212} y={y + (SH - PK) / 2} size={PK} />
       </g>
     ))}
 
     {/* Your agency (front, solid) */}
     <g class="ptv__you">
-      <rect x="374" y="82" width="172" height="216" rx="18" fill={`url(#ptv-you-${lang})`} class="ptv__you-box" />
-      <rect x="394" y="104" width="26" height="26" rx="8" class="ptv__logo" />
-      <path d="M401 121 L407 111 L413 121" class="ptv__logo-mark" />
-      <text x="430" y="122" class="ptv__name">{t.you}</text>
+      <rect x="340" y="92" width="210" height="214" rx="18" fill={`url(#ptv-you-${lang})`} class="ptv__you-box" />
+      <rect x="356" y="106" width="26" height="26" rx="8" class="ptv__logo" />
+      <path d="M363 123 L369 113 L375 123" class="ptv__logo-mark" />
+      <text x="390" y="124" class="ptv__name">{t.you}</text>
+      <text x="356" y="148" class="ptv__sub ptv__sub--you">{t.youSub}</text>
       {LANES.map((y, i) => (
         <g class="ptv__got" style={`--k:${i}`}>
-          <rect x="394" y={y + 2} width="132" height="26" rx="8" class="ptv__got-box" />
-          <circle cx="408" cy={y + 15} r="3" class="ptv__got-dot" />
-          <text x="418" y={y + 19} class="ptv__got-t">{t.packets[i]}</text>
+          <rect x="356" y={y} width="178" height={SH} rx="10" class="ptv__got-box" />
+          <SvgToolTile tool={t.packets[i].tool} x={362} y={y + 5} size={24} />
+          <text x="394" y={y + 22} class="ptv__got-t">{t.packets[i].label}</text>
         </g>
       ))}
     </g>
 
     {/* Client */}
-    <path d="M460 298 L460 344" class="ptv__wire ptv__wire--down" />
-    <path d="M460 298 L460 344" class="ptv__down-pulse" pathLength="100" />
+    <path d="M445 306 L445 350" class="ptv__wire ptv__wire--down" />
+    <path d="M445 306 L445 350" class="ptv__down-pulse" pathLength="100" />
     <g class="ptv__client">
-      <rect x="374" y="344" width="172" height="62" rx="16" class="ptv__client-box" />
-      <circle cx="396" cy="375" r="8" class="ptv__client-av" />
-      <text x="414" y="371" class="ptv__name ptv__name--sm">{t.client}</text>
-      <text x="414" y="388" class="ptv__sub">{t.clientSub}</text>
+      <rect x="340" y="350" width="210" height="72" rx="16" class="ptv__client-box" />
+      <circle cx="366" cy="386" r="10" class="ptv__client-av" />
+      <path d="M361 386.5 l3.5 3.5 6.5-7" class="ptv__client-ok" />
+      <text x="386" y="381" class="ptv__name ptv__name--sm">{t.client}</text>
+      <text x="386" y="401" class="ptv__sub">{t.clientSub}</text>
     </g>
   </svg>
 </VisualFrame>
 
 <style>
   .ptv__svg { display: block; width: 100%; height: auto; padding: 8px 6px 4px; }
-  .ptv__name { font-family: var(--font-display); font-size: 15px; letter-spacing: -.02em; fill: var(--color-bone); }
-  .ptv__name--dim { font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; fill: var(--color-mist); }
-  .ptv__name--sm { font-size: 13.5px; }
-  .ptv__sub { font-family: var(--font-mono); font-size: 10.5px; fill: var(--color-smoke); }
-  .ptv__top { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; fill: var(--color-smoke); }
-  .ptv__top--you { fill: var(--color-bone); }
+  .ptv__svg text { font-family: var(--font-sans); }
+  .ptv__name { font-size: 17px; font-weight: 700; fill: var(--color-bone); }
+  .ptv__name--dim { fill: var(--color-mist); }
+  .ptv__name--sm { font-size: 15.5px; }
+  .ptv__sub { font-size: 13px; fill: var(--color-mist); }
+  .ptv__sub--you { fill: var(--color-bone); }
 
-  .ptv__sbx-box { fill: rgb(255 255 255 / .015); stroke: rgb(255 255 255 / .2); stroke-dasharray: 4 5; }
+  .ptv__sbx-box { fill: rgb(255 255 255 / .015); stroke: rgb(255 255 255 / .22); stroke-dasharray: 4 5; }
   .ptv__slot { fill: rgb(255 255 255 / .03); stroke: rgb(255 255 255 / .1); }
-  .ptv__slot-t { font-family: var(--font-mono); font-size: 11px; fill: var(--color-smoke); }
+  .ptv__slot-t { font-size: 13px; font-weight: 500; fill: var(--color-mist); }
 
-  .ptv__wire { stroke: rgb(255 255 255 / .14); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+  .ptv__wire { stroke: rgb(255 255 255 / .16); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
   .ptv__layer-box { stroke: rgb(245 131 39 / .55); stroke-width: 1; }
-  .ptv__layer-t { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; fill: var(--color-flame-400); }
+  .ptv__layer-t { font-size: 13.5px; font-weight: 700; fill: var(--color-flame-300); }
 
-  .ptv__pkt { transform: translateX(110px); }
+  .ptv__pkt { transform: translateX(46px); }
   .ptv__pkt-box { fill: var(--color-bone); stroke: none; }
-  .ptv__pkt-t { font-family: var(--font-mono); font-size: 11px; fill: var(--color-ink-950); }
 
   .ptv__you-box { stroke: rgb(245 131 39 / .55); stroke-width: 1.2; filter: drop-shadow(0 18px 40px rgb(217 76 0 / .28)); }
   .ptv__logo { fill: var(--color-bone); }
   .ptv__logo-mark { stroke: var(--color-ink-950); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .ptv__got-box { fill: rgb(244 239 233 / .06); stroke: rgb(244 239 233 / .22); }
-  .ptv__got-dot { fill: var(--color-ok); }
-  .ptv__got-t { font-family: var(--font-mono); font-size: 11px; fill: var(--color-bone); }
+  .ptv__got-t { font-size: 13px; font-weight: 600; fill: var(--color-bone); }
 
   .ptv__down-pulse { stroke: var(--color-flame-400); stroke-width: 2; stroke-linecap: round; fill: none; stroke-dasharray: 0 100; }
   .ptv__client-box { fill: rgb(255 255 255 / .03); stroke: rgb(255 255 255 / .16); }
-  .ptv__client-av { fill: var(--color-ink-600); stroke: rgb(255 255 255 / .3); }
+  .ptv__client-av { fill: rgb(122 209 155 / .14); stroke: rgb(122 209 155 / .5); }
+  .ptv__client-ok { fill: none; stroke: var(--color-ok); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  @container (max-width: 460px) {
+    .ptv__name { font-size: 20px; }
+    .ptv__name--sm { font-size: 19px; }
+    .ptv__sub { display: none; }
+    .ptv__name--sm { transform: translateY(9px); }
+    .ptv__layer-t { font-size: 15.5px; }
+    .ptv__slot-t { display: none; }
+    .ptv__got-t { font-size: 16px; }
+  }
 
   @media (prefers-reduced-motion: no-preference) {
     .ptv__pkt { opacity: 0; transform: none; animation: ptv-move 6s var(--ease-in-out-quart) infinite; animation-delay: calc(var(--k) * 2s); }
     .ptv__pkt-box { animation: ptv-brand 6s var(--ease-in-out-quart) infinite; animation-delay: calc(var(--k) * 2s); }
-    .ptv__pkt-t { animation: ptv-brand-t 6s var(--ease-in-out-quart) infinite; animation-delay: calc(var(--k) * 2s); }
     .ptv__got-box { animation: ptv-got 6s ease infinite; animation-delay: calc(var(--k) * 2s); }
     .ptv__down-pulse { animation: ptv-down 2s var(--ease-out-expo) infinite 1.6s; }
     .ptv__layer-box { animation: ptv-layer 2s ease-in-out infinite; }
@@ -129,12 +141,11 @@ const PW = 64; // packet width
   @keyframes ptv-move {
     0% { opacity: 0; transform: translateX(0); }
     6% { opacity: 1; transform: translateX(0); }
-    52% { opacity: 1; transform: translateX(110px); }
-    62% { opacity: 0; transform: translateX(124px); }
-    100% { opacity: 0; transform: translateX(124px); }
+    52% { opacity: 1; transform: translateX(96px); }
+    62% { opacity: 0; transform: translateX(110px); }
+    100% { opacity: 0; transform: translateX(110px); }
   }
   @keyframes ptv-brand { 0%, 26% { fill: var(--color-flame-500); } 34%, 100% { fill: var(--color-bone); } }
-  @keyframes ptv-brand-t { 0%, 26% { fill: #1a0d03; } 34%, 100% { fill: var(--color-ink-950); } }
   @keyframes ptv-got { 0%, 54% { stroke: rgb(244 239 233 / .22); } 60%, 72% { stroke: rgb(245 131 39 / .9); } 90%, 100% { stroke: rgb(244 239 233 / .22); } }
   @keyframes ptv-down { 0% { stroke-dasharray: 0 100; stroke-dashoffset: 0; opacity: 1; } 60% { stroke-dasharray: 30 100; stroke-dashoffset: -70; opacity: 1; } 80%, 100% { stroke-dasharray: 30 100; stroke-dashoffset: -100; opacity: 0; } }
   @keyframes ptv-layer { 0%, 100% { stroke: rgb(245 131 39 / .4); } 50% { stroke: rgb(245 131 39 / .9); } }

@@ -1,7 +1,8 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { localize, type Lang } from '@/i18n';
 import { ICONS } from '@/components/ui/icons';
-import { CAT_IDS, COPY, METER, type CatId, type GeoCopy, type Mode, type Source } from './copy';
+import { ToolTile } from '@/components/ui/ToolBadge';
+import { ASSISTANTS, CAT_IDS, COPY, METER, bandOf, type CatId, type GeoCopy, type Mode, type Source } from './copy';
 import { fillBrand, tokenDelay, tokenize, type Tokenized } from './stream';
 import { useDebounced, useInView, usePageVisible, useReducedMotion, useTween } from './hooks';
 import Meter from './Meter';
@@ -138,7 +139,6 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [typed, setTyped] = useState(0);
   const [shown, setShown] = useState(0);
-  const [elapsed, setElapsed] = useState<number | null>(null);
   const [hot, setHot] = useState<number | null>(null);
   const [nudge, setNudge] = useState(false);
   const [live, setLive] = useState('');
@@ -192,7 +192,6 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
       setTyped(qLen);
       setShown(Number.MAX_SAFE_INTEGER);
       setPhase('done');
-      setElapsed(null);
       return;
     }
     let cancelled = false;
@@ -200,11 +199,9 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
     let ph: Phase = run.typeQ ? 'typing' : 'searching';
     let ti = run.typeQ ? 0 : qLen;
     let si = 0;
-    let t0 = 0;
     setPhase(ph);
     setTyped(ti);
     setShown(0);
-    setElapsed(null);
     setHot(null);
 
     const later = (ms: number) => {
@@ -222,13 +219,11 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
         if (ti >= qLenRef.current) {
           ph = 'searching';
           setPhase(ph);
-          t0 = performance.now();
           return later(900);
         }
         return later(Math.min(20 + Math.random() * 38, TYPE_BUDGET_MS / Math.max(1, qLenRef.current)));
       }
       if (ph === 'searching') {
-        if (!t0) t0 = performance.now();
         ph = 'streaming';
         setPhase(ph);
       }
@@ -237,7 +232,6 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
       if (si >= totalRef.current) {
         ph = 'done';
         setPhase('done');
-        setElapsed((performance.now() - t0) / 1000);
         return;
       }
       const tk = activeRef.current;
@@ -333,15 +327,24 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
       data-phase={phase}
       data-paused={!inView || !pageVisible ? '' : undefined}
     >
-      {/* ── window bar ─────────────────────────────── */}
+      {/* ── header: what this is, and which assistants it looks like ─────── */}
       <div className="ga-bar">
-        <div className="ga-bar__path">
-          <span className="ga-bar__glyph" aria-hidden="true">
-            <Ico name="globe" size={14} />
-          </span>
-          <span className="ga-bar__crumb">{t.bar.path}</span>
-          <span className="ga-bar__sep" aria-hidden="true">/</span>
-          <span className="ga-bar__file">{cat.slug}</span>
+        <div className="ga-bar__id">
+          <ToolTile tool="ai" lang={lang} size={34} title="" />
+          <div className="ga-bar__text">
+            <p className="ga-bar__title">{t.bar.title}</p>
+            <p className="ga-bar__lead">
+              <span>{t.bar.lead}</span>
+              <span className="ga-bar__chips">
+                {ASSISTANTS.map((a) => (
+                  <span key={a.name.en} className="ga-chip">
+                    <ToolTile tool={a.tool} lang={lang} size={20} title="" brand={a.brand} />
+                    {a.name[lang]}
+                  </span>
+                ))}
+              </span>
+            </p>
+          </div>
         </div>
         <div className="ga-bar__right">
           <span className="ga-pill">{t.bar.illustrative}</span>
@@ -353,12 +356,12 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
               restart(true);
             }}
             aria-label={t.bar.replayAria}
-            title={t.bar.replay}
           >
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3" />
               <path d="M4.5 4.5v3.2h3.2" />
             </svg>
+            <span aria-hidden="true">{t.bar.replay}</span>
           </button>
         </div>
       </div>
@@ -454,14 +457,11 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
 
             <div className="ga-answer">
               <div className="ga-answer__meta">
-                <span className="ga-answer__glyph" aria-hidden="true">
-                  <Ico name="spark" size={14} />
-                </span>
+                <ToolTile tool="ai" lang={lang} size={26} title="" />
                 <span className="ga-answer__phase">
                   {phaseText}
                   {(phase === 'searching' || phase === 'streaming') && <span className="ga-dots" aria-hidden="true"><i /><i /><i /></span>}
                 </span>
-                {done && elapsed !== null && <span className="ga-answer__time">{elapsed.toFixed(1)} s</span>}
               </div>
 
               <div className="ga-answer__stack">
@@ -559,6 +559,7 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
             values={meterVals}
             before={prof.before}
             beforeScore={score(prof.before)}
+            band={bandOf(score(target))}
             modeLabel={modeLabel}
             headingId={`${uid}-meter`}
           />

@@ -1,0 +1,13 @@
+---
+/**
+ * A tool tile drawn inside an SVG drawing (hero visuals are SVGs): the tool's main brand mark
+ * (HubSpot for CRM, Gmail for email...) or the generic icon for tools without brands.
+ * Same renderer as ToolBadge (src/components/ui/tool-render.ts).
+ */
+import { tileSVG } from '@/components/ui/tool-render';
+import type { ToolKey } from '@/components/ui/tool-icons';
+
+interface Props { tool: ToolKey; x: number; y: number; size?: number; class?: string }
+const { tool, x, y, size = 28, class: cls } = Astro.props;
+---
+<g class:list={['svt', cls]} set:html={tileSVG(tool, { size, x, y })} />

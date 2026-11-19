@@ -3,13 +3,13 @@ import { localize, type Lang } from '@/i18n';
 import { ICONS } from '@/components/ui/icons';
 import { COPY, fteText, type Seg } from './copy';
 import {
-  CURRENCIES, DEFAULTS, compute, currencySymbol, fmtFte, fmtInt, fmtMoney, handoffQuery, niceCeil,
+  CURRENCIES, DEFAULTS, compute, currencySymbol, fmtFte, fmtInt, fmtMoney, handoffQuery,
   type Currency, type FieldId, type Inputs,
 } from './model';
 import { useDebounced, useReducedMotion, useSeenOnce, useStoredChoice, useTween } from './hooks';
 import RangeField from './RangeField';
-import Chart from './Chart';
-import Dots from './Dots';
+import YearBars from './YearBars';
+import HoursSplit from './HoursSplit';
 import './roi.css';
 
 const STORE_KEY = 'sbx:roi:currency';
@@ -43,7 +43,7 @@ function Sentence({ segs }: { segs: Seg[] }) {
 /**
  * "What could AI give back to your team?": a transparent estimator.
  * Four inputs → hours given back, value of that time (the client's own cost), FTE equivalent,
- * a 12-month cumulative curve with a rollout ramp, and a dot matrix of reclaimed time.
+ * a simple bar of hours given back vs still by hand, and twelve monthly columns of the running total.
  * Never shows Sandbox prices: the only money on screen is what the team's time costs today.
  */
 export default function RoiCalculator({ lang }: { lang: Lang }) {
@@ -65,15 +65,13 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
   );
 
   const r = useMemo(() => compute(inputs), [inputs]);
-  const yMax = niceCeil(r.fullPace[11] || 1);
 
   // Numbers render final on the server and on hydration (no 0 → n count-up); after that, edits
-  // morph from the previous values. The chart still draws itself in when first seen.
-  const target = [r.hoursBack, r.value, r.fte, yMax, ...r.cumulative, ...r.fullPace];
+  // morph from the previous values. The bars still grow in when first seen.
+  const target = [r.hoursBack, r.value, r.fte, r.totalHours, ...r.cumulative];
   const tw = useTween(target, { duration: 700, instant: reduced });
-  const [twHours, twValue, twFte, twYMax] = tw;
+  const [twHours, twValue, twFte, twTotal] = tw;
   const twCum = tw.slice(4, 16);
-  const twFull = tw.slice(16, 28);
 
   // Close the info popover on Escape / outside click.
   const tipRef = useRef<HTMLSpanElement>(null);
@@ -128,15 +126,16 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
 
   return (
     <div className="roi" data-seen={seen ? '' : undefined} role="group" aria-label={t.aria}>
-      {/* ── window bar ─────────────────────────────── */}
+      {/* ── top bar ─────────────────────────────── */}
       <div className="roi-bar">
-        <div className="roi-bar__path">
+        <div className="roi-bar__intro">
           <span className="roi-bar__glyph" aria-hidden="true">
-            <Ico name="chart" size={14} />
+            <Ico name="chart" size={16} />
           </span>
-          <span className="roi-bar__crumb">{t.bar.path}</span>
-          <span className="roi-bar__sep" aria-hidden="true">/</span>
-          <span className="roi-bar__file">{t.bar.file}</span>
+          <span className="roi-bar__text">
+            <span className="roi-bar__title">{t.bar.title}</span>
+            <span className="roi-bar__sub">{t.bar.sub}</span>
+          </span>
         </div>
         <div className="roi-bar__right">
           <div className="roi-seg" role="radiogroup" aria-label={t.bar.currencyAria}>
@@ -164,7 +163,6 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
               </button>
             ))}
           </div>
-          <span className="roi-pill">{t.bar.estimate}</span>
         </div>
       </div>
 
@@ -173,7 +171,7 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
         <section className="roi-in" aria-labelledby={`${uid}-in`}>
           <header className="roi-panel__head">
             <h3 className="roi-panel__title" id={`${uid}-in`}>
-              <span aria-hidden="true">[A]</span> {t.inputsTitle}
+              {t.inputsTitle}
             </h3>
             <button
               type="button"
@@ -193,7 +191,6 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
           <div className="roi-fields">
             <RangeField
               field="people"
-              index="01"
               label={t.fields.people.label}
               value={inputs.people}
               onChange={setters.people}
@@ -203,7 +200,6 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
             />
             <RangeField
               field="hours"
-              index="02"
               label={t.fields.hours.label}
               hint={t.fields.hours.hint}
               value={inputs.hours}
@@ -213,7 +209,6 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
             />
             <RangeField
               field="rate"
-              index="03"
               label={t.fields.rate.label}
               hint={t.fields.rate.hint}
               value={inputs.rate}
@@ -225,7 +220,6 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
             />
             <RangeField
               field="automation"
-              index="04"
               label={t.fields.automation.label}
               value={inputs.automation}
               onChange={setters.automation}
@@ -259,7 +253,7 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
         <section className="roi-out" ref={outRef} aria-labelledby={`${uid}-out`}>
           <header className="roi-panel__head">
             <h3 className="roi-panel__title" id={`${uid}-out`}>
-              <span aria-hidden="true">[B]</span> {t.outputsTitle}
+              {t.outputsTitle}
             </h3>
             <span className="roi-panel__meta">{t.outputsMeta}</span>
           </header>
@@ -293,20 +287,17 @@ export default function RoiCalculator({ lang }: { lang: Lang }) {
           </p>
 
           <div className="roi-viz">
-            <Chart
+            <HoursSplit
               lang={lang}
-              t={t.chart}
-              cur={cur}
-              cumulative={twCum}
-              fullPace={twFull}
-              yMax={twYMax || yMax}
-              yMaxTarget={yMax}
-              year1={r.year1}
-              annual={r.value}
+              t={t.split}
+              total={twTotal}
+              back={twHours}
+              finalTotal={r.totalHours}
+              finalBack={r.hoursBack}
+              automation={inputs.automation}
               reveal={seen}
-              reduced={reduced}
             />
-            <Dots lang={lang} t={t.dots} total={r.totalHours} back={r.hoursBack} automation={inputs.automation} reveal={seen} />
+            <YearBars lang={lang} t={t.year} cur={cur} cumulative={twCum} finalCumulative={r.cumulative} reveal={seen} />
           </div>
         </section>
       </div>

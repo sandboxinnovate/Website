@@ -4,7 +4,7 @@ import { unitBySlug } from '@/data/site';
 import { COPY } from './copy';
 import { DIMS, LEVELS, type Answers, type Result } from './model';
 import Gauge from './Gauge';
-import Radar from './Radar';
+import DimBars from './DimBars';
 import LeadForm from './LeadForm';
 import Ico from './Ico';
 
@@ -37,7 +37,6 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('sbx:diagnostic-result', { detail: { href: talkHref } }));
   }, [talkHref]);
-  const dimNames = DIMS.map((d) => t.dims[d].name);
   const radarAria = t.radarAria(DIMS.map((d) => `${t.dims[d].name} ${result.dims[d]}`).join(', '));
 
   return (
@@ -45,7 +44,7 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
       <div className="rd-res__top">
         <section className="rd-res__score" aria-labelledby={`${uid}-level`}>
           <div className="rd-res__level">
-            <p className="rd-mono rd-mono--flame">{t.levelOf(result.level + 1, LEVELS.length)}</p>
+            <p className="rd-res__eyebrow">{t.levelOf(result.level + 1, LEVELS.length)}</p>
             <h2 id={`${uid}-level`} ref={headingRef} tabIndex={-1} className="rd-res__name">
               {levelCopy.name}
             </h2>
@@ -97,22 +96,21 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
           </ol>
         </section>
 
-        <section className="rd-res__radar" aria-label={t.byDimension}>
-          <p className="rd-mono">{t.byDimension}</p>
-          <Radar
-            values={DIMS.map((d) => result.dims[d])}
-            labels={dimNames}
-            size="lg"
-            showValues
-            threshold={next ? next.min : 80}
+        <section className="rd-res__radar" aria-labelledby={`${uid}-dims`}>
+          <h3 id={`${uid}-dims`} className="rd-res__dimsTitle">
+            {t.byDimension}
+          </h3>
+          <p className="rd-res__dimsLede">{t.byDimensionLede}</p>
+          <DimBars
+            rows={DIMS.map((d) => ({ id: d, name: t.dims[d].name, blurb: t.dims[d].blurb, value: result.dims[d], current: d === weakest && !balanced }))}
+            bands={t.dimBand}
+            marker={next ? next.min : 80}
             intro
             instant={reduced}
             ariaLabel={radarAria}
           />
           <p className="rd-res__legend">
-            <svg width="22" height="6" viewBox="0 0 22 6" aria-hidden="true">
-              <line x1="0" y1="3" x2="22" y2="3" />
-            </svg>
+            <span className="rd-res__legendMark" aria-hidden="true" />
             {next ? t.thresholdNote(t.levels[next.id].name, next.min) : t.topLevelNote}
           </p>
         </section>
@@ -138,7 +136,6 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
             return (
               <li key={m.id} className="rd-move" style={{ ['--i' as string]: i } as CSSProperties}>
                 <div className="rd-move__head">
-                  <span className="rd-move__idx">{String(i + 1).padStart(2, '0')}</span>
                   <span className="rd-move__hz">{t.horizons[i]}</span>
                   <span className="rd-move__why">
                     {m.dim ? t.triggeredBy(t.dims[m.dim].name, result.dims[m.dim]) : t.triggeredByOverall(result.score)}
@@ -149,7 +146,6 @@ export default function Results({ lang, result, answers, sentTo, onSent, reduced
                 {unit && (
                   <div className="rd-move__foot">
                     <a href={localize(lang, `/services/${m.unit}`)} className="rd-chip-link">
-                      <span className="rd-chip-link__code">{unit.code}</span>
                       {t.seeUnit(unit.name[lang])}
                       <Ico name="arrow-up-right" size={14} />
                     </a>

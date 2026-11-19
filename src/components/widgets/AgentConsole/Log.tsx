@@ -1,12 +1,15 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Lang } from '@/i18n';
+import { ToolTile } from '@/components/ui/ToolBadge';
+import type { ToolKey } from '@/components/ui/tool-icons';
 import type { ConsoleCopy } from './copy';
 import type { ScenarioDef } from './scenarios';
 import {
-  AUTO_APPROVE_MS, fmtClock, fmtLatency, fmtSec, lineClock, pad2,
+  AUTO_APPROVE_MS, fmtLatency, fmtSec, fmtStamp, lineClock, pad2,
   type EngineState, type TLine, type Timeline,
 } from './engine';
 import Ico from './Ico';
+import StepTile from './StepTile';
 
 interface Props {
   sc: ScenarioDef;
@@ -19,7 +22,22 @@ interface Props {
   resultFor: (i: number) => string;
 }
 
-/** Highlights "strings" inside code-like text. */
+/** A line the activity feed shows: a plain sentence with the tool it touched. */
+interface FeedItem { id: string; k: 'say' | 'think' | 'info' | 'warn'; text: string; tool: ToolKey; pending: boolean }
+
+function toFeed(l: TLine, cursor: number, fallback: ToolKey): FeedItem | 'gate' | null {
+  if (l.k === 'gate') return 'gate';
+  if ((l.k === 'call' || l.k === 'event') && l.say) {
+    const pending = l.k === 'call' && cursor < l.at + l.ms;
+    return { id: l.id, k: 'say', text: l.say, tool: l.tool ?? fallback, pending };
+  }
+  if (l.k === 'think') return { id: l.id, k: 'think', text: l.say ?? l.text, tool: l.tool ?? 'ai', pending: false };
+  if (l.k === 'info') return { id: l.id, k: 'info', text: l.say ?? l.text, tool: l.tool ?? fallback, pending: false };
+  if (l.k === 'warn') return { id: l.id, k: 'warn', text: l.say ?? l.text, tool: l.tool ?? 'reports', pending: false };
+  return null;
+}
+
+/** Highlights "strings" inside code-like text (technical details only). */
 function Code({ text }: { text: string }) {
   return (
     <>
@@ -30,20 +48,27 @@ function Code({ text }: { text: string }) {
   );
 }
 
+/**
+ * Right-hand panel: a readable activity feed (one plain sentence per thing the assistant did,
+ * each with its tool tile), the approval card, and the raw run log tucked behind a toggle.
+ */
 export default function Log({ sc, tl, lang, ui, view, compact, onApprove, resultFor }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const stick = useRef(true);
+  const [techOpen, setTechOpen] = useState(false);
   const c = view.cursor;
-  const lines = tl.lines.filter((l) => l.at <= c && !(compact && (l.minor || l.k === 'info')));
-  const count = lines.filter((l) => l.k !== 'step').length;
+  const shown = tl.lines.filter((l) => l.at <= c && !(compact && l.minor));
+  const feed = shown
+    .map((l) => ({ l, f: toFeed(l, c, sc.steps[l.step].uses === 'person' ? 'chat' : (sc.steps[l.step].uses as ToolKey)) }))
+    .filter((x) => x.f !== null);
 
   // Follow the newest line unless the reader scrolled up. Never scrolls the page itself.
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (lines.length === 0) stick.current = true;
+    if (feed.length === 0) stick.current = true;
     if (stick.current) el.scrollTop = el.scrollHeight;
-  }, [lines.length, view.approved, c >= tl.runEnd]);
+  }, [feed.length, view.approved, c >= tl.runEnd, techOpen]);
 
   useEffect(() => {
     const el = ref.current;
@@ -58,52 +83,69 @@ export default function Log({ sc, tl, lang, ui, view, compact, onApprove, result
     if (el) stick.current = el.scrollHeight - el.scrollTop - el.clientHeight < 32;
   };
 
-  const ts = (at: number) => fmtClock(lineClock(tl, view, at), lang);
+  const gateCard = (l: TLine) => {
+    const g = sc.steps[l.step].gate!;
+    const ok = !!view.approved;
+    const secs = Math.max(1, Math.ceil((AUTO_APPROVE_MS - view.extra) / 1000));
+    const resolved =
+      view.approved === 'you' ? ui.gate.byYou
+      : view.approved === 'auto' ? ui.gate.byAuto
+      : ui.gate.byStatic(g.approver[lang]);
+    return (
+      <li key={l.id} className="ac-gate" data-state={ok ? 'ok' : 'wait'} data-gate-node="">
+        <div className="ac-gate__head">
+          <StepTile tool="person" lang={lang} size={24} />
+          <span>{ok ? ui.gate.resultStatic : ui.gate.title}</span>
+        </div>
+        <p className="ac-gate__title">{g.title[lang]}</p>
+        <p className="ac-gate__ex">{g.excerpt[lang]}</p>
+        <p className="ac-gate__pol"><b>{ui.gate.why}:</b> {g.policy[lang]}</p>
+        <div className="ac-gate__act">
+          {ok ? (
+            <span className="ac-gate__done"><Ico name="check" size={14} stroke={2} />{resolved}</span>
+          ) : (
+            <>
+              <button type="button" className="ac-approve" onClick={onApprove}>
+                <span className="ac-approve__chip" aria-hidden="true"><Ico name="check" size={15} stroke={2} /></span>
+                {ui.gate.approve}
+              </button>
+              <span className="ac-gate__auto">{ui.gate.auto(secs)}</span>
+            </>
+          )}
+        </div>
+      </li>
+    );
+  };
 
-  const row = (l: TLine) => {
+  const feedRow = (f: FeedItem) => (
+    <li key={f.id} className="ac-fd" data-k={f.k} data-pending={f.pending ? '' : undefined}>
+      <ToolTile tool={f.tool} lang={lang} size={26} title="" />
+      <span className="ac-fd__txt">
+        {f.k === 'warn' && <Ico name="alert" size={13} className="ac-fd__warn" />}
+        {f.text}
+        {f.pending && <span className="ac-fd__dots" aria-hidden="true"><i /><i /><i /></span>}
+      </span>
+    </li>
+  );
+
+  /* ------------------------------------------------ technical details (raw log) */
+  const ts = (at: number) => fmtStamp(lineClock(tl, view, at), lang);
+  const techRow = (l: TLine) => {
     switch (l.k) {
-      case 'step': {
-        const s = sc.steps[l.step];
+      case 'step':
         return (
           <li key={l.id} className="ac-ln ac-ln--step">
-            <span>[{pad2(l.step + 1)}]</span> <b>{s.label[lang]}</b>
+            <span>[{pad2(l.step + 1)}]</span> <b>{sc.steps[l.step].label[lang]}</b>
           </li>
         );
-      }
-      case 'gate': {
-        const g = sc.steps[l.step].gate!;
-        const ok = !!view.approved;
-        const secs = Math.max(1, Math.ceil((AUTO_APPROVE_MS - view.extra) / 1000));
-        const resolved =
-          view.approved === 'you' ? ui.gate.byYou(fmtSec(view.approvedAfter, lang))
-          : view.approved === 'auto' ? ui.gate.byAuto(fmtSec(view.approvedAfter, lang))
-          : ui.gate.byStatic(g.approver[lang]);
+      case 'gate':
         return (
-          <li key={l.id} className="ac-gate" data-state={ok ? 'ok' : 'wait'} data-gate-node="">
-            <div className="ac-gate__head">
-              <Ico name="shield" size={14} />
-              <span>{ui.gate.title}</span>
-              <span className="ac-gate__ts">{ts(l.at)}</span>
-            </div>
-            <p className="ac-gate__title">{g.title[lang]}</p>
-            <p className="ac-gate__ex">{g.excerpt[lang]}</p>
-            <p className="ac-gate__pol">{g.policy[lang]}</p>
-            <div className="ac-gate__act">
-              {ok ? (
-                <span className="ac-gate__done"><Ico name="check" size={14} stroke={2} />{resolved}</span>
-              ) : (
-                <>
-                  <button type="button" className="ac-approve" onClick={onApprove}>
-                    <span className="ac-approve__chip" aria-hidden="true"><Ico name="check" size={15} stroke={2} /></span>
-                    {ui.gate.approve}
-                  </button>
-                  <span className="ac-gate__auto">{ui.gate.auto(secs)}</span>
-                </>
-              )}
-            </div>
+          <li key={l.id} className="ac-ln" data-k="human">
+            <span className="ac-ln__ts">{ts(l.at)}</span>
+            <span className="ac-ln__tag">{ui.tags.human}</span>
+            <span className="ac-ln__msg">approval.wait{view.approved ? ` → ${view.approved}` : ''}</span>
           </li>
         );
-      }
       case 'call': {
         const done = c >= l.at + l.ms;
         return (
@@ -121,7 +163,7 @@ export default function Log({ sc, tl, lang, ui, view, compact, onApprove, result
                   <span className="tk-lat"> · {fmtLatency(l.ms)}</span>
                 </>
               ) : (
-                <span className="tk-pend">→ <i /><i /><i /></span>
+                <span className="tk-pend">→ …</span>
               )}
             </span>
           </li>
@@ -168,7 +210,6 @@ export default function Log({ sc, tl, lang, ui, view, compact, onApprove, result
     <>
       <div className="ac-side__head">
         <span className="ac-side__title">{ui.log}</span>
-        <span className="ac-side__count">{ui.events(count)}</span>
         <span className="ac-side__live" data-on={c > 0 && c < tl.runEnd ? '' : undefined}>
           <span className="ac-dot" aria-hidden="true" />
           {ui.live}
@@ -183,15 +224,26 @@ export default function Log({ sc, tl, lang, ui, view, compact, onApprove, result
         aria-label={ui.log}
         tabIndex={0}
       >
-        {lines.length === 0 ? (
+        {feed.length === 0 ? (
           <p className="ac-log__wait">
             <span className="ac-log__cursor" aria-hidden="true" />
             {ui.waiting}
           </p>
         ) : (
-          <ol className="ac-log__list">{lines.map(row)}</ol>
+          <ol className="ac-feed">{feed.map(({ l, f }) => (f === 'gate' ? gateCard(l) : feedRow(f as FeedItem)))}</ol>
         )}
       </div>
+      <details className="ac-tech" open={techOpen} onToggle={(e) => setTechOpen(e.currentTarget.open)}>
+        <summary className="ac-tech__sum">
+          <Ico name="chevron-down" size={14} className="ac-tech__chev" />
+          {techOpen ? ui.tech.hide : ui.tech.show}
+        </summary>
+        {techOpen && (
+          <div className="ac-tech__box" tabIndex={0} aria-label={ui.tech.label} role="region">
+            <ol className="ac-log__list">{shown.map(techRow)}</ol>
+          </div>
+        )}
+      </details>
     </>
   );
 }

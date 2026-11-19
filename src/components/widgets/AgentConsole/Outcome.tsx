@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { localize, type Lang } from '@/i18n';
 import type { ConsoleCopy } from './copy';
 import { pickS, type ScenarioDef } from './scenarios';
-import { TYPE_MS, fmtSec, useFrame, type FrameRegistry, type Timeline } from './engine';
+import { TYPE_MS, fmtSecs, useFrame, type FrameRegistry, type Timeline } from './engine';
 import Ico from './Ico';
 
 interface Props {
@@ -50,7 +50,7 @@ export default function Outcome({ sc, tl, lang, ui, open, elapsed, reg }: Props)
             <span className="ac-out__ok" aria-hidden="true"><Ico name="check" size={14} stroke={2.2} /></span>
             <p className="ac-out__title">
               <span className="ac-out__eyebrow">{ui.outcome}</span>
-              {o.headline[lang].replace('{t}', fmtSec(elapsed, lang))}
+              {o.headline[lang].replace('{t}', fmtSecs(elapsed, lang))}
             </p>
             <span className="ac-out__base">{o.baseline[lang]}</span>
           </div>

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { Lang } from '@/i18n';
+import type { ToolKey } from '@/components/ui/tool-icons';
 import { pickS, type ScenarioDef } from './scenarios';
 
 /**
@@ -21,7 +22,7 @@ export const STATIC_GATE_WAIT = 3400; // nominal wait shown in the reduced-motio
 export type NodeState = 'idle' | 'running' | 'gate' | 'done';
 export type ChipState = 'idle' | 'running' | 'done';
 
-interface LineBase { id: string; at: number; step: number; minor?: boolean }
+interface LineBase { id: string; at: number; step: number; minor?: boolean; say?: string; tool?: ToolKey }
 export type TLine =
   | (LineBase & { k: 'step' })
   | (LineBase & { k: 'event'; text: string })
@@ -59,10 +60,11 @@ export function buildTimeline(sc: ScenarioDef, lang: Lang): Timeline {
     s.logs.forEach((d, j) => {
       const id = `${i}-${j}`;
       const at = start + d.t;
+      const plain = { say: d.say?.[lang], tool: d.tool };
       if (d.k === 'call') {
-        lines.push({ id, at, step: i, k: 'call', fn: d.fn, args: pickS(d.args, lang), code: d.code, ms: d.ms, chip: d.chip, minor: d.minor });
+        lines.push({ id, at, step: i, k: 'call', fn: d.fn, args: pickS(d.args, lang), code: d.code, ms: d.ms, chip: d.chip, minor: d.minor, ...plain });
       } else {
-        lines.push({ id, at, step: i, k: d.k, text: pickS(d.text, lang), minor: d.minor } as TLine);
+        lines.push({ id, at, step: i, k: d.k, text: pickS(d.text, lang), minor: d.minor, ...plain } as TLine);
       }
     });
     if (g !== null) lines.push({ id: `${i}-g`, at: g, step: i, k: 'gate' });
@@ -154,12 +156,25 @@ export function viewKey(tl: Timeline, e: EngineState): string {
 /** Decimal point in both languages, like the ROI estimator (es-419 uses a point). */
 const dec = (s: string, _lang: Lang) => s;
 
-/** 00:12.48 */
-export function fmtClock(ms: number, lang: Lang): string {
+/** 0:12 (a plain stopwatch) */
+export function fmtClock(ms: number, _lang: Lang): string {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+}
+
+/** Technical-details timestamp: 00:12.48 */
+export function fmtStamp(ms: number, lang: Lang): string {
   const cs = Math.max(0, Math.floor(ms / 10));
   const m = Math.floor(cs / 6000);
   const s = (cs % 6000) / 100;
   return `${String(m).padStart(2, '0')}:${dec(s.toFixed(2).padStart(5, '0'), lang)}`;
+}
+
+/** Friendly duration: "14 seconds" / "14 segundos" (at least 1). */
+export function fmtSecs(ms: number, lang: Lang): string {
+  const n = Math.max(1, Math.round(ms / 1000));
+  if (lang === 'es') return `${n} ${n === 1 ? 'segundo' : 'segundos'}`;
+  return `${n} ${n === 1 ? 'second' : 'seconds'}`;
 }
 
 /** 12.4s / 12.4 s */

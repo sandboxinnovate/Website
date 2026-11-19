@@ -1,9 +1,8 @@
 import { useEffect, useId, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import { localize, type Lang } from '@/i18n';
 import { COPY } from './copy';
-import { ARCHETYPES, DIMS, HANDOFF_PARAM, LEVELS, QUESTIONS, archetypeScore } from './model';
+import { ARCHETYPES, DIMS, HANDOFF_PARAM, QUESTIONS, archetypeScore } from './model';
 import { useInView, usePageVisible, useReducedMotion, useTween } from './hooks';
-import Radar from './Radar';
 import Ico from './Ico';
 
 const CYCLE_MS = 3000;
@@ -30,7 +29,6 @@ export default function Teaser({ lang }: { lang: Lang }) {
   }, [reduced, inView, visible, picked]);
 
   const arche = ARCHETYPES[idx];
-  const levelI = LEVELS.findIndex((l) => l.id === arche.level);
   const anim = useTween(arche.dims, { duration: 1100, instant: reduced });
   const shown = archetypeScore(anim);
 
@@ -62,17 +60,8 @@ export default function Teaser({ lang }: { lang: Lang }) {
       </div>
 
       <div className="rd-teaser__profile">
-        <div className="rd-teaser__radar" role="img" aria-label={t.teaser.sampleAria}>
-          <Radar
-            size="sm"
-            values={anim.map((v) => Math.max(0, v))}
-            labels={DIMS.map((d) => t.dims[d].short)}
-            instant
-            threshold={null}
-          />
-        </div>
+        <p className="rd-sr">{t.teaser.sampleAria}</p>
         <div className="rd-teaser__info" aria-hidden="true">
-          <span className="rd-teaser__illus">{t.teaser.illustrative}</span>
           <span className="rd-teaser__headline">
             <span className="rd-teaser__level" key={arche.level}>
               {t.levels[arche.level].name}
@@ -85,7 +74,6 @@ export default function Teaser({ lang }: { lang: Lang }) {
           <ul className="rd-teaser__legend">
             {DIMS.map((d, i) => (
               <li key={d}>
-                <span>{t.dims[d].short}</span>
                 <span className="n">{t.dims[d].name}</span>
                 <span className="b">
                   <i style={{ transform: `scaleX(${Math.max(0, anim[i] ?? 0) / 100})` }} />
@@ -94,11 +82,7 @@ export default function Teaser({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ul>
-          <span className="rd-teaser__ladder">
-            {LEVELS.map((l, i) => (
-              <span key={l.id} data-on={i <= levelI ? '' : undefined} data-current={i === levelI ? '' : undefined} />
-            ))}
-          </span>
+          <span className="rd-teaser__illus">{t.teaser.illustrative}</span>
         </div>
       </div>
 

@@ -170,6 +170,11 @@ export const HOME = {
       en: ['Knowledge', 'Agents', 'Tools', 'Human approval'],
       es: ['Conocimiento', 'Agentes', 'Herramientas', 'Aprobación humana'],
     } as L10n<string[]>,
+    /** One plain line under each layer name, in the same order as featureLayers. */
+    featureLayerNotes: {
+      en: ['Documents, CRM, conversations and history', 'Research, draft, report and operate', 'The apps your team already uses', 'People sign off where it matters'],
+      es: ['Documentos, CRM, conversaciones e historial', 'Investigan, redactan, reportan y operan', 'Las apps que tu equipo ya usa', 'Las personas aprueban donde importa'],
+    } as L10n<string[]>,
     featureCta: { en: 'Explore Brains', es: 'Ver Brains' } as S,
     casesLabel: { en: 'Client results · from our Growth work', es: 'Resultados de clientes · de nuestro trabajo en Growth' } as S,
     cases: [
