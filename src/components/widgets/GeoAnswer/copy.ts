@@ -36,10 +36,32 @@ export const METER: Record<CatId, Record<Mode, [number, number, number]>> = {
   skincare: { before: [9, 3, 45], after: [64, 49, 84] },
 };
 
+/** Score bands for the plain-word reading: under 30, 30 to 59, 60 and up. */
+export type Band = 'low' | 'mid' | 'high';
+export const bandOf = (score: number): Band => (score < 30 ? 'low' : score < 60 ? 'mid' : 'high');
+
+/**
+ * AI assistants named in the header. Generic tiles only (no third-party logos):
+ * the chat assistants share the "ai" tile, Google's AI answers in search use the "web" tile.
+ */
+export const ASSISTANTS: { name: Record<Lang, string>; tool: 'ai' | 'web' }[] = [
+  { name: { en: 'ChatGPT', es: 'ChatGPT' }, tool: 'ai' },
+  { name: { en: 'Gemini', es: 'Gemini' }, tool: 'ai' },
+  { name: { en: 'Perplexity', es: 'Perplexity' }, tool: 'ai' },
+  { name: { en: 'Google AI answers', es: 'Respuestas con IA de Google' }, tool: 'web' },
+];
+
 export interface GeoCopy {
   aria: string;
   defaultBrand: string;
-  bar: { path: string; illustrative: string; replay: string; replayAria: string };
+  bar: {
+    title: string;
+    /** Lead-in before the assistant chips ("Like the answers in"). */
+    lead: string;
+    illustrative: string;
+    replay: string;
+    replayAria: string;
+  };
   controls: { brand: string; brandPlaceholder: string; category: string; mode: string; before: string; after: string };
   query: { label: string; send: string };
   phase: { idle: string; typing: string; searching: string; streaming: string; done: (n: number) => string };
@@ -53,7 +75,11 @@ export interface GeoCopy {
   meter: {
     title: string;
     sub: string;
-    score: string;
+    outOf: string;
+    /** Plain-word reading of the overall score, by band. */
+    band: Record<Band, { name: string; text: string }>;
+    scale: Record<Band, string>;
+    delta: (n: number) => string;
     bars: { mentions: { label: string; desc: string }; citations: { label: string; desc: string }; sentiment: { label: string; desc: string } };
     sentiment: Record<Mode, string>;
     beforeMark: string;
@@ -69,7 +95,13 @@ export const COPY: Record<Lang, GeoCopy> = {
   en: {
     aria: 'Illustrative AI answer: how a brand shows up before and after AI search work',
     defaultBrand: 'Your Brand',
-    bar: { path: 'answer-preview', illustrative: 'Illustrative example', replay: 'Replay', replayAria: 'Replay the answer' },
+    bar: {
+      title: 'A buyer asks an AI assistant',
+      lead: 'Like the answers in',
+      illustrative: 'Illustrative example',
+      replay: 'Replay',
+      replayAria: 'Replay the answer',
+    },
     controls: {
       brand: 'Your brand',
       brandPlaceholder: 'Type your brand',
@@ -80,13 +112,13 @@ export const COPY: Record<Lang, GeoCopy> = {
     },
     query: { label: 'Question', send: 'Send' },
     phase: {
-      idle: 'Waiting',
-      typing: 'Typing question',
-      searching: 'Reading sources',
-      streaming: 'Writing answer',
-      done: (n) => `Answer · ${n} sources`,
+      idle: 'Waiting for the question',
+      typing: 'Typing the question',
+      searching: 'Looking at sources',
+      streaming: 'Writing the answer',
+      done: (n) => `AI answer, based on ${n} sources`,
     },
-    sourcesTitle: 'Sources',
+    sourcesTitle: 'Where the answer comes from',
     sourceWord: 'source',
     cta: 'See how AI answers your buyers today',
     kinds: {
@@ -100,26 +132,33 @@ export const COPY: Record<Lang, GeoCopy> = {
     },
     verdict: {
       before: (b) => `${b} is not mentioned in this answer`,
-      after: (b) => `${b} is recommended first and cited as [1]`,
+      after: (b) => `${b} is recommended first, and your site is source 1`,
     },
     announce: {
       before: (b) => `Answer ready. ${b} is not mentioned; Brand A, Brand B and Brand C are recommended instead.`,
       after: (b) => `Answer ready. ${b} is recommended first and cited as source 1.`,
     },
     meter: {
-      title: 'AI visibility',
-      sub: 'Across 40 sample questions in this category',
-      score: 'Visibility score',
+      title: 'How visible you are in AI answers',
+      sub: 'Illustrative score from 40 sample buyer questions in this category',
+      outOf: 'out of 100',
+      band: {
+        low: { name: 'Hard to find', text: 'AI assistants rarely name you, so buyers see other businesses first.' },
+        mid: { name: 'Sometimes mentioned', text: 'AI assistants name you in some answers, but not in most of them.' },
+        high: { name: 'Often recommended', text: 'AI assistants name you in most answers and point buyers to your site.' },
+      },
+      scale: { low: 'Low', mid: 'Medium', high: 'High' },
+      delta: (n) => `+${n} points compared with Before`,
       bars: {
-        mentions: { label: 'Mentions', desc: 'Answers that name you' },
-        citations: { label: 'Citations', desc: 'Answers that link to your site' },
-        sentiment: { label: 'Sentiment', desc: 'How you are described' },
+        mentions: { label: 'Mentioned by name', desc: 'Share of answers that name your business' },
+        citations: { label: 'Linked to your site', desc: 'Share of answers that link to your website' },
+        sentiment: { label: 'How you are described', desc: 'The tone of what the answers say about you' },
       },
       sentiment: { before: 'Mixed', after: 'Positive' },
-      beforeMark: 'Where you were before',
-      position: 'Position in this answer',
-      positionValue: { before: 'Not mentioned', after: '#1 recommendation' },
-      leversTitle: 'What moves it',
+      beforeMark: 'The white line marks your Before result',
+      position: 'In this answer',
+      positionValue: { before: 'Not mentioned', after: 'Recommended first' },
+      leversTitle: 'What raises the score',
       levers: [
         'Pages that answer the questions buyers actually ask',
         'Mentions on the sources AI assistants already trust',
@@ -303,7 +342,13 @@ export const COPY: Record<Lang, GeoCopy> = {
   es: {
     aria: 'Respuesta de IA ilustrativa: cómo aparece una marca antes y después del trabajo de búsqueda con IA',
     defaultBrand: 'Tu marca',
-    bar: { path: 'vista-respuesta', illustrative: 'Ejemplo ilustrativo', replay: 'Repetir', replayAria: 'Repetir la respuesta' },
+    bar: {
+      title: 'Un cliente le pregunta a un asistente de IA',
+      lead: 'Como las respuestas de',
+      illustrative: 'Ejemplo ilustrativo',
+      replay: 'Repetir',
+      replayAria: 'Repetir la respuesta',
+    },
     controls: {
       brand: 'Tu marca',
       brandPlaceholder: 'Escribe tu marca',
@@ -314,13 +359,13 @@ export const COPY: Record<Lang, GeoCopy> = {
     },
     query: { label: 'Pregunta', send: 'Enviar' },
     phase: {
-      idle: 'En espera',
+      idle: 'Esperando la pregunta',
       typing: 'Escribiendo la pregunta',
-      searching: 'Leyendo fuentes',
+      searching: 'Revisando fuentes',
       streaming: 'Redactando la respuesta',
-      done: (n) => `Respuesta · ${n} fuentes`,
+      done: (n) => `Respuesta de la IA, basada en ${n} fuentes`,
     },
-    sourcesTitle: 'Fuentes',
+    sourcesTitle: 'De dónde sale la respuesta',
     sourceWord: 'fuente',
     cta: 'Ver cómo responde hoy la IA a tus clientes',
     kinds: {
@@ -334,26 +379,33 @@ export const COPY: Record<Lang, GeoCopy> = {
     },
     verdict: {
       before: (b) => `${b} no aparece en esta respuesta`,
-      after: (b) => `${b} es la primera recomendación y la fuente [1]`,
+      after: (b) => `${b} es la primera recomendación y tu sitio es la fuente 1`,
     },
     announce: {
       before: (b) => `Respuesta lista. ${b} no aparece; en su lugar se recomiendan Marca A, Marca B y Marca C.`,
       after: (b) => `Respuesta lista. ${b} es la primera recomendación y aparece citada como fuente 1.`,
     },
     meter: {
-      title: 'Visibilidad en IA',
-      sub: 'En 40 preguntas de ejemplo de esta categoría',
-      score: 'Índice de visibilidad',
+      title: 'Qué tan visible eres en las respuestas de IA',
+      sub: 'Puntaje ilustrativo con 40 preguntas de clientes de ejemplo en esta categoría',
+      outOf: 'de 100',
+      band: {
+        low: { name: 'Difícil de encontrar', text: 'Los asistentes de IA casi nunca te nombran, así que tus clientes ven primero a otros negocios.' },
+        mid: { name: 'Apareces a veces', text: 'Los asistentes de IA te nombran en algunas respuestas, pero no en la mayoría.' },
+        high: { name: 'Te recomiendan con frecuencia', text: 'Los asistentes de IA te nombran en la mayoría de las respuestas y llevan a tus clientes a tu sitio.' },
+      },
+      scale: { low: 'Baja', mid: 'Media', high: 'Alta' },
+      delta: (n) => `+${n} puntos frente a Antes`,
       bars: {
-        mentions: { label: 'Menciones', desc: 'Respuestas que te nombran' },
-        citations: { label: 'Citas', desc: 'Respuestas que enlazan tu sitio' },
-        sentiment: { label: 'Sentimiento', desc: 'Cómo te describen' },
+        mentions: { label: 'Te nombran', desc: 'Porcentaje de respuestas que mencionan tu negocio' },
+        citations: { label: 'Enlazan tu sitio', desc: 'Porcentaje de respuestas con un enlace a tu sitio web' },
+        sentiment: { label: 'Cómo te describen', desc: 'El tono de lo que dicen las respuestas sobre ti' },
       },
       sentiment: { before: 'Mixto', after: 'Positivo' },
-      beforeMark: 'Dónde estabas antes',
-      position: 'Posición en esta respuesta',
-      positionValue: { before: 'No aparece', after: 'Recomendación #1' },
-      leversTitle: 'Qué lo mueve',
+      beforeMark: 'La línea blanca marca tu resultado de Antes',
+      position: 'En esta respuesta',
+      positionValue: { before: 'No apareces', after: 'Primera recomendación' },
+      leversTitle: 'Qué sube el puntaje',
       levers: [
         'Páginas que responden lo que tus clientes realmente preguntan',
         'Menciones en las fuentes en las que ya confían los asistentes de IA',

@@ -1,9 +1,11 @@
 ---
 /**
  * Growth hero: a generic AI-answer panel that cites "your brand", a rising
- * share-of-answers line (no values, illustrative) and two floating engine chips.
+ * "how often AI answers mention you" line (no values, illustrative) with a plain takeaway,
+ * and two chips for the ads and sales emails we also run (with tool tiles).
  */
 import VisualFrame from './VisualFrame.astro';
+import ToolBadge from '@/components/ui/ToolBadge.astro';
 import { VISUAL_COPY } from './copy';
 import type { Lang } from '@/i18n';
 
@@ -14,7 +16,7 @@ const t = c.growth;
 
 const LINE = 'M0 120 C 40 118, 70 112, 100 108 S 160 96, 190 84 S 250 70, 280 50 S 340 22, 380 14';
 ---
-<VisualFrame file={t.file} label={c.illustrative} class="gv">
+<VisualFrame title={t.title} label={c.illustrative} labelShort={c.illustrativeShort} class="gv">
   <div class="gv__wrap">
     <div class="gv__q">
       <span class="gv__k">{t.asked}</span>
@@ -23,105 +25,107 @@ const LINE = 'M0 120 C 40 118, 70 112, 100 108 S 160 96, 190 84 S 250 70, 280 50
 
     <div class="gv__a">
       <div class="gv__a-head">
-        <span class="gv__k"><span class="gv__spark"></span>{t.answer}</span>
-        <span class="gv__cited"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>{t.cited}</span>
+        <span class="gv__k gv__k--ai"><span class="gv__spark"></span>{t.answer}</span>
+        <span class="gv__cited"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>{t.cited}</span>
       </div>
       <div class="gv__lines">
         <span class="gv__ln" style="--w:92%; --k:0"></span>
-        <span class="gv__row" style="--k:1">
-          <span class="gv__ln gv__ln--in" style="--w:46%"></span>
-          <span class="gv__chip gv__chip--you"><b>[1]</b>{t.brand}</span>
-        </span>
-        <span class="gv__ln" style="--w:78%; --k:2"></span>
-        <span class="gv__row" style="--k:3">
-          <span class="gv__ln gv__ln--in" style="--w:30%"></span>
-          <span class="gv__chip"><b>[2]</b>{t.others[0]}</span>
-          <span class="gv__chip gv__chip--hide-sm"><b>[3]</b>{t.others[1]}</span>
-        </span>
-        <span class="gv__ln" style="--w:58%; --k:4"></span>
+        <span class="gv__ln" style="--w:78%; --k:1"></span>
+        <span class="gv__ln" style="--w:58%; --k:2"></span>
+      </div>
+      <div class="gv__srcs" style="--k:3">
+        <span class="gv__srcs-k">{t.sources}</span>
+        <span class="gv__chip gv__chip--you"><ToolBadge tool="web" lang={lang} label={false} size="sm" />{t.brand}</span>
+        <span class="gv__chip">{t.others[0]}</span>
+        <span class="gv__chip gv__chip--hide-sm">{t.others[1]}</span>
       </div>
     </div>
 
     <div class="gv__chart">
       <div class="gv__chart-head">
-        <span class="gv__k">{t.chart}</span>
+        <span class="gv__ct">{t.chart}</span>
+        <span class="gv__trend"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-7M14 7h6v6" /></svg>{t.takeaway}</span>
       </div>
-      <svg viewBox="0 0 380 130" preserveAspectRatio="none" class="gv__svg">
-        <defs>
-          <linearGradient id={`gv-area-${lang}`} x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#f58327" stop-opacity=".32" />
-            <stop offset="1" stop-color="#f58327" stop-opacity="0" />
-          </linearGradient>
-          <linearGradient id={`gv-stroke-${lang}`} x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#d65805" />
-            <stop offset="1" stop-color="#ffd21f" />
-          </linearGradient>
-        </defs>
-        {[30, 65, 100].map((y) => <line x1="0" x2="380" y1={y} y2={y} class="gv__gl" />)}
-        <path d={`${LINE} L380 130 L0 130 Z`} fill={`url(#gv-area-${lang})`} class="gv__area" />
-        <path d={LINE} class="gv__line" stroke={`url(#gv-stroke-${lang})`} vector-effect="non-scaling-stroke" />
-      </svg>
-      <span class="gv__end"><span class="gv__end-dot"></span><span class="gv__end-tag">{t.you}</span></span>
-      <div class="gv__x">{t.weeks.map((w) => <span>{w}</span>)}</div>
+      <div class="gv__plot">
+        <svg viewBox="0 0 380 130" preserveAspectRatio="none" class="gv__svg">
+          <defs>
+            <linearGradient id={`gv-area-${lang}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#f58327" stop-opacity=".32" />
+              <stop offset="1" stop-color="#f58327" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id={`gv-stroke-${lang}`} x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#d65805" />
+              <stop offset="1" stop-color="#ffd21f" />
+            </linearGradient>
+          </defs>
+          <path d={`${LINE} L380 130 L0 130 Z`} fill={`url(#gv-area-${lang})`} class="gv__area" />
+          <path d={LINE} class="gv__line" stroke={`url(#gv-stroke-${lang})`} vector-effect="non-scaling-stroke" />
+          <line x1="0" x2="380" y1="129.5" y2="129.5" class="gv__base" vector-effect="non-scaling-stroke" />
+        </svg>
+        <span class="gv__end"><span class="gv__end-tag">{t.you}</span><span class="gv__end-dot"></span></span>
+      </div>
+      <div class="gv__x"><span>{t.start}</span><span>{t.end}</span></div>
     </div>
 
     <div class="gv__engines">
-      <span class="gv__float"><span class="gv__fk">{t.chips[0].k}</span><span class="gv__bars"><i></i><i></i><i></i><i></i></span><span class="gv__fv">{t.chips[0].v}</span></span>
-      <span class="gv__float gv__float--b"><span class="gv__fk">{t.chips[1].k}</span><span class="gv__fv">{t.chips[1].v}</span></span>
+      {t.chips.map((ch, i) => (
+        <span class:list={['gv__float', i === 1 && 'gv__float--b']}>
+          <ToolBadge tool={ch.tool} lang={lang} label={false} size="sm" />
+          <span class="gv__fk">{ch.k}</span>
+          <span class="gv__fv">{ch.v}</span>
+        </span>
+      ))}
     </div>
   </div>
 </VisualFrame>
 
 <style>
   .gv__wrap { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 18px; }
-  .gv__k { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-smoke); }
+  .gv__k { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--color-smoke); }
+  .gv__k--ai { color: var(--color-mist); }
 
-  .gv__q { align-self: flex-end; max-width: 82%; display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; border-radius: 16px 16px 4px 16px; background: rgb(255 255 255 / .05); border: 1px solid var(--line); }
+  .gv__q { align-self: flex-end; max-width: 86%; display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; border-radius: 16px 16px 4px 16px; background: rgb(255 255 255 / .05); border: 1px solid var(--line); }
   .gv__q p { font-size: 15px; line-height: 1.4; color: var(--color-bone); }
 
   .gv__a { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px 16px; border-radius: 16px; border: 1px solid var(--line); background: rgb(10 10 10 / .55); }
-  .gv__a-head { display: flex; align-items: center; justify-content: space-between; }
+  .gv__a-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   .gv__spark { width: 8px; height: 8px; border-radius: 2px; transform: rotate(45deg); background: var(--color-flame-400); }
-  .gv__cited { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 99px; font-family: var(--font-mono); font-size: 10.5px; color: var(--color-ok); background: rgb(122 209 155 / .1); border: 1px solid rgb(122 209 155 / .3); }
+  .gv__cited { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 99px; font-size: 12.5px; font-weight: 600; color: var(--color-ok); background: rgb(122 209 155 / .1); border: 1px solid rgb(122 209 155 / .3); white-space: nowrap; }
   .gv__lines { display: flex; flex-direction: column; gap: 9px; }
-  .gv__row { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; min-width: 0; }
   .gv__ln { display: block; height: 8px; width: var(--w); border-radius: 9px; background: rgb(255 255 255 / .1); transform-origin: left; }
-  .gv__ln--in { flex: 0 0 var(--w); }
-  .gv__chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 99px; font-family: var(--font-mono); font-size: 11px; color: var(--color-mist); border: 1px solid var(--line-strong); background: rgb(255 255 255 / .03); white-space: nowrap; }
-  .gv__chip b { font-weight: 500; color: var(--color-smoke); }
-  .gv__chip--you { color: var(--color-bone); border-color: rgb(245 131 39 / .7); background: rgb(245 131 39 / .12); box-shadow: 0 0 22px -4px rgb(245 131 39 / .6); }
-  .gv__chip--you b { color: var(--color-flame-400); }
-  @media (max-width: 480px) { .gv__chip--hide-sm { display: none; } }
+  .gv__srcs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-top: 4px; }
+  .gv__srcs-k { font-size: 12px; font-weight: 600; color: var(--color-smoke); margin-right: 2px; }
+  .gv__chip { display: inline-flex; align-items: center; gap: 7px; min-height: 28px; padding: 3px 11px; border-radius: 99px; font-size: 12.5px; color: var(--color-mist); border: 1px solid var(--line-strong); background: rgb(255 255 255 / .03); white-space: nowrap; }
+  .gv__chip--you { padding-left: 4px; font-weight: 600; color: var(--color-bone); border-color: rgb(245 131 39 / .7); background: rgb(245 131 39 / .12); box-shadow: 0 0 22px -4px rgb(245 131 39 / .6); }
+  @container (max-width: 480px) { .gv__chip--hide-sm { display: none; } }
 
-  .gv__chart { position: relative; padding: 14px 16px 10px; border-radius: 16px; border: 1px solid var(--line); background: rgb(255 255 255 / .02); }
-  .gv__chart-head { display: flex; justify-content: space-between; margin-bottom: 8px; }
-  .gv__svg { display: block; width: 100%; height: 110px; overflow: visible; }
-  .gv__gl { stroke: rgb(255 255 255 / .06); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 3 4; }
-  .gv__line { fill: none; stroke-width: 2.5; stroke-linecap: round; }
-  .gv__end { position: absolute; right: 12px; top: 40px; display: flex; align-items: center; gap: 6px; }
+  .gv__chart { position: relative; padding: 14px 16px 12px; border-radius: 16px; border: 1px solid var(--line); background: rgb(255 255 255 / .02); }
+  .gv__chart-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; margin-bottom: 10px; }
+  .gv__ct { font-size: 13.5px; font-weight: 600; color: var(--color-bone); }
+  .gv__trend { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 99px; font-size: 12.5px; font-weight: 700; color: var(--color-sun); background: rgb(255 210 31 / .1); border: 1px solid rgb(255 210 31 / .3); white-space: nowrap; }
+  .gv__plot { position: relative; }
+  .gv__svg { display: block; width: 100%; height: 100px; overflow: visible; }
+  .gv__base { stroke: rgb(255 255 255 / .16); stroke-width: 1; }
+  .gv__line { fill: none; stroke-width: 3; stroke-linecap: round; }
+  .gv__end { position: absolute; right: -5px; top: calc(14 / 130 * 100% - 5px); display: flex; align-items: center; gap: 8px; }
   .gv__end-dot { width: 10px; height: 10px; border-radius: 9px; background: var(--color-sun); box-shadow: 0 0 0 4px rgb(255 210 31 / .18), 0 0 14px rgb(255 210 31 / .8); }
-  .gv__end-tag { position: absolute; right: 16px; top: -22px; padding: 1px 7px; border-radius: 99px; font-family: var(--font-mono); font-size: 10px; color: #1a0d03; background: var(--color-sun); }
-  .gv__x { display: flex; justify-content: space-between; margin-top: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--color-smoke); }
+  .gv__end-tag { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); padding: 2px 9px; border-radius: 99px; font-size: 12px; font-weight: 700; color: #1a0d03; background: var(--color-sun); white-space: nowrap; }
+  .gv__x { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--color-smoke); }
 
   .gv__engines { display: flex; flex-wrap: wrap; gap: 8px; }
-  .gv__float { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 12px; border: 1px solid var(--line-strong); background: rgb(22 20 20 / .92); box-shadow: 0 18px 40px -18px rgb(0 0 0 / .9); font-family: var(--font-mono); font-size: 11px; white-space: nowrap; }
-  .gv__fk { color: var(--color-bone); }
-  .gv__fv { color: var(--color-flame-400); }
-  .gv__bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
-  .gv__bars i { width: 3px; border-radius: 2px; background: var(--color-flame-500); }
-  .gv__bars i:nth-child(1) { height: 5px; } .gv__bars i:nth-child(2) { height: 9px; } .gv__bars i:nth-child(3) { height: 7px; } .gv__bars i:nth-child(4) { height: 12px; }
-  @media (max-width: 520px) { .gv__float--b { display: none; } }
+  .gv__float { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 12px; border: 1px solid var(--line-strong); background: rgb(22 20 20 / .92); box-shadow: 0 18px 40px -18px rgb(0 0 0 / .9); font-size: 12.5px; white-space: nowrap; }
+  .gv__fk { font-weight: 600; color: var(--color-bone); }
+  .gv__fv { color: var(--color-flame-300); }
+  @container (max-width: 520px) { .gv__float--b { display: none; } }
 
   @media (prefers-reduced-motion: no-preference) {
-    .gv__lines > .gv__ln, .gv__row { animation: gv-type 9s var(--ease-out-expo) infinite; animation-delay: calc(var(--k) * 260ms); transform-origin: left; }
-    .gv__chip--you { animation: gv-you 9s var(--ease-out-expo) infinite; animation-delay: 260ms; }
+    .gv__lines > .gv__ln, .gv__srcs { animation: gv-type 9s var(--ease-out-expo) infinite; animation-delay: calc(var(--k) * 260ms); transform-origin: left; }
+    .gv__chip--you { animation: gv-you 9s var(--ease-out-expo) infinite; animation-delay: 780ms; }
     .gv__cited { animation: gv-cited 9s ease infinite; }
     .gv__line { stroke-dasharray: 1400; animation: gv-draw 2.4s var(--ease-out-expo) both .4s; }
     .gv__area { animation: gv-fade 2s ease both 1s; }
     .gv__end { animation: gv-fade .8s ease both 2.2s; }
     .gv__end-dot { animation: gv-dot 2.4s ease-in-out infinite 2.8s; }
-    .gv__bars i { animation: gv-bar 1.6s ease-in-out infinite; transform-origin: bottom; }
-    .gv__bars i:nth-child(2) { animation-delay: .2s; } .gv__bars i:nth-child(3) { animation-delay: .4s; } .gv__bars i:nth-child(4) { animation-delay: .6s; }
   }
   @keyframes gv-type { 0% { opacity: 0; transform: scaleX(.2); } 8%, 88% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
   @keyframes gv-you { 0%, 14% { box-shadow: 0 0 0 0 rgb(245 131 39 / 0); } 22% { box-shadow: 0 0 0 6px rgb(245 131 39 / .25), 0 0 28px rgb(245 131 39 / .7); } 34%, 100% { box-shadow: 0 0 22px -4px rgb(245 131 39 / .6); } }
@@ -129,5 +133,4 @@ const LINE = 'M0 120 C 40 118, 70 112, 100 108 S 160 96, 190 84 S 250 70, 280 50
   @keyframes gv-draw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
   @keyframes gv-fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes gv-dot { 0%, 100% { box-shadow: 0 0 0 4px rgb(255 210 31 / .18), 0 0 14px rgb(255 210 31 / .8); } 50% { box-shadow: 0 0 0 9px rgb(255 210 31 / 0), 0 0 22px rgb(255 210 31 / 1); } }
-  @keyframes gv-bar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.45); } }
 </style>

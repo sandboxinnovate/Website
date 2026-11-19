@@ -17,7 +17,8 @@ import {
   type Answers,
 } from './model';
 import { useReducedMotion } from './hooks';
-import Radar from './Radar';
+import DimBars from './DimBars';
+import { ToolBadge, type ToolKey } from '@/components/ui/ToolBadge';
 import Results from './Results';
 import Ico from './Ico';
 
@@ -36,6 +37,11 @@ interface St {
   phase: Phase;
   sentTo: string | null;
 }
+
+/** Questions that name everyday business tools: shown as small app tiles under the help line. */
+const QUESTION_TOOLS: Record<string, ToolKey[]> = {
+  q09: ['crm', 'email', 'docs', 'calendar', 'sheet', 'chat'],
+};
 
 const fresh = (): St => ({ answers: emptyAnswers(), step: 0, phase: 'questions', sentTo: null });
 
@@ -241,11 +247,7 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
       <div className="rd-bar">
         <div className="rd-bar__id">
           <span className="rd-pulse" aria-hidden="true" />
-          <span className="rd-bar__sys">
-            {t.system.split(' / ')[0]}
-            <span className="rd-bar__sys-rest"> / {t.system.split(' / ').slice(1).join(' / ')}</span>
-          </span>
-          <span className="rd-bar__ver">{t.version}</span>
+          <span className="rd-bar__sys">{t.system}</span>
         </div>
         <div className="rd-bar__right">
           {st.phase === 'questions' ? (
@@ -256,7 +258,7 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
           ) : (
             result && (
               <>
-                <span className="rd-bar__count">{t.run(result.runId)}</span>
+                <span className="rd-bar__count">{t.result}</span>
                 <span className="rd-bar__time">{t.scoredLocally}</span>
               </>
             )
@@ -300,7 +302,6 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
                     ))}
                   </div>
                   <span className="rd-rail__label">
-                    <span className="rd-rail__code">{String(di + 1).padStart(2, '0')}</span>
                     <span className="rd-rail__name">{t.dims[d].name}</span>
                   </span>
                 </div>
@@ -319,15 +320,23 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
 
               <div className="rd-q" key={`${st.step}`} data-dir={dir}>
                 <p className="rd-q__meta">
-                  <span className="rd-q__dim">
-                    [{String(dimIdx + 1).padStart(2, '0')}] {t.dims[q.dim].name}
-                  </span>
+                  <span className="rd-q__dim">{t.dims[q.dim].name}</span>
                   <span className="rd-q__of">{t.ofDim(posInDim, inDim.length)}</span>
                 </p>
                 <h2 id={qTitleId} ref={titleRef} tabIndex={-1} className="rd-q__title">
                   {qc.text}
                 </h2>
                 <p className="rd-q__help">{qc.help}</p>
+                {QUESTION_TOOLS[q.id] && (
+                  <p className="rd-q__tools">
+                    <span className="rd-q__toolsLead">{t.toolsLead}:</span>
+                    {QUESTION_TOOLS[q.id].map((k) => (
+                      <span key={k} className="rd-q__tool">
+                        <ToolBadge tool={k} lang={lang} size={24} />
+                      </span>
+                    ))}
+                  </p>
+                )}
 
                 <div className="rd-opts" role="group" aria-labelledby={qTitleId}>
                   {qc.options.map((o, i) => (
@@ -379,30 +388,12 @@ export default function Full({ lang, demoAnswers, persist = true }: Props) {
             <aside className="rd-aside" aria-label={t.liveProfile}>
               <div className="rd-aside__grid" aria-hidden="true" />
               <p className="rd-mono">{t.liveProfile}</p>
-              <Radar
-                size="md"
-                values={DIMS.map((d) => partial[d])}
-                labels={DIMS.map((d) => t.dims[d].name)}
-                activeIndex={dimIdx}
+              <DimBars
+                size="sm"
+                rows={DIMS.map((d, di) => ({ id: d, name: t.dims[d].name, value: partial[d], current: di === dimIdx }))}
+                bands={t.dimBand}
                 instant={reduced}
-                duration={900}
               />
-              <ul className="rd-aside__list">
-                {DIMS.map((d, di) => {
-                  const v = partial[d];
-                  const state = di < dimIdx ? 'done' : di === dimIdx ? 'current' : 'todo';
-                  return (
-                    <li key={d} data-state={state}>
-                      <span className="rd-aside__code">{String(di + 1).padStart(2, '0')}</span>
-                      <span className="rd-aside__name">{t.dims[d].name}</span>
-                      <span className="rd-aside__bar" aria-hidden="true">
-                        <i style={{ transform: `scaleX(${(v ?? 0) / 100})` }} />
-                      </span>
-                      <span className="rd-aside__val">{v === null ? '-' : v}</span>
-                    </li>
-                  );
-                })}
-              </ul>
               <p className="rd-aside__note">{t.liveNote}</p>
             </aside>
           </div>

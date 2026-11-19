@@ -1,4 +1,5 @@
 import type { L10n } from '@/i18n';
+import type { ToolKey } from '@/components/ui/tool-icons';
 
 export interface Track {
   id: string;
@@ -7,6 +8,8 @@ export interface Track {
   for: string;
   modules: { title: string; lab: string; time: string }[];
   outcomes: string[];
+  /** Everyday tools the labs use (shown as app tiles). */
+  tools: ToolKey[];
 }
 
 export interface AcademyCopy {
@@ -17,6 +20,8 @@ export interface AcademyCopy {
   labLabel: string;
   outcomesLabel: string;
   forLabel: string;
+  moduleWord: string;
+  toolsLabel: string;
   cta: string;
   tracks: Track[];
 }
@@ -27,9 +32,11 @@ export const COPY: L10n<AcademyCopy> = {
     barMeta: 'Adapted to each team',
     rolesLabel: 'Choose a role',
     modulesLabel: 'Modules',
-    labLabel: 'Lab',
+    labLabel: 'Practice',
     outcomesLabel: 'By the end, each person has',
     forLabel: 'For',
+    moduleWord: 'Module',
+    toolsLabel: 'Practice in the tools you use',
     cta: 'Plan a workshop for this team',
     tracks: [
       {
@@ -43,6 +50,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'Risk, policy and vendors', lab: 'Review a vendor proposal against a short checklist.', time: '60 min' },
         ],
         outcomes: ['A personal AI workflow for weekly reporting', 'A shortlist of projects with a business case', 'A 90-day plan for their area'],
+        tools: ['docs', 'sheet', 'chat'],
       },
       {
         id: 'sales',
@@ -55,6 +63,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'A cleaner pipeline', lab: 'Summarize your open deals for the weekly review, with risks flagged.', time: '60 min' },
         ],
         outcomes: ['A research brief template', 'A personalized outreach routine', 'A post-call follow-up workflow'],
+        tools: ['crm', 'email', 'video'],
       },
       {
         id: 'marketing',
@@ -67,6 +76,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'From data to decisions', lab: 'Summarize last month’s campaign results into three decisions.', time: '60 min' },
         ],
         outcomes: ['A voice guide the whole team uses', 'A repurposing workflow', 'A monthly AI-visibility check'],
+        tools: ['docs', 'social', 'email', 'ai'],
       },
       {
         id: 'ops',
@@ -79,6 +89,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'Your first automation', lab: 'Design a simple automation for a repetitive handoff.', time: '60 min' },
         ],
         outcomes: ['A reusable reporting workflow', 'Two documented procedures', 'One automation ready to build'],
+        tools: ['sheet', 'reports', 'docs'],
       },
       {
         id: 'support',
@@ -91,6 +102,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'Working alongside an AI agent', lab: 'Review, correct and approve an agent’s draft replies.', time: '60 min' },
         ],
         outcomes: ['A reply workflow with sources', 'A list of help-center gaps', 'Clear escalation rules'],
+        tools: ['tickets', 'kb', 'email'],
       },
     ],
   },
@@ -99,9 +111,11 @@ export const COPY: L10n<AcademyCopy> = {
     barMeta: 'Se adapta a cada equipo',
     rolesLabel: 'Elige un rol',
     modulesLabel: 'Módulos',
-    labLabel: 'Laboratorio',
+    labLabel: 'Práctica',
     outcomesLabel: 'Al terminar, cada persona tiene',
     forLabel: 'Para',
+    moduleWord: 'Módulo',
+    toolsLabel: 'Practicas en las herramientas que usas',
     cta: 'Planificar un taller para este equipo',
     tracks: [
       {
@@ -115,6 +129,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'Riesgos, políticas y proveedores', lab: 'Revisa una propuesta de proveedor con una lista de control breve.', time: '60 min' },
         ],
         outcomes: ['Un flujo de IA personal para el reporte semanal', 'Una lista corta de proyectos con su caso de negocio', 'Un plan a 90 días para su área'],
+        tools: ['docs', 'sheet', 'chat'],
       },
       {
         id: 'sales',
@@ -127,6 +142,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'Un pipeline más ordenado', lab: 'Resume tus oportunidades abiertas para la revisión semanal, con los riesgos marcados.', time: '60 min' },
         ],
         outcomes: ['Una plantilla de ficha de cuenta', 'Una rutina de prospección personalizada', 'Un flujo de seguimiento después de cada llamada'],
+        tools: ['crm', 'email', 'video'],
       },
       {
         id: 'marketing',
@@ -139,6 +155,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'De los datos a las decisiones', lab: 'Resume los resultados de campaña del mes pasado en tres decisiones.', time: '60 min' },
         ],
         outcomes: ['Una guía de voz que usa todo el equipo', 'Un flujo para reutilizar contenido', 'Una revisión mensual de visibilidad en IA'],
+        tools: ['docs', 'social', 'email', 'ai'],
       },
       {
         id: 'ops',
@@ -151,6 +168,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'Tu primera automatización', lab: 'Diseña una automatización simple para un traspaso repetitivo.', time: '60 min' },
         ],
         outcomes: ['Un flujo de reportes reutilizable', 'Dos procedimientos documentados', 'Una automatización lista para construir'],
+        tools: ['sheet', 'reports', 'docs'],
       },
       {
         id: 'support',
@@ -163,6 +181,7 @@ export const COPY: L10n<AcademyCopy> = {
           { title: 'Trabajar junto a un agente de IA', lab: 'Revisa, corrige y aprueba los borradores de un agente.', time: '60 min' },
         ],
         outcomes: ['Un flujo de respuesta con fuentes', 'Una lista de vacíos del centro de ayuda', 'Reglas de derivación claras'],
+        tools: ['tickets', 'kb', 'email'],
       },
     ],
   },

@@ -18,6 +18,10 @@ export interface DiagnosticCopy {
   dims: Record<DimId, { name: string; short: string; blurb: string }>;
   questions: Record<string, QuestionCopy>;
   levels: Record<LevelId, { name: string; text: string }>;
+  /** Plain word for one area's score: under 34, 34 to 66, 67 and up. */
+  dimBand: { low: string; mid: string; high: string };
+  /** Tools named in a question's help line, shown as small app tiles under it. */
+  toolsLead: string;
   moves: Record<MoveId, { title: string; body: string }>;
 
   // runner
@@ -51,6 +55,7 @@ export interface DiagnosticCopy {
   /** Shown instead of strongest / weakest when every dimension has the same score. */
   balanced: (score: number) => string;
   byDimension: string;
+  byDimensionLede: string;
   thresholdNote: (level: string, min: number) => string;
   topLevelNote: string;
   movesTitle: string;
@@ -110,14 +115,14 @@ export interface DiagnosticCopy {
 }
 
 const en: DiagnosticCopy = {
-  system: 'SBX / Readiness diagnostic',
+  system: 'AI readiness check',
   version: 'v1.0',
   dims: {
     strategy: { name: 'Strategy', short: 'STR', blurb: 'Ownership, priorities and a plan' },
     data: { name: 'Data', short: 'DAT', blurb: 'Where knowledge lives and how clean it is' },
     processes: { name: 'Processes', short: 'PRC', blurb: 'How work is documented and automated' },
     people: { name: 'People', short: 'PPL', blurb: 'Skills, habits and clear rules' },
-    stack: { name: 'Stack', short: 'STK', blurb: 'Connected tools and who can build' },
+    stack: { name: 'Tools', short: 'TLS', blurb: 'Connected tools and who can build' },
   },
   questions: {
     q01: {
@@ -202,7 +207,7 @@ const en: DiagnosticCopy = {
     },
     q09: {
       text: 'How connected are your core tools?',
-      help: 'CRM, inbox, docs, calendar, spreadsheets, team chat.',
+      help: 'Think of the apps your team uses every day.',
       options: [
         'Not at all, we copy and paste between them',
         'A few built-in integrations',
@@ -286,8 +291,8 @@ const en: DiagnosticCopy = {
     },
   },
 
-  counter: (i, n) => `Q${String(i).padStart(2, '0')} / ${String(n).padStart(2, '0')}`,
-  ofDim: (i, n) => `${i} of ${n}`,
+  counter: (i, n) => `Question ${i} of ${n}`,
+  ofDim: (i, n) => `Part ${i} of ${n}`,
   timeLeft: (q) => (q <= 3 ? 'Under a minute left' : `About ${Math.ceil((q * 18) / 60)} min left`),
   back: 'Back',
   next: 'Continue',
@@ -297,43 +302,46 @@ const en: DiagnosticCopy = {
   resumed: 'Picked up where you left off.',
   handoff: 'First answer saved. You’re on question 2.',
   progressLabel: 'Diagnostic progress',
-  liveProfile: 'Live profile',
-  liveNote: 'Builds as you answer. Scored in your browser. Nothing is sent.',
+  liveProfile: 'Your scores so far',
+  liveNote: 'Fills in as you answer. Calculated in your browser. Nothing is sent.',
+  dimBand: { low: 'Early', mid: 'Developing', high: 'Strong' },
+  toolsLead: 'For example',
   state: { done: 'done', current: 'now', todo: 'next' },
   announceQuestion: (i, n, dim, q) => `Question ${i} of ${n}, ${dim}: ${q}`,
   optionsLabel: 'Answers',
 
-  result: 'Result',
+  result: 'Your result',
   run: (id) => `Run SBX-${id}`,
-  scoredLocally: 'Scored in your browser · nothing sent yet',
-  scoreLabel: 'Readiness',
-  outOf: '/ 100',
-  levelOf: (i, n) => `Level ${i} of ${n}`,
+  scoredLocally: 'Calculated in your browser. Nothing sent yet.',
+  scoreLabel: 'Your score',
+  outOf: 'out of 100',
+  levelOf: (i, n) => `Your level: ${i} of ${n}`,
   ladderLabel: 'Maturity levels',
   strongest: 'Strongest',
   weakest: 'Holding you back',
-  balanced: (s) => `Balanced: every dimension at ${s}`,
-  byDimension: 'By dimension',
-  thresholdNote: (level, min) => `Dashed line: ${level} starts at ${min}`,
-  topLevelNote: 'Dashed line: the AI-native threshold (80)',
+  balanced: (s) => `Even across the board: every area scored ${s}`,
+  byDimension: 'Your score in each area',
+  byDimensionLede: 'Each area is scored from 0 to 100. Your lowest area is where to start.',
+  thresholdNote: (level, min) => `The white line marks ${min}, where ${level} starts`,
+  topLevelNote: 'The white line marks 80, where AI-native starts',
   movesTitle: 'Your next three moves',
-  movesLede: 'In the order we’d make them, based on your weakest dimensions.',
+  movesLede: 'In the order we’d make them, starting with your lowest areas.',
   horizons: ['Now', 'Next', 'Then'],
-  triggeredBy: (dim, s) => `${dim} · ${s}`,
-  triggeredByOverall: (s) => `Overall · ${s}`,
+  triggeredBy: (dim, s) => `${dim}: ${s} of 100`,
+  triggeredByOverall: (s) => `Overall: ${s} of 100`,
   earlyAccess: 'Early access',
   seeUnit: (u) => `See ${u}`,
   talkCta: 'Review my result on a call',
   editAnswers: 'Change answers',
   gaugeAria: (s, l) => `Readiness score ${s} out of 100. Level: ${l}.`,
-  radarAria: (pairs) => `Readiness by dimension: ${pairs}.`,
+  radarAria: (pairs) => `Readiness by area: ${pairs}.`,
   announceResult: (s, l) => `Your readiness score is ${s} out of 100. Level: ${l}.`,
 
   form: {
     eyebrow: 'Full report',
     title: 'Get the full report by email',
-    body: 'A written breakdown of every dimension, the reasoning behind your three moves and what each one involves. If you want, add 30 minutes with our team to test it against your business.',
-    bullets: ['Breakdown by dimension', 'The reasoning behind each move', 'Optional 30-minute review call'],
+    body: 'A written breakdown of every area, the reasoning behind your three moves and what each one involves. If you want, add 30 minutes with our team to test it against your business.',
+    bullets: ['Breakdown by area', 'The reasoning behind each move', 'Optional 30-minute review call'],
     name: 'Name',
     email: 'Work email',
     company: 'Company',
@@ -359,25 +367,25 @@ const en: DiagnosticCopy = {
 
   teaser: {
     kicker: 'AI readiness',
-    meta: '10 questions · 3 min',
+    meta: '10 questions, about 3 minutes',
     illustrative: 'Illustrative profiles',
-    sampleAria: 'Animated radar cycling through four illustrative readiness profiles: Explorer, Builder, Operator and AI-native.',
+    sampleAria: 'Animated example cycling through four illustrative readiness profiles: Explorer, Builder, Operator and AI-native.',
     prompt: 'Answer to start. 9 more to go.',
     open: 'Open the diagnostic',
     opening: 'Opening the diagnostic',
-    scoreUnit: '/100',
+    scoreUnit: 'out of 100',
   },
 };
 
 const es: DiagnosticCopy = {
-  system: 'SBX / Diagnóstico de preparación',
+  system: 'Chequeo de preparación en IA',
   version: 'v1.0',
   dims: {
     strategy: { name: 'Estrategia', short: 'EST', blurb: 'Responsables, prioridades y un plan' },
     data: { name: 'Datos', short: 'DAT', blurb: 'Dónde vive el conocimiento y qué tan limpio está' },
     processes: { name: 'Procesos', short: 'PRO', blurb: 'Cómo se documenta y automatiza el trabajo' },
     people: { name: 'Personas', short: 'PER', blurb: 'Habilidades, hábitos y reglas claras' },
-    stack: { name: 'Tecnología', short: 'TEC', blurb: 'Herramientas conectadas y quién puede construir' },
+    stack: { name: 'Herramientas', short: 'HER', blurb: 'Herramientas conectadas y quién puede construir' },
   },
   questions: {
     q01: {
@@ -462,7 +470,7 @@ const es: DiagnosticCopy = {
     },
     q09: {
       text: '¿Qué tan conectadas están tus herramientas principales?',
-      help: 'CRM, correo, documentos, calendario, hojas de cálculo, chat del equipo.',
+      help: 'Piensa en las aplicaciones que tu equipo usa todos los días.',
       options: [
         'Nada, copiamos y pegamos entre ellas',
         'Algunas integraciones que ya vienen incluidas',
@@ -546,8 +554,8 @@ const es: DiagnosticCopy = {
     },
   },
 
-  counter: (i, n) => `P${String(i).padStart(2, '0')} / ${String(n).padStart(2, '0')}`,
-  ofDim: (i, n) => `${i} de ${n}`,
+  counter: (i, n) => `Pregunta ${i} de ${n}`,
+  ofDim: (i, n) => `Parte ${i} de ${n}`,
   timeLeft: (q) => (q <= 3 ? 'Menos de un minuto' : `Faltan unos ${Math.ceil((q * 18) / 60)} min`),
   back: 'Atrás',
   next: 'Continuar',
@@ -557,43 +565,46 @@ const es: DiagnosticCopy = {
   resumed: 'Retomamos donde lo dejaste.',
   handoff: 'Guardamos tu primera respuesta. Sigues en la pregunta 2.',
   progressLabel: 'Avance del diagnóstico',
-  liveProfile: 'Perfil en vivo',
-  liveNote: 'Se arma mientras respondes. Se calcula en tu navegador. No se envía nada.',
+  liveProfile: 'Tus puntajes hasta ahora',
+  liveNote: 'Se completa mientras respondes. Se calcula en tu navegador. No se envía nada.',
+  dimBand: { low: 'Inicial', mid: 'En desarrollo', high: 'Sólido' },
+  toolsLead: 'Por ejemplo',
   state: { done: 'listo', current: 'ahora', todo: 'luego' },
   announceQuestion: (i, n, dim, q) => `Pregunta ${i} de ${n}, ${dim}: ${q}`,
   optionsLabel: 'Respuestas',
 
-  result: 'Resultado',
+  result: 'Tu resultado',
   run: (id) => `Ejecución SBX-${id}`,
-  scoredLocally: 'Calculado en tu navegador · aún no se envió nada',
-  scoreLabel: 'Preparación',
-  outOf: '/ 100',
-  levelOf: (i, n) => `Nivel ${i} de ${n}`,
+  scoredLocally: 'Calculado en tu navegador. Aún no se envió nada.',
+  scoreLabel: 'Tu puntaje',
+  outOf: 'de 100',
+  levelOf: (i, n) => `Tu nivel: ${i} de ${n}`,
   ladderLabel: 'Niveles de madurez',
   strongest: 'Lo más fuerte',
   weakest: 'Lo que te frena',
-  balanced: (s) => `Parejo: todas las dimensiones en ${s}`,
-  byDimension: 'Por dimensión',
-  thresholdNote: (level, min) => `Línea punteada: ${level} empieza en ${min}`,
-  topLevelNote: 'Línea punteada: el umbral de Nativo en IA (80)',
+  balanced: (s) => `Parejo en todo: cada área sacó ${s}`,
+  byDimension: 'Tu puntaje en cada área',
+  byDimensionLede: 'Cada área va de 0 a 100. Tu área más baja es por donde conviene empezar.',
+  thresholdNote: (level, min) => `La línea blanca marca ${min}, donde empieza ${level}`,
+  topLevelNote: 'La línea blanca marca 80, donde empieza Nativo en IA',
   movesTitle: 'Tus próximos tres pasos',
-  movesLede: 'En el orden en que los daríamos, según tus dimensiones más débiles.',
+  movesLede: 'En el orden en que los daríamos, empezando por tus áreas más bajas.',
   horizons: ['Ahora', 'Después', 'Más adelante'],
-  triggeredBy: (dim, s) => `${dim} · ${s}`,
-  triggeredByOverall: (s) => `General · ${s}`,
+  triggeredBy: (dim, s) => `${dim}: ${s} de 100`,
+  triggeredByOverall: (s) => `General: ${s} de 100`,
   earlyAccess: 'Acceso anticipado',
   seeUnit: (u) => `Ver ${u}`,
   talkCta: 'Revisar mi resultado en una llamada',
   editAnswers: 'Cambiar respuestas',
   gaugeAria: (s, l) => `Puntaje de preparación: ${s} de 100. Nivel: ${l}.`,
-  radarAria: (pairs) => `Preparación por dimensión: ${pairs}.`,
+  radarAria: (pairs) => `Preparación por área: ${pairs}.`,
   announceResult: (s, l) => `Tu puntaje de preparación es ${s} de 100. Nivel: ${l}.`,
 
   form: {
     eyebrow: 'Reporte completo',
     title: 'Recibe el reporte completo por correo',
-    body: 'Un análisis por escrito de cada dimensión, el porqué de tus tres pasos y qué implica cada uno. Si quieres, suma 30 minutos con nuestro equipo para contrastarlo con tu negocio.',
-    bullets: ['Análisis por dimensión', 'El porqué de cada paso', 'Llamada de revisión de 30 minutos, opcional'],
+    body: 'Un análisis por escrito de cada área, el porqué de tus tres pasos y qué implica cada uno. Si quieres, suma 30 minutos con nuestro equipo para contrastarlo con tu negocio.',
+    bullets: ['Análisis por área', 'El porqué de cada paso', 'Llamada de revisión de 30 minutos, opcional'],
     name: 'Nombre',
     email: 'Correo de trabajo',
     company: 'Empresa',
@@ -619,13 +630,13 @@ const es: DiagnosticCopy = {
 
   teaser: {
     kicker: 'Preparación en IA',
-    meta: '10 preguntas · 3 min',
+    meta: '10 preguntas, unos 3 minutos',
     illustrative: 'Perfiles ilustrativos',
-    sampleAria: 'Radar animado que recorre cuatro perfiles ilustrativos de preparación: Explorador, Constructor, Operador y Nativo en IA.',
+    sampleAria: 'Ejemplo animado que recorre cuatro perfiles ilustrativos de preparación: Explorador, Constructor, Operador y Nativo en IA.',
     prompt: 'Responde para empezar. Quedan 9.',
     open: 'Abrir el diagnóstico',
     opening: 'Abriendo el diagnóstico',
-    scoreUnit: '/100',
+    scoreUnit: 'de 100',
   },
 };
 

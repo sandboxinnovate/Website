@@ -1,9 +1,16 @@
 import { useId, useState, type CSSProperties } from 'react';
 import { localize, type Lang } from '@/i18n';
 import { ICONS } from '@/components/ui/icons';
+import { ToolBadge } from '@/components/ui/ToolBadge';
 import { COPY } from './copy';
 import { tabKeys } from '../hooks';
 import './academy-explorer.css';
+
+const Clock = () => (
+  <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" />
+  </svg>
+);
 
 const Ico = ({ name, size = 16 }: { name: keyof typeof ICONS; size?: number }) => (
   <svg
@@ -49,7 +56,6 @@ export default function AcademyExplorer({ lang }: { lang: Lang }) {
                 className="ax-tab"
                 onClick={() => setActive(k)}
               >
-                <span className="ax-tab__n">{String(k + 1).padStart(2, '0')}</span>
                 <span className="ax-tab__name">{tk.role}</span>
                 <span className="ax-tab__go"><Ico name="arrow-right" size={15} /></span>
               </button>
@@ -68,14 +74,21 @@ export default function AcademyExplorer({ lang }: { lang: Lang }) {
             {track.modules.map((m, k) => (
               <li key={m.title} className="ax-mod" style={{ '--k': k } as CSSProperties}>
                 <div className="ax-mod__top">
-                  <span className="ax-mod__n">M{k + 1}</span>
-                  <span className="ax-mod__time"><Ico name="calendar" size={13} />{m.time}</span>
+                  <span className="ax-mod__n">{t.moduleWord} {k + 1}</span>
+                  <span className="ax-mod__time"><Clock />{m.time}</span>
                 </div>
                 <h4 className="ax-mod__t">{m.title}</h4>
                 <p className="ax-mod__lab"><span className="ax-mod__lab-k">{t.labLabel}</span>{m.lab}</p>
               </li>
             ))}
           </ol>
+
+          <div className="ax-tools">
+            <span className="ax-label">{t.toolsLabel}</span>
+            <ul>
+              {track.tools.map((tool) => <li key={tool}><ToolBadge tool={tool} lang={lang} size={26} /></li>)}
+            </ul>
+          </div>
 
           <div className="ax-foot">
             <div className="ax-out">

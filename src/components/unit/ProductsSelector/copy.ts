@@ -1,4 +1,5 @@
 import type { L10n } from '@/i18n';
+import type { ToolKey } from '@/components/ui/tool-icons';
 
 export interface Industry {
   id: string;
@@ -6,7 +7,8 @@ export interface Industry {
   name: string;
   pilot: string;
   agents: { name: string; does: string }[];
-  connects: string[];
+  /** Tools the package connects to: shared app-tile icon + this package's own wording. */
+  connects: { tool: ToolKey; label: string }[];
   stays: string[];
 }
 
@@ -19,6 +21,8 @@ export interface ProductsCopy {
   staysLabel: string;
   pilotLabel: string;
   status: string;
+  hub: string;
+  agentsCount: (n: number) => string;
   cta: (industry: string) => string;
   industries: Industry[];
 }
@@ -33,6 +37,8 @@ export const COPY: L10n<ProductsCopy> = {
     staysLabel: 'Always stays with your team',
     pilotLabel: 'Pilot',
     status: 'Early access',
+    hub: 'Brain',
+    agentsCount: (n) => `${n} agents`,
     cta: (i) => `Request early access · ${i}`,
     industries: [
       {
@@ -44,7 +50,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Listing writer', does: 'Drafts listing descriptions from the property details you provide.' },
           { name: 'Follow-up agent', does: 'Keeps cold leads warm with relevant new listings.' },
         ],
-        connects: ['CRM', 'Calendar', 'Inbox', 'Listing portals', 'Messaging'],
+        connects: [{ tool: 'crm', label: 'CRM' }, { tool: 'calendar', label: 'Calendar' }, { tool: 'email', label: 'Inbox' }, { tool: 'web', label: 'Listing portals' }, { tool: 'messaging', label: 'Messaging' }],
         stays: ['Pricing advice and negotiation', 'The showings themselves', 'Final say on every listing'],
       },
       {
@@ -56,7 +62,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Intake summarizer', does: 'Turns intake forms into a short summary for staff.' },
           { name: 'Waitlist manager', does: 'Offers freed-up slots to the next patient in line.' },
         ],
-        connects: ['Calendar', 'Messaging', 'Patient forms', 'Inbox'],
+        connects: [{ tool: 'calendar', label: 'Calendar' }, { tool: 'messaging', label: 'Messaging' }, { tool: 'forms', label: 'Patient forms' }, { tool: 'email', label: 'Inbox' }],
         stays: ['Every clinical question', 'Diagnosis and treatment', 'Exceptions to your policies'],
       },
       {
@@ -68,7 +74,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Meeting notes', does: 'Turns meetings into notes, decisions and action items.' },
           { name: 'Deadline tracker', does: 'Watches key dates and nudges the right person in time.' },
         ],
-        connects: ['Document storage', 'Inbox', 'Calendar', 'Practice management'],
+        connects: [{ tool: 'files', label: 'Document storage' }, { tool: 'email', label: 'Inbox' }, { tool: 'calendar', label: 'Calendar' }, { tool: 'crm', label: 'Practice management' }],
         stays: ['Advice to clients', 'Review and sign-off on every document', 'Fees and engagement terms'],
       },
       {
@@ -80,7 +86,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Review summarizer', does: 'Groups reviews and feedback into themes for your team.' },
           { name: 'Escalation agent', does: 'Routes refunds above your limit and upset customers to a person.' },
         ],
-        connects: ['Store admin', 'Helpdesk', 'Email', 'Shipping carriers'],
+        connects: [{ tool: 'store', label: 'Store admin' }, { tool: 'tickets', label: 'Helpdesk' }, { tool: 'email', label: 'Email' }, { tool: 'web', label: 'Shipping carriers' }],
         stays: ['Refunds above your limit', 'Supplier and pricing decisions', 'Brand and promotion calls'],
       },
       {
@@ -92,7 +98,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Review replies', does: 'Drafts responses to reviews for a manager to approve.' },
           { name: 'Staff handoff', does: 'Passes special requests and issues to the right person on shift.' },
         ],
-        connects: ['Reservation system', 'Messaging', 'Inbox', 'Team chat'],
+        connects: [{ tool: 'calendar', label: 'Reservation system' }, { tool: 'messaging', label: 'Messaging' }, { tool: 'email', label: 'Inbox' }, { tool: 'chat', label: 'Team chat' }],
         stays: ['Rates and availability strategy', 'Complaints that need a call', 'Approval of every public reply'],
       },
     ],
@@ -106,6 +112,8 @@ export const COPY: L10n<ProductsCopy> = {
     staysLabel: 'Siempre queda en manos de tu equipo',
     pilotLabel: 'Piloto',
     status: 'Acceso anticipado',
+    hub: 'Brain',
+    agentsCount: (n) => `${n} agentes`,
     cta: (i) => `Solicitar acceso anticipado · ${i}`,
     industries: [
       {
@@ -117,7 +125,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Redactor de fichas', does: 'Redacta descripciones de propiedades a partir de los datos que le das.' },
           { name: 'Seguimiento', does: 'Mantiene activos a los leads fríos con propiedades nuevas que les interesan.' },
         ],
-        connects: ['CRM', 'Calendario', 'Correo', 'Portales inmobiliarios', 'Mensajería'],
+        connects: [{ tool: 'crm', label: 'CRM' }, { tool: 'calendar', label: 'Calendario' }, { tool: 'email', label: 'Correo' }, { tool: 'web', label: 'Portales inmobiliarios' }, { tool: 'messaging', label: 'Mensajería' }],
         stays: ['Asesoría de precio y negociación', 'Las visitas en sí', 'La última palabra en cada ficha'],
       },
       {
@@ -129,7 +137,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Resumen de admisión', does: 'Convierte los formularios de admisión en un resumen breve para el equipo.' },
           { name: 'Lista de espera', does: 'Ofrece los horarios liberados al siguiente paciente en espera.' },
         ],
-        connects: ['Calendario', 'Mensajería', 'Formularios de pacientes', 'Correo'],
+        connects: [{ tool: 'calendar', label: 'Calendario' }, { tool: 'messaging', label: 'Mensajería' }, { tool: 'forms', label: 'Formularios de pacientes' }, { tool: 'email', label: 'Correo' }],
         stays: ['Toda pregunta clínica', 'Diagnóstico y tratamiento', 'Excepciones a tus políticas'],
       },
       {
@@ -141,7 +149,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Notas de reunión', does: 'Convierte reuniones en notas, decisiones y tareas.' },
           { name: 'Control de plazos', does: 'Vigila las fechas clave y avisa a tiempo a la persona indicada.' },
         ],
-        connects: ['Almacenamiento de documentos', 'Correo', 'Calendario', 'Gestión de casos'],
+        connects: [{ tool: 'files', label: 'Almacenamiento de documentos' }, { tool: 'email', label: 'Correo' }, { tool: 'calendar', label: 'Calendario' }, { tool: 'crm', label: 'Gestión de casos' }],
         stays: ['El asesoramiento a clientes', 'Revisión y firma de cada documento', 'Honorarios y condiciones'],
       },
       {
@@ -153,7 +161,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Resumen de reseñas', does: 'Agrupa reseñas y comentarios por tema para tu equipo.' },
           { name: 'Derivación', does: 'Deriva a una persona los reembolsos sobre tu límite y los clientes molestos.' },
         ],
-        connects: ['Admin de tienda', 'Mesa de ayuda', 'Email', 'Transportistas'],
+        connects: [{ tool: 'store', label: 'Admin de tienda' }, { tool: 'tickets', label: 'Mesa de ayuda' }, { tool: 'email', label: 'Email' }, { tool: 'web', label: 'Transportistas' }],
         stays: ['Reembolsos sobre tu límite', 'Decisiones de proveedores y precios', 'Marca y promociones'],
       },
       {
@@ -165,7 +173,7 @@ export const COPY: L10n<ProductsCopy> = {
           { name: 'Respuesta a reseñas', does: 'Redacta respuestas a reseñas para que las apruebe un responsable.' },
           { name: 'Derivación al equipo', does: 'Pasa pedidos especiales e incidencias a la persona de turno.' },
         ],
-        connects: ['Sistema de reservas', 'Mensajería', 'Correo', 'Chat del equipo'],
+        connects: [{ tool: 'calendar', label: 'Sistema de reservas' }, { tool: 'messaging', label: 'Mensajería' }, { tool: 'email', label: 'Correo' }, { tool: 'chat', label: 'Chat del equipo' }],
         stays: ['Estrategia de tarifas y disponibilidad', 'Reclamos que requieren una llamada', 'Aprobación de cada respuesta pública'],
       },
     ],

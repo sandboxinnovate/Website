@@ -14,6 +14,10 @@ export interface PartnersCopy {
   short: { you: string; sbx: string; both: string };
   clientSees: string;
   youOwn: (n: number, total: number) => string;
+  /** Headline number for the split chart, e.g. "6 of 8". */
+  leadNum: (n: number, total: number) => string;
+  leadText: string;
+  legend: (who: string, n: number) => string;
   cta: string;
   stages: string[];
   models: { id: string; name: string; line: string; summary: string; sees: string; owners: Owner[] }[];
@@ -39,6 +43,9 @@ export const COPY: L10n<PartnersCopy> = {
     short: { you: 'You', sbx: 'Sandbox', both: 'Together' },
     clientSees: 'Your client sees',
     youOwn: (n, total) => `You lead ${n} of ${total} stages`,
+    leadNum: (n, total) => `${n} of ${total}`,
+    leadText: 'stages led by your agency',
+    legend: (who, n) => `${who}: ${n}`,
     cta: 'Talk about this model',
     stages: ['Finding the client', 'Client relationship', 'Selling & proposal', 'Scoping', 'Build & operation', 'Brand on deliverables', 'First-line support', 'Invoicing the client'],
     models: [
@@ -73,6 +80,9 @@ export const COPY: L10n<PartnersCopy> = {
     short: { you: 'Tú', sbx: 'Sandbox', both: 'En conjunto' },
     clientSees: 'Tu cliente ve',
     youOwn: (n, total) => `Lideras ${n} de ${total} etapas`,
+    leadNum: (n, total) => `${n} de ${total}`,
+    leadText: 'etapas a cargo de tu agencia',
+    legend: (who, n) => `${who}: ${n}`,
     cta: 'Conversar sobre este modelo',
     stages: ['Conseguir al cliente', 'Relación con el cliente', 'Venta y propuesta', 'Alcance', 'Construcción y operación', 'Marca en los entregables', 'Soporte de primera línea', 'Facturación al cliente'],
     models: [

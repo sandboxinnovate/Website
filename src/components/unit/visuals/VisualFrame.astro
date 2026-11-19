@@ -1,18 +1,18 @@
 ---
 /**
- * System-window frame for the unit hero visuals: mono file path on the left,
- * "Illustrative" label on the right. Purely decorative (aria-hidden).
+ * Card frame for the unit hero visuals: a plain-language title on the left and an
+ * "Illustrative example" tag on the right. Purely decorative (aria-hidden).
  * Animations inside are paused while the frame is offscreen or the tab is hidden
  * (see the script in UnitHero.astro, which toggles [data-paused]).
  */
-interface Props { file: string; label: string; class?: string }
-const { file, label, class: cls = '' } = Astro.props;
+interface Props { title: string; label: string; labelShort?: string; class?: string }
+const { title, label, labelShort, class: cls = '' } = Astro.props;
 ---
 <div class:list={['uv', cls]} data-uv aria-hidden="true">
   <div class="uv__bar">
     <span class="uv__dot"></span>
-    <span class="uv__file">{file}</span>
-    <span class="uv__tag">{label}</span>
+    <span class="uv__title">{title}</span>
+    <span class="uv__tag"><span class="uv__tag-long">{label}</span>{labelShort && <span class="uv__tag-short">{labelShort}</span>}</span>
   </div>
   <div class="uv__body"><slot /></div>
 </div>
@@ -25,12 +25,17 @@ const { file, label, class: cls = '' } = Astro.props;
       linear-gradient(180deg, rgb(255 255 255 / .035), rgb(255 255 255 / .01)),
       var(--color-ink-900);
     border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgb(255 255 255 / .05), 0 40px 120px -40px rgb(0 0 0 / .8);
-    overflow: hidden;
+    overflow: hidden; container-type: inline-size;
   }
-  .uv__bar { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; color: var(--color-smoke); }
-  .uv__dot { width: 6px; height: 6px; border-radius: 9px; background: var(--color-flame-500); box-shadow: 0 0 8px var(--color-flame-500); }
-  .uv__file { color: var(--color-mist); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .uv__tag { margin-left: auto; padding: 3px 8px; border-radius: 99px; border: 1px solid var(--line-strong); text-transform: uppercase; letter-spacing: .1em; font-size: 10px; white-space: nowrap; }
+  .uv__bar { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 8px 16px; border-bottom: 1px solid var(--line); color: var(--color-smoke); }
+  .uv__dot { flex: none; width: 7px; height: 7px; border-radius: 9px; background: var(--color-flame-500); box-shadow: 0 0 8px var(--color-flame-500); }
+  .uv__title { min-width: 0; font-family: var(--font-sans); font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--color-bone); }
+  .uv__tag { flex: none; margin-left: auto; padding: 3px 10px; border-radius: 99px; border: 1px dashed var(--line-strong); font-family: var(--font-sans); font-size: 12px; color: var(--color-mist); white-space: nowrap; }
+  .uv__tag-short { display: none; }
+  @container (max-width: 420px) {
+    .uv__tag:has(.uv__tag-short) .uv__tag-long { display: none; }
+    .uv__tag-short { display: inline; }
+  }
   .uv__body { position: relative; flex: 1; }
   :global(.uv[data-paused] *), :global(.uv[data-paused] *::before), :global(.uv[data-paused] *::after) { animation-play-state: paused !important; }
 </style>
