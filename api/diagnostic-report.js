@@ -10,6 +10,8 @@
  *   6. answers with a short preview only: the full report is reached through the emailed link,
  *      which is what makes a real email address necessary.
  * GET /api/diagnostic-report/?r=<id> returns a stored report for the report page.
+ * DELETE /api/diagnostic-report/ with { r, email } deletes it (the email must match the one the
+ *   report was sent to; only a salted hash of it is stored, never the address).
  *
  * Environment (Vercel project settings; never prefix these with PUBLIC_):
  *   ANTHROPIC_API_KEY                         Claude API key
@@ -20,7 +22,7 @@
  *   BRAIN_LEADS_URL, BRAIN_LEADS_SECRET       same as api/leads.js
  */
 import Anthropic from '@anthropic-ai/sdk';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { MODEL, REPORT_SCHEMA, SYSTEM_PROMPT, userMessage } from './_lib/report-prompt.js';
 import { allow, cmd, kvConfigured } from './_lib/kv.js';
 import { buildEmail, sendEmail } from './_lib/report-email.js';
@@ -30,6 +32,9 @@ const MAX_BODY = 48 * 1024;
 const REPORT_TTL = 60 * 60 * 24 * 400; // keep reports about 13 months
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const AREAS = ['strategy', 'data', 'processes', 'people', 'stack'];
+
+/** Hash that ties a report to its owner's email without storing the address. */
+const emailHash = (email, id) => createHash('sha256').update(`${String(email).trim().toLowerCase()}:${id}`).digest('hex');
 
 const json = (body, status = 200) =>
   Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
@@ -156,6 +161,7 @@ export async function POST(request) {
     const record = {
       id, createdAt: new Date().toISOString(), lang: lead.lang, name: lead.name, company: lead.company,
       score: lead.score, level: lead.level, levelName: lead.levelName, dimensions: lead.dimensions, report,
+      emailHash: emailHash(lead.email, id),
     };
     try {
       await cmd('SET', `report:${id}`, JSON.stringify(record), 'EX', REPORT_TTL);
@@ -210,9 +216,38 @@ export async function GET(request) {
   try {
     const raw = await cmd('GET', `report:${id}`);
     if (!raw) return json({ ok: false, error: 'not-found' }, 404);
-    return json({ ok: true, report: JSON.parse(raw) });
+    const { emailHash: _hash, ...report } = JSON.parse(raw);
+    return json({ ok: true, report });
   } catch (e) {
     console.error('[report] read failed:', e instanceof Error ? e.message : e);
+    return json({ ok: false, error: 'unavailable' }, 502);
+  }
+}
+
+export async function DELETE(request) {
+  let body;
+  try { body = JSON.parse((await request.text()).slice(0, 2048)); } catch { return json({ ok: false, error: 'bad-json' }, 400); }
+  const id = typeof body?.r === 'string' ? body.r : '';
+  const email = typeof body?.email === 'string' ? body.email : '';
+  if (!/^[a-f0-9]{32}$/.test(id)) return json({ ok: false, error: 'not-found' }, 404);
+  if (!kvConfigured()) return json({ ok: false, error: 'not-configured' }, 503);
+  const ip = (request.headers.get('x-forwarded-for') || '').split(',')[0].trim() || 'unknown';
+  if (!(await allow(`rl:report:del:${ip}`, 10, 3600))) return json({ ok: false, error: 'rate-limited' }, 429);
+  try {
+    const raw = await cmd('GET', `report:${id}`);
+    if (!raw) return json({ ok: false, error: 'not-found' }, 404);
+    const rec = JSON.parse(raw);
+    if (rec.emailHash) {
+      const a = Buffer.from(rec.emailHash, 'hex');
+      const b = Buffer.from(emailHash(email, id), 'hex');
+      if (!EMAIL_RE.test(email.trim()) || a.length !== b.length || !timingSafeEqual(a, b)) {
+        return json({ ok: false, error: 'email-mismatch' }, 403);
+      }
+    }
+    await cmd('DEL', `report:${id}`);
+    return json({ ok: true });
+  } catch (e) {
+    console.error('[report] delete failed:', e instanceof Error ? e.message : e);
     return json({ ok: false, error: 'unavailable' }, 502);
   }
 }

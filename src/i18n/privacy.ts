@@ -23,8 +23,8 @@ export const PRIVACY = {
   },
   eyebrow: { en: 'Legal', es: 'Legal' } as S,
   title: { en: 'Privacy policy', es: 'Política de privacidad' } as S,
-  updated: { en: 'Last updated: November 1, 2026', es: 'Última actualización: 1 de noviembre de 2026' } as S,
-  updatedIso: '2026-11-01',
+  updated: { en: 'Last updated: November 19, 2026', es: 'Última actualización: 19 de noviembre de 2026' } as S,
+  updatedIso: '2026-11-19',
   intro: {
     en: 'This policy explains what Sandbox Innovate LLC (“Sandbox”, “we”) collects through sandboxinnovate.com, why, and what you can ask us to do with it.',
     es: 'Esta política explica qué datos recopila Sandbox Innovate LLC («Sandbox», «nosotros») a través de sandboxinnovate.com, para qué los usa y qué puedes pedirnos sobre ellos.',
@@ -42,13 +42,13 @@ export const PRIVACY = {
       list: {
         en: [
           'Contact form: name, work email, company, role, website, company size, region, preferred call language, the services you selected, what you want to achieve and how you heard about us. If you came from the ROI estimate or the AI diagnostic, the figures you chose to attach.',
-          'AI diagnostic: your answers and score. If you ask for the full report, also your name, work email, company and role.',
+          'AI diagnostic: your answers and score. If you ask for the full report, also your name, work email and company, and if you give them, your role, region and WhatsApp or phone number, and whether we may contact you on WhatsApp.',
           'Newsletter: your email address.',
           'With every form: the page you sent it from, the page that referred you, the language, the time and your time zone, and the page and campaign tags (utm_*) your visit started with, if any.',
         ],
         es: [
           'Formulario de contacto: nombre, correo de trabajo, empresa, cargo, sitio web, tamaño de la empresa, región, idioma de la llamada, los servicios que elegiste, lo que quieres lograr y cómo nos conociste. Si llegaste desde la estimación de ROI o el diagnóstico de IA, los datos que decidiste adjuntar.',
-          'Diagnóstico de IA: tus respuestas y tu puntaje. Si pides el reporte completo, también tu nombre, correo de trabajo, empresa y cargo.',
+          'Diagnóstico de IA: tus respuestas y tu puntaje. Si pides el reporte completo, también tu nombre, correo de trabajo y empresa y, si los das, tu cargo, región y número de WhatsApp o teléfono, y si podemos contactarte por WhatsApp.',
           'Newsletter: tu correo electrónico.',
           'Con cada formulario: la página desde la que lo enviaste, la página que te trajo, el idioma, la hora y tu zona horaria, y la página y las etiquetas de campaña (utm_*) con las que empezó tu visita, si las hay.',
         ],
@@ -64,22 +64,22 @@ export const PRIVACY = {
     {
       title: { en: 'Why we use it', es: 'Para qué los usamos' },
       body: {
-        en: 'To reply to your request and prepare the call, to send the report you asked for, and to send the newsletter if you subscribed. We don’t sell your data or use it to train AI models.',
-        es: 'Para responder tu solicitud y preparar la llamada, enviarte el reporte que pediste y enviarte la newsletter si te suscribiste. No vendemos tus datos ni los usamos para entrenar modelos de IA.',
+        en: 'To reply to your request and prepare the call, to write and send the report you asked for, and to send the newsletter if you subscribed. Your diagnostic report is written with AI from your answers. We don’t sell your data or use it to train AI models.',
+        es: 'Para responder tu solicitud y preparar la llamada, escribir y enviarte el reporte que pediste y enviarte la newsletter si te suscribiste. Tu reporte del diagnóstico se escribe con IA a partir de tus respuestas. No vendemos tus datos ni los usamos para entrenar modelos de IA.',
       },
     },
     {
       title: { en: 'Who else sees it', es: 'Quién más los ve' },
       body: {
-        en: 'Form submissions reach us through a service provider that processes them on our behalf and only for this purpose. We share data with authorities only when the law requires it.',
-        es: 'Los formularios nos llegan a través de un proveedor de servicios que los procesa en nuestro nombre y solo para este fin. Solo compartimos datos con autoridades cuando la ley lo exige.',
+        en: 'We use service providers that process data on our behalf and only for these purposes: to host the site and receive forms, to write the diagnostic report with AI (the provider does not use it to train its models), to store the report so its link works, and to send emails. We share data with authorities only when the law requires it.',
+        es: 'Usamos proveedores de servicios que procesan los datos en nuestro nombre y solo para estos fines: alojar el sitio y recibir los formularios, escribir el reporte del diagnóstico con IA (el proveedor no lo usa para entrenar sus modelos), guardar el reporte para que su link funcione y enviar los correos. Solo compartimos datos con autoridades cuando la ley lo exige.',
       },
     },
     {
       title: { en: 'How long we keep it', es: 'Cuánto tiempo los guardamos' },
       body: {
-        en: 'Requests and diagnostic reports: as long as we need them to reply and, if we work together, for the length of the relationship. Newsletter: until you unsubscribe. You can ask us to delete your data at any time.',
-        es: 'Solicitudes y reportes del diagnóstico: el tiempo necesario para responderte y, si trabajamos juntos, mientras dure la relación. Newsletter: hasta que te des de baja. Puedes pedirnos que borremos tus datos en cualquier momento.',
+        en: 'Your diagnostic report page: we keep it for 13 months so the link in your email keeps working, then it is deleted automatically. That stored copy has your name, company, scores and report, but not your email or phone. You can delete it yourself at any time with the “Delete my report” button at the bottom of the report. Requests and the contact details you send us: as long as we need them to reply and, if we work together, for the length of the relationship. Newsletter: until you unsubscribe. You can ask us to delete your data at any time.',
+        es: 'La página de tu reporte del diagnóstico: la guardamos 13 meses para que el link de tu correo siga funcionando y después se borra sola. Esa copia guarda tu nombre, empresa, puntajes y reporte, pero no tu correo ni tu teléfono. Puedes borrarla tú cuando quieras con el botón «Eliminar mi reporte» al final del reporte. Solicitudes y datos de contacto que nos envías: el tiempo necesario para responderte y, si trabajamos juntos, mientras dure la relación. Newsletter: hasta que te des de baja. Puedes pedirnos que borremos tus datos en cualquier momento.',
       },
     },
     {
