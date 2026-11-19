@@ -2,7 +2,8 @@ import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import { localize, type Lang } from '@/i18n';
 import { ICONS } from '@/components/ui/icons';
 import { ToolBadge } from '@/components/ui/ToolBadge';
-import { TOOL_ICONS, TOOL_TINTS, type ToolKey } from '@/components/ui/tool-icons';
+import type { ToolKey } from '@/components/ui/tool-icons';
+import { tileSVG } from '@/components/ui/tool-render';
 import { COPY } from './copy';
 import { tabKeys, useActive } from '../hooks';
 import './products-selector.css';
@@ -20,19 +21,9 @@ const nodePos = (i: number, n: number) => {
   return { x: Math.round((CX + R * Math.cos(a)) * 10) / 10, y: Math.round((CY + R * Math.sin(a)) * 10) / 10 };
 };
 
-/** The shared tool "app tile" drawn inside the SVG diagram (decorative). */
+/** The shared tool tile (brand mark or generic icon) drawn inside the SVG diagram (decorative). */
 function SvgTile({ tool, x, y, size }: { tool: ToolKey; x: number; y: number; size: number }) {
-  const ic = TOOL_ICONS[tool];
-  const [bg, fg] = TOOL_TINTS[ic.tint];
-  const pad = size * 0.21;
-  return (
-    <g>
-      <rect x={x} y={y} width={size} height={size} rx={size * 0.3} style={{ fill: 'var(--color-ink-900)' }} />
-      <rect x={x} y={y} width={size} height={size} rx={size * 0.3} style={{ fill: bg, stroke: 'rgb(255 255 255 / .1)' }} />
-      <svg x={x + pad} y={y + pad} width={size - pad * 2} height={size - pad * 2} viewBox="0 0 24 24" fill="none" strokeWidth={1.7}
-        strokeLinecap="round" strokeLinejoin="round" style={{ stroke: fg }} dangerouslySetInnerHTML={{ __html: ic.paths }} />
-    </g>
-  );
+  return <g dangerouslySetInnerHTML={{ __html: tileSVG(tool, { size, x, y }) }} />;
 }
 
 function useReducedMotion() {

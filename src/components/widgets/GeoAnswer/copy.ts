@@ -44,11 +44,11 @@ export const bandOf = (score: number): Band => (score < 30 ? 'low' : score < 60 
  * AI assistants named in the header. Generic tiles only (no third-party logos):
  * the chat assistants share the "ai" tile, Google's AI answers in search use the "web" tile.
  */
-export const ASSISTANTS: { name: Record<Lang, string>; tool: 'ai' | 'web' }[] = [
+export const ASSISTANTS: { name: Record<Lang, string>; tool: 'ai' | 'web'; brand?: 'googlegemini' | 'perplexity' | 'google' }[] = [
   { name: { en: 'ChatGPT', es: 'ChatGPT' }, tool: 'ai' },
-  { name: { en: 'Gemini', es: 'Gemini' }, tool: 'ai' },
-  { name: { en: 'Perplexity', es: 'Perplexity' }, tool: 'ai' },
-  { name: { en: 'Google AI answers', es: 'Respuestas con IA de Google' }, tool: 'web' },
+  { name: { en: 'Gemini', es: 'Gemini' }, tool: 'ai', brand: 'googlegemini' },
+  { name: { en: 'Perplexity', es: 'Perplexity' }, tool: 'ai', brand: 'perplexity' },
+  { name: { en: 'Google AI answers', es: 'Respuestas con IA de Google' }, tool: 'web', brand: 'google' },
 ];
 
 export interface GeoCopy {

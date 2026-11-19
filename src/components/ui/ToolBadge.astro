@@ -1,37 +1,40 @@
 ---
 /**
- * A small "app tile" for a business tool (CRM, email, team chat...): tinted rounded square with a
- * generic line icon, optionally followed by its label. Same look as the React ToolBadge.
- *   <ToolBadge tool="crm" lang={lang} />            tile + label
- *   <ToolBadge tool="crm" lang={lang} label={false} />  tile only (label kept for screen readers)
+ * A business tool shown as brand marks plus its label (CRM -> HubSpot, Salesforce, GoHighLevel).
+ * Tools without example brands (website, phone, AI, forms) use a generic tinted icon.
+ * Same look as the React ToolBadge (both use tool-render.ts).
+ *   <ToolBadge tool="crm" lang={lang} />                brand marks + label
+ *   <ToolBadge tool="crm" lang={lang} label={false} />  main brand tile only (label for screen readers)
  */
 import type { Lang } from '@/i18n';
-import { TOOL_ICONS, TOOL_TINTS, type ToolKey } from './tool-icons';
+import { TOOL_ICONS, type ToolKey } from './tool-icons';
+import { brandNames, clusterSVG, tileSVG } from './tool-render';
 
 interface Props {
   tool: ToolKey;
   lang: Lang;
   label?: boolean | string;
   size?: 'sm' | 'md' | 'lg';
+  max?: number;
   class?: string;
 }
-const { tool, lang, label = true, size = 'md', class: cls = '' } = Astro.props;
-const t = TOOL_ICONS[tool];
-const [bg, fg] = TOOL_TINTS[t.tint];
-const text = typeof label === 'string' ? label : t.label[lang];
+const { tool, lang, label = true, size = 'md', max = 3, class: cls = '' } = Astro.props;
+const px = { sm: 22, md: 28, lg: 36 }[size];
+const text = typeof label === 'string' ? label : TOOL_ICONS[tool].label[lang];
+const names = brandNames(tool);
+const svg = label === false
+  ? tileSVG(tool, { size: px, label: names ? `${text}: ${names}` : text })
+  : clusterSVG(tool, { size: px, max }).svg;
 ---
-<span class:list={['tb', `tb--${size}`, cls]} style={`--tb-bg:${bg};--tb-fg:${fg}`}>
-  <span class="tb__tile" role={label === false ? 'img' : undefined} aria-label={label === false ? text : undefined}>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={t.paths} />
-  </span>
+<span class:list={['tb', `tb--${size}`, cls]} title={names || undefined}>
+  <span class="tb__tile" set:html={svg} />
   {label !== false && <span class="tb__label">{text}</span>}
 </span>
 
 <style>
   .tb { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
-  .tb__tile { flex: none; display: grid; place-items: center; width: var(--tb-s, 28px); height: var(--tb-s, 28px); border-radius: calc(var(--tb-s, 28px) * .3); background: var(--tb-bg); color: var(--tb-fg); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06); }
-  .tb__tile svg { width: 58%; height: 58%; }
+  .tb__tile { display: inline-flex; flex: none; }
   .tb__label { font-size: 13px; color: var(--color-bone); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tb--sm { --tb-s: 22px; } .tb--sm .tb__label { font-size: 12px; }
-  .tb--lg { --tb-s: 36px; } .tb--lg .tb__label { font-size: 14px; }
+  .tb--sm .tb__label { font-size: 12px; }
+  .tb--lg .tb__label { font-size: 14px; }
 </style>

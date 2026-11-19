@@ -338,7 +338,7 @@ export default function GeoAnswer({ lang }: { lang: Lang }) {
               <span className="ga-bar__chips">
                 {ASSISTANTS.map((a) => (
                   <span key={a.name.en} className="ga-chip">
-                    <ToolTile tool={a.tool} lang={lang} size={20} title="" />
+                    <ToolTile tool={a.tool} lang={lang} size={20} title="" brand={a.brand} />
                     {a.name[lang]}
                   </span>
                 ))}
