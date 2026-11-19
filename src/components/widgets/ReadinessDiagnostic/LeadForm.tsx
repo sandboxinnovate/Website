@@ -1,12 +1,13 @@
 import { useId, useRef, useState, type SubmitEvent } from 'react';
 import { localize, type Lang } from '@/i18n';
 import { SITE, unitBySlug } from '@/data/site';
-import { isValidEmail, submitLead } from '@/lib/leads';
+import { isValidEmail } from '@/lib/leads';
+import { requestReport, type ReportPreview } from '@/lib/report';
 import { COPY } from './copy';
 import { QUESTIONS, type Answers, type Result } from './model';
 import Ico from './Ico';
 
-type Field = 'name' | 'email' | 'company' | 'role';
+type Field = 'name' | 'email' | 'company' | 'role' | 'phone';
 type Region = '' | 'us' | 'eu' | 'latam' | 'other';
 
 interface Props {
@@ -24,13 +25,16 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
   const t = COPY[lang];
   const f = t.form;
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
-  const [vals, setVals] = useState<Record<Field, string>>({ name: '', email: '', company: '', role: '' });
+  const [vals, setVals] = useState<Record<Field, string>>({ name: '', email: '', company: '', role: '', phone: '' });
   const [region, setRegion] = useState<Region>('');
   const [wantsCall, setWantsCall] = useState(false);
+  const [whatsapp, setWhatsapp] = useState(false);
+  const [preview, setPreview] = useState<ReportPreview | null>(null);
+  const [failNote, setFailNote] = useState('');
   const [trap, setTrap] = useState('');
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [tried, setTried] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error' | 'limited'>('idle');
   const refs = { name: useRef<HTMLInputElement>(null), email: useRef<HTMLInputElement>(null), company: useRef<HTMLInputElement>(null) };
 
   const errors: Partial<Record<Field, string>> = {
@@ -58,14 +62,16 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
       return;
     }
     setStatus('sending');
-    const res = await submitLead({
-      kind: 'diagnostic',
+    setFailNote('');
+    const res = await requestReport({
       lang,
       email,
       name: vals.name.trim(),
       company: vals.company.trim(),
       role: vals.role.trim() || undefined,
       region: region || undefined,
+      phone: vals.phone.trim() || undefined,
+      whatsapp: whatsapp && vals.phone.trim().length > 5,
       wantsCall,
       score: result.score,
       level: result.levelId,
@@ -75,6 +81,7 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
         id: q.id,
         dimension: q.dim,
         option: (answers[i] ?? 0) + 1,
+        question: t.questions[q.id].text,
         answer: t.questions[q.id].options[answers[i] ?? 0],
       })),
       moves: result.moves.map((m) => ({ id: m.id, unit: m.unit })),
@@ -82,6 +89,14 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
     });
     if (res.ok) {
       setStatus('idle');
+      setPreview(res.preview ?? null);
+      onSent(email);
+    } else if (res.error === 'rate-limited') {
+      setStatus('limited');
+    } else if (res.error === 'report-failed' && res.leadSaved) {
+      // Answers reached the team; the report could not be written right now.
+      setStatus('idle');
+      setFailNote(f.failSaved);
       onSent(email);
     } else {
       setStatus('error');
@@ -97,8 +112,23 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
           <Ico name="check" size={22} stroke={2} />
         </span>
         <div className="rd-lead__ok">
-          <h3 className="rd-lead__title">{f.okTitle}</h3>
-          <p className="rd-lead__body">{f.okBody(sentTo, wantsCall)}</p>
+          <h3 className="rd-lead__title">{failNote ? f.failTitle : f.okTitle}</h3>
+          <p className="rd-lead__body">{failNote || f.okBody(sentTo, wantsCall)}</p>
+          {preview && (
+            <div className="rd-preview">
+              <span className="rd-tag">{f.previewTag}</span>
+              <p className="rd-preview__headline">{preview.headline}</p>
+              <p className="rd-preview__summary">{preview.summary}</p>
+              {preview.opportunity && (
+                <div className="rd-preview__opp">
+                  <span className="rd-preview__label">{f.previewFirst}</span>
+                  <strong>{preview.opportunity.title}</strong>
+                  <span>{preview.opportunity.why}</span>
+                </div>
+              )}
+              <p className="rd-preview__more">{f.previewMore}</p>
+            </div>
+          )}
           <a className="btn btn-primary btn-sm rd-lead__call" href={talkHref}>
             <span>{f.okCall}</span>
             <span className="btn-chip">
@@ -134,11 +164,11 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
           {!required && <span className="rd-field__opt"> · {f.optional}</span>}
         </label>
         <input
-          ref={k === 'role' ? undefined : refs[k]}
+          ref={k === 'role' || k === 'phone' ? undefined : refs[k]}
           id={id}
           name={k}
           type={type}
-          inputMode={k === 'email' ? 'email' : undefined}
+          inputMode={k === 'email' ? 'email' : k === 'phone' ? 'tel' : undefined}
           autoComplete={autoComplete}
           placeholder={f.ph[k]}
           value={vals[k]}
@@ -190,7 +220,16 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
           {field('email', 'email', 'email')}
           {field('company', 'text', 'organization')}
           {field('role', 'text', 'organization-title', false)}
+          {field('phone', 'tel', 'tel', false)}
         </div>
+
+        <label className="rd-check" data-disabled={vals.phone.trim().length > 5 ? undefined : ''}>
+          <input type="checkbox" name="whatsapp" checked={whatsapp && vals.phone.trim().length > 5} disabled={vals.phone.trim().length <= 5} onChange={(e) => setWhatsapp(e.target.checked)} />
+          <span className="rd-check__box" aria-hidden="true">
+            <Ico name="check" size={13} stroke={2.4} />
+          </span>
+          <span className="rd-check__label">{f.whatsapp}</span>
+        </label>
 
         <fieldset className="rd-seg">
           <legend className="rd-field__label">
@@ -243,6 +282,8 @@ export default function LeadForm({ lang, result, answers, sentTo, onSent, talkHr
 
         <p className="rd-form__status" role="alert">
           {tried && errorKeys.length > 0 ? f.fixErrors(errorKeys.length) : ''}
+          {status === 'sending' && f.sendingNote}
+          {status === 'limited' && f.limited}
           {status === 'error' && (
             <>
               {f.error} <a href={`mailto:${SITE.email}`}>{SITE.email}</a>

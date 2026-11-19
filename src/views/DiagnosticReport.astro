@@ -1,0 +1,221 @@
+---
+/**
+ * The full AI readiness report, reached from the emailed link: /diagnostic/report/?r=<id>.
+ * Static shell; the report is fetched from api/diagnostic-report.js and rendered in the browser.
+ * Not indexed (personal content).
+ */
+import Base from '@/layouts/Base.astro';
+import { localize, type Lang } from '@/i18n';
+import { UNITS } from '@/data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+const T = {
+  en: {
+    title: 'Your AI readiness report',
+    description: 'A personalised AI readiness report written from your diagnostic answers.',
+    eyebrow: 'AI readiness report',
+    loading: 'Loading your report',
+    notFound: 'We could not find this report. The link may be incomplete or the report may have expired.',
+    error: 'We could not load your report right now. Try again in a minute.',
+    retake: 'Take the diagnostic',
+    for: 'Prepared for',
+    score: 'Overall score',
+    of100: 'out of 100',
+    level: 'Level',
+    areas: 'Your five areas',
+    next: 'Next step',
+    opps: 'Your three clearest opportunities',
+    why: 'Why',
+    first: 'First step',
+    impact: 'Impact',
+    effort: 'Effort',
+    lvl: { low: 'Low', medium: 'Medium', high: 'High' },
+    service: 'Fits with',
+    plan: 'Your 30/60/90-day plan',
+    d30: 'First 30 days',
+    d60: 'Days 31 to 60',
+    d90: 'Days 61 to 90',
+    watch: 'What to watch out for',
+    cta: 'Book a 30-minute call to review it',
+    note: 'Written with AI from your answers and reviewed by our rules: no prices, no promises. Use it as a starting point for your own decisions.',
+    areaNames: { strategy: 'Strategy', data: 'Data', processes: 'Processes', people: 'People', stack: 'Tools' },
+  },
+  es: {
+    title: 'Tu reporte de preparación en IA',
+    description: 'Un reporte personalizado de preparación en IA escrito a partir de tus respuestas del diagnóstico.',
+    eyebrow: 'Reporte de preparación en IA',
+    loading: 'Cargando tu reporte',
+    notFound: 'No encontramos este reporte. Puede que el link esté incompleto o que el reporte haya vencido.',
+    error: 'No pudimos cargar tu reporte en este momento. Inténtalo de nuevo en un minuto.',
+    retake: 'Hacer el diagnóstico',
+    for: 'Preparado para',
+    score: 'Puntaje general',
+    of100: 'de 100',
+    level: 'Nivel',
+    areas: 'Tus cinco áreas',
+    next: 'Siguiente paso',
+    opps: 'Tus tres oportunidades más claras',
+    why: 'Por qué',
+    first: 'Primer paso',
+    impact: 'Impacto',
+    effort: 'Esfuerzo',
+    lvl: { low: 'Bajo', medium: 'Medio', high: 'Alto' },
+    service: 'Encaja con',
+    plan: 'Tu plan a 30, 60 y 90 días',
+    d30: 'Primeros 30 días',
+    d60: 'Días 31 a 60',
+    d90: 'Días 61 a 90',
+    watch: 'En qué tener cuidado',
+    cta: 'Agenda una llamada de 30 minutos para revisarlo',
+    note: 'Escrito con IA a partir de tus respuestas y con nuestras reglas: sin precios ni promesas. Úsalo como punto de partida para tus propias decisiones.',
+    areaNames: { strategy: 'Estrategia', data: 'Datos', processes: 'Procesos', people: 'Personas', stack: 'Herramientas' },
+  },
+}[lang];
+
+const services = Object.fromEntries(UNITS.map((u) => [u.slug, { name: u.name[lang], tagline: u.tagline[lang], href: localize(lang, `/services/${u.slug}`) }]));
+const config = { t: T, services, contact: localize(lang, '/contact') + '?offer=diagnostic', diagnostic: localize(lang, '/diagnostic') };
+---
+<Base lang={lang} title={T.title} description={T.description} noindex>
+  <main class="rp container-x section-y" id="main">
+    <div class="rp__state" data-state aria-live="polite">
+      <span class="rp__spinner" aria-hidden="true"></span>
+      <span>{T.loading}</span>
+    </div>
+    <article class="rp__doc" data-doc hidden></article>
+  </main>
+  <script type="application/json" id="rp-config" set:html={JSON.stringify(config)} />
+</Base>
+
+<script>
+  type Lvl = 'low' | 'medium' | 'high';
+  interface Report {
+    headline: string; summary: string;
+    areas: { area: string; verdict: string; nextStep: string }[];
+    opportunities: { title: string; why: string; firstStep: string; impact: Lvl; effort: Lvl; service: string }[];
+    plan: { days30: string[]; days60: string[]; days90: string[] };
+    watchouts: string[]; closing: string;
+  }
+  interface Record_ { name: string; company: string; score: number; levelName: string; dimensions: Record<string, number>; report: Report }
+
+  const cfg = JSON.parse(document.getElementById('rp-config')!.textContent || '{}');
+  const t = cfg.t;
+  const state = document.querySelector<HTMLElement>('[data-state]')!;
+  const doc = document.querySelector<HTMLElement>('[data-doc]')!;
+
+  const esc = (s: unknown) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const list = (items: string[]) => `<ul>${(items || []).map((i) => `<li>${esc(i)}</li>`).join('')}</ul>`;
+
+  function fail(msg: string) {
+    state.innerHTML = `<p>${esc(msg)}</p><a class="btn btn-ghost" href="${cfg.diagnostic}"><span>${esc(t.retake)}</span></a>`;
+  }
+
+  function render(rec: Record_) {
+    const r = rec.report;
+    const areas = r.areas.map((a) => {
+      const v = Math.round(rec.dimensions?.[a.area] ?? 0);
+      return `<li class="rp-area">
+        <div class="rp-area__top"><span class="rp-area__name">${esc(t.areaNames[a.area] || a.area)}</span><span class="rp-area__v">${v}</span></div>
+        <span class="rp-area__bar" aria-hidden="true"><span style="width:${v}%"></span></span>
+        <p>${esc(a.verdict)}</p>
+        <p class="rp-area__next"><b>${esc(t.next)}:</b> ${esc(a.nextStep)}</p>
+      </li>`;
+    }).join('');
+    const opps = r.opportunities.map((o, i) => {
+      const s = cfg.services[o.service];
+      return `<li class="rp-opp">
+        <span class="rp-opp__n">${i + 1}</span>
+        <h3>${esc(o.title)}</h3>
+        <p><b>${esc(t.why)}:</b> ${esc(o.why)}</p>
+        <p><b>${esc(t.first)}:</b> ${esc(o.firstStep)}</p>
+        <div class="rp-opp__chips">
+          <span class="rp-chip">${esc(t.impact)}: ${esc(t.lvl[o.impact] || o.impact)}</span>
+          <span class="rp-chip">${esc(t.effort)}: ${esc(t.lvl[o.effort] || o.effort)}</span>
+          ${s ? `<a class="rp-chip rp-chip--link" href="${s.href}">${esc(t.service)} ${esc(s.name)} · ${esc(s.tagline)}</a>` : ''}
+        </div>
+      </li>`;
+    }).join('');
+    doc.innerHTML = `
+      <header class="rp-head">
+        <span class="eyebrow">${esc(t.eyebrow)}</span>
+        <h1 class="rp-head__title">${esc(r.headline)}</h1>
+        <p class="lede">${esc(r.summary)}</p>
+        <div class="rp-score">
+          <div><span class="rp-score__k">${esc(t.score)}</span><span class="rp-score__v">${esc(rec.score)}</span><span class="rp-score__u">${esc(t.of100)}</span></div>
+          <div><span class="rp-score__k">${esc(t.level)}</span><span class="rp-score__lvl">${esc(rec.levelName)}</span></div>
+          ${rec.company ? `<div><span class="rp-score__k">${esc(t.for)}</span><span class="rp-score__lvl">${esc(rec.company)}</span></div>` : ''}
+        </div>
+      </header>
+      <section class="rp-sec"><h2>${esc(t.opps)}</h2><ol class="rp-opps">${opps}</ol></section>
+      <section class="rp-sec"><h2>${esc(t.areas)}</h2><ul class="rp-areas">${areas}</ul></section>
+      <section class="rp-sec"><h2>${esc(t.plan)}</h2>
+        <div class="rp-plan">
+          <div><h3>${esc(t.d30)}</h3>${list(r.plan.days30)}</div>
+          <div><h3>${esc(t.d60)}</h3>${list(r.plan.days60)}</div>
+          <div><h3>${esc(t.d90)}</h3>${list(r.plan.days90)}</div>
+        </div>
+      </section>
+      <section class="rp-sec"><h2>${esc(t.watch)}</h2>${list(r.watchouts)}</section>
+      <section class="rp-close">
+        <p>${esc(r.closing)}</p>
+        <a class="btn btn-primary" href="${cfg.contact}"><span>${esc(t.cta)}</span></a>
+        <p class="rp-note">${esc(t.note)}</p>
+      </section>`;
+    state.hidden = true;
+    doc.hidden = false;
+  }
+
+  const id = new URLSearchParams(location.search).get('r') || '';
+  if (!/^[a-f0-9]{32}$/.test(id)) fail(t.notFound);
+  else {
+    fetch(`/api/diagnostic-report/?r=${id}`, { headers: { Accept: 'application/json' } })
+      .then(async (res) => {
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok && data.report) render(data.report);
+        else fail(res.status === 404 ? t.notFound : t.error);
+      })
+      .catch(() => fail(t.error));
+  }
+</script>
+
+<style>
+  .rp { max-width: 980px; margin: 0 auto; min-height: 60vh; }
+  .rp__state { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; color: var(--color-mist); padding-top: 40px; }
+  .rp__spinner { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line-strong); border-top-color: var(--color-flame-500); animation: rp-spin 1s linear infinite; }
+  @keyframes rp-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .rp__spinner { animation: none; } }
+  .rp__doc { display: grid; gap: clamp(36px, 5vw, 56px); }
+  .rp__doc :global(h2) { font-family: var(--font-display); font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -.02em; margin-bottom: 16px; }
+  .rp__doc :global(h3) { font-family: var(--font-display); font-size: 1.15rem; letter-spacing: -.01em; }
+  .rp__doc :global(.rp-head) { display: grid; gap: 14px; justify-items: start; }
+  .rp__doc :global(.rp-head__title) { font-family: var(--font-display); font-weight: 500; font-size: clamp(2rem, 4.4vw, 3.4rem); line-height: 1.02; letter-spacing: -.04em; text-wrap: balance; }
+  .rp__doc :global(.rp-score) { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+  .rp__doc :global(.rp-score > div) { display: grid; gap: 2px; padding: 14px 18px; border-radius: 14px; border: 1px solid var(--line); background: rgb(255 255 255 / .03); min-width: 150px; }
+  .rp__doc :global(.rp-score__k) { font-size: 12.5px; color: var(--color-mist); }
+  .rp__doc :global(.rp-score__v) { font-family: var(--font-display); font-size: 2.2rem; line-height: 1; color: var(--color-flame-400); }
+  .rp__doc :global(.rp-score__u) { font-size: 12.5px; color: var(--color-mist); }
+  .rp__doc :global(.rp-score__lvl) { font-family: var(--font-display); font-size: 1.3rem; }
+  .rp__doc :global(.rp-opps) { list-style: none; padding: 0; display: grid; gap: 12px; }
+  .rp__doc :global(.rp-opp) { position: relative; padding: 20px 20px 20px 64px; border-radius: 16px; border: 1px solid var(--line); background: rgb(255 255 255 / .03); display: grid; gap: 8px; color: var(--color-mist); }
+  .rp__doc :global(.rp-opp b), .rp__doc :global(.rp-area__next b) { color: var(--color-bone); font-weight: 600; }
+  .rp__doc :global(.rp-opp h3) { color: var(--color-bone); }
+  .rp__doc :global(.rp-opp__n) { position: absolute; left: 20px; top: 20px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--color-flame-500); color: #1a0d03; font-weight: 700; font-size: 14px; }
+  .rp__doc :global(.rp-opp__chips) { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .rp__doc :global(.rp-chip) { font-size: 12.5px; padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line-strong); color: var(--color-bone); }
+  .rp__doc :global(.rp-chip--link) { color: var(--color-flame-400); border-color: rgb(245 131 39 / .35); text-decoration: none; }
+  .rp__doc :global(.rp-areas) { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+  .rp__doc :global(.rp-area) { padding: 18px; border-radius: 14px; border: 1px solid var(--line); display: grid; gap: 8px; color: var(--color-mist); font-size: 15px; }
+  .rp__doc :global(.rp-area__top) { display: flex; justify-content: space-between; align-items: baseline; }
+  .rp__doc :global(.rp-area__name) { color: var(--color-bone); font-weight: 600; }
+  .rp__doc :global(.rp-area__v) { font-family: var(--font-display); color: var(--color-flame-400); font-size: 1.3rem; }
+  .rp__doc :global(.rp-area__bar) { height: 6px; border-radius: 99px; background: rgb(255 255 255 / .08); overflow: hidden; }
+  .rp__doc :global(.rp-area__bar span) { display: block; height: 100%; background: var(--grad-flame, var(--color-flame-500)); border-radius: 99px; }
+  .rp__doc :global(.rp-plan) { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+  .rp__doc :global(.rp-plan > div) { padding: 18px; border-radius: 14px; border: 1px solid var(--line); display: grid; gap: 10px; align-content: start; }
+  .rp__doc :global(.rp-plan h3) { color: var(--color-flame-400); font-size: 1rem; }
+  .rp__doc :global(ul:not([class])) { padding-left: 1.1em; display: grid; gap: 8px; color: var(--color-mist); }
+  .rp__doc :global(.rp-close) { display: grid; gap: 16px; justify-items: start; padding: 24px; border-radius: 18px; border: 1px solid rgb(245 131 39 / .3); background: rgb(245 131 39 / .06); }
+  .rp__doc :global(.rp-close > p:first-child) { font-size: 1.1rem; color: var(--color-bone); max-width: 60ch; }
+  .rp__doc :global(.rp-note) { font-size: 13px; color: var(--color-mist); max-width: 70ch; }
+</style>

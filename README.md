@@ -48,6 +48,20 @@ BRAIN_LEADS_SECRET=<same value as LEADS_INTAKE_SECRET on the Brain>
 
 `BRAIN_LEADS_*` must **not** start with `PUBLIC_` (that would ship them to the browser). Full procedure: `infra/LEADS.md` in the `sandbox-brain` repo.
 
+**AI readiness report** (`api/diagnostic-report.js`): when someone completes the diagnostic and sends the form, Claude (`claude-opus-5-5`, structured JSON output) writes a personalised report from their answers. The visitor sees a short preview on screen; the full report is emailed with a permanent link to `/diagnostic/report/?r=<id>` (EN) or `/es/diagnostic/report/?r=<id>` (ES), so a real email address is needed to read it. The lead, with the report link, is forwarded to the Brain like any other lead. Prompt and output schema: `api/_lib/report-prompt.js`; email template: `api/_lib/report-email.js`. Rate limits: 6 reports per visitor per hour, 3 per email per day.
+
+```
+ANTHROPIC_API_KEY=<Claude API key>
+KV_REST_API_URL=...            # Upstash Redis from the Vercel Marketplace (added automatically when connected)
+KV_REST_API_TOKEN=...
+RESEND_API_KEY=<Resend API key>
+REPORT_FROM_EMAIL="Sandbox <diagnostico@sandboxinnovate.com>"   # on a domain verified in Resend
+REPORT_REPLY_TO=marketing@sandboxinnovate.com                     # optional
+SITE_URL=https://sandboxinnovate.com                               # optional, for links in the email
+```
+
+Without `ANTHROPIC_API_KEY` the lead still reaches the Brain and the visitor is told the team will send the report. In `npm run dev` the form returns a canned preview (`src/lib/report.ts`).
+
 Without it:
 
 - **`npm run dev`** logs each submission to the browser console (`[lead:preview]`) and shows the success state, so the flows can be tested end to end.

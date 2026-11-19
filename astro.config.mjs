@@ -58,7 +58,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes('/lab/') && !/\/404\/?$/.test(page),
+      filter: (page) => !page.includes('/lab/') && !page.includes('/diagnostic/report') && !/\/404\/?$/.test(page),
       i18n: { defaultLocale: 'en', locales: { en: 'en', es: 'es' } },
       serialize(item) {
         if (!/\/blog\/[^/]+\/$/.test(item.url)) return item;

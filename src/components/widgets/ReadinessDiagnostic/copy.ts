@@ -82,14 +82,23 @@ export interface DiagnosticCopy {
     email: string;
     company: string;
     role: string;
+    phone: string;
+    whatsapp: string;
     region: string;
     optional: string;
     regions: { us: string; eu: string; latam: string; other: string };
-    ph: { name: string; email: string; company: string; role: string };
+    ph: { name: string; email: string; company: string; role: string; phone: string };
     required: string;
     badEmail: string;
     submit: string;
     sending: string;
+    sendingNote: string;
+    limited: string;
+    failTitle: string;
+    failSaved: string;
+    previewTag: string;
+    previewFirst: string;
+    previewMore: string;
     wantsCall: string;
     consent: string;
     privacy: string;
@@ -339,27 +348,36 @@ const en: DiagnosticCopy = {
 
   form: {
     eyebrow: 'Full report',
-    title: 'Get the full report by email',
-    body: 'A written breakdown of every area, the reasoning behind your three moves and what each one involves. If you want, add 30 minutes with our team to test it against your business.',
-    bullets: ['Breakdown by area', 'The reasoning behind each move', 'Optional 30-minute review call'],
+    title: 'Get your full AI report',
+    body: 'We write it from your answers: what your score means, your three clearest opportunities with the first step for each, and a 30/60/90-day plan. You see a preview here and get the full report by email.',
+    bullets: ['Your five areas, explained', 'Three opportunities and where to start', 'A 30/60/90-day plan'],
     name: 'Name',
     email: 'Work email',
     company: 'Company',
     role: 'Role',
+    phone: 'WhatsApp or phone',
+    whatsapp: 'You can contact me on WhatsApp',
     region: 'Region',
     optional: 'optional',
     regions: { us: 'United States', eu: 'Europe', latam: 'Latin America', other: 'Other' },
-    ph: { name: 'Your name', email: 'you@company.com', company: 'Company name', role: 'e.g. COO, Head of Sales' },
+    ph: { name: 'Your name', email: 'you@company.com', company: 'Company name', role: 'e.g. COO, Head of Sales', phone: '+1 555 123 4567' },
     required: 'Required',
     badEmail: 'Enter a valid work email',
-    submit: 'Send me the report',
-    sending: 'Sending',
+    submit: 'Get my report',
+    sending: 'Writing your report',
+    sendingNote: 'Writing your report from your answers. This takes about 30 seconds.',
+    limited: 'You have asked for several reports in a short time. Try again later, or write to us.',
+    failTitle: 'We got your answers',
+    failSaved: 'We could not write your report right now. Our team has your answers and will email you the report.',
+    previewTag: 'Preview',
+    previewFirst: 'Your first opportunity',
+    previewMore: 'Your full report, with your five areas and the 30/60/90-day plan, is in your inbox.',
     wantsCall: 'Also set up a 30-minute review call',
-    consent: 'We use your answers only to prepare the report and, if you ask, the call. No newsletter unless you ask for it.',
+    consent: 'We use your answers to write your report with AI and, if you ask, to prepare the call. No newsletter unless you ask for it.',
     privacy: 'Privacy policy',
     error: 'We couldn’t send it. Try again, or write to us at',
-    okTitle: 'Report requested',
-    okBody: (e, call) => `We’ll send your full report to ${e}.${call ? ' We’ll also suggest times for the review call.' : ''}`,
+    okTitle: 'Your report is on its way',
+    okBody: (e, call) => `We sent your full report to ${e}. It can take a few minutes; check your spam folder if you don’t see it.${call ? ' We’ll also suggest times for the review call.' : ''}`,
     okCall: 'Book the review call now',
     okNext: 'Meanwhile, explore',
     fixErrors: (n) => (n === 1 ? '1 field needs attention.' : `${n} fields need attention.`),
@@ -602,27 +620,36 @@ const es: DiagnosticCopy = {
 
   form: {
     eyebrow: 'Reporte completo',
-    title: 'Recibe el reporte completo por correo',
-    body: 'Un análisis por escrito de cada área, el porqué de tus tres pasos y qué implica cada uno. Si quieres, suma 30 minutos con nuestro equipo para contrastarlo con tu negocio.',
-    bullets: ['Análisis por área', 'El porqué de cada paso', 'Llamada de revisión de 30 minutos, opcional'],
+    title: 'Recibe tu reporte completo con IA',
+    body: 'Lo escribimos a partir de tus respuestas: qué significa tu puntaje, tus tres oportunidades más claras con el primer paso de cada una y un plan a 30, 60 y 90 días. Aquí ves un adelanto y el reporte completo te llega por correo.',
+    bullets: ['Tus cinco áreas, explicadas', 'Tres oportunidades y por dónde empezar', 'Un plan a 30, 60 y 90 días'],
     name: 'Nombre',
     email: 'Correo de trabajo',
     company: 'Empresa',
     role: 'Cargo',
+    phone: 'WhatsApp o teléfono',
+    whatsapp: 'Pueden contactarme por WhatsApp',
     region: 'Región',
     optional: 'opcional',
     regions: { us: 'Estados Unidos', eu: 'Europa', latam: 'Latinoamérica', other: 'Otra' },
-    ph: { name: 'Tu nombre', email: 'tu@empresa.com', company: 'Nombre de la empresa', role: 'Ej.: gerente de operaciones' },
+    ph: { name: 'Tu nombre', email: 'tu@empresa.com', company: 'Nombre de la empresa', role: 'Ej.: gerente de operaciones', phone: '+52 55 1234 5678' },
     required: 'Obligatorio',
     badEmail: 'Ingresa un correo de trabajo válido',
-    submit: 'Enviarme el reporte',
-    sending: 'Enviando',
+    submit: 'Quiero mi reporte',
+    sending: 'Escribiendo tu reporte',
+    sendingNote: 'Estamos escribiendo tu reporte a partir de tus respuestas. Tarda unos 30 segundos.',
+    limited: 'Pediste varios reportes en poco tiempo. Inténtalo más tarde o escríbenos.',
+    failTitle: 'Recibimos tus respuestas',
+    failSaved: 'No pudimos escribir tu reporte en este momento. Nuestro equipo tiene tus respuestas y te lo enviará por correo.',
+    previewTag: 'Adelanto',
+    previewFirst: 'Tu primera oportunidad',
+    previewMore: 'Tu reporte completo, con tus cinco áreas y el plan a 30, 60 y 90 días, ya está en tu correo.',
     wantsCall: 'Quiero también una llamada de revisión de 30 minutos',
-    consent: 'Usamos tus respuestas solo para preparar el reporte y, si la pides, la llamada. Nada de newsletter si no lo pides.',
+    consent: 'Usamos tus respuestas para escribir tu reporte con IA y, si la pides, para preparar la llamada. Nada de newsletter si no lo pides.',
     privacy: 'Política de privacidad',
     error: 'No pudimos enviarlo. Inténtalo de nuevo o escríbenos a',
-    okTitle: 'Reporte solicitado',
-    okBody: (e, call) => `Te enviaremos el reporte completo a ${e}.${call ? ' También te propondremos horarios para la llamada de revisión.' : ''}`,
+    okTitle: 'Tu reporte va en camino',
+    okBody: (e, call) => `Te enviamos el reporte completo a ${e}. Puede tardar unos minutos; si no lo ves, revisa la carpeta de spam.${call ? ' También te propondremos horarios para la llamada de revisión.' : ''}`,
     okCall: 'Agendar ahora la llamada de revisión',
     okNext: 'Mientras tanto, explora',
     fixErrors: (n) => (n === 1 ? 'Revisa 1 campo.' : `Revisa ${n} campos.`),
