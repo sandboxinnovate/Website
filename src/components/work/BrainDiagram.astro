@@ -68,13 +68,18 @@ const M = {
   agents: { x: 16, y: 100, w: 328, h: 214 },
   know: { x: 16, y: 354, w: 158, h: 204 },
   appr: { x: 186, y: 354, w: 158, h: 204 },
-  tools: { x: 16, y: 598, w: 328, h: 148 },
-  out: { x: 100, y: 774, w: 160, h: 52 },
+  tools: { x: 16, y: 598, w: 328, h: 166 },
+  out: { x: 100, y: 792, w: 160, h: 52 },
 };
 const mAgents = agentNames.map((n, i) => ({ n, x: M.agents.x + 16 + (i % 2) * 152, y: M.agents.y + 46 + Math.floor(i / 2) * 80, w: 144, h: 70 }));
 const mKnow = T(v.knowledgeItems).map((n, i) => ({ n, x: M.know.x + 10, y: M.know.y + 42 + i * 31, w: M.know.w - 20, h: 27 }));
 const mDec = decisions.map((n, i) => ({ n, x: M.appr.x + 14, y: M.appr.y + 50 + i * 48, w: M.appr.w - 28, h: 36 }));
-const mTools = toolItems.map((n, i) => ({ n, x: M.tools.x + 16 + (i % 2) * 152, y: M.tools.y + 42 + Math.floor(i / 2) * 33, w: 144, h: 28 }));
+const mTools = toolItems.map((n, i) => {
+  // Long labels ("Base de conocimiento") wrap to two lines on the narrow layout.
+  const words = n.split(' ');
+  const lines = n.length > 15 && words.length > 1 ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')] : [n];
+  return { n, lines, x: M.tools.x + 16 + (i % 2) * 152, y: M.tools.y + 42 + Math.floor(i / 2) * 38, w: 144, h: 34 };
+});
 ---
 <section class="bd section-y" aria-label={b.eyebrow[lang]} data-brain>
   <div class="container-x">
@@ -170,7 +175,7 @@ const mTools = toolItems.map((n, i) => ({ n, x: M.tools.x + 16 + (i % 2) * 152, 
         </svg>
 
         <!-- Small screens -->
-        <svg class="bd__svg bd__svg--tall" viewBox="0 0 360 830" role="img" aria-labelledby="bd-t-m bd-d-m">
+        <svg class="bd__svg bd__svg--tall" viewBox="0 0 360 848" role="img" aria-labelledby="bd-t-m bd-d-m">
           <title id="bd-t-m">{T(v.title)}</title>
           <desc id="bd-d-m">{T(v.desc)}</desc>
           <defs>
@@ -226,7 +231,9 @@ const mTools = toolItems.map((n, i) => ({ n, x: M.tools.x + 16 + (i % 2) * 152, 
             <rect class="bd-frame" x={M.tools.x} y={M.tools.y} width={M.tools.w} height={M.tools.h} rx="16" />
             <text class="bd-head" x={M.tools.x + 16} y={M.tools.y + 28}>{T(v.tools)}</text>
             {mTools.map((t, i) => (
-              <g class="bd-tool"><rect x={t.x} y={t.y} width={t.w} height={t.h} rx="8" /><SvgToolTile tool={TOOL_TOOLS[i]} x={t.x + 4} y={t.y + 4} size={20} /><text x={t.x + 31} y={t.y + 18.5}>{t.n}</text></g>
+              <g class="bd-tool"><rect x={t.x} y={t.y} width={t.w} height={t.h} rx="8" /><SvgToolTile tool={TOOL_TOOLS[i]} x={t.x + 5} y={t.y + 7} size={20} />{t.lines.length === 1
+                ? <text x={t.x + 32} y={t.y + 21.5}>{t.n}</text>
+                : <text class="bd-tool-2" x={t.x + 32} y={t.y + 15}>{t.lines[0]}<tspan x={t.x + 32} dy="12.5">{t.lines[1]}</tspan></text>}</g>
             ))}
           </g>
           <g class="bd-box bd-s6">
@@ -302,6 +309,8 @@ const mTools = toolItems.map((n, i) => ({ n, x: M.tools.x + 16 + (i % 2) * 152, 
   .bd-dec--yes text { fill: var(--color-ok) !important; }
   .bd-tool > rect:first-child { fill: rgb(255 255 255 / .02); stroke: var(--line); }
   .bd-tool text { font-size: 13px; fill: var(--color-bone) !important; }
+  .bd-tool .bd-tool-2 { font-size: 12px; }
+  .bd__svg--tall .bd-chip text { font-size: 12.5px; }
   .bd-edge { fill: none; stroke: rgb(245 131 39 / .55); stroke-width: 1.25; }
   .bd-edge--loop { stroke: rgb(255 255 255 / .22); }
   .bd-arrow { fill: var(--color-flame-400); }

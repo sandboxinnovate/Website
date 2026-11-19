@@ -47,6 +47,8 @@
 @container (max-width: 540px) {
   .pf-mark__t--long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .pf-mark__t--short { display: inline; }
+  .pf-mark { padding: 0 8px; gap: 6px; font-size: 12.5px; }
+  .pf-mark__dot { display: none; }
   .pf-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
   .pf-head { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
 }
