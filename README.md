@@ -38,6 +38,16 @@ PUBLIC_LEADS_ENDPOINT=https://your-endpoint.example.com/leads
 
 Any endpoint that accepts a JSON `POST` works (Formspree, a serverless function, a CRM webhook, a Zapier/Make hook).
 
+**Production: leads go to the Sandbox Brain** through `api/leads.js`, a Vercel Function in this repo that adds the Brain's secret server-side (the site is static and this repo is public, so the secret can't live in the browser bundle). Vercel environment variables:
+
+```
+PUBLIC_LEADS_ENDPOINT=/api/leads
+BRAIN_LEADS_URL=https://<brain>/api/public/leads
+BRAIN_LEADS_SECRET=<same value as LEADS_INTAKE_SECRET on the Brain>
+```
+
+`BRAIN_LEADS_*` must **not** start with `PUBLIC_` (that would ship them to the browser). Full procedure: `infra/LEADS.md` in the `sandbox-brain` repo.
+
 Without it:
 
 - **`npm run dev`** logs each submission to the browser console (`[lead:preview]`) and shows the success state, so the flows can be tested end to end.
